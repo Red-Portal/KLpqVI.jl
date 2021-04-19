@@ -6,6 +6,7 @@ include(srcdir("KLpqVI.jl"))
 include("task/lda.jl")
 include("task/gaussian.jl")
 
+using DelimitedFiles
 using Plots, StatsPlots
 using Flux
 using ForwardDiff
@@ -33,10 +34,10 @@ function run_vi(seed_int, method, n_dims, n_mc)
         _, k = psis.psislw(ℓw)
 
         push!(crossent, klpq)
-        push!(paretok, min(k, 10))
+        push!(paretok, min(k, 15))
     end
 
-    n_iter = 10
+    n_iter = 2000
     θ, q = vi(model;
               objective = method,
               n_mc      = n_mc,
@@ -45,6 +46,7 @@ function run_vi(seed_int, method, n_dims, n_mc)
               callback  = plot_callback,
               rng       = prng,
               optimizer = AdvancedVI.TruncatedADAGrad(),
+              show_progress = true,
               )
     crossent, paretok
 end
@@ -61,9 +63,9 @@ function run_experiment(settings::Dict)
         elseif(n_dims == 20)
             MSC_HMC(0.01, 16)
         end
-    elseif(method_name == "MSC")
+    elseif(method == "MSC")
         MSC()
-    elseif(method_name == "KLPQSNIS")
+    elseif(method == "KLPQSNIS")
         KLPQSNIS()
     end
     fname        = savename(settings)
@@ -71,8 +73,8 @@ function run_experiment(settings::Dict)
 
     cent, pareto = run_vi(seed, method, n_dims,  n_samples)
     open(datadir("convergence", fname*".txt"), "w") do io
-        write(io, "crossentropy, paretok")
-        writedlm(io, [cent, pareto], ',')
+        write(io, "crossentropy,paretok\n")
+        writedlm(io, hcat(cent, pareto), ',')
     end
 end
 

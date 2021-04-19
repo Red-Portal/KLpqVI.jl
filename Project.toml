@@ -4,6 +4,7 @@ authors = ["Ray Kim"]
 [deps]
 AdvancedVI = "b5ca4192-6429-45e5-a2d9-87aec30a685c"
 Bijectors = "76274a88-744f-5084-9051-94815aaf08c4"
+DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
 DiffResults = "163ba53b-c6d8-5494-b064-1a9d43ac40c5"
 Distributions = "31c24e10-a181-5473-b8eb-7969acd0382f"
 DrWatson = "634d3b9d-ee7a-5ddf-bec9-22491ea816e1"
