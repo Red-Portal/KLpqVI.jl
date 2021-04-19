@@ -37,7 +37,7 @@ function run_vi(seed_int, method, n_dims, n_mc)
         push!(paretok, min(k, 15))
     end
 
-    n_iter = 2000
+    n_iter = 5000
     θ, q = vi(model;
               objective = method,
               n_mc      = n_mc,
