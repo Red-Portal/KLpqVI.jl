@@ -54,25 +54,31 @@ end
 function run_experiment(settings::Dict)
     @unpack method, n_dims, n_samples = settings
 
+    expname  = savename(settings)
+    filename = datadir("convergence", expname*".txt")
+    @info "starting epxeriment" settings...
+	if isfile(filename)
+    	@info "skipping..." 
+	    return
+	end
+
     seed   = 0
     method = if(method== "MSC_HMC")
         if(n_dims == 1)
             MSC_HMC(0.03, 16)
         elseif(n_dims == 10)
-            MSC_HMC(0.02, 16)
-        elseif(n_dims == 20)
             MSC_HMC(0.01, 16)
+        elseif(n_dims == 20)
+            MSC_HMC(0.005, 16)
         end
     elseif(method == "MSC")
         MSC()
     elseif(method == "KLPQSNIS")
         KLPQSNIS()
     end
-    fname        = savename(settings)
-    @info "starting epxeriment" settings...
 
     cent, pareto = run_vi(seed, method, n_dims,  n_samples)
-    open(datadir("convergence", fname*".txt"), "w") do io
+    open(filename, "w") do io
         write(io, "crossentropy,paretok\n")
         writedlm(io, hcat(cent, pareto), ',')
     end
