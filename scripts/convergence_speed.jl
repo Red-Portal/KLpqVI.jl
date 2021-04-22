@@ -23,7 +23,7 @@ function run_vi(seed_int, method, n_dims, n_mc)
 
     n_data = 200
     p      = gaussian_data(prng, n_dims, correlated=false)
-    z      = rand(p, n_data);
+    z      = rand(prng, p, n_data);
     model  = gaussian(z, n_dims)
 
     crossent = []
@@ -71,6 +71,14 @@ function run_experiment(settings::Dict)
         elseif(n_dims == 20)
             MSC_HMC(0.005, 16)
         end
+    elseif(method == "MSC_MALA")
+        if(n_dims == 1)
+            MSC_MALA(0.005)
+        elseif(n_dims == 10)
+            MSC_MALA(0.003)
+        elseif(n_dims == 20)
+            MSC_MALA(0.001)
+        end
     elseif(method == "MSC")
         MSC()
     elseif(method == "KLPQSNIS")
@@ -86,7 +94,11 @@ end
 
 function main()
     for n_dims ∈ [1, 10, 20]
-        for settings ∈ [Dict(:method=>"MSC_HMC",
+        for settings ∈ [Dict(:method=>"MSC_MALA",
+                             :n_dims=>n_dims,
+                             :n_samples=>8),
+
+                        Dict(:method=>"MSC_HMC",
                              :n_dims=>n_dims,
                              :n_samples=>8),
 

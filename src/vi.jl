@@ -1,4 +1,5 @@
 
+
 function vi(model,
             q_init=nothing;
             n_mc,

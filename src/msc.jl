@@ -2,14 +2,19 @@
 mutable struct MSC <: AdvancedVI.VariationalObjective
     z::Vector{Float64}
     hmc_params::Union{Nothing, NamedTuple{(:ϵ, :L), Tuple{Float64, Int64}}}
+    mala_params::Union{Nothing, NamedTuple{(:ϵ,), Tuple{Float64}}}
 end
 
 function MSC()
-    return MSC(Array{Float64}(undef, 0), nothing)
+    return MSC(Array{Float64}(undef, 0), nothing, nothing)
 end
 
 function MSC_HMC(ϵ::Float64, L::Int64)
-    return MSC(Array{Float64}(undef, 0), (ϵ=ϵ, L=L))
+    return MSC(Array{Float64}(undef, 0), (ϵ=ϵ, L=L), nothing)
+end
+
+function MSC_MALA(ϵ::Float64)
+    return MSC(Array{Float64}(undef, 0), nothing, (ϵ=ϵ,))
 end
 
 function init_state!(msc::MSC, rng::Random.AbstractRNG, q)
@@ -75,7 +80,7 @@ function AdvancedVI.grad!(
         q(θ)
     end
 
-    vo.z = if isnothing(vo.hmc_params)
+    vo.z = if isnothing(vo.hmc_params) && isnothing(vo.mala_params)
         cir(rng, vo.z, logπ, q′, alg.samples_per_step)
     else
         bijection   = q.transform
@@ -88,8 +93,12 @@ function AdvancedVI.grad!(
             ∇logqη = DiffResults.gradient(grad_buf)
             logqη, ∇logqη
         end
-        η′, acc = hmc(rng, ∂ℓπ∂θ, η, vo.hmc_params.ϵ, vo.hmc_params.L)
-        #println(acc)
+        η′, acc = if !isnothing(vo.hmc_params)
+            hmc(rng, ∂ℓπ∂θ, η, vo.hmc_params.ϵ, vo.hmc_params.L)
+        elseif !isnothing(vo.mala_params)
+            mala(rng, ∂ℓπ∂θ, η, vo.mala_params.ϵ)
+        end
+        println(acc)
         bijection(η′)
     end
 

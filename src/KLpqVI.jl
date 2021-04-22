@@ -6,12 +6,13 @@ using StatsFuns
 using Zygote
 using LinearAlgebra
 
-import PyCall
-import ForwardDiff
 import AdvancedVI
 import Bijectors
 import DiffResults
+import DistributionsAD
 import DynamicPPL
+import ForwardDiff
+import PyCall
 import Random
 import Turing
 
@@ -19,6 +20,8 @@ include("vi.jl")
 include("klpqsnis.jl")
 include("advi.jl")
 include("msc.jl")
-include("sgd_sc.jl")
+include("msc_vr.jl")
 include("hmc.jl")
+include("mala.jl")
 include("psis.jl")
+include("sampling.jl")
