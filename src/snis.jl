@@ -6,7 +6,7 @@ init_state!(::KLPQSNIS, rng, q) = nothing
 function AdvancedVI.grad!(
     rng::Random.AbstractRNG,
     klpq::KLPQSNIS,
-    alg::AdvancedVI.VariationalInference{<:AdvancedVI.ForwardDiffAD},
+    alg::AdvancedVI.VariationalInference,
     q,
     logπ,
     θ::AbstractVector{<:Real},
@@ -36,9 +36,5 @@ function AdvancedVI.grad!(
         nlogqs′ = [-logpdf(q′, z_tup[2]) for z_tup ∈ z_tups] 
         dot(w, nlogqs′)
     end
-
-    chunk_size = AdvancedVI.getchunksize(typeof(alg))
-    chunk      = ForwardDiff.Chunk(min(length(θ), chunk_size))
-    config     = ForwardDiff.GradientConfig(f, θ, chunk)
-    ForwardDiff.gradient!(out, f, θ, config)
+    gradient!(alg, f, θ, out)
 end

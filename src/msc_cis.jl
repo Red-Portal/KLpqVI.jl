@@ -17,7 +17,7 @@ function MSC_MALA(ϵ::Float64)
     return MSC(Array{Float64}(undef, 0), nothing, (ϵ=ϵ,))
 end
 
-function init_state!(msc::MSC, rng::Random.AbstractRNG, q)
+function init_state!(msc::MSC, rng::Random.AbstractRNG, q, n_mc)
     msc.z = rand(rng, q)
 end
 
@@ -68,7 +68,7 @@ end
 function AdvancedVI.grad!(
     rng::Random.AbstractRNG,
     vo::MSC,
-    alg::AdvancedVI.VariationalInference{<:AdvancedVI.ForwardDiffAD},
+    alg::AdvancedVI.VariationalInference,
     q,
     logπ,
     θ::AbstractVector{<:Real},
@@ -88,11 +88,10 @@ function AdvancedVI.grad!(
         grad_buf    = DiffResults.GradientResult(η)
         logπ_bij(η) = logπ(bijection(η))
         ∂ℓπ∂θ(η)    = begin
-            ForwardDiff.gradient!(grad_buf, logπ_bij, η)
-            logqη  = DiffResults.value(grad_buf)
-            ∇logqη = DiffResults.gradient(grad_buf)
-            logqη, ∇logqη
+            gradient!(alg, logπ_bij, η, grad_buf)
+            DiffResults.value(grad_buf), DiffResults.gradient(grad_buf)
         end
+
         η′, acc = if !isnothing(vo.hmc_params)
             hmc(rng, ∂ℓπ∂θ, η, vo.hmc_params.ϵ, vo.hmc_params.L)
         elseif !isnothing(vo.mala_params)
@@ -107,9 +106,5 @@ function AdvancedVI.grad!(
     else
         -Bijectors.logpdf(q(θ), vo.z)
     end
-
-    chunk_size = AdvancedVI.getchunksize(typeof(alg))
-    chunk      = ForwardDiff.Chunk(min(length(θ), chunk_size))
-    config     = ForwardDiff.GradientConfig(f, θ, chunk)
-    ForwardDiff.gradient!(out, f, θ, config)
+    gradient!(alg, f, θ, out)
 end

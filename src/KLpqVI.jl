@@ -17,10 +17,12 @@ import Random
 import Turing
 
 include("vi.jl")
-include("klpqsnis.jl")
+include("gradient.jl")
+include("snis.jl")
 include("advi.jl")
-include("msc.jl")
-include("msc_vr.jl")
+include("msc_cis.jl")
+include("msc_imh.jl")
+include("msc_parimh.jl")
 include("hmc.jl")
 include("mala.jl")
 include("psis.jl")

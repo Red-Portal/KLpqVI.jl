@@ -1,5 +1,4 @@
 
-
 function vi(model,
             q_init=nothing;
             n_mc,
@@ -26,7 +25,7 @@ function vi(model,
     q     = Turing.Variational.meanfield(model)
     ∇_buf = DiffResults.GradientResult(θ)
 
-    init_state!(objective, rng, q)
+    init_state!(objective, rng, q, n_mc)
 
     prog = if(show_progress)
         ProgressMeter.Progress(n_iter)

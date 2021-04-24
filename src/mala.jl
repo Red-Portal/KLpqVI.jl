@@ -20,30 +20,30 @@ function mala(prng::Random.AbstractRNG,
     end
 end
 
-# function main()
-#     prng = MersenneTwister(1)
-#     π    = MvNormal(zeros(2), [1.0 0.2; 0.2 2.0])
+function main()
+    prng   = MersenneTwister(1)
+    π      = MvNormal(zeros(2), [1.0 0.2; 0.2 2.0])
 
-#     ∂ℓπ∂θ(x) = begin
-#         ℓπ  = logpdf(π, x)
-#         ∇ℓπ = Zygote.gradient(y->logpdf(π, y), x)[1]
-#         ℓπ, ∇ℓπ
-#     end
+    ∂ℓπ∂θ(x) = begin
+        ℓπ  = logpdf(π, x)
+        ∇ℓπ = Zygote.gradient(y->logpdf(π, y), x)[1]
+        ℓπ, ∇ℓπ
+    end
 
-#     x = rand(prng, π)
-#     n = 10000
-#     X = zeros(2, n)
-#     μ = Mean()
-#     for i = 1:n
-#         x, ℓα  = mala(prng, ∂ℓπ∂θ, x, 4.0)
-#         fit!(μ, exp(ℓα))
-#         X[:,i] = x
-#     end
-#     println(μ.μ)
-#     display(scatter(X[1,:], X[2,:]))
+    x = rand(prng, π)
+    n = 10000
+    X = zeros(2, n)
+    μ = Mean()
+    for i = 1:n
+        x, α  = mala(prng, ∂ℓπ∂θ, x, 1.0)
+        fit!(μ, α)
+        X[:,i] = x
+    end
+    println(μ.μ)
+    display(scatter(X[1,:], X[2,:]))
 
-#     MCMCChains.Chains(reshape(X', (:,2,1)))
+    MCMCChains.Chains(reshape(X', (:,2,1)))
 
-#     #y = rand(prng, π, n)
-#     #scatter!(y[1,:], y[2,:])
-# end
+    #y = rand(prng, π, n)
+    #scatter!(y[1,:], y[2,:])
+end
