@@ -19,6 +19,7 @@ import Turing
 include("vi.jl")
 include("gradient.jl")
 include("snis.jl")
+include("elbo.jl")
 include("advi.jl")
 include("msc_cis.jl")
 include("msc_imh.jl")

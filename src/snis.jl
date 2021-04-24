@@ -1,11 +1,11 @@
 
-struct KLPQSNIS <: AdvancedVI.VariationalObjective end
+struct SNIS <: AdvancedVI.VariationalObjective end
 
-init_state!(::KLPQSNIS, rng, q) = nothing
+init_state!(::SNIS, rng, q, n_mc) = nothing
 
 function AdvancedVI.grad!(
     rng::Random.AbstractRNG,
-    klpq::KLPQSNIS,
+    snis::SNIS,
     alg::AdvancedVI.VariationalInference,
     q,
     logπ,

@@ -1,8 +1,10 @@
 
+init_state!(::AdvancedVI.ELBO, rng::Random.AbstractRNG, q, n_mc) = nothing
+
 function AdvancedVI.grad!(
     rng,
     vo,
-    alg::AdvancedVI.VariationalInference{<:AdvancedVI.ForwardDiffAD},
+    alg::AdvancedVI.VariationalInference,
     q,
     model,
     θ::AbstractVector{<:Real},
@@ -13,12 +15,7 @@ function AdvancedVI.grad!(
     else
         - vo(rng, alg, q(θ_), model, alg.samples_per_step)
     end
-
-    chunk_size = AdvancedVI.getchunksize(typeof(alg))
-    # Set chunk size and do ForwardMode.
-    chunk = ForwardDiff.Chunk(min(length(θ), chunk_size))
-    config = ForwardDiff.GradientConfig(f, θ, chunk)
-    ForwardDiff.gradient!(out, f, θ, config)
+    gradient!(alg, f, θ, out)
 end
 
 function (elbo::AdvancedVI.ELBO)(rng, alg, q, logπ, num_samples)

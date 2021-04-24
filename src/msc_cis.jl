@@ -2,19 +2,14 @@
 mutable struct MSC <: AdvancedVI.VariationalObjective
     z::Vector{Float64}
     hmc_params::Union{Nothing, NamedTuple{(:ϵ, :L), Tuple{Float64, Int64}}}
-    mala_params::Union{Nothing, NamedTuple{(:ϵ,), Tuple{Float64}}}
 end
 
 function MSC()
-    return MSC(Array{Float64}(undef, 0), nothing, nothing)
+    return MSC(Array{Float64}(undef, 0), nothing)
 end
 
 function MSC_HMC(ϵ::Float64, L::Int64)
-    return MSC(Array{Float64}(undef, 0), (ϵ=ϵ, L=L), nothing)
-end
-
-function MSC_MALA(ϵ::Float64)
-    return MSC(Array{Float64}(undef, 0), nothing, (ϵ=ϵ,))
+    return MSC(Array{Float64}(undef, 0), (ϵ=ϵ, L=L))
 end
 
 function init_state!(msc::MSC, rng::Random.AbstractRNG, q, n_mc)
@@ -80,23 +75,20 @@ function AdvancedVI.grad!(
         q(θ)
     end
 
-    vo.z = if isnothing(vo.hmc_params) && isnothing(vo.mala_params)
+    vo.z = if isnothing(vo.hmc_params)
         cir(rng, vo.z, logπ, q′, alg.samples_per_step)
     else
-        bijection   = q.transform
-        η           = inv(bijection)(vo.z)
-        grad_buf    = DiffResults.GradientResult(η)
-        logπ_bij(η) = logπ(bijection(η))
-        ∂ℓπ∂θ(η)    = begin
-            gradient!(alg, logπ_bij, η, grad_buf)
-            DiffResults.value(grad_buf), DiffResults.gradient(grad_buf)
+        bijection = q.transform
+        η0        = inv(bijection)(vo.z)
+        grad_buf  = DiffResults.GradientResult(η0)
+        ∂ℓπ∂η(η)  = begin
+            gradient!(alg, η_ -> logπ(bijection(η_)), η, grad_buf)
+            f_η  = DiffResults.value(grad_buf)
+            ∇f_η = DiffResults.gradient(grad_buf)
+            f_η, ∇f_η
         end
 
-        η′, acc = if !isnothing(vo.hmc_params)
-            hmc(rng, ∂ℓπ∂θ, η, vo.hmc_params.ϵ, vo.hmc_params.L)
-        elseif !isnothing(vo.mala_params)
-            mala(rng, ∂ℓπ∂θ, η, vo.mala_params.ϵ)
-        end
+        η′, acc = hmc(rng, ∂ℓπ∂η, η0, vo.hmc_params.ϵ, vo.hmc_params.L)
         println(acc)
         bijection(η′)
     end
