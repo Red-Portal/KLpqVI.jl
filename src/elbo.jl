@@ -1,6 +1,4 @@
 
-init_state!(::AdvancedVI.ELBO, rng::Random.AbstractRNG, q, n_mc) = nothing
-
 function AdvancedVI.grad!(
     rng,
     vo,

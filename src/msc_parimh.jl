@@ -82,7 +82,7 @@ function AdvancedVI.grad!(
         else
             q(θ)
         end
-        nlogq = mapslices(zᵢ -> -logpdf(q_θ, zᵢ), dims=1, z)[1,:]
+        nlogq = map(zᵢ -> -logpdf(q_θ, zᵢ), eachcol(z))
         mean(nlogq)
     end
     gradient!(alg, f, θ, out)

@@ -26,11 +26,15 @@ function studentt_data(prng::Random.AbstractRNG,
     Distributions.mvtdist(ν, μ, Σ)
 end
 
-Turing.@model gaussian(z, d) = begin
+Turing.@model hierarchical_gaussian(z, d) = begin
     μ  = Vector{Real}(undef, d)
     s  = Vector{Real}(undef, d)
     s .~ Gamma(1, 1)
     σ  = sqrt.(s)
     μ .~ Normal.(0.0, σ)
     z .~ MvNormal(μ, σ)
+end
+
+Turing.@model gaussian(μ, Σ) = begin
+    z ~ MvNormal(μ, Σ)
 end

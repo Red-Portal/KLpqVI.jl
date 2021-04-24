@@ -6,6 +6,7 @@ using StatsFuns
 using Zygote
 using LinearAlgebra
 
+import PDMats
 import AdvancedVI
 import Bijectors
 import DiffResults
@@ -27,3 +28,4 @@ include("msc_parimh.jl")
 include("hmc.jl")
 include("mala.jl")
 include("psis.jl")
+include("utils.jl")
