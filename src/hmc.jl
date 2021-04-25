@@ -77,3 +77,25 @@ function hmc(prng::Random.AbstractRNG,
     z_acc   = z_recycled_buf[acc_idx]
     z_acc.x, acc
 end
+
+
+function hmc_step(rng::Random.AbstractRNG,
+                  alg::AdvancedVI.VariationalInference,
+                  q,
+                  logπ,
+                  z::RV,
+                  ϵ::Real,
+                  L::Int)
+    bijection = q.transform
+    η0        = inv(bijection)(z.val)
+    grad_buf  = DiffResults.GradientResult(η0)
+    ∂ℓπ∂η(η)  = begin
+        gradient!(alg, η_ -> logπ(bijection(η_)), η, grad_buf)
+        f_η  = DiffResults.value(grad_buf)
+        ∇f_η = DiffResults.gradient(grad_buf)
+        f_η, ∇f_η
+    end
+    η′, acc = hmc(rng, ∂ℓπ∂η, η0, ϵ, L)
+    z′ = bijection(η′)
+    RV(z′, logπ(z′))
+end

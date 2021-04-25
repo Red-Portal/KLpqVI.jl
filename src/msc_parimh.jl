@@ -1,52 +1,40 @@
 
 mutable struct MSC_PIMH <: AdvancedVI.VariationalObjective
-    zs::Matrix{Float64}
+    zs::Vector{RV{Float64}}
+    iter::Int
+    hmc_freq::Int
+    hmc_params::Union{Nothing, NamedTuple{(:ϵ, :L), Tuple{Float64, Int64}}}
 end
 
 function MSC_PIMH()
-    MSC_PIMH(Array{Float64}(undef, 0, 0))
+    MSC_PIMH(Array{RV{Float64}}(undef, 0), 1, 0, nothing)
 end
 
-function init_state!(msc::MSC_PIMH, rng, q, n_mc)
-    msc.zs = rand(rng, q, n_mc)
+function MSC_PIMH(hmc_freq::Int, ϵ::Real, L::Int)
+    MSC_PIMH(Array{RV{Float64}}(undef, 0), 1, hmc_freq, (ϵ=ϵ, L=L,))
 end
 
-function cis(rng::Random.AbstractRNG,
-             z0::AbstractVector,
-             ℓπ::Function,
-             q,
-             n_samples::Int)
-    z_tups = map(1:n_samples) do i
-        _, z, _, logq = Bijectors.forward(rng, q)
-        (z=z, logq=logq)
-    end
-    z  = [z_tup.z    for z_tup ∈ z_tups]
-    z  = vcat([z0], z)
-
-    ℓq  = [z_tup.logq for z_tup ∈ z_tups]
-    ℓq  = vcat(logpdf(q, z0), ℓq)
-    ℓp  = map(ℓπ, z)
-    ℓw  = ℓp - ℓq
-    ℓZ  = StatsFuns.logsumexp(ℓw)
-
-    w = exp.(ℓw .- ℓZ) 
-    z = hcat(z...)
-    z, w
+function init_state!(msc::MSC_PIMH, rng, q, logπ, n_mc)
+    zs     = [rand(rng, q) for i = 1:n_mc]
+    ℓπs    = logπ.(zs) 
+    msc.zs = RV{Float64}.(zs, ℓπs)
 end
+
 
 function imh_kernel(rng::Random.AbstractRNG,
-                    z,
+                    z_rv::RV,
                     ℓπ::Function,
                     q)
-    weight(x_) = ℓπ(x_) - logpdf(q, x_)
-    z′  = rand(rng, q)
-    ℓw  = weight(z)
-    ℓw′ = weight(z′)
+    _, z′, _, ℓq′ = Bijectors.forward(rng, q)
+
+    ℓw  = z_rv.prob - logpdf(q, z_rv.val)
+    ℓp′ = ℓπ(z′)
+    ℓw′ = ℓp′ - ℓq′
     α   = min(1.0, exp(ℓw′ - ℓw))
     if(rand(rng) < α)
-        z′, α
+        RV(z′, ℓp′), α
     else
-        z, α
+        z_rv, α
     end
 end
 
@@ -67,14 +55,20 @@ function AdvancedVI.grad!(
         q(θ)
     end
 
-    res = map(eachcol(vo.zs)) do zᵢ
-        z, α = imh_kernel(rng, zᵢ, logπ, q′)
-        (z=z, r=1-α)
+    if(vo.hmc_freq > 0 && mod(vo.iter-1, vo.hmc_freq) == 0)
+        for i = 1:length(vo.zs)
+            vo.zs[i] = hmc_step(rng, alg, q, logπ, vo.zs[i],
+                                vo.hmc_params.ϵ, vo.hmc_params.L)
+        end
     end
 
-    r     = mean([resᵢ.r for resᵢ ∈ res])
-    z     = hcat([resᵢ.z for resᵢ ∈ res]...)
-    vo.zs = z
+    rs = Vector{Float64}(undef, n_samples)
+    for i = 1:length(vo.zs)
+        z, α     = imh_kernel(rng, vo.zs[i], logπ, q′)
+        vo.zs[i] = z 
+        rs[i]    = 1-α
+    end
+    r  = mean(rs)
 
     f(θ) = begin
         q_θ = if (q isa Distribution)
@@ -82,8 +76,9 @@ function AdvancedVI.grad!(
         else
             q(θ)
         end
-        nlogq = map(zᵢ -> -logpdf(q_θ, zᵢ), eachcol(z))
+        nlogq = map(zᵢ_rv -> -logpdf(q_θ, zᵢ_rv.val), vo.zs)
         mean(nlogq)
     end
     gradient!(alg, f, θ, out)
+    vo.iter += 1
 end

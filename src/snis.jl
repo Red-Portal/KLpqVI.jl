@@ -1,7 +1,7 @@
 
 struct SNIS <: AdvancedVI.VariationalObjective end
 
-init_state!(::SNIS, rng, q, n_mc) = nothing
+init_state!(::SNIS, rng, q, logπ, n_mc) = nothing
 
 function AdvancedVI.grad!(
     rng::Random.AbstractRNG,

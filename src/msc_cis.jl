@@ -1,63 +1,29 @@
 
 mutable struct MSC <: AdvancedVI.VariationalObjective
-    z::Vector{Float64}
+    z::RV{Float64}
+    iter::Int
+    hmc_freq::Int
     hmc_params::Union{Nothing, NamedTuple{(:ϵ, :L), Tuple{Float64, Int64}}}
 end
 
-function MSC()
-    return MSC(Array{Float64}(undef, 0), nothing)
+function MSC_CIS()
+    z = RV(Array{Float64}(undef, 0), -Inf)
+    return MSC(z, 1, 0, nothing)
+end
+
+function MSC_CIS(hmc_freq::Int, ϵ::Float64, L::Int64)
+    z = RV(Array{Float64}(undef, 0), -Inf)
+    return MSC(z, 1, hmc_freq,  (ϵ=ϵ, L=L))
 end
 
 function MSC_HMC(ϵ::Float64, L::Int64)
-    return MSC(Array{Float64}(undef, 0), (ϵ=ϵ, L=L))
+    z = RV(Array{Float64}(undef, 0), -Inf)
+    return MSC(z, 1, 1,  (ϵ=ϵ, L=L))
 end
 
-function init_state!(msc::MSC, rng::Random.AbstractRNG, q, n_mc)
-    msc.z = rand(rng, q)
-end
-
-function cir(rng::Random.AbstractRNG,
-             z0::AbstractVector,
-             ℓπ::Function,
-             q,
-             n_samples::Int)
-    z_tups = map(1:n_samples) do i
-        _, z, _, logq = Bijectors.forward(rng, q)
-        (z=z, logq=logq)
-    end
-    z    = [z_tup.z    for z_tup ∈ z_tups]
-    logq = [z_tup.logq for z_tup ∈ z_tups]
-
-    z   = vcat([z0], z)
-    ℓq  = vcat(logpdf(q, z0), logq)
-    ℓp  = map(ℓπ, z)
-    ℓw  = ℓp - ℓq
-    ℓZ  = StatsFuns.logsumexp(ℓw)
-    w   = exp.(ℓw .- ℓZ) 
-    idx = rand(rng, Categorical(w))
-    z[idx]
-end
-
-function hmc(rng::Random.AbstractRNG,
-             z0::AbstractVector,
-             ℓπ::Function,
-             q,
-             n_samples::Int)
-    z_tups = map(1:n_samples) do i
-        _, z, _, logq = Bijectors.forward(rng, q)
-        (z=z, logq=logq)
-    end
-    z    = [z_tup.z    for z_tup ∈ z_tups]
-    logq = [z_tup.logq for z_tup ∈ z_tups]
-
-    z   = vcat([z0], z)
-    ℓq  = vcat(logpdf(q, z0), logq)
-    ℓp  = map(ℓπ, z)
-    ℓw  = ℓp - ℓq
-    ℓZ  = StatsFuns.logsumexp(ℓw)
-    w   = exp.(ℓw .- ℓZ) 
-    idx = rand(rng, Categorical(w))
-    z[idx]
+function init_state!(msc::MSC, rng::Random.AbstractRNG, q, logπ, n_mc)
+    z     = rand(rng, q)
+    msc.z = RV{Float64}(z, logπ(z))
 end
 
 function AdvancedVI.grad!(
@@ -68,35 +34,36 @@ function AdvancedVI.grad!(
     logπ,
     θ::AbstractVector{<:Real},
     out::DiffResults.MutableDiffResult)
-
+#=
+    Christian Naesseth, Fredrik Lindsten, David Blei
+    "Markovian Score Climbing: Variational Inference with KL(p||q)"
+    Advances in Neural Information Processing Systems 33 (NeurIPS 2020)
+=##
     q′ = if (q isa Distribution)
         AdvancedVI.update(q, θ)
     else
         q(θ)
     end
 
-    vo.z = if isnothing(vo.hmc_params)
-        cir(rng, vo.z, logπ, q′, alg.samples_per_step)
-    else
-        bijection = q.transform
-        η0        = inv(bijection)(vo.z)
-        grad_buf  = DiffResults.GradientResult(η0)
-        ∂ℓπ∂η(η)  = begin
-            gradient!(alg, η_ -> logπ(bijection(η_)), η, grad_buf)
-            f_η  = DiffResults.value(grad_buf)
-            ∇f_η = DiffResults.gradient(grad_buf)
-            f_η, ∇f_η
-        end
+    if(vo.hmc_freq > 0 && mod(vo.iter-1, vo.hmc_freq) == 0)
+        vo.z = hmc_step(rng, alg, q, logπ, vo.z,
+                        vo.hmc_params.ϵ, vo.hmc_params.L)
+    end
 
-        η′, acc = hmc(rng, ∂ℓπ∂η, η0, vo.hmc_params.ϵ, vo.hmc_params.L)
-        println(acc)
-        bijection(η′)
+    vo.z = if vo.hmc_freq != 1
+        z, w, ℓp = cis(rng, vo.z, logπ, q′, alg.samples_per_step)
+        acc_idx  = rand(Categorical(w))
+        RV(z[:,acc_idx], ℓp[acc_idx])
+    else
+        hmc_step(rng, alg, q, logπ, vo.z,
+                 vo.hmc_params.ϵ, vo.hmc_params.L)
     end
 
     f(θ) = if (q isa Distribution)
-        -(Bijectors.logpdf(AdvancedVI.update(q, θ), vo.z))
+        -(Bijectors.logpdf(AdvancedVI.update(q, θ), vo.z.val))
     else
-        -Bijectors.logpdf(q(θ), vo.z)
+        -Bijectors.logpdf(q(θ), vo.z.val)
     end
     gradient!(alg, f, θ, out)
+    vo.iter += 1
 end
