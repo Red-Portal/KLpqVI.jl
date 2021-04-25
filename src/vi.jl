@@ -52,7 +52,7 @@ function vi(model,
     else
         nothing
     end
-    time = 
+    start_time = Dates.now()
     
     for t = 1:n_iter
         stat  = (iteration=t,)
@@ -66,12 +66,15 @@ function vi(model,
             sgd_step!(optimizer, θ, ∇_buf)
         end
 
+        elapsed  = Dates.now() - start_time
+        stat     = merge(stat, (elapsed=elapsed,))
+
         if(!isnothing(callback))
             q′    = (q isa Distribution) ?  AdvancedVI.update(q, θ) : q(θ)
             stat′ = callback(logπ, q′, objective, DiffResults.value(∇_buf))
             stat  = merge(stat, stat′)
         end
-        
+
         if(show_progress)
             pm_next!(prog, stat)
         end
