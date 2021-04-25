@@ -97,5 +97,5 @@ function hmc_step(rng::Random.AbstractRNG,
     end
     η′, acc = hmc(rng, ∂ℓπ∂η, η0, ϵ, L)
     z′ = bijection(η′)
-    RV(z′, logπ(z′))
+    RV(z′, logπ(z′)), acc
 end

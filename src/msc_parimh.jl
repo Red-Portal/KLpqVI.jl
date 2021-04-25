@@ -32,9 +32,9 @@ function imh_kernel(rng::Random.AbstractRNG,
     ℓw′ = ℓp′ - ℓq′
     α   = min(1.0, exp(ℓw′ - ℓw))
     if(rand(rng) < α)
-        RV(z′, ℓp′), α
+        RV(z′, ℓp′), α, true
     else
-        z_rv, α
+        z_rv, α, false
     end
 end
 
@@ -55,20 +55,28 @@ function AdvancedVI.grad!(
         q(θ)
     end
 
+    hmc_aug  = false
+    hmc_acc  = 0
+    rej_rate = 0 
+
     if(vo.hmc_freq > 0 && mod(vo.iter-1, vo.hmc_freq) == 0)
+        hmc_acc_sum = 0.0
         for i = 1:length(vo.zs)
-            vo.zs[i] = hmc_step(rng, alg, q, logπ, vo.zs[i],
-                                vo.hmc_params.ϵ, vo.hmc_params.L)
+            vo.zs[i], acc = hmc_step(rng, alg, q, logπ, vo.zs[i],
+                                     vo.hmc_params.ϵ, vo.hmc_params.L)
+            hmc_acc_sum += acc
         end
+        hmc_acc = hmc_acc_sum / length(vo.zs)
+        hmc_aug = true
     end
 
     rs = Vector{Float64}(undef, n_samples)
     for i = 1:length(vo.zs)
-        z, α     = imh_kernel(rng, vo.zs[i], logπ, q′)
-        vo.zs[i] = z 
-        rs[i]    = 1-α
+        z, α, acc   = imh_kernel(rng, vo.zs[i], logπ, q′)
+        vo.zs[i]    = z 
+        rs[i]       = 1-α
     end
-    r  = mean(rs)
+    rej_rate = mean(rs)
 
     f(θ) = begin
         q_θ = if (q isa Distribution)
@@ -81,4 +89,8 @@ function AdvancedVI.grad!(
     end
     gradient!(alg, f, θ, out)
     vo.iter += 1
+
+    (hmc_aug  = hmc_aug,
+     hmc_acc  = hmc_acc,
+     rej_rate = rej_rate)
 end

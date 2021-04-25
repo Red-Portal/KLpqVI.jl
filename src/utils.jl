@@ -15,3 +15,9 @@ function kl_divergence(p::MvNormal,
     + tr(Σq \ Σp)
     + PDMats.invquad(Σq, μq - μp) )/2
 end
+
+function kl_divergence(δ::AbstractMatrix, q)
+    ℓp = -log(size(δ, 2))
+    ℓq = map(x -> logpdf(q, x), eachcol(δ))
+    mean(ℓp .- ℓq)
+end

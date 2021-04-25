@@ -18,13 +18,17 @@ function sleep_phase!(
     "Reweighted Wake-sleep."
     ICLR 2015
 =##
-    ws.z = hmc_step(rng, alg, q, logπ, ws.z,
-                    ws.hmc_params.ϵ, ws.hmc_params.L)
+    z′, acc = hmc_step(rng, alg, q, logπ, ws.z,
+                       ws.hmc_params.ϵ, ws.hmc_params.L)
+    ws.z = z′
     f(θ_) = if (q isa Distribution)
         -(Bijectors.logpdf(AdvancedVI.update(q, θ_), ws.z.val))
     else
         -Bijectors.logpdf(q(θ_), ws.z.val)
     end
     gradient!(alg, f, θ, out)
+
+    (sleep=true,
+     sleep_acc=acc)
 end
 

@@ -25,6 +25,7 @@ function vi(model,
     n_params = sum([size(varinfo.metadata[sym].vals, 1) for sym ∈ keys(varinfo.metadata)])
     logπ     = Turing.Variational.make_logjoint(model)
     alg      = AdvancedVI.ADVI(n_mc, n_iter)
+    stats    = Vector{NamedTuple}(undef, n_iter)
 
     if isnothing(q_init)
         μ = randn(rng, n_params)
@@ -51,26 +52,32 @@ function vi(model,
     else
         nothing
     end
+    time = 
     
-    for step = 1:n_iter
-        AdvancedVI.grad!(rng, objective, alg, q, logπ, θ, ∇_buf)
+    for t = 1:n_iter
+        stat  = (iteration=t,)
+        stat′ = AdvancedVI.grad!(rng, objective, alg, q, logπ, θ, ∇_buf)
+        stat  = merge(stat, stat′)
         sgd_step!(optimizer, θ, ∇_buf)
 
-        if(sleep_freq > 0 && mod(step-1, sleep_freq) == 0)
-            sleep_phase!(rng, ws_aug, alg, q, logπ, θ, ∇_buf)
+        if(sleep_freq > 0 && mod(t-1, sleep_freq) == 0)
+            stat′ = sleep_phase!(rng, ws_aug, alg, q, logπ, θ, ∇_buf)
+            stat  = merge(stat, stat′)
             sgd_step!(optimizer, θ, ∇_buf)
         end
 
         if(!isnothing(callback))
-            q′ = (q isa Distribution) ?  AdvancedVI.update(q, θ) : q(θ)
-            callback(logπ, q′, objective, DiffResults.value(∇_buf))
+            q′    = (q isa Distribution) ?  AdvancedVI.update(q, θ) : q(θ)
+            stat′ = callback(logπ, q′, objective, DiffResults.value(∇_buf))
+            stat  = merge(stat, stat′)
         end
         
         if(show_progress)
-            ProgressMeter.next!(prog)
+            pm_next!(prog, stat)
         end
+        stats[t] = stat
     end
     q = AdvancedVI.update(q, θ)
-    return θ, q
+    return θ, q, stats
 end
 

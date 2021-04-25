@@ -45,18 +45,31 @@ function AdvancedVI.grad!(
         q(θ)
     end
 
-    if(vo.hmc_freq > 0 && mod(vo.iter-1, vo.hmc_freq) == 0)
-        vo.z = hmc_step(rng, alg, q, logπ, vo.z,
-                        vo.hmc_params.ϵ, vo.hmc_params.L)
-    end
+    hmc_aug  = false
+    ess      = 0
+    hmc_acc  = 0
+    rejected = false
+    rej_rate = 0 
 
+    if(vo.hmc_freq > 0 && mod(vo.iter-1, vo.hmc_freq) == 0)
+        vo.z, acc = hmc_step(rng, alg, q, logπ, vo.z,
+                             vo.hmc_params.ϵ, vo.hmc_params.L)
+        hmc_aug = true
+        hmc_acc = acc
+    end
     vo.z = if vo.hmc_freq != 1
         z, w, ℓp = cis(rng, vo.z, logπ, q′, alg.samples_per_step)
+        ess      = 1/sum(w.^2)
         acc_idx  = rand(Categorical(w))
+        rejected = (acc_idx == 1)
+        rej_rate = 1 - w[1]
         RV(z[:,acc_idx], ℓp[acc_idx])
     else
-        hmc_step(rng, alg, q, logπ, vo.z,
-                 vo.hmc_params.ϵ, vo.hmc_params.L)
+        z, acc  = hmc_step(rng, alg, q, logπ, vo.z,
+                           vo.hmc_params.ϵ, vo.hmc_params.L)
+        hmc_step = true
+        hmc_acc  = acc
+        z
     end
 
     f(θ) = if (q isa Distribution)
@@ -66,4 +79,10 @@ function AdvancedVI.grad!(
     end
     gradient!(alg, f, θ, out)
     vo.iter += 1
+
+    (ess      = ess,
+     hmc_aug  = hmc_aug,
+     hmc_acc  = hmc_acc,
+     rejected = rejected,
+     rej_rate = rej_rate)
 end

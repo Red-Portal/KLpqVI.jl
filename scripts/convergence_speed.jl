@@ -38,16 +38,16 @@ function run_vi(seed_int, method, n_dims, n_mc)
     end
 
     n_iter = 5000
-    θ, q = vi(model;
-              objective = method,
-              n_mc      = n_mc,
-              n_iter    = n_iter,
-              tol       = 0.0005,
-              callback  = plot_callback,
-              rng       = prng,
-              optimizer = AdvancedVI.TruncatedADAGrad(),
-              show_progress = true,
-              )
+    θ, q, _ = vi(model;
+                 objective = method,
+                 n_mc      = n_mc,
+                 n_iter    = n_iter,
+                 tol       = 0.0005,
+                 callback  = plot_callback,
+                 rng       = prng,
+                 optimizer = AdvancedVI.TruncatedADAGrad(),
+                 show_progress = true,
+                 )
     crossent, paretok
 end
 
