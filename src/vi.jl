@@ -9,6 +9,31 @@ function sgd_step!(optimizer, θ::AbstractVector, ∇_buf)
     @. θ = θ - Δ
 end
 
+# function gen_∂logπ∂θ(vi, spl::DynamicPPL.AbstractSampler, model)
+#     function ∂logπ∂θ(x)
+#         return Turing.gradient_logp(x, vi, model, spl)
+#     end
+#     return ∂logπ∂θ
+# end
+
+function make_logjoint(rng, model::DynamicPPL.Model)
+    # setup
+    # ctx = DynamicPPL.MiniBatchContext(
+    #     DynamicPPL.DefaultContext(),
+    #     weight
+    # )
+
+    sampler_hmc  = DynamicPPL.Sampler(Turing.NUTS{Turing.Core.ADBackend()}(), model)
+    sampler_init = DynamicPPL.initialsampler(sampler_hmc)
+    vi_init      = DynamicPPL.VarInfo(rng, model, sampler_init)
+    DynamicPPL.link!(vi_init, sampler_hmc)
+    model(rng, vi_init, sampler_hmc)
+
+    logπ  = Turing.Inference.gen_logπ(   vi_init, sampler_hmc, model)
+    ∇logπ = Turing.Inference.gen_∂logπ∂θ(vi_init, sampler_hmc, model)
+    logπ, ∇logπ
+end
+
 function vi(model,
             q_init=nothing;
             n_mc,
@@ -21,11 +46,12 @@ function vi(model,
             sleep_freq=0,
             sleep_params=nothing,
             show_progress::Bool=false)
-    varinfo  = DynamicPPL.VarInfo(model)
-    n_params = sum([size(varinfo.metadata[sym].vals, 1) for sym ∈ keys(varinfo.metadata)])
-    logπ     = Turing.Variational.make_logjoint(model)
-    alg      = AdvancedVI.ADVI(n_mc, n_iter)
-    stats    = Vector{NamedTuple}(undef, n_iter)
+    varinfo     = DynamicPPL.VarInfo(model)
+    varsyms     = keys(varinfo.metadata)
+    n_params    = sum([size(varinfo.metadata[sym].vals, 1) for sym ∈ varsyms])
+    logπ, ∇logπ = make_logjoint(rng, model)
+    alg         = AdvancedVI.ADVI(n_mc, n_iter)
+    stats       = Vector{NamedTuple}(undef, n_iter)
 
     if isnothing(q_init)
         μ = randn(rng, n_params)
@@ -56,12 +82,12 @@ function vi(model,
     
     for t = 1:n_iter
         stat  = (iteration=t,)
-        stat′ = AdvancedVI.grad!(rng, objective, alg, q, logπ, θ, ∇_buf)
+        stat′ = AdvancedVI.grad!(rng, objective, alg, q, logπ, ∇logπ, θ, ∇_buf)
         stat  = merge(stat, stat′)
         sgd_step!(optimizer, θ, ∇_buf)
 
         if(sleep_freq > 0 && mod(t-1, sleep_freq) == 0)
-            stat′ = sleep_phase!(rng, ws_aug, alg, q, logπ, θ, ∇_buf)
+            stat′ = sleep_phase!(rng, ws_aug, alg, q, logπ, ∇logπ, θ, ∇_buf)
             stat  = merge(stat, stat′)
             sgd_step!(optimizer, θ, ∇_buf)
         end

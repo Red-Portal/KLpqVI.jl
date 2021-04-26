@@ -18,3 +18,13 @@ end
     DiffResults.value!(out, y)
     DiffResults.gradient!(out, dy)
 end
+
+@inline function gradient!(::AdvancedVI.VariationalInference{<:AdvancedVI.TrackerAD},
+                           f::Function,
+                           x::AbstractVector,
+                           out::DiffResults.MutableDiffResult)
+    y, back = Tracker.forward(f, x)
+    dy      = back(1.0)
+    DiffResults.value!(out,    Tracker.data(y))
+    DiffResults.gradient!(out, Tracker.data(back(dy)))
+end

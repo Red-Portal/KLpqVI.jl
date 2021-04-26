@@ -10,6 +10,7 @@ function sleep_phase!(
     alg::AdvancedVI.VariationalInference,
     q,
     logπ,
+    ∇logπ,
     θ::AbstractVector,
     out::DiffResults.MutableDiffResult
     )
@@ -18,7 +19,7 @@ function sleep_phase!(
     "Reweighted Wake-sleep."
     ICLR 2015
 =##
-    z′, acc = hmc_step(rng, alg, q, logπ, ws.z,
+    z′, acc = hmc_step(rng, alg, q, logπ, ∇logπ, ws.z,
                        ws.hmc_params.ϵ, ws.hmc_params.L)
     ws.z = z′
     f(θ_) = if (q isa Distribution)

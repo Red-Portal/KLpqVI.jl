@@ -44,6 +44,7 @@ function AdvancedVI.grad!(
     alg::AdvancedVI.VariationalInference,
     q,
     logπ,
+    ∇logπ,
     θ::AbstractVector{<:Real},
     out::DiffResults.MutableDiffResult)
 
@@ -62,7 +63,7 @@ function AdvancedVI.grad!(
     if(vo.hmc_freq > 0 && mod(vo.iter-1, vo.hmc_freq) == 0)
         hmc_acc_sum = 0.0
         for i = 1:length(vo.zs)
-            vo.zs[i], acc = hmc_step(rng, alg, q, logπ, vo.zs[i],
+            vo.zs[i], acc = hmc_step(rng, alg, q, logπ, ∇logπ, vo.zs[i],
                                      vo.hmc_params.ϵ, vo.hmc_params.L)
             hmc_acc_sum += acc
         end

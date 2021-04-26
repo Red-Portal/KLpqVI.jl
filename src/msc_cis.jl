@@ -32,6 +32,7 @@ function AdvancedVI.grad!(
     alg::AdvancedVI.VariationalInference,
     q,
     logπ,
+    ∇logπ,
     θ::AbstractVector{<:Real},
     out::DiffResults.MutableDiffResult)
 #=
@@ -52,28 +53,29 @@ function AdvancedVI.grad!(
     rej_rate = 0 
 
     if(vo.hmc_freq > 0 && mod(vo.iter-1, vo.hmc_freq) == 0)
-        vo.z, acc = hmc_step(rng, alg, q, logπ, vo.z,
+        vo.z, acc = hmc_step(rng, alg, q, logπ, ∇logπ, vo.z,
                              vo.hmc_params.ϵ, vo.hmc_params.L)
         hmc_aug = true
         hmc_acc = acc
     end
+    
     vo.z = if vo.hmc_freq != 1
         z, w, ℓp = cis(rng, vo.z, logπ, q′, alg.samples_per_step)
         ess      = 1/sum(w.^2)
-        acc_idx  = rand(Categorical(w))
+        acc_idx  = rand(rng, Categorical(w))
         rejected = (acc_idx == 1)
         rej_rate = 1 - w[1]
         RV(z[:,acc_idx], ℓp[acc_idx])
     else
-        z, acc  = hmc_step(rng, alg, q, logπ, vo.z,
+        z, acc  = hmc_step(rng, alg, q, logπ, ∇logπ, vo.z,
                            vo.hmc_params.ϵ, vo.hmc_params.L)
-        hmc_step = true
-        hmc_acc  = acc
+        hmc_aug = true
+        hmc_acc = acc
         z
     end
 
     f(θ) = if (q isa Distribution)
-        -(Bijectors.logpdf(AdvancedVI.update(q, θ), vo.z.val))
+        -Bijectors.logpdf(AdvancedVI.update(q, θ), vo.z.val)
     else
         -Bijectors.logpdf(q(θ), vo.z.val)
     end

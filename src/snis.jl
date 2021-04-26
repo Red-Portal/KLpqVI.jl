@@ -9,6 +9,7 @@ function AdvancedVI.grad!(
     alg::AdvancedVI.VariationalInference,
     q,
     logπ,
+    ∇logπ,
     θ::AbstractVector{<:Real},
     out::DiffResults.MutableDiffResult,
 )
@@ -26,6 +27,7 @@ function AdvancedVI.grad!(
     end
     logZ = StatsFuns.logsumexp(logws)
     w    = exp.(logws .- logZ)
+    ess  = 1/sum(w.^2)
 
     f(θ_) = if (q isa Distribution)
         q′      = AdvancedVI.update(q, θ_)
@@ -37,4 +39,5 @@ function AdvancedVI.grad!(
         dot(w, nlogqs′)
     end
     gradient!(alg, f, θ, out)
+    (ess=ess,)
 end

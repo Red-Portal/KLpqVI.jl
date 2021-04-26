@@ -6,6 +6,7 @@ using StatsFuns
 using Zygote
 using LinearAlgebra
 
+import Tracker
 import Dates
 import PDMats
 import AdvancedVI

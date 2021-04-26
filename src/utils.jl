@@ -1,4 +1,47 @@
 
+struct VIADBijector{AD, N, B <: Bijectors.Bijector{N}} <: Bijectors.ADBijector{AD, N}
+    b::B
+end
+VIADBijector(d::Distribution) = VIADBijector{Bijectors.ADBackend()}(d)
+VIADBijector{AD}(d::Distribution) where {AD} = VIADBijector{AD}(Bijectors.bijector(d))
+VIADBijector{AD}(b::B) where {AD, N, B <: Bijectors.Bijector{N}} = VIADBijector{AD, N, B}(b)
+(b::VIADBijector)(x) = b.b(x)
+(b::Bijectors.Inverse{<:VIADBijector})(x) = inv(b.orig.b)(x)
+
+function jacobian(
+    b::Union{<:Bijectors.ADBijector{<:Bijectors.ForwardDiffAD},
+             Bijectors.Inverse{<:Bijectors.ADBijector{<:Bijectors.ForwardDiffAD}}},
+    x::AbstractVector{<:Real}
+)
+    return ForwardDiff.jacobian(b, x)
+end
+
+function jacobian(
+    b::Union{<:Bijectors.ADBijector{<:Bijectors.ZygoteAD},
+             Bijectors.Inverse{<:Bijectors.ADBijector{<:Bijectors.ZygoteAD}}},
+    x::AbstractVector{<:Real}
+)
+    return Zygote.jacobian(b, x)[1]
+end
+
+function jacobian(
+    b::Union{<:Bijectors.ADBijector{<:Bijectors.TrackerAD},
+             Bijectors.Inverse{<:Bijectors.ADBijector{<:Bijectors.TrackerAD}}},
+    x::Real
+)
+    return Bijectors.data(Bijectors.Tracker.gradient(b, x)[1])
+end
+
+function jacobian(
+    b::Union{<:Bijectors.ADBijector{<:Bijectors.TrackerAD},
+             Bijectors.Inverse{<:Bijectors.ADBijector{<:Bijectors.TrackerAD}}},
+    x::AbstractVector{<:Real}
+)
+    # We extract `data` so that we don't return a `Tracked` type
+    return Bijectors.data(Bijectors.Tracker.jacobian(b, x))
+end
+
+
 struct RV{T<:Real}
     val::Vector{T}
     prob::T
@@ -21,3 +64,4 @@ function kl_divergence(δ::AbstractMatrix, q)
     ℓq = map(x -> logpdf(q, x), eachcol(δ))
     mean(ℓp .- ℓq)
 end
+
