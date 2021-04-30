@@ -52,7 +52,6 @@ function prepare_valid(mat_valid)
     word_arrs_valid = []
     for i = 1:size(mat_valid,1)
         word_idx, word_count = SparseArrays.findnz(mat_valid[i,:])
-        word_count           = word_count
         word_arr             = vcat(fill.(word_idx, word_count)...)
         push!(word_arrs_valid, word_arr)
     end
@@ -90,18 +89,14 @@ function run_task(task::Val{:lda})
 
     pll_hist = []
     function plot_callback(logπ, q, objective, klpq)
-        z    = rand(prng, q, 256)
-        z_β  = z[end-K*V+1:end,:]
-        #z_β  = z[1:K*V,:]
+        z_β  = sample_variable(prng, q, model, Symbol("ϕ"), 128)
+        z_β  = reshape(z_β, (K,V,:))
+        #z_β  = permutedims(z_β, (2,1,3))
+        μ_β  = mean(z_β, dims=3)[:,:,1]
+        μ_ℓβ = mean(log.(z_β), dims=3)[:,:,1]
 
-        μ_β  = mean(z_β, dims=2)[:,1]
-        μ_β  = Array(reshape(μ_β, (V,K))')
-
-        best_idx   = [sortperm(μ_β[i,:])[end-5:end] for i = 1:K]
+        best_idx   = [sortperm(μ_β[i,:])[end-10:end] for i = 1:K]
         best_words = [words[best_idx_cat] for best_idx_cat in best_idx]
-
-        μ_ℓβ = mean(log.(z_β), dims=2)[:,1]
-        μ_ℓβ = Array(reshape(μ_ℓβ, (V,K))')
 
         ll = mapreduce(+, word_arrs_valid) do word_arr
             θₘ  = update_local(prng, α, μ_ℓβ, K, 100, word_arr)
@@ -119,12 +114,12 @@ function run_task(task::Val{:lda})
          )
     end
     
-    n_iter      = 10
+    n_iter      = 500
     n_mc        = 8
     θ, q, stats = vi(model;
-                     #objective   = MSC_CIS(),
+                     objective   = MSC_CIS(),
                      #objective   = MSC_PIMH(),
-                     objective   = ELBO(),
+                     #objective   = ELBO(),
                      n_mc        = n_mc,
                      n_iter      = n_iter,
                      tol         = 0.0005,

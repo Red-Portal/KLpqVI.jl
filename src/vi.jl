@@ -1,4 +1,14 @@
 
+function sample_variable(prng, q, model, varsym, n_samples)
+    vi      = DynamicPPL.VarInfo(model)
+    samples = map(1:n_samples) do i
+        z  = rand(prng, q)
+        DynamicPPL.setall!(vi, z)
+        vi.metadata[varsym].vals
+    end
+    hcat(samples...)
+end
+
 function pm_next!(pm, stat::NamedTuple)
     ProgressMeter.next!(pm; showvalues=[tuple(s...) for s in pairs(stat)])
 end
