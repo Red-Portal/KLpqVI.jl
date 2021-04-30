@@ -1,20 +1,18 @@
 
-Turing.@model lda(K, M, V, N, docs, words, counts, α, β) = begin
-    θ = Matrix{Real}(undef, M, K)
+Turing.@model lda(K, M, V, N, docs, words, counts, α, β, ::Type{T}=Float64) where {T} = begin
+    θ = Vector{Vector{T}}(undef, M)
     @simd for m = 1:M
-        @inbounds θ[m,:] ~ Dirichlet(α)
+        @inbounds θ[m] ~ Dirichlet(α)
     end
 
-    ϕ = Matrix{Real}(undef, K, V)
+    ϕ = Vector{Vector{T}}(undef, K)
     @simd for k = 1:K
-        @inbounds ϕ[k,:] ~ Dirichlet(β)
+        @inbounds ϕ[k] ~ Dirichlet(β)
     end
-
-    ℓϕmθ = log.(θ * ϕ)
-
+    ℓϕmθ = log.(hcat(ϕ...)*hcat(θ...))
     Turing.@addlogprob! mapreduce(+, 1:N) do i
-        counts[i]*ℓϕmθ[docs[i], words[i]]
-    end
+  		counts[i]*ℓϕmθ[words[i], docs[i]]
+	end
 end
 
 function dirichlet_expectation(α)
@@ -106,7 +104,7 @@ function run_task(task::Val{:lda})
         ppx = exp(-pll)
         push!(pll_hist, ppx)
 
-        display(plot(pll_hist))
+#display(plot(pll_hist))
         (pll=ppx,
          best_1=best_words[1],
          best_2=best_words[2],
@@ -117,9 +115,9 @@ function run_task(task::Val{:lda})
     n_iter      = 500
     n_mc        = 8
     θ, q, stats = vi(model;
-                     #objective   = MSC_CIS(),
+                     objective   = MSC_CIS(),
                      #objective   = MSC_PIMH(),
-                     objective   = ELBO(),
+                     #objective   = ELBO(),
                      n_mc        = n_mc,
                      n_iter      = n_iter,
                      tol         = 0.0005,
