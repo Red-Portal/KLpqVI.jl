@@ -1,19 +1,19 @@
 
-Turing.@model lda(K, M, N, docs, words, counts, α, β) = begin
-    θ = Vector{Vector{Real}}(undef, M)
+Turing.@model lda(K, M, V, N, docs, words, counts, α, β) = begin
+    θ = Matrix{Real}(undef, M, K)
     @simd for m = 1:M
-        @inbounds θ[m] ~ Dirichlet(α)
+        @inbounds θ[m,:] ~ Dirichlet(α)
     end
 
-    ϕ = Vector{Vector{Real}}(undef, K)
+    ϕ = Matrix{Real}(undef, K, V)
     @simd for k = 1:K
-        @inbounds ϕ[k] ~ Dirichlet(β)
+        @inbounds ϕ[k,:] ~ Dirichlet(β)
     end
 
-    ℓϕmθ = log.(hcat(ϕ...) * hcat(θ...))
+    ℓϕmθ = log.(θ * ϕ)
 
     Turing.@addlogprob! mapreduce(+, 1:N) do i
-        counts[i]*ℓϕmθ[words[i],docs[i]]
+        counts[i]*ℓϕmθ[docs[i], words[i]]
     end
 end
 
@@ -78,7 +78,7 @@ function run_task(task::Val{:lda})
     V     = size(mat_train,2)
     α     = fill(0.1, K)
     β     = fill(1.0, V)
-    model = lda(K, M, N, d_train, w_train, c_train, α, β)
+    model = lda(K, M, V, N, d_train, w_train, c_train, α, β)
 
     #AdvancedVI.setadbackend(:forwarddiff)
     #Turing.setadbackend(:forwarddiff)
@@ -117,9 +117,9 @@ function run_task(task::Val{:lda})
     n_iter      = 500
     n_mc        = 8
     θ, q, stats = vi(model;
-                     objective   = MSC_CIS(),
+                     #objective   = MSC_CIS(),
                      #objective   = MSC_PIMH(),
-                     #objective   = ELBO(),
+                     objective   = ELBO(),
                      n_mc        = n_mc,
                      n_iter      = n_iter,
                      tol         = 0.0005,

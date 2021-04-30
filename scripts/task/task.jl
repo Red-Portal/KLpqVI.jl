@@ -13,7 +13,6 @@ sample_posterior(task::Symbol) = sample_posterior(Val(task))
 
 include("gaussian.jl")
 include("logistic.jl")
-include("ppca.jl")
-include("gmm.jl")
+#include("gmm.jl")
 include("sv.jl")
 include("lda.jl")

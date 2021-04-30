@@ -6,7 +6,7 @@ init_state!(::ELBO, ::Random.AbstractRNG, q, logπ, n_mc) = nothing
 function grad!(
     rng::Random.AbstractRNG,
     vo::ELBO,
-    alg::AdvancedVI.VariationalInference{<:AdvancedVI.ZygoteAD},
+    alg::AdvancedVI.VariationalInference,
     q,
     logπ,
     ∇logπ,
