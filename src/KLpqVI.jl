@@ -6,6 +6,7 @@ using StatsFuns
 using Zygote
 using LinearAlgebra
 
+import SpecialFunctions
 import Tracker
 import Dates
 import PDMats
@@ -19,10 +20,23 @@ import PyCall
 import Random
 import Turing
 
+#@eval Zygote begin
+#end
+
+# function DynamicPPL.dot_observe(
+#     spl::Union{DynamicPPL.SampleFromPrior,
+#                DynamicPPL.SampleFromUniform},
+#     dists::AbstractArray{<:Distribution},
+#     value::AbstractArray,
+#     vi,
+# )
+#     #return sum(Distributions.loglikelihood.(dists, value))
+#     return mapreduce(Distributions.loglikelihood, +, dists, value)
+# end
+
 include("utils.jl")
 include("cis.jl")
 include("hmc.jl")
-#include("mala.jl")
 include("gradient.jl")
 include("vi.jl")
 include("snis.jl")

@@ -1,9 +1,11 @@
 
 function gaussian_data(prng::Random.AbstractRNG,
+                       ν::Real,
                        n_dims::Int;
                        correlated::Bool=false)
     Σ = if correlated
-        Σdist = Wishart(n_dims, diagm(ones(n_dims)))
+        ν     = n_dims*ν
+        Σdist = Wishart(n_dims*ν, diagm(fill(1/ν)))
         rand(prng, Σdist)
     else
         diagm(exp.(randn(prng, n_dims)))

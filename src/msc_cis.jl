@@ -26,7 +26,7 @@ function init_state!(msc::MSC, rng::Random.AbstractRNG, q, logπ, n_mc)
     msc.z = RV{Float64}(z, logπ(z))
 end
 
-function AdvancedVI.grad!(
+function grad!(
     rng::Random.AbstractRNG,
     vo::MSC,
     alg::AdvancedVI.VariationalInference,

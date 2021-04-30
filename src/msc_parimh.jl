@@ -38,7 +38,7 @@ function imh_kernel(rng::Random.AbstractRNG,
     end
 end
 
-function AdvancedVI.grad!(
+function grad!(
     rng::Random.AbstractRNG,
     vo::MSC_PIMH,
     alg::AdvancedVI.VariationalInference,

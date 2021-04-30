@@ -18,7 +18,6 @@ function cis(rng::Random.AbstractRNG,
         ℓqs[i]  = logq
         ℓps[i]  = ℓπ(z)
     end
-
     ℓw = ℓps - ℓqs
     ℓZ = StatsFuns.logsumexp(ℓw)
     w  = exp.(ℓw .- ℓZ) 

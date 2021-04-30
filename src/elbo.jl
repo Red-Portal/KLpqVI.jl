@@ -1,25 +1,40 @@
 
-init_state!(::AdvancedVI.ELBO, ::Random.AbstractRNG, q, logπ, n_mc) = nothing
+struct ELBO <: AdvancedVI.VariationalObjective end
 
-function AdvancedVI.grad!(
-    rng,
-    vo,
-    alg::AdvancedVI.VariationalInference,
+init_state!(::ELBO, ::Random.AbstractRNG, q, logπ, n_mc) = nothing
+
+function grad!(
+    rng::Random.AbstractRNG,
+    vo::ELBO,
+    alg::AdvancedVI.VariationalInference{<:AdvancedVI.ZygoteAD},
     q,
     logπ,
     ∇logπ,
     θ::AbstractVector{<:Real},
-    out::DiffResults.MutableDiffResult,
-)
-    f(θ_) = if (q isa Distribution)
-        - vo(rng, alg, AdvancedVI.update(q, θ_), logπ, alg.samples_per_step)
-    else
-        - vo(rng, alg, q(θ_), logπ, alg.samples_per_step)
+    out::DiffResults.MutableDiffResult)
+
+    n_samples = alg.samples_per_step
+    f(θ_) = begin
+        q′ = if (q isa Distribution)
+            AdvancedVI.update(q, θ_)
+        else
+            q(θ_)
+        end
+        _, z, logjac, _ = Bijectors.forward(rng, q′)
+        res = (logπ(z) + logjac) / n_samples
+        
+        if q′ isa Bijectors.TransformedDistribution
+            res += entropy(q′.dist)
+        else
+            res += entropy(q′)
+        end
+
+        for i = 2:n_samples
+            _, z, logjac, _ = Bijectors.forward(rng, q′)
+            res += (logπ(z) + logjac) / n_samples
+        end
+        -res
     end
     gradient!(alg, f, θ, out)
     NamedTuple()
-end
-
-function (elbo::AdvancedVI.ELBO)(rng, alg, q, logπ, num_samples)
-    return elbo(rng, alg, q, logπ, num_samples)
 end

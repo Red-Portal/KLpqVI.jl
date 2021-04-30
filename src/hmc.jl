@@ -90,9 +90,9 @@ function hmc_step(rng::Random.AbstractRNG,
     η0        = inv(bijection)(z.val)
     grad_buf  = DiffResults.GradientResult(η0)
     ∂ℓπ∂η(η)  = begin
-        J         = jacobian(bijection, η)
-        f_η, ∇f_η = ∇logπ(bijection(η))
-        f_η, J*∇f_η
+        J         = Bijectors.jacobian(bijection, η)
+        f_z, ∇f_η = ∇logπ(bijection(η))
+        f_z, J*∇f_η
     end
     η′, acc = hmc(rng, ∂ℓπ∂η, η0, ϵ, L)
     z′ = bijection(η′)

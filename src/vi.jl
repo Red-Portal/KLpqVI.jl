@@ -16,20 +16,23 @@ end
 #     return ∂logπ∂θ
 # end
 
-function make_logjoint(rng, model::DynamicPPL.Model)
+function make_logjoint(rng, model::DynamicPPL.Model, weight::Real=1.0)
     # setup
-    # ctx = DynamicPPL.MiniBatchContext(
-    #     DynamicPPL.DefaultContext(),
-    #     weight
-    # )
+    ctx = DynamicPPL.MiniBatchContext(
+        DynamicPPL.DefaultContext(),
+        weight
+    )
 
+    #sampler_init = DynamicPPL.initialsampler(sampler_hmc)
     sampler_hmc  = DynamicPPL.Sampler(Turing.NUTS{Turing.Core.ADBackend()}(), model)
-    sampler_init = DynamicPPL.initialsampler(sampler_hmc)
-    vi_init      = DynamicPPL.VarInfo(rng, model, sampler_init)
-    DynamicPPL.link!(vi_init, sampler_hmc)
-    model(rng, vi_init, sampler_hmc)
+    vi_init      = DynamicPPL.VarInfo(model, ctx)
+    model(rng, vi_init, DynamicPPL.SampleFromUniform())
 
-    logπ  = Turing.Inference.gen_logπ(   vi_init, sampler_hmc, model)
+    function logπ(z)
+        varinfo = DynamicPPL.VarInfo(vi_init, DynamicPPL.SampleFromUniform(), z)
+        model(varinfo)
+        return DynamicPPL.getlogp(varinfo)
+    end
     ∇logπ = Turing.Inference.gen_∂logπ∂θ(vi_init, sampler_hmc, model)
     logπ, ∇logπ
 end
@@ -48,6 +51,7 @@ function vi(model,
             show_progress::Bool=false)
     varinfo     = DynamicPPL.VarInfo(model)
     varsyms     = keys(varinfo.metadata)
+    println(varsyms)
     n_params    = sum([size(varinfo.metadata[sym].vals, 1) for sym ∈ varsyms])
     logπ, ∇logπ = make_logjoint(rng, model)
     alg         = AdvancedVI.ADVI(n_mc, n_iter)
@@ -82,7 +86,7 @@ function vi(model,
     
     for t = 1:n_iter
         stat  = (iteration=t,)
-        stat′ = AdvancedVI.grad!(rng, objective, alg, q, logπ, ∇logπ, θ, ∇_buf)
+        stat′ = grad!(rng, objective, alg, q, logπ, ∇logπ, θ, ∇_buf)
         stat  = merge(stat, stat′)
         sgd_step!(optimizer, θ, ∇_buf)
 

@@ -28,3 +28,11 @@ end
     DiffResults.value!(out,    Tracker.data(y))
     DiffResults.gradient!(out, Tracker.data(back(dy)))
 end
+
+@inline function gradient!(::AdvancedVI.VariationalInference{<:AdvancedVI.ReverseDiffAD{false}},
+                           f::Function,
+                           x::AbstractVector,
+                           out::DiffResults.MutableDiffResult)
+    tp =  AdvancedVI.tape(f, x)
+    ReverseDiff.gradient!(out, tp, x)
+end
