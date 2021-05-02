@@ -75,9 +75,15 @@ end
 #              "hmc_n_steps",   L)
 # end
 
-function hmc_params(task::Union{Val{:pima}, Val{:ionosphere}, Val{:heart}})
-     ϵ = 0.05
-     L = 32
+function hmc_params(task::Union{Val{:pima}, Val{:ionosphere}})
+     ϵ = 5e-4
+     L = 256
+     ϵ, L
+end
+
+function hmc_params(task::Val{:ionosphere})
+     ϵ = 0.07
+     L = 64
      ϵ, L
 end
 
@@ -94,8 +100,8 @@ function run_task(prng::Random.AbstractRNG,
     x_test = x_train
     y_test = y_train
 
-    AdvancedVI.setadbackend(:reversediff)
-    Turing.Core._setadbackend(Val(:reversediff))
+    AdvancedVI.setadbackend(:forwarddiff)
+    Turing.Core._setadbackend(Val(:forwarddiff))
 
     n_train = size(x_train,1)
     n_dims  = size(x_train,2)

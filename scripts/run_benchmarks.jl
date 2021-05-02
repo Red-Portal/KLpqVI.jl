@@ -62,7 +62,8 @@ function general_benchmarks()
     for task ∈ ["gaussian_correlated",
                 "pima",
                 "heart",
-                "ionosphere"]
+                "ionosphere",
+                "sv",]
         for settings ∈ [Dict(:method=>"MSC_PIMH",
                              :task  =>task,
                              :n_samples=>10),

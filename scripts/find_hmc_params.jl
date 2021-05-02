@@ -26,10 +26,10 @@ function find_hmc_params()
     AdvancedVI.setadbackend(:reversediff)
     Turing.Core._setadbackend(Val(:reversediff))
 
-    sample_posterior(prng, Val(:sv))
+    #sample_posterior(prng, Val(:sv))
 
-    #AdvancedVI.setadbackend(:forwarddiff)
-    #Turing.Core._setadbackend(Val(:forwarddiff))
+    AdvancedVI.setadbackend(:forwarddiff)
+    Turing.Core._setadbackend(Val(:forwarddiff))
 
     sample_posterior(prng, Val(:pima))
     sample_posterior(prng, Val(:heart))

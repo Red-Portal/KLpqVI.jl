@@ -42,11 +42,11 @@ function load_dataset(::Val{:sv})
     Float64.(y)
 end
 
-# function hmc_params(task::Val{:sv})
-#     ϵ = 0.0001
-#     L = 16
-#     ϵ, L
-# end
+function hmc_params(task::Val{:sv})
+    ϵ = 0.015
+    L = 256
+    ϵ, L
+end
 
 function run_task(prng::Random.AbstractRNG,
                   task::Val{:sv},
@@ -84,6 +84,7 @@ function run_task(prng::Random.AbstractRNG,
                      optimizer       = Flux.ADAM(0.01),
                      show_progress   = true
                      )
+    Dict.(pairs.(stats))
 end
 
 function sample_posterior(prng::Random.AbstractRNG,

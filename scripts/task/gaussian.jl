@@ -74,7 +74,7 @@ function run_task(prng::Random.AbstractRNG,
 end
 
 function hmc_params(task::Val{:gaussian_correlated})
-     ϵ = 0.4
+     ϵ = 4.0
      L = 16
      ϵ, L
 end
