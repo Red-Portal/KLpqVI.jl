@@ -1,8 +1,9 @@
 Turing.@model logistic_regression(X, y, d) = begin
+    ϵ  = 1e-7
     τ  ~ truncated(Normal(0, 1.0), 0, Inf)
     σ  ~ truncated(Normal(0, 1.0), 0, Inf)
-    β  ~ MvNormal(d, τ)
-    α  ~ Normal(0, σ)
+    β  ~ MvNormal(d, max(τ, ϵ))
+    α  ~ Normal(0,   max(σ, ϵ))
     s  = X*β .+ α
     y .~ Turing.BernoulliLogit.(s)
 end
@@ -129,7 +130,7 @@ function run_task(prng::Random.AbstractRNG,
     # β = get_variational_mode(q, model, Symbol("β"))
     # α = get_variational_mode(q, model, Symbol("α"))
     # θ = vcat(β, α)
-    stats
+    Dict.(pairs.(stats))
 end
 
 function sample_posterior(prng::Random.AbstractRNG,

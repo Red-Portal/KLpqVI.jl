@@ -46,7 +46,6 @@ function vi(model,
             show_progress::Bool=false)
     varinfo     = DynamicPPL.VarInfo(model)
     varsyms     = keys(varinfo.metadata)
-    println(varsyms)
     n_params    = sum([size(varinfo.metadata[sym].vals, 1) for sym ∈ varsyms])
     logπ, ∇logπ = make_logjoint(rng, model)
     alg         = AdvancedVI.ADVI(n_mc, n_iter)
@@ -104,7 +103,7 @@ function vi(model,
         end
         q′       = (q isa Distribution) ?  AdvancedVI.update(q, θ) : q(θ)
         elapsed  = Dates.now() - start_time
-        stat     = merge(stat, (elapsed=elapsed,))
+        stat     = merge(stat, (elapsed=elapsed.value,))
 
         if(!isnothing(callback))
             stat′ = callback(logπ, q′, objective, DiffResults.value(∇_buf))

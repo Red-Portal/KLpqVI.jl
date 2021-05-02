@@ -2,49 +2,23 @@
 Turing.@model lda(K, M, V, N, docs, words, counts, α, β, ::Type{T}=Float64) where {T} = begin
     θ = Vector{Vector{T}}(undef, M)
     @simd for m = 1:M
-        @inbounds θ[m] ~ Dirichlet(α)
+        @inbounds θ[m] ~ Dirichlet(K, α)
     end
 
     ϕ = Vector{Vector{T}}(undef, K)
     @simd for k = 1:K
-        @inbounds ϕ[k] ~ Dirichlet(β)
+        @inbounds ϕ[k] ~ Dirichlet(V, β)
     end
     ℓϕmθ = log.(hcat(ϕ...)*hcat(θ...))
     Turing.@addlogprob! mapreduce(+, 1:N) do i
-  		counts[i]*ℓϕmθ[words[i], docs[i]]
-	end
+        counts[i]*ℓϕmθ[words[i], docs[i]]
+    end
 end
 
 function dirichlet_expectation(α)
     return SpecialFunctions.digamma.(α) .- SpecialFunctions.digamma(sum(α))
 end
 
-function update_local(prng::Random.AbstractRNG,
-                      α::AbstractVector,
-                      Eℓβ::AbstractMatrix,
-                      K::Int,
-                      n_iter::Int,
-                      words)
-    ϵ      = 1e-10
-    expEℓβ = exp.(Eℓβ)
-
-    N      = length(words)
-    ϕ      = zeros(K, N)
-    γ      = rand(prng, Gamma(1e+2, 1e-2), K)
-    Eℓθ    = dirichlet_expectation(γ)
-    expEℓθ = exp.(Eℓθ)
-
-    for t = 1:n_iter
-        for (i, w) in enumerate(words)
-            ϕᵢ      = expEℓθ .* view(expEℓβ,:,w)
-            ϕ[:, i] = ϕᵢ ./ (sum(ϕᵢ) + ϵ)
-        end
-        γ      = α .+ sum(ϕ, dims=2)[:,1]
-        Eℓθ    = dirichlet_expectation(γ)
-        expEℓθ = exp.(Eℓθ)
-    end
-    γ / sum(γ)
-end
 
 function prepare_valid(mat_valid)
     word_arrs_valid = []
@@ -69,14 +43,18 @@ function run_task(task::Val{:lda})
     
     # Prepare valid dataset
     word_arrs_valid = prepare_valid(mat_valid)
+    word_arrs_train = prepare_valid(mat_train)
 
     K     = 3
     N     = length(w_train)
     M     = size(mat_train,1)
     V     = size(mat_train,2)
-    α     = fill(0.1, K)
-    β     = fill(1.0, V)
-    model = lda(K, M, V, N, d_train, w_train, c_train, α, β)
+    α     = 0.1
+    β     = 1.0
+    #model = lda(K, M, V, N, d_train, w_train, c_train, α, β)
+
+    lda_svi(prng, words, word_arrs_train, word_arrs_valid, 100, K, V)
+    throw()
 
     #AdvancedVI.setadbackend(:forwarddiff)
     #Turing.setadbackend(:forwarddiff)
@@ -103,8 +81,8 @@ function run_task(task::Val{:lda})
         pll = ll / sum(length.(word_arrs_valid))
         ppx = exp(-pll)
         push!(pll_hist, ppx)
+        display(plot(pll_hist))
 
-#display(plot(pll_hist))
         (pll=ppx,
          best_1=best_words[1],
          best_2=best_words[2],
@@ -115,9 +93,9 @@ function run_task(task::Val{:lda})
     n_iter      = 500
     n_mc        = 8
     θ, q, stats = vi(model;
-                     objective   = MSC_CIS(),
+                     #objective   = MSC_CIS(),
                      #objective   = MSC_PIMH(),
-                     #objective   = ELBO(),
+                     objective   = ELBO(),
                      n_mc        = n_mc,
                      n_iter      = n_iter,
                      tol         = 0.0005,
@@ -134,17 +112,25 @@ end
 
 function load_dataset(prng::Random.AbstractRNG,
                       task::Val{:lda})
-    data      = MAT.matread(datadir("dataset", "classic400.mat"))
-    data_mat  = data["classic400"]
-    n_docs    = size(data_mat, 1)
-    n_words   = size(data_mat, 2)
-    n_train   = floor(Int, n_docs*0.9)
-    words     = data["classicwordlist"]
+    data           = MAT.matread(datadir("dataset", "classic400.mat"))
+    data_mat       = data["classic400"]
+    labels         = data["truelabels"][1,:]
+    words          = data["classicwordlist"]
 
-    idx_shfl  = Random.shuffle(prng, 1:n_docs)
-    data_mat  = data_mat[idx_shfl,:]
-    mat_train = Int.(data_mat[1:n_train,:])
-    mat_valid = Int.(data_mat[n_train+1:end,:])
+    n_docs         = size(data_mat, 1)
+    n_words        = size(data_mat, 2)
+    doc_idxs       = collect(1:n_docs)
+    docs_labeled   = [doc_idxs[labels .== i] for i = 1:3]
+    n_train        = floor.(Int, length.(docs_labeled)*0.9)
+    doc_idx_train  = [StatsBase.sample(docs_labeled[i], n_train[i], replace=false) for i = 1:3]
+    doc_idx_test   = [doc_idxs[doc_idxs .∉ Ref(doc_idx_train[i])] for i = 1:3]
+
+    doc_idx_train  = vcat(doc_idx_train...)
+    doc_idx_test   = vcat(doc_idx_test...)
+    doc_label_test = labels[doc_idx_test]
+
+    mat_train = Int.(data_mat[doc_idx_train,:])
+    mat_valid = Int.(data_mat[doc_idx_test,:])
     mat_train, mat_valid, words
 end
 

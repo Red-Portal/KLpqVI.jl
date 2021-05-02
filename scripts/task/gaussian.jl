@@ -70,6 +70,7 @@ function run_task(prng::Random.AbstractRNG,
                      optimizer       = Flux.ADAM(0.01),
                      show_progress   = true
                      )
+    Dict.(pairs.(stats))
 end
 
 function hmc_params(task::Val{:gaussian_correlated})
