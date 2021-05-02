@@ -2,6 +2,7 @@ name = "KLpqVI"
 authors = ["Ray Kim"]
 
 [deps]
+AdvancedHMC = "0bf59076-c3b1-5ca4-86bd-e02cd72cde3d"
 AdvancedVI = "b5ca4192-6429-45e5-a2d9-87aec30a685c"
 ArviZ = "131c737c-5715-5e2e-ad31-c244f01c1dc7"
 Bijectors = "76274a88-744f-5084-9051-94815aaf08c4"
