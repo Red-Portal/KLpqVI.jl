@@ -56,3 +56,20 @@ function kl_divergence(δ::AbstractMatrix, q)
     mean(ℓp .- ℓq)
 end
 
+function sample_variable(prng, q, model, varsym, n_samples)
+    vi      = DynamicPPL.VarInfo(model)
+    samples = map(1:n_samples) do i
+        z  = rand(prng, q)
+        DynamicPPL.setall!(vi, z)
+        vi.metadata[varsym].vals
+    end
+    hcat(samples...)
+end
+
+function get_variational_mode(q, model, varsym)
+    vi  = DynamicPPL.VarInfo(model)
+    μ_η = mean(q.dist)
+    μ_z = q.transform(μ_η)
+    DynamicPPL.setall!(vi, μ_z)
+    vi.metadata[varsym].vals
+end
