@@ -1,9 +1,15 @@
 Turing.@model logistic_regression(X, y, d) = begin
-    ϵ  = 1e-7
+    ϵ  = 1e-10
     τ  ~ truncated(Normal(0, 1.0), 0, Inf)
     σ  ~ truncated(Normal(0, 1.0), 0, Inf)
-    β  ~ MvNormal(d, max(τ, ϵ))
-    α  ~ Normal(0,   max(σ, ϵ))
+
+    if(τ < ϵ || σ < ϵ)
+        Turing.@addlogprob! -Inf   
+        return
+    end
+
+    β  ~ MvNormal(d, τ)
+    α  ~ Normal(0, σ)
     s  = X*β .+ α
     y .~ Turing.BernoulliLogit.(s)
 end
