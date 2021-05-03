@@ -42,7 +42,7 @@ using Distributed
     end
     sleep_ϵ, sleep_L = hmc_params(task)
 
-    n_iters = 32
+    n_iters = 100
     stats   = ProgressMeter.@showprogress pmap(1:n_iters) do seed_key
         seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
         prng = Random123.Philox4x(UInt64, seed, 8)
