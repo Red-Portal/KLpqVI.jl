@@ -2,7 +2,7 @@
 using Distributed
 
 @everywhere using DrWatson
-@quickactivate "KLpqVI"
+@everywhere @quickactivate "KLpqVI"
 
 @everywhere using ReverseDiff
             using Plots, StatsPlots
