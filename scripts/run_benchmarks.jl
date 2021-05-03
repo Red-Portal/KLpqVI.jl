@@ -143,11 +143,11 @@ function gaussian_benchmarks()
                                  :task  =>task,
                                  :n_samples=>n_samples),
                             ]
-                @info "starting epxeriment" settings...
+                @info "starting epxeriment" settings=settings
 
                 fname = savename(settings, "jld")
                 if(isfile(datadir("exp_raw", fname)))
-                    @info "Skipping $fname" settings=settings 
+                    @info "Skipping $fname"
                     continue
                 else
                     res   = run_experiment(settings)

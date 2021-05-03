@@ -88,9 +88,11 @@ function vi(model,
     else
         nothing
     end
-    start_time = Dates.now()
     
+    elapsed_total = 0
     for t = 1:n_iter
+        start_time = Dates.now()
+
         stat  = (iteration=t,)
         stat′ = grad!(rng, objective, alg, q, logπ, ∇logπ, θ, ∇_buf)
         stat  = merge(stat, stat′)
@@ -101,9 +103,11 @@ function vi(model,
             stat  = merge(stat, stat′)
             sgd_step!(optimizer, θ, ∇_buf)
         end
-        q′       = (q isa Distribution) ?  AdvancedVI.update(q, θ) : q(θ)
-        elapsed  = Dates.now() - start_time
-        stat     = merge(stat, (elapsed=elapsed.value,))
+        q′ = (q isa Distribution) ?  AdvancedVI.update(q, θ) : q(θ)
+
+        elapsed        = Dates.now() - start_time
+        elapsed_total += elapsed.value
+        stat           = merge(stat, (elapsed=elapsed_total,))
 
         if(!isnothing(callback))
             stat′ = callback(logπ, q′, objective, DiffResults.value(∇_buf))
