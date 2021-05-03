@@ -58,7 +58,7 @@ using Distributed
                  sleep_L;
                  show_progress=false)
     end
-    Dict("result" => stats)
+    stats
 end
 
 function general_benchmarks()
@@ -99,14 +99,14 @@ function general_benchmarks()
                              :n_samples=>10),
                         ]
 
-            @info "starting epxeriment" settings...
+            @info "starting epxeriment" settings=settings
             fname = savename(settings, "jld")
             if(isfile(datadir("exp_raw", fname)))
-                @info "Skipping $fname" settings=settings 
+                @info "Skipping $fname"
                 continue
             else
-                res   = run_experiment(settings)
-                JLD.save(datadir("exp_raw", fname), res...)
+                res = run_experiment(settings)
+                JLD.save(datadir("exp_raw", fname), "result", res)
             end
         end
     end
@@ -151,7 +151,7 @@ function gaussian_benchmarks()
                     continue
                 else
                     res   = run_experiment(settings)
-                    JLD.save(datadir("exp_raw", fname), res...)
+                    JLD.save(datadir("exp_raw", fname), "result", res)
                 end
             end
         end
