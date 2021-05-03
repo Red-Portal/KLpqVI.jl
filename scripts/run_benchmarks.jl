@@ -1,17 +1,18 @@
 
-using DrWatson
+using Distributed
+
+@everywhere using DrWatson
 @quickactivate "KLpqVI"
 
-using Distributed
-using ReverseDiff
-using Plots, StatsPlots
-using Flux
-using ForwardDiff
-using Zygote
-using OnlineStats
-using Random123
-using ProgressMeter
-using DelimitedFiles
+@everywhere using ReverseDiff
+            using Plots, StatsPlots
+@everywhere using Flux
+@everywhere using ForwardDiff
+@everywhere using Zygote
+@everywhere using OnlineStats
+@everywhere using Random123
+@everywhere using ProgressMeter
+@everywhere using DelimitedFiles
 
 @everywhere include(srcdir("KLpqVI.jl"))
 @everywhere include("task/task.jl")
