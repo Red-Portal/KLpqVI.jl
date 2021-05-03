@@ -40,7 +40,8 @@ function run_task(prng::Random.AbstractRNG,
                   n_mc,
                   sleep_interval,
                   sleep_ϵ,
-                  sleep_L)
+                  sleep_L;
+                  show_progress=true)
     p     = load_dataset(task)
     model = gaussian(p.μ, p.Σ)
 
@@ -68,7 +69,7 @@ function run_task(prng::Random.AbstractRNG,
                      rhat_interval   = 100,
                      paretok_samples = 128,
                      optimizer       = Flux.ADAM(0.01),
-                     show_progress   = true
+                     show_progress   = show_progress
                      )
     Dict.(pairs.(stats))
 end

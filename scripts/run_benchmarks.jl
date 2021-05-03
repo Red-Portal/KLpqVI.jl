@@ -2,6 +2,7 @@
 using DrWatson
 @quickactivate "KLpqVI"
 
+using Distributed
 using ReverseDiff
 using Plots, StatsPlots
 using Flux
@@ -12,11 +13,10 @@ using Random123
 using ProgressMeter
 using DelimitedFiles
 
-include(srcdir("KLpqVI.jl"))
-include("task/task.jl")
+@everywhere include(srcdir("KLpqVI.jl"))
+@everywhere include("task/task.jl")
 
-
-function run_experiment(settings::Dict)
+@everywhere function run_experiment(settings::Dict)
     @unpack method, task, n_samples = settings
 
     task = Val(Symbol(task))
@@ -42,7 +42,7 @@ function run_experiment(settings::Dict)
     sleep_ϵ, sleep_L = hmc_params(task)
 
     n_iters = 100
-    stats   = map(1:n_iters) do seed_key
+    stats   = ProgressMeter.@showprogress pmap(1:n_iters) do seed_key
         seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
         prng = Random123.Philox4x(UInt64, seed, 8)
         Random123.set_counter!(prng, seed_key)
@@ -53,13 +53,14 @@ function run_experiment(settings::Dict)
                  n_samples,
                  sleep_itvl,
                  sleep_ϵ,
-                 sleep_L)
+                 sleep_L;
+                 show_progress=false)
     end
     Dict("result" => stats)
 end
 
 function general_benchmarks()
-    for task ∈ ["gaussian_correlated",
+    for task ∈ [#"gaussian_correlated",
                 "pima",
                 "heart",
                 "ionosphere",

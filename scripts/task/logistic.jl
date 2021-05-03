@@ -93,7 +93,8 @@ function run_task(prng::Random.AbstractRNG,
                   n_mc,
                   sleep_interval,
                   sleep_ϵ,
-                  sleep_L)
+                  sleep_L;
+                  show_progress=true)
     data_x, data_y = load_dataset(task)
     x_train, y_train, x_test, y_test = prepare_dataset(prng, data_x, data_y)
 
@@ -131,7 +132,7 @@ function run_task(prng::Random.AbstractRNG,
                      paretok_samples = 128,
                      optimizer      = Flux.ADAM(0.01),
                      #optimizer      = AdvancedVI.TruncatedADAGrad(),
-                     show_progress = true
+                     show_progress = show_progress
                      )
     # β = get_variational_mode(q, model, Symbol("β"))
     # α = get_variational_mode(q, model, Symbol("α"))

@@ -54,7 +54,8 @@ function run_task(prng::Random.AbstractRNG,
                   n_mc,
                   sleep_interval,
                   sleep_ϵ,
-                  sleep_L)
+                  sleep_L;
+                  show_progress=true)
     data  = load_dataset(task)
     model = stochastic_volatility(data)
 
@@ -82,7 +83,7 @@ function run_task(prng::Random.AbstractRNG,
                      sleep_params    = (ϵ=sleep_ϵ, L=sleep_L,),
                      #optimizer      = AdvancedVI.TruncatedADAGrad(),
                      optimizer       = Flux.ADAM(0.01),
-                     show_progress   = true
+                     show_progress   = show_progress
                      )
     Dict.(pairs.(stats))
 end
