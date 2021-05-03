@@ -4,7 +4,8 @@ function create_gaussian(prng::Random.AbstractRNG,
                          n_dims::Int;
                          correlated::Bool=false)
     Σ = if correlated
-        Σdist = Wishart(n_dims*ν, diagm(fill(1/ν, n_dims)))
+        n     = n_dims + ν
+        Σdist = Wishart(n, diagm(fill(1/n, n_dims)))
         rand(prng, Σdist)
     else
         diagm(exp.(randn(prng, n_dims)))
@@ -25,7 +26,7 @@ function load_dataset(task::Val{:gaussian_correlated})
     seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
     prng = Random123.Philox4x(UInt64, seed, 8);
 
-    ν      = 10.0
+    ν      = 100.0
     n_dims = 100
     create_gaussian(prng, ν, n_dims; correlated=true)
 end
@@ -45,8 +46,8 @@ function run_task(prng::Random.AbstractRNG,
     p     = load_dataset(task)
     model = gaussian(p.μ, p.Σ)
 
-    AdvancedVI.setadbackend(:reversediff)
-    Turing.Core._setadbackend(Val(:reversediff))
+    AdvancedVI.setadbackend(:zygote)
+    Turing.Core._setadbackend(Val(:zygote))
 
     k_hist  = []
     function plot_callback(logπ, q, objective_, klpq)
@@ -75,7 +76,13 @@ function run_task(prng::Random.AbstractRNG,
 end
 
 function hmc_params(task::Val{:gaussian_correlated})
-     ϵ = 4.0
+     ϵ = 0.2
+     L = 32
+     ϵ, L
+end
+
+function hmc_params(task::Val{:gaussian_correlated})
+     ϵ = 0.4
      L = 16
      ϵ, L
 end

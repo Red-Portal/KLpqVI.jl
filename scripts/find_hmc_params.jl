@@ -23,16 +23,19 @@ function find_hmc_params()
 
     #AdvancedVI.setadbackend(:zygote)
     #Turing.Core._setadbackend(Val(:zygote))
-    AdvancedVI.setadbackend(:reversediff)
-    Turing.Core._setadbackend(Val(:reversediff))
+    #AdvancedVI.setadbackend(:reversediff)
+    #Turing.Core._setadbackend(Val(:reversediff))
 
     #sample_posterior(prng, Val(:sv))
 
-    AdvancedVI.setadbackend(:forwarddiff)
-    Turing.Core._setadbackend(Val(:forwarddiff))
 
-    sample_posterior(prng, Val(:pima))
-    sample_posterior(prng, Val(:heart))
-    sample_posterior(prng, Val(:ionosphere))
+    #sample_posterior(prng, Val(:pima))
+    #sample_posterior(prng, Val(:heart))
+    #sample_posterior(prng, Val(:ionosphere))
+
+    AdvancedVI.setadbackend(:zygote)
+    Turing.Core._setadbackend(Val(:zygote))
+
     sample_posterior(prng, Val(:gaussian_correlated))
+    sample_posterior(prng, Val(:gaussian))
 end

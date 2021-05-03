@@ -42,7 +42,7 @@ using Distributed
     end
     sleep_ϵ, sleep_L = hmc_params(task)
 
-    n_iters = 100
+    n_iters = 32
     stats   = ProgressMeter.@showprogress pmap(1:n_iters) do seed_key
         seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
         prng = Random123.Philox4x(UInt64, seed, 8)
@@ -61,8 +61,7 @@ using Distributed
 end
 
 function general_benchmarks()
-    for task ∈ [#"gaussian_correlated",
-                "pima",
+    for task ∈ ["pima",
                 "heart",
                 "ionosphere",
                 "sv",]
@@ -111,43 +110,44 @@ function general_benchmarks()
 end
 
 function gaussian_benchmarks()
-    task = "gaussian_correlated"
-    for n_samples ∈ [4, 16, 64]
-        for settings ∈ [Dict(:method=>"MSC_PIMH",
-                             :task  =>task,
-                             :n_samples=>n_samples),
+    for task ∈ ["gaussian_correlated", "gaussian"]
+        for n_samples ∈ [4, 16, 64]
+            for settings ∈ [Dict(:method=>"MSC_PIMH",
+                                 :task  =>task,
+                                 :n_samples=>n_samples),
 
-                        Dict(:method=>"MSC_CIS",
-                             :task  =>task,
-                             :n_samples=>n_samples),
+                            Dict(:method=>"MSC_CIS",
+                                 :task  =>task,
+                                 :n_samples=>n_samples),
 
-                        Dict(:method=>"MSC_CISRB",
-                             :task  =>task,
-                             :n_samples=>n_samples),
+                            Dict(:method=>"MSC_CISRB",
+                                 :task  =>task,
+                                 :n_samples=>n_samples),
 
-                        Dict(:method=>"MSC_CISRB_HMC",
-                             :task  =>task,
-                             :n_samples=>n_samples),
+                            Dict(:method=>"MSC_CISRB_HMC",
+                                 :task  =>task,
+                                 :n_samples=>n_samples),
 
-                        Dict(:method=>"MSC_PIMH_HMC",
-                             :task  =>task,
-                             :n_samples=>n_samples),
+                            Dict(:method=>"MSC_PIMH_HMC",
+                                 :task  =>task,
+                                 :n_samples=>n_samples),
 
-                        Dict(:method=>"RWS",
-                             :task  =>task,
-                             :n_samples=>n_samples),
+                            Dict(:method=>"RWS",
+                                 :task  =>task,
+                                 :n_samples=>n_samples),
 
-                        Dict(:method=>"SNIS",
-                             :task  =>task,
-                             :n_samples=>n_samples),
-                        ]
-            @info "starting epxeriment" settings...
+                            Dict(:method=>"SNIS",
+                                 :task  =>task,
+                                 :n_samples=>n_samples),
+                            ]
+                @info "starting epxeriment" settings...
 
-            produce_or_load(datadir("exp_raw"),
-                            settings,
-                            run_experiment,
-                            suffix="jld",
-                            loadfile=false)
+                    produce_or_load(datadir("exp_raw"),
+                                    settings,
+                                    run_experiment,
+                                    suffix="jld",
+                                    loadfile=false)
+            end
         end
     end
 end
