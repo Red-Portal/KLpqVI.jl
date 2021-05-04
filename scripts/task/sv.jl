@@ -1,7 +1,7 @@
 
 Turing.@model stochastic_volatility(y) = begin
     T = length(y)
-    ϵ = 1e-5
+    ϵ = 1e-10
 
     ϕ ~ Uniform(-1+ϵ, 1-ϵ)
     σ ~ truncated(Cauchy(0, 5), ϵ, Inf)
@@ -16,7 +16,11 @@ Turing.@model stochastic_volatility(y) = begin
         h′[t] = h[t] + ϕ*h′[t-1]
     end
     σ_y = exp.((h′.+ μ) ./ 2)
-    y   ~ MvNormal(max.(σ_y, ϵ))
+    if(any(x -> x < ϵ, σ_y))
+        Turing.@addlogprob! -Inf
+        return
+    end
+    y   ~ MvNormal(σ_y)
 end
 
 # Turing.@model stochastic_volatility(y) = begin
