@@ -7,11 +7,7 @@ Turing.@model stochastic_volatility(y) = begin
     σ ~ truncated(Cauchy(0, 5), 0, Inf)
     μ ~ Cauchy(0, 10)
 
-    if(abs(ϕ) > 1-ϵ)
-        Turing.@addlogprob! -Inf
-        return
-    end
-    if(σ < ϵ)
+    if(abs(ϕ) > 1-ϵ || σ < ϵ)
         Turing.@addlogprob! -Inf
         return
     end
@@ -25,7 +21,7 @@ Turing.@model stochastic_volatility(y) = begin
         h′[t] = h[t] + ϕ*h′[t-1]
     end
     σ_y = exp.((h′.+ μ) ./ 2)
-    if(any(x -> x < ϵ, σ_y))
+    if(any(x -> x < ϵ || !isfinite(x), σ_y))
         Turing.@addlogprob! -Inf
         return
     end
