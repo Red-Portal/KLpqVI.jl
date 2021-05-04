@@ -56,6 +56,7 @@ function vi(model,
         σ = StatsFuns.softplus.(randn(rng, n_params))
         θ = vcat(μ, σ)
         q = Turing.Variational.meanfield(model)
+        θ, q
     else
         StatsBase.params(q_init), q_init
     end
