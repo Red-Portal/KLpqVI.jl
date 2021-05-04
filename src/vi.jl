@@ -51,15 +51,14 @@ function vi(model,
     alg         = AdvancedVI.ADVI(n_mc, n_iter)
     stats       = Vector{NamedTuple}(undef, n_iter)
 
-    if isnothing(q_init)
+    θ, q = if isnothing(q_init)
         μ = randn(rng, n_params)
         σ = StatsFuns.softplus.(randn(rng, n_params))
+        θ = vcat(μ, σ)
+        q = Turing.Variational.meanfield(model)
     else
-        μ, σs = StatsBase.params(q_init)
-        σ     = StatsFuns.invsoftplus.(σs)
+        StatsBase.params(q_init), q_init
     end
-    θ        = vcat(μ, σ)
-    q        = Turing.Variational.meanfield(model)
     ∇_buf    = DiffResults.GradientResult(θ)
 
     pimh_rhat_win = if(objective isa MSC_PIMH)
@@ -76,6 +75,9 @@ function vi(model,
 
     ws_aug = if (sleep_interval > 0)
         z0_ws = rand(rng, q)
+        while isinf(logπ(z0_ws))
+            z0_ws = rand(rng, q)
+        end
         WakeSleep(RV(z0_ws, logπ(z0_ws)), sleep_params)
     else
         nothing
@@ -144,7 +146,7 @@ function vi(model,
         end
         stats[t] = stat
     end
-    q = AdvancedVI.update(q, θ)
+    q = (q isa Distribution) ?  AdvancedVI.update(q, θ) : q(θ)
     return θ, q, stats
 end
 
