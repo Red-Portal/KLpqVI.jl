@@ -81,7 +81,7 @@ function hmc_params(task::Val{:gaussian_correlated})
      ϵ, L
 end
 
-function hmc_params(task::Val{:gaussian_correlated})
+function hmc_params(task::Val{:gaussian})
      ϵ = 0.4
      L = 16
      ϵ, L
