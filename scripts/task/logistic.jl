@@ -81,7 +81,7 @@ end
 #              "hmc_n_steps",   L)
 # end
 
-function hmc_params(task::Union{Val{:pima}, Val{:ionosphere}})
+function hmc_params(task::Union{Val{:pima}, Val{:heart}})
      ϵ = 5e-4
      L = 256
      ϵ, L

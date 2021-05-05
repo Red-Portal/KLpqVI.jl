@@ -1,5 +1,5 @@
 
-Turing.@model stochastic_volatility(y) = begin
+Turing.@model stochastic_volatility(y, ::Type{F} = Float64) where {F} = begin
     T = length(y)
     ϵ = 1e-10
 
@@ -15,34 +15,22 @@ Turing.@model stochastic_volatility(y) = begin
     h_std ~ MvNormal(T, 1.0)
     h     = σ*h_std
 
-    h′    = Array{Real}(undef, T)
-    h′[1] = h[1] / sqrt(1 - ϕ^2)
-    for t in 2:T
-        h′[t] = h[t] + ϕ*h′[t-1]
+    σ_y    = Array{F}(undef, T)
+    h′     = Array{F}(undef, T)
+    @inbounds h′[1]  = h[1] / sqrt(1 - ϕ^2)
+    @inbounds σ_y[1] = exp((h′[1] + μ) / 2)
+
+    @inbounds for t in 2:T
+        h′[t]  = h[t] + ϕ*h′[t-1]
+        σ_y[t] = exp((h′[t] + μ) / 2)
     end
-    σ_y = exp.((h′.+ μ) ./ 2)
-    if(any(x -> x < ϵ || !isfinite(x), σ_y))
+
+    if(any(x -> x < ϵ || isinf(x), σ_y))
         Turing.@addlogprob! -Inf
         return
     end
     y   ~ MvNormal(σ_y)
 end
-
-# Turing.@model stochastic_volatility(y) = begin
-#     T = length(y)
-#     ϵ = 1e-7
-
-#     μ ~ Cauchy(0, 10)
-#     ϕ ~ Uniform(-1+ϵ, 1-ϵ)
-#     σ ~ Gamma(1.0, 10.0)
-
-#     h    = Vector{Real}(undef, T)
-#     h[1] ~ Normal(μ, σ / sqrt(1 - ϕ^2))
-#     for t = 2:T
-#         h[t] ~ Normal(μ + ϕ*(h[t-1] - μ), σ)
-#     end
-#     y ~ MvNormal(max.(exp.(h ./ 2), ϵ))
-# end
 
 function load_dataset(::Val{:sv})
     data_raw, header = DelimitedFiles.readdlm(
@@ -53,7 +41,7 @@ end
 
 function hmc_params(task::Val{:sv})
     ϵ = 0.015
-    L = 256
+    L = 64
     ϵ, L
 end
 
@@ -68,6 +56,8 @@ function run_task(prng::Random.AbstractRNG,
     data  = load_dataset(task)
     model = stochastic_volatility(data)
 
+    #AdvancedVI.setadbackend(:forwarddiff)
+    #Turing.Core._setadbackend(Val(:forwarddiff))
     AdvancedVI.setadbackend(:reversediff)
     Turing.Core._setadbackend(Val(:reversediff))
     #AdvancedVI.setadbackend(:zygote)
@@ -78,8 +68,20 @@ function run_task(prng::Random.AbstractRNG,
         NamedTuple()
     end
 
-    n_iter      = 1000
-    θ, q, stats = vi(model;
+    varinfo     = DynamicPPL.VarInfo(model)
+    varsyms     = keys(varinfo.metadata)
+    n_params    = sum([size(varinfo.metadata[sym].vals, 1) for sym ∈ varsyms])
+    θ           = 0.1*randn(prng, n_params*2)
+
+    # Ensure Eq[σ] is sufficiently positive.
+    # Initial σ needs to be feasible when using HMC 
+    θ[2]       += 1.0 
+
+    q_init      = Turing.Variational.meanfield(model)
+    q_init      = AdvancedVI.update(q_init, θ)
+
+    n_iter      = 10000
+    θ, q, stats = vi(model, q_init;
                      objective       = objective,
                      n_mc            = n_mc,
                      n_iter          = n_iter,

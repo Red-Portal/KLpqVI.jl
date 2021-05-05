@@ -13,7 +13,7 @@ using Distributed
 @everywhere using Random123
 @everywhere using ProgressMeter
 @everywhere using DelimitedFiles
-@everywhere using JLD
+@everywhere using FileIO
 
 @everywhere include(srcdir("KLpqVI.jl"))
 @everywhere include("task/task.jl")
@@ -58,7 +58,7 @@ using Distributed
                  sleep_L;
                  show_progress=false)
     end
-    stats
+    Dict("result"=>stats, "settings"=>settings)
 end
 
 function general_benchmarks()
@@ -100,14 +100,11 @@ function general_benchmarks()
                         ]
 
             @info "starting epxeriment" settings=settings
-            fname = savename(settings, "jld")
-            if(isfile(datadir("exp_raw", fname)))
-                @info "Skipping $fname"
-                continue
-            else
-                res = run_experiment(settings)
-                JLD.save(datadir("exp_raw", fname), "result", res)
-            end
+            produce_or_load(datadir("exp_raw"),
+                                    settings,
+				    run_experiment,
+				    suffix="jld2",
+				    loadfile=false)
         end
     end
 end
@@ -145,14 +142,11 @@ function gaussian_benchmarks()
                             ]
                 @info "starting epxeriment" settings=settings
 
-                fname = savename(settings, "jld")
-                if(isfile(datadir("exp_raw", fname)))
-                    @info "Skipping $fname"
-                    continue
-                else
-                    res   = run_experiment(settings)
-                    JLD.save(datadir("exp_raw", fname), "result", res)
-                end
+               produce_or_load(datadir("exp_raw"),
+                                    settings,
+				    run_experiment,
+				    suffix="jld2",
+				    loadfile=false)
             end
         end
     end

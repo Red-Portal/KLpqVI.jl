@@ -58,7 +58,8 @@ function vi(model,
         q = Turing.Variational.meanfield(model)
         θ, q
     else
-        StatsBase.params(q_init), q_init
+        θ = StatsBase.params(q_init)
+        vcat(θ...), q_init
     end
     ∇_buf    = DiffResults.GradientResult(θ)
 
@@ -76,9 +77,6 @@ function vi(model,
 
     ws_aug = if (sleep_interval > 0)
         z0_ws = rand(rng, q)
-        while isinf(logπ(z0_ws))
-            z0_ws = rand(rng, q)
-        end
         WakeSleep(RV(z0_ws, logπ(z0_ws)), sleep_params)
     else
         nothing
