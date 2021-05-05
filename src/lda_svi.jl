@@ -19,7 +19,7 @@ function update_local(prng::Random.AbstractRNG,
 
     for t = 1:n_iter
         @simd for n in 1:length(doc)
-            @inbounds ϕᵢ      = expEℓθ .* view(expEℓβ,:,doc[n])
+            @inbounds ϕᵢ      = expEℓθ .* view(expEℓβ,doc[n],:)
             @inbounds ϕ[:, n] = ϕᵢ ./ (sum(ϕᵢ) + ϵ)
         end
         γ′     = α0 .+ sum(ϕ, dims=2)[:,1]
@@ -36,19 +36,19 @@ function update_local(prng::Random.AbstractRNG,
 end
 
 function update_global(λₜ₋₁, ρ, β0, M, K, V, ϕ, doc)
-    λ = zeros(K,V)
+    λ = zeros(V,K)
     for k = 1:K
         ϕₖ = zeros(V)
         @simd for n = 1:length(doc)
             @inbounds ϕₖ[doc[n]] += ϕ[k, n]
         end
-        @inbounds λ[k,:] = β0 .+ M*ϕₖ
+        @inbounds λ[:,k] = β0 .+ M*ϕₖ
     end
     λₜ  = (1-ρ)*λₜ₋₁ + ρ*λ
 end
 
 function predictive(prng, α, K, λ, Eℓβ, n_iters, docs)
-    Eλ = λ ./ sum(λ, dims=2)
+    Eλ = λ ./ sum(λ, dims=1)
     mapreduce(+, enumerate(docs)) do (m, doc)
         n_w      = length(doc)
         n_obs    = floor(Int, n_w/2)
@@ -56,7 +56,7 @@ function predictive(prng, α, K, λ, Eℓβ, n_iters, docs)
         w_ho     = view(doc, n_obs+1:n_w)
         _, γₘ    = update_local(prng, α, Eℓβ, K, n_iters, w_obs)
         Eγₘ      = γₘ / sum(γₘ)
-        p_w      = Eγₘ' * Eλ
+        p_w      = Eλ * Eγₘ
         mapreduce(+, w_ho) do w
             log.(p_w[w])
         end / length(w_ho)
@@ -77,8 +77,8 @@ function lda_svi(prng::Random.AbstractRNG,
     β0  = 1.0
     τ   = 1024
     κ   = 0.7
-    λ   = rand(prng, Gamma(1e+2, 1e-2), K, V)
-    Eℓβ = mapslices(dirichlet_expectation, λ, dims=2)
+    λ   = rand(prng, Gamma(1e+2, 1e-2), V, K)
+    Eℓβ = mapslices(dirichlet_expectation, λ, dims=1)
 
     n_iters = ceil(Int, M/1000)*n_epochs
     prog    = if(show_progress)
@@ -99,14 +99,14 @@ function lda_svi(prng::Random.AbstractRNG,
                 ϕₘ,  _  = update_local(prng, α0, Eℓβ, K, n_local_iters, doc)
                 ρ       = (t + τ).^(-κ)
                 λ       = update_global(λ, ρ, β0, M, K, V, ϕₘ, doc)
-                Eℓβ     = mapslices(dirichlet_expectation, λ, dims=2)
+                Eℓβ     = mapslices(dirichlet_expectation, λ, dims=1)
                 t      += 1
             end
             elapsed        = Dates.now() - start_time
             elapsed_total += elapsed.value
             pll            = predictive(prng, α0, K, λ, Eℓβ, n_local_iters, test_docs)
 
-            best_idx   = [sortperm(λ[i,:])[end-10:end] for i = 1:K]
+            best_idx   = [sortperm(λ[:,i])[end-10:end] for i = 1:K]
             best_words = [words[best_idx_cat] for best_idx_cat in best_idx]
             stat       = (epoch          = epoch_idx,
                           iteration      = t,

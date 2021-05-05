@@ -6,6 +6,7 @@ using StatsFuns
 using Zygote
 using LinearAlgebra
 
+import Base.Iterators
 import SpecialFunctions
 import Tracker
 import Dates

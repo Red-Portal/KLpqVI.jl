@@ -70,7 +70,7 @@ function vi(model,
     end
 
     rhat_win = if(rhat_interval > 0)
-        Array{Float64}(undef, rhat_interval, n_params*2)
+        Array{Float64}(undef, rhat_interval, length(θ))
     else
         nothing
     end
