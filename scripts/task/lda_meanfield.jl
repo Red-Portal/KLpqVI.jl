@@ -1,24 +1,37 @@
 
-struct LDAMeanField <: Distributions.ContinuousMultivariateDistribution
-    θs::Vector{Dirichlet}
-    ϕs::Vector{Dirichlet}
+struct LDAMeanField{Tθ <: AbstractVector,
+                    Tϕ <: AbstractVector} <: Distributions.ContinuousMultivariateDistribution
+
+    θs::Tθ
+    ϕs::Tϕ
     M::Int
     K::Int
     V::Int
+
+    function LDAMeanField(θs::Tθ,
+                          ϕs::Tϕ) where {Tθ <: AbstractVector,
+                                         Tϕ <: AbstractVector}
+        @assert length(θs[1]) == length(ϕs)
+        return new{Tθ, Tϕ}(θs, ϕs, length(θs), length(ϕs), length(ϕs[1]))
+    end
 end
 
-function LDAMeanField(θs::AbstractVector{<:Dirichlet},
-                      ϕs::AbstractVector{<:Dirichlet})
-    @assert length(θs[1]) == length(ϕs)
-    return LDAMeanField(θs, ϕs, length(θs), length(ϕs), length(ϕs[1]))
+function DistributionsAD.TuringDirichlet(alpha::AbstractVector)
+    all(ai -> ai > 0, alpha) ||
+        throw(ArgumentError("Dirichlet: alpha must be a positive vector."))
+
+    alpha0 = sum(alpha)
+    lmnB = mapreduce(SpecialFunctions.loggamma, +, alpha) - SpecialFunctions.loggamma(alpha0)
+
+    return DistributionsAD.TuringDirichlet(alpha, alpha0, lmnB)
 end
 
 function LDAMeanField(λ::AbstractVector, M::Int, K::Int, V::Int)
     @assert length(λ) == M*K + K*V
     α_θ = reshape(view(λ, 1:M*K), (M,K))
     α_ϕ = reshape(view(λ, M*K+1:length(λ)), (K,V))
-    θs  = map(x -> Dirichlet(Array(x)), eachrow(α_θ))
-    ϕs  = map(x -> Dirichlet(Array(x)), eachrow(α_ϕ))
+    θs  = map(x -> DistributionsAD.TuringDirichlet(Array(x)), eachrow(α_θ))
+    ϕs  = map(x -> DistributionsAD.TuringDirichlet(Array(x)), eachrow(α_ϕ))
     return LDAMeanField(θs, ϕs)
 end
 
@@ -71,40 +84,36 @@ function AdvancedVI.update(q::LDAMeanField,
     K  = q.K
     M  = q.M
     V  = q.V
-    θs = Array{Dirichlet}(undef, M)
-    @simd for m = 1:M
+    θs = map(1:M) do m
         begin_idx = (m-1)*K + 1
         end_idx   = m*K
-        @inbounds θs[m] = Dirichlet(StatsFuns.softplus.(λ[begin_idx:end_idx]),
-                                    check_args=true)
+        DistributionsAD.TuringDirichlet(StatsFuns.softplus.(λ[begin_idx:end_idx]))
     end
     start = M*K
-    ϕs    = Array{Dirichlet}(undef, K)
-    @simd for k = 1:K
+    ϕs    = map(1:K) do k
         begin_idx = start + (k-1)*V + 1
         end_idx   = start + k*V
-        @inbounds ϕs[k] = Dirichlet(StatsFuns.softplus.(λ[begin_idx:end_idx]),
-                                    check_args=true)
+        DistributionsAD.TuringDirichlet(StatsFuns.softplus.(λ[begin_idx:end_idx]))
     end
     LDAMeanField(θs, ϕs)
 end
 
 function Distributions._logpdf(q::LDAMeanField,
                                z::AbstractVector{<:Real})
-    res = 0
-    K   = q.K
-    M   = q.M
-    V   = q.V
-    @simd for m = 1:M
+    res  = 0
+    K    = q.K
+    M    = q.M
+    V    = q.V
+    res += mapreduce(+, 1:M) do m
         begin_idx = (m-1)*K + 1
         end_idx   = m*K
-        @inbounds res += logpdf(q.θs[m], z[begin_idx:end_idx])
+        logpdf(q.θs[m], z[begin_idx:end_idx])
     end
     start = M*K
-    @simd for k = 1:K
+    res  += mapreduce(+, 1:K) do k
         begin_idx = start + (k-1)*V + 1
         end_idx   = start + k*V
-        @inbounds res += logpdf(q.ϕs[k], z[begin_idx:end_idx])
+        logpdf(q.ϕs[k], z[begin_idx:end_idx])
     end
     res
 end

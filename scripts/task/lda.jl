@@ -42,7 +42,7 @@ function run_task(task::Val{:lda})
     # Prepare valid dataset
     docs_valid = prepare_valid(prng, mat_valid)
 
-    K     = 10
+    K     = 3
     N     = length(w_train)
     M     = size(mat_train,1)
     V     = size(mat_train,2)
@@ -69,7 +69,7 @@ function run_task(task::Val{:lda})
 
         push!(pll_hist, pll)
         push!(klpq_hist, klpq)
-        #display(plot(pll_hist))
+        display(plot(pll_hist))
 
         (pll=pll,
          klpq=klpq,
@@ -81,8 +81,8 @@ function run_task(task::Val{:lda})
 
     θ0          = StatsFuns.softplus.(randn(prng, M*K+K*V))
     q_init      = LDAMeanField(θ0, M, K, V)
-    n_iter      = 10000
-    n_mc        = 16
+    n_iter      = 100
+    n_mc        = 32
     θ, q, stats = vi(model, q_init;
                      #objective   = MSC_CIS(),
                      objective   = MSC_PIMH(),
@@ -95,7 +95,7 @@ function run_task(task::Val{:lda})
                      #sleep_freq   = 5,
                      #sleep_params = (ϵ=hmc_ϵ, L=hmc_L,),
                      #optimizer   = AdvancedVI.TruncatedADAGrad(),
-                     optimizer    = Flux.ADAM(0.01),
+                     optimizer    = Flux.ADAM(1.0),
                      #optimizer    = Flux.ADAGrad(),
                      show_progress = true
                      )
@@ -120,5 +120,26 @@ function load_dataset(prng::Random.AbstractRNG,
     mat_train = Int.(data_mat[doc_idxs[1:n_train]    ,:])
     mat_valid = Int.(data_mat[doc_idxs[n_train+1:end],:])
     mat_train, mat_valid, words
+
+    # data           = MAT.matread(datadir("dataset", "classic400.mat"))
+    # data_mat       = data["classic400"]
+    # labels         = data["truelabels"][1,:]
+    # words          = data["classicwordlist"]
+
+    # n_docs         = size(data_mat, 1)
+    # n_words        = size(data_mat, 2)
+    # doc_idxs       = collect(1:n_docs)
+    # docs_labeled   = [doc_idxs[labels .== i] for i = 1:3]
+    # n_train        = floor.(Int, length.(docs_labeled)*0.9)
+    # doc_idx_train  = [StatsBase.sample(docs_labeled[i], n_train[i], replace=false) for i = 1:3]
+    # doc_idx_test   = [doc_idxs[doc_idxs .∉ Ref(doc_idx_train[i])] for i = 1:3]
+
+    # doc_idx_train  = vcat(doc_idx_train...)
+    # doc_idx_test   = vcat(doc_idx_test...)
+    # doc_label_test = labels[doc_idx_test]
+
+    # mat_train = Int.(data_mat[doc_idx_train,:])
+    # mat_valid = Int.(data_mat[doc_idx_test,:])
+    # mat_train, mat_valid, words
 end
 
