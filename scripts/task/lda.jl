@@ -81,7 +81,7 @@ function run_task(task::Val{:lda})
 
     θ0          = StatsFuns.softplus.(randn(prng, M*K+K*V))
     q_init      = LDAMeanField(θ0, M, K, V)
-    n_iter      = 100
+    n_iter      = 10000
     n_mc        = 32
     θ, q, stats = vi(model, q_init;
                      #objective   = MSC_CIS(),
