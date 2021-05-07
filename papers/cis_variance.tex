@@ -1,0 +1,48 @@
+
+\begin{theoremEnd}[]{theorem}\label{thm:cis_var}
+  The variance of the conditional estimates when using the CIS kernel is bounded below as
+  \[
+  \Vsub{K(\vz_{t-1}, \cdot)}{ f(\vz_t) \mid \vz_{t-1} }
+  \geq {\big( 1 - r\,(\vz_{t-1}) \big)}^2 \,
+  \Vsub{K(\vz_{t-1}, \cdot)}{
+     f_{\mathrm{RB}} \mid \vz_{t-1}
+  }
+ % 
+  \]
+  where \(f_{\mathrm{RB}}\) is the Rao-Blackwellized estimate over the ensemble proposal 
+  \(
+  f_{\mathrm{RB}} = \nicefrac{
+    \sum^{N}_{i=1} w\,(\vz^{(i)}) \, f(\vz^{(i)})
+  }
+  {
+    \sum^{N}_{i=1} w\,(\vz^{(i)})
+  }.
+  \)
+\end{theoremEnd}
+\begin{proofEnd}
+  \begin{align}
+    &\Vsub{K(\vz_{t-1}, \cdot)}{ f(\vz_t) \mid \vz_{t-1} }
+    = \Vsub{K(\vz_{t-1}, \cdot)}{ \Esub{q_{\vlambda}}{ f(\vz_{t}) \mid \vz^{(1:N)} } \mid \vz_{t-1}} \\
+    &+ \Esub{K(\vz_{t-1}, \cdot)}{ \Vsub{q_{\vlambda}}{ f(\vz_{t}) \mid \vz^{(1:N)} } \mid \vz_{t-1}} \\
+    &\geq \Vsub{K(\vz_{t-1}, \cdot)}{ \Esub{q_{\vlambda}}{ f(\vz_{t}) \mid \vz^{(1:N)} } \mid \vz_{t-1}} \\
+    &= \Vsub{K(\vz_{t-1}, \cdot)}{
+      \left( 1 - r\,(\vz_{t-1}) \right)\,
+      \Esub{q_{\vlambda}}{
+        f_{\mathrm{RB}} \mid  \vz^{(1:N)}  
+      }
+      \mid \vz_{t-1}
+    } \\
+    &= {\left( 1 - r\,(\vz_{t-1}) \right)}^2 \,
+    \Vsub{K(\vz_{t-1}, \cdot)}{
+      \Esub{q_{\vlambda}}{
+        f_{\mathrm{RB}} \mid  \vz^{(1:N)}  
+      }
+      \mid \vz_{t-1}
+    } \\
+    & f_{\mathrm{RB}} = \frac{\sum^{N}_{i=1} w\,(\vz^{(i)}) \, f(\vz^{(i)}) }{w\,(\vz_{t-1}) + \sum^{N}_{i=1} w\,(\vz^{(i)})}
+  \end{align}
+\end{proofEnd}
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:

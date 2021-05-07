@@ -1,0 +1,31 @@
+
+\begin{theoremEnd}[no link to proof]{theorem}\label{thm:rej_bound}
+  The state dependent rejection rate \(r(\vz_{t-1})\) of the CIS sampler with \(N\) proposals is bounded below such that
+  \[
+  r(\vz_{t-1}) \geq \frac{1}{1 + N\frac{q_{\vlambda}(\vz_{t-1})}{p(\vz_{t-1}\mid\vx)}}
+  \]
+\end{theoremEnd}
+\begin{proof}
+  The proof uses Jensen's inequality and can be found in the \textit{supplementary material}.
+\end{proof}
+\begin{proofEnd}
+  The rejection rate \(r(\vz_{t-1})\) for \(N=1\) is given as
+  \begin{align}
+    r(\vz_{t-1})
+    &= \Esub{q_{\vlambda}}{ \frac{w(\vz_{t-1})}{ \sum^{N+1}_{k=2} w(\vz^{(k)}) + w(\vz_{t-1})} } \\
+    &= \Esub{q_{\vlambda}}{ {\left( \frac{\sum^{N+1}_{k=2} w(\vz^{(k)}) }{ w(\vz_{t-1}) } + 1 \right)}^{-1} }.  \\
+\intertext{At this point, we apply Jensen's inequality subject to the convex function \(f(x) = \nicefrac{1}{1 + x}\),}
+    &\geq \frac{1}{1 + \Esub{q_{\vlambda}}{ \frac{\sum^{N+1}_{k=2} w(\vz^{(k)})}{w(\vz_{t-1})} } } \\
+    &=    \frac{1}{1 + \frac{1}{w(\vz_{t-1})} \Esub{q_{\vlambda}}{ \sum^{N+1}_{k=2} w(\vz^{(k)}) } }. \\
+\intertext{From the independence of the \(N\) proposals, we obtain}
+    &=    \frac{1}{1 + \frac{1}{w(\vz_{t-1})} N \Esub{q_{\vlambda}}{ w(\vz) } } \\
+    &=    \frac{1}{1 + \frac{q_{\vlambda}(\vz_{t-1})}{p(\vz_{t-1},\vx)}\,N\,\Esub{q_{\lambda_t}}{ \frac{p(\vz, \vx) }{q_{\lambda_t}(\vz)} } } \\
+    &=    \frac{1}{1 + N \frac{q_{\vlambda}(\vz_{t-1})}{Z\,p(\vz_{t-1}\mid\vx)}\,\Esub{q_{\vlambda}}{ \frac{Z\,p(\vz\mid\vx) }{q_{\vlambda}(\vz)} } } \\
+    &=    \frac{1}{1 + N \frac{q_{\vlambda}(\vz_{t-1})}{p(\vz_{t-1}\mid\vx)} } \\
+  \end{align}
+  which concludes our proof.
+\end{proofEnd}
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:

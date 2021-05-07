@@ -1,0 +1,111 @@
+
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2020
+
+% ready for submission
+% \usepackage{neurips_2020}
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2020}
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2020}
+
+% to avoid loading the natbib package, add option nonatbib:
+\usepackage[preprint]{neurips_2021}
+\bibliographystyle{plainnat}
+
+\usepackage{xcolor}         % hyperlinks
+\usepackage[algo2e, ruled]{algorithm2e}    % hyperlinks
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{hyperref}       % hyperlinks
+\usepackage{url}            % simple URL typesetting
+\usepackage{booktabs}       % professional-quality tables
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{setspace}      % microtypography
+\usepackage{wrapfig}     % microtypography
+\usepackage[inline]{enumitem}
+\usepackage{caption}     
+\usepackage{subcaption}     
+\usepackage{float}     
+
+\input{krkmath.tex}
+\setmainfont{Times New Roman}
+
+%% Tikz corner
+\usepackage{tikz}
+\usepackage{pgf}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+
+\usetikzlibrary{patterns}
+\usepgfplotslibrary{external} 
+\usetikzlibrary{fit, calc}
+\usepgfplotslibrary{fillbetween}
+\usepgfplotslibrary{groupplots}
+\usepgfplotslibrary{statistics}
+
+\title{Inclusive Variational Inference with \\ Independent Metropolis Hastings}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+\author{%
+  Khu-rai Kim \\
+  Electronics Engineering Department \\
+  Sogang University\\
+  Seoul, Republic of Korea \\
+  \texttt{msca8h@sogang.ac.kr} \\
+  % examples of more authors
+  % \And
+  % Yunyoung Choi\\
+  %Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \AND
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+  % \And
+  % Coauthor \\
+  % Affiliation \\
+  % Address \\
+  % \texttt{email} \\
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+  \input{abstract.tex}
+\end{abstract}
+
+\input{introduction.tex}
+\input{background.tex}
+\input{method.tex}
+
+\appendix
+\printProofs
+
+\bibliography{references}
+
+\end{document}
