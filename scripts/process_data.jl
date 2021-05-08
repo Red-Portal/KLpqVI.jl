@@ -10,9 +10,9 @@ using ProgressMeter
 
 function process_data(ks, stats)::Dict
     mapreduce(merge, ks) do k
-        filt_stats   = filter(stat -> k ∈ keys(stat), stats)
-        y            = [stat[k] for stat ∈ filt_stats]
-        y[isinf.(y)] = 1e+6
+        filt_stats    = filter(stat -> k ∈ keys(stat), stats)
+        y             = [stat[k] for stat ∈ filt_stats]
+        y[isinf.(y)] .= 1e+6
         name_y     = string(k) * "_y"
         Dict(name_y => y)
     end
