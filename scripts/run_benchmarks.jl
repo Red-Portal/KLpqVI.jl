@@ -29,6 +29,9 @@ using Distributed
             ELBO(), 0
         elseif(method == "MSC_CIS")
             MSC_CIS(), 0
+        elseif(method == "MSC_HMC")
+            ϵ, L = hmc_params(task)
+            MSC_HMC(ϵ, L), 0
         elseif(method == "MSC_CISRB")
             MSC_CISRB(), 0
         elseif(method == "MSC_CISRB_HMC")
@@ -121,6 +124,10 @@ function gaussian_benchmarks()
                                  :n_samples=>n_samples),
 
                             Dict(:method=>"MSC_CISRB",
+                                 :task  =>task,
+                                 :n_samples=>n_samples),
+
+                            Dict(:method=>"MSC_HMC",
                                  :task  =>task,
                                  :n_samples=>n_samples),
 

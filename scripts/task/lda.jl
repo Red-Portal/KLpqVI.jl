@@ -69,7 +69,7 @@ function run_task(task::Val{:lda})
 
         push!(pll_hist, pll)
         push!(klpq_hist, klpq)
-        display(plot(pll_hist))
+        #display(plot(pll_hist))
 
         (pll=pll,
          klpq=klpq,
@@ -82,7 +82,7 @@ function run_task(task::Val{:lda})
     θ0          = StatsFuns.softplus.(randn(prng, M*K+K*V))
     q_init      = LDAMeanField(θ0, M, K, V)
     n_iter      = 10000
-    n_mc        = 32
+    n_mc        = 10
     θ, q, stats = vi(model, q_init;
                      #objective   = MSC_CIS(),
                      objective   = MSC_PIMH(),
@@ -95,7 +95,7 @@ function run_task(task::Val{:lda})
                      #sleep_freq   = 5,
                      #sleep_params = (ϵ=hmc_ϵ, L=hmc_L,),
                      #optimizer   = AdvancedVI.TruncatedADAGrad(),
-                     optimizer    = Flux.ADAM(1.0),
+                     optimizer    = Flux.ADAM(0.003),
                      #optimizer    = Flux.ADAGrad(),
                      show_progress = true
                      )

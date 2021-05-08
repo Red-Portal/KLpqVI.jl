@@ -25,7 +25,7 @@ Turing.@model stochastic_volatility(y, ::Type{F} = Float64) where {F} = begin
         σ_y[t] = exp((h′[t] + μ) / 2)
     end
 
-    if(any(x -> x < ϵ || isinf(x), σ_y))
+    if(any(x -> x < ϵ || isinf(x) || isnan(x), σ_y))
         Turing.@addlogprob! -Inf
         return
     end
@@ -73,9 +73,9 @@ function run_task(prng::Random.AbstractRNG,
     n_params    = sum([size(varinfo.metadata[sym].vals, 1) for sym ∈ varsyms])
     θ           = 0.1*randn(prng, n_params*2)
 
-    # Ensure Eq[σ] is sufficiently positive.
-    # Initial σ needs to be feasible when using HMC 
-    θ[2]       += 1.0 
+    # Initial parameters need to be feasible when using HMC 
+    #θ[2] += 1.0 
+    θ[3] += 1.0 
 
     q_init      = Turing.Variational.meanfield(model)
     q_init      = AdvancedVI.update(q_init, θ)

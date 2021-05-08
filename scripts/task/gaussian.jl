@@ -46,8 +46,10 @@ function run_task(prng::Random.AbstractRNG,
     p     = load_dataset(task)
     model = gaussian(p.μ, p.Σ)
 
-    AdvancedVI.setadbackend(:zygote)
-    Turing.Core._setadbackend(Val(:zygote))
+    #AdvancedVI.setadbackend(:zygote)
+    #Turing.Core._setadbackend(Val(:zygote))
+    AdvancedVI.setadbackend(:reversediff)
+    Turing.Core._setadbackend(Val(:reversediff))
 
     k_hist  = []
     function plot_callback(logπ, q, objective_, klpq)

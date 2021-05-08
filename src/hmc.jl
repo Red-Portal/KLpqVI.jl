@@ -73,7 +73,13 @@ function hmc(prng::Random.AbstractRNG,
     ν       = randn(prng, n_dims)
     z       = PhasePoint(x, ν, ℓπ_x)
     w, acc  = simulate_hamiltonian!(∂ℓπ∂θ, z, l, ϵ, L, M⁻¹, z_recycled_buf)
-    acc_idx = rand(prng, Categorical(w))
+    acc_idx = try
+       rand(prng, Categorical(w))
+    catch
+       println(∂ℓπ∂θ(x))
+       println(x)
+       println(w)
+    end
     z_acc   = z_recycled_buf[acc_idx]
     z_acc.x, acc
 end
