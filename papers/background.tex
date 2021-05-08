@@ -1,0 +1,93 @@
+
+\section{Background}
+\subsection{Inclusive Variational Inference Until Now}
+A typical way to perform VI is to use stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951}), which requires unbiased gradient esimates of the optimization target.
+In the case of inclusive variational inference, this corresponds to 
+%
+\begin{align}
+  \nabla_{\vlambda} \DKL{p}{q_{\lambda}}
+  = \Esub{p(\vz\mid\vx)}{ - \nabla_{\vlambda} \log q_{\vlambda}(\vz) }
+  = - \Esub{p(\vz\mid\vx)}{ s\,(\vz; \vlambda) }
+\end{align}
+where \(s\,(\vz; \vlambda) = \nabla_{\vlambda} \log q_{\vlambda}(\vz)\) is known as the score function.
+Estimating the gradient requires integrating the score function over \(p\), which is challenging at best.
+
+\paragraph{Importance Sampling}
+If samples from the variational approximation \(q_{\lambda}\) are easy to obtain, a simple solution is to use importance sampling (IS, \citealt{robert_monte_2004, mcbook}) such as
+\begin{align}
+  \Esub{p(\vz\mid\vx)}{ s\,(\vz; \vlambda) }
+  \propto \sum_{\vz \sim q_{\lambda}(\vz)} \frac{p\,(\vz,\vx)}{q_{\vlambda}(\vz)} \, s\,(\vz; \vlambda)
+  = \sum_{\vz \sim q_{\lambda}(\vz)} w\,(\vz) \, s\,(\vz; \vlambda).
+\end{align}
+where \(w\,(\vz) = p\,(\vz,\vx) / q_{\vlambda}(\vz)\) is known as the \textit{importance weight}.
+This scheme is in fact equivalent to adaptive IS methods~\citep{cappe_adaptive_2008, bugallo_adaptive_2017} since we are iteratively optimizing the IS proposal \(q_{\vlambda}\) based on the current samples.
+While IS is unbiased, it is incredibly numerically unstable in practice.
+In contrast, using the \textit{normalized weight} \(\tilde{w}^{(i)} = \nicefrac{w\,(\vz^{(i)})}{\sum_{i=1}^N w\,(\vz^{(i)}) }\)
+results in the self-normalized IS (SNIS) approximation, which is often much more stable.
+However, SNIS still fails to converge on even moderate dimensional objectives, and unlike IS, it is no longer unbiased~\citep{robert_monte_2004, mcbook}.
+
+\subsection{Markovian Score Climbing}
+%
+\begin{figure}[H]
+  \centering
+  \subfloat[]{
+    \begin{minipage}{0.45\textwidth}
+      \begin{algorithm2e}[H]
+        \DontPrintSemicolon
+        \SetAlgoLined
+        \KwIn{MCMC kernel \(K(\vz,\cdot)\),
+          initial sample \(\vz_0\),
+          initial parameter \(\vlambda_0\),
+          number of iterations \(T\)}
+        \For{\textcolor{black}{\(t = 1, 2, \ldots, T\)}}{
+          \textit{Sample} \hspace{0.035in} \( \vz_{t} \sim K(\vz_{t-1}, \cdot) \)\;
+          \textit{Estimate} \( s(\vz; \vlambda) = \nabla_{\vlambda} \log q_{\vlambda}(\vz_t) \)\;
+          \textit{Update} \hspace{0.03in} \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t\, s\,(\vz_t;\vlambda_{t-1}) \)\;
+        }
+        \caption{Markovian Score Climbing}\label{alg:msc}
+      \end{algorithm2e}
+    \end{minipage}
+  }
+  \subfloat[]{
+      \input{figures/trace.tex}\label{fig:motivating}
+  }
+  \caption{(a) Pseudocode of MSC. (b) Visualization of the convergence of MSC with a CIS kernel.
+    Notice that \(\vz_t\) barely makes any movement until \(t=300\), which is when \(\DKL{p}{q_{\vlambda}}\) starts to achieve convergence.}
+\end{figure}
+%
+%
+Recently,~\citet{NEURIPS2020_b2070693} proposed \textit{markovian score climbing} (MSC) for performing inclusive VI.
+They showed that MSC achieved more better and robust performance compared to methods such as SNIS or expectation propagation (EP, \citealt{10.5555/2074022.2074067})
+A pseudocode is presented in Algorithm~\ref{alg:msc}.
+MSC obtains stochastic gradients from a Markov-chain \((\vz_1, \vz_2, \ldots \vz_T)\) generated from a \(\pi\)-invariant transition operator \(K(\vz, \cdot)\) running in parallel with the VI optimizer (represented by the sequence \((\vlambda_1, \vlambda_2, \ldots, \vlambda_T)\)).
+If \(K(\vz, \cdot)\) is a proper Markov-chain Monte Carlo (MCMC) kernel,~\citeauthor{NEURIPS2020_b2070693} note that the gradient estimates become asymptotically unbiased with \(t \rightarrow \infty\).
+
+\paragraph{A Motivating Mystery}
+Despite the fact that~\citeauthor{NEURIPS2020_b2070693} suggest that (asymptotic) unbiasedness is what makes MSC work well in practice, we present a counter example that motivates our work.
+In particular, when using the conditional importance sampling (CIS) MCMC kernel originally proposed by~\citeauthor{NEURIPS2020_b2070693}, \textit{MSC makes most of the progress when the Markov-chain is biased the most}, which is counter-intuitive.
+In Figure~\ref{fig:motivating}, we show the trace plot of \(\vz_t\) and noisy estimates of \(\DKL{p}{q_{\vlambda}}\).
+We can notice that \(\vz_t\) barely moves until iteration 300, where \(\DKL{p}{q_{\vlambda}}\) starts to achieve convergence.
+Thus, until we achieve convergence, the samples from \(K(\vz_{t-1}, \cdot)\) are the most biased towards the previous state \(\vz_{t-1}\).
+In this work, we show that this counter-intuitive behavior of the CIS kernel is what makes MSC work well in practice.
+
+%
+%% \begin{minipage}{.53\textwidth}
+%%   \begin{algorithm2e}[H]
+%%     \DontPrintSemicolon
+%%     \SetAlgoLined
+%%     \KwIn{previous sample \(\vz_{t-1}\),
+%%       previous parameter \(\vlambda_{t-1}\),
+%%       number of proposals \(N\)
+%%     }
+%%     \(\vz^{(0)} = \vz_{t-1}\) \;
+%%     \textit{Propose} \(\vz^{(i)} \sim q_{\vlambda_{t-1}}(\vz)\) for \(i = 1, 2,\ldots, N\) \;
+%%     \textit{Weight} \hspace{0.01in} \(\tilde{w}^{(i)} = p(\vz^{(i)},\vx) \,/\, q_{\vlambda_{t-1}}(\vz^{(i)}) \) for \(i = 0, 1,\ldots, N\)\;
+%%     \textit{Normalize} \(w^{(i)} = \nicefrac{\tilde{w}^{(i)}}{ \sum^{N}_{i=0} \tilde{w}^{(i)} }\) for \(i = 0, 1,\ldots, N\)\;
+%%     \(\vz_{t} \sim \mathrm{Multinomial}(w_{t-1}, w^{(1)}, \ldots, w^{(N)}) \)\;
+%%     \caption{Conditional Importance Sampling}
+%%   \end{algorithm2e}
+%% \end{minipage}
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:

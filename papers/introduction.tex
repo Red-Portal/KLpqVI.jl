@@ -1,0 +1,45 @@
+
+\section{Introduction}
+%Searching for good discrepancy measures for variational inference is 
+Variational inference (VI) is a method of converting Bayesian inference into an optimization problem.
+Instead of working directly with our target distribution \(p(\vz\mid\vx)\), we find a \textit{variational approximation} \(q_{\lambda}(\vz) \in \mathcal{Q}\) closely approximating \(p(\vz\mid\vx)\) according to a discrepancy measure \(D(p, q)\).
+Naturally, choosing a good discrepancy measure, or obejctive function, is a critical part of the problem.
+Until now, the exclusive KL divergence \(\DKL{q_{\lambda}}{p}\) (or reverse KL divergence) has seen ``exclusive'' use among various discrepancy measures.
+This is because the exclusive KL is defined as an overage over \(q_{\lambda} \in \mathcal{Q}\) which is often chosen to be computationally tractable.
+In contrast, the inclusive KL divergence defined as
+%
+\begin{align}
+  \DKL{p}{q_{\lambda}} = \int p(\vz\mid\vx) \log \frac{p(\vz\mid\vx)}{q_{\lambda}(\vz)} d\vz
+  = \Esub{p(\vz\mid\vx)}{\log \frac{p(\vz\mid\vx)}{q_{\lambda}(\vz)}}. \label{eq:klpq}
+\end{align}
+%
+where the average over \(p\) is clearly the original problem we are trying to solve in the first place.
+Despite this chicken-and-egg problem, minimizing the inclusive KL has alluded researchers as it does not have some limitations of the exclusive KL~\citep{minka2005divergence, mackay_local_2001}.
+
+For performing inclusive VI,~\citet{NEURIPS2020_b2070693} recently proposed to use markovian score climbing (MSC) for minimizing the KL divergence.
+In MSC, stochastic gradients of the inclusive KL are obtained by running Markov-chain Monte Carlo (MCMC) in parallel with the VI optimizer.
+In particular, they used a \textit{condition importance sampling} (CIS) MCMC kernel.
+While~\citeauthor{NEURIPS2020_b2070693} attributed the performance improvements of MSC to the fact that they are running an MCMC chain, closer inspection reveal interesting properties about CIS.
+
+In this paper, we show that the CIS kernel is a variant of \textit{independent Metropolis-Hastings} (IMH) kernel~\citep{robert_monte_2004}.
+The IMH kernel view reveals that CIS is able to automatically trade-off bias and variance of the stochastic gradients.
+Surprisingly, this property is unique to IMH type kernels, and other types of state-denpendent MCMC kernels such as Hamiltonian Monte Carlo (HMC,~\citealt{duane_hybrid_1987, neal_mcmc_2011, betancourt_conceptual_2017}) do not enjoy similar properties.
+
+Our IMH view also reveals that the performance of CIS kernel does not increase with an increased amount of computational budget.
+As a simple solution to this problem, we propose to use multiple IMH chains in parallel, which always enjoys reduced variance with a increase in computational budget.
+Conveniently, parallel IMH (PIMH) enables the use of convergence metrics such as the the average rejection rate~\citep{neklyudov_metropolishastings_2019} or the \(\widehat{R}\) metric popularly used in MCMC~\cite{gelman_inference_2011, vehtari_ranknormalization_2020}.
+
+Lastly, our IMH view enables to draw interesting connections with adaptive Metropolis-Hastings (MH) methods.
+%We discuss various connections with adaptive MH and show that the samples sued 
+
+The key contributions of this paper are as follows:
+\begin{itemize}
+  \item We show that Independent Metropolis-Hastings kernels automatically trade-off bias and variance when used in Markovian score climibing.
+  \item We propose parallel Independent Metropolis-Hastings for reducing the variance of the condition importance sampling kernel originally used by~\citet{NEURIPS2020_b2070693}.
+  \item We show parallel Independent Metropolis-Hastings has not only technical but also practical benefits such as convergence diagnostics.
+\end{itemize}
+
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:

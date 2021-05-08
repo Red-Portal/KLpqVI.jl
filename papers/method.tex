@@ -1,0 +1,153 @@
+
+\section{Inclusive Variational Inference with Independent Metropolis-Hastings}
+
+\subsection{Markov-Chain Monte Carlo in Markovian Score Climbing}\label{section:msc_mcmc}
+\paragraph{MCMC uses marginal esimates.}
+Before proceeding, we first discuss a subtle difference between the usual MCMC setting and the MSC setting.
+In MCMC, we are interested in the estimate provided by the average of \textit{all} the states.
+Thus, the marginal estimator of \(f\) is given as
+\begin{align}
+  \frac{1}{T} \sum^{T}_{t=1} f(\vz_t) = \E{f(\vz_t)} = \E{\Esub{\vz_t \sim K(\vz_{t-1},\cdot)}{ f(\vz_t) \mid \vz_{t-1}}}
+\end{align}
+where \(\Esub{K(\vz_{t-1},\cdot)}{ f \mid \vz_{t-1}}\) is the \textit{conditional estimate} of \(K\) given the previous state \(\vz_{t-1}\).
+
+\paragraph{MSC uses conditional estimates.}
+On the other hand, in standard MSC, the stochastic gradient is estimated only using a single state of the Markov-chain \(\vz_t \sim K(\vz_{t-1}, \cdot)\).
+This means that we are estimating the gradients using the conditional estimate such as
+\begin{align}
+  \nabla_{\lambda} \DKL{q_{\lambda}}{p} \approx \Esub{\vz_t \sim K(\vz_{t-1},\cdot)}{s\,(\vz_t;\, \vlambda) \mid \vz_{t-1}}.
+\end{align}
+This seemingly subtle difference reveals many interesting facts about MSC.
+\begin{enumerate*}[label=(\roman*)]
+\item The usual central limit theorem (CLT) guarentees of MCMC do not apply.
+\item Also, ergodicity guarentees work differently since, at each iteration, \(q_{\vlambda}\) is updated.
+\end{enumerate*}
+The largest difference however, is the way we should analyze the variance of the estimates.
+
+%% \begin{wrapfigure}{r}{0.35\textwidth}
+%%   \vspace{-0.2in}
+%%   \begin{algorithm2e}[H]
+%%     \DontPrintSemicolon
+%%     \SetAlgoLined
+%%     \KwIn{Proposal \(q_{\vlambda}\),
+%%     Previous state \(\vz_{t-1}\)}
+%%     \(\vz^* \sim q_{\vlambda}(\vz)\)\\
+%%     \eIf{\(\vz^*\) is accepted}{
+%%       \textit{(Accept)} \(\vz_t = \vz^*\)
+%%     }
+%%     {
+%%       \textit{(Reject)} \(\vz_t = \vz_{t-1}\)
+%%     }
+%%     \caption{Generic IMH Kernel}\label{alg:imh}
+%%   \end{algorithm2e}
+%% \end{wrapfigure}
+%
+\subsection{Conditional Importance Sampling as Independent Metropolis Hastings}\label{section:cis_imh}
+We now show that the CIS kernel proposed in~\citep{NEURIPS2020_b2070693} is an independent Metropolis-Hastings (IMH) kernel.
+The IMH view will reveal many interesting properties of the CIS kernel and IMH kernels in general.
+
+\paragraph{Independence Metropolis Hastings}
+In IMH, a proposal \(\vz^*\) (or multiple proposals) is proposed from \(q_{\vlambda}\), which is independent of \(\vz_{t-1}\).
+Then, this proposal is either accepted (\(\vz_{t} = \vz^*\)) or rejected (\(\vz_{t} = \vz_{t-1}\)).
+Multiple consecutive rejections means the sampler gets stuck, which often results in bad statistical performance.
+However, we will later show that this conventional knowledge does not hold in MSC.
+
+\paragraph{Conditional Importance Sampling}
+The CIS kernel is identical to the previously proposed \textit{ensemble MCMC sampler}~\citep{neal_mcmc_2011a, austad_parallel_2007} with independent proposals, which is a type of multiple-try MCMC~\citep{martino_review_2018}.
+First, by defining \(\vz_t = \vz_{t-1}\) as ``reject'' and \(\vz_t \neq \vz_{t-1}\) as ``accept'', it is easy to notice that the CIS kernel can be understood as an accept-reject type kernel.
+By denoting the \(N\) parallel proposals as an \textit{ensemble state} \(\vz^{(1:N)} = (\vz^{(1)}, \ldots, \vz^{(N)})\), the acceptance rate of CIS can be written as
+\begin{align}
+  \alpha(\vz_{t-1}, \vz^{(1:N)})
+  &= \frac{\sum^{N}_{i=1} w\,(\vz^{(i)})}{w\,(\vz_{t-1}) + \sum^{N}_{i=1} w\,(\vz^{(i)})} \nonumber \\
+  &= 1 - \frac{w\,(\vz_{t-1})}{w\,(\vz_{t-1}) + \sum^{N}_{i=1} w\,(\vz^{(i)})}
+  = 1 - r\,(\vz_{t-1}\mid\vz^{(1:N)})\label{eq:acc}
+\end{align}
+where \(w(\vz) = \nicefrac{p(\vz,\vx)}{q_{\vlambda}(\vz)}\) is the unnormalized importance weight and \(r\,(\vz_{t-1}\mid \vz^{(1:N)})\) is the rejection rate given \(\vz^{(1:N)}\).
+The the acceptance ratio in Equation~\eqref{eq:acc} is known as~\citeauthor{barker_monte_1965}'s acceptance ratio~\citep{barker_monte_1965}, and is a special case of the original Metropolis~\cite{metropolis_equation_1953} acceptance ratio.
+If the ensemble proposal \(\vz^{(1:N)}\) is accepted, a single proposal is resampled proportionally to the normalized weight \(\tilde{w}^{(i)} = \nicefrac{w\,(\vz^{(i)})}{\sum_{i=1}^N w\,(\vz^{(i)}) }\).
+
+%% Now, the transition kernel can be denoted as
+%% \begin{align}
+%%   K(\vz_{t-1}, \vz) = \int K(\vz^{(1:N)}, \vz) \, \big( 1 - r\,(\vz_{t-1}\mid\vz^{(1:N)}) \big) \, q_{\vlambda}( \vz^{(1:N)} ) \, d\vz^{(1:N)}
+%%   + r\,(\vz_{t-1}) \,\delta_{\vz_{t-1}}(\vz)
+%% \end{align}
+
+\subsection{Bias-Variance Tradeoff of Conditional Importance Sampling}
+\paragraph{Low rejection rate means high conditional variance.}
+The IMH (or accept-reject) view in Section~\ref{section:cis_imh} now enables us to discuss the rejection rate of the CIS kernel.
+As discussed in Section~\ref{section:msc_mcmc}, MSC obtains gradients using the conditional estimates of MCMC.
+The variance of the conditional estimate is closely related to the rejection rate as shown in Theorem~\ref{thm:cis_var}
+%
+\input{cis_variance}
+%
+If we actually use the Rao-Blackwellized estimate over the accepted states, the equality holds.
+The statement of Theorem~\ref{thm:cis_var} is intuitive; if we reject all the states there is obviously no variance.
+However, Theorem~\ref{thm:cis_var} becomes more interesting combined with the results that will follow.
+
+\paragraph{CIS has high rejection rate in the beginning.}
+We now show that the CIS kernel (and IMH kernels in general) have high rejection rate in the initial steps of MSC.
+%
+\input{rejection_bound}
+%
+In the initial iterations of MSC, \(\vlambda\) and hence \(q_{\vlambda}\) change abrubtely because of the large stepsize \(\gamma_k\).
+Then, for \(\vz_{t-1} \sim q_{\vlambda_{t-1}}(\vz)\), \(q_{\vlambda_t}(\vz_{t-1})\) can be very small.
+Consequently, the importance weight of the rejection state \(w(\vz_t)\) will end up being extremely large.
+This effect cannot in general be mitigated by increasing \(N\) since
+\begin{enumerate*}[label=(\roman*)]
+  \item the iteration complexity also increases,
+  \item and \(w(\vz_t)\) can be easily be large by many orders of magnitude.
+\end{enumerate*}
+As a result, Theorem~\ref{thm:rej_bound} explains why the Markov-chain in Figure~\ref{fig:motivating} does not move until \(\vlambda\) converges.
+This property also holds similarly in any IMH type kernel.
+
+\paragraph{Rejection rate decreases as MSC converges.}
+The rejection rate itself can be shown to automatically decrease as MSC converges.
+In particular,~\citet[Theorem 1]{neklyudov_metropolishastings_2019} show that the marginal acceptance rate \(\alpha = \int \int \alpha(\vz^*,\vz)\,q(\vz^*)\,p(\vz\mid\vx)\,d\vz^*\,d\vz \) of an IMH sampler is related with \(\DKL{p}{q_{\vlambda}}\) such that
+\begin{align}
+    \alpha = 1 - r \geq 1 - \sqrt{
+      \frac{1}{2} \Big(
+      \DKL{q_{\vlambda}}{p} + \DKL{p}{q_{\vlambda}}
+      \Big)
+    }.
+\end{align}
+By the non-negativity of the KL divergence, it is straightforward that the \textit{marginal rejection rate} \(r=1 - \alpha\) is bounded such that
+\begin{align}
+  r
+  \leq 
+  \sqrt{ \frac{1}{2}
+    \DKL{p}{q_{\vlambda}}
+  }.\label{eq:rej_bound}
+\end{align}
+
+The results of~\eqref{eq:rej_bound} guarentee that the rejection rate of IMH automatically decreases as MSC converges.
+Thus, when using an IMH type kernel in MSC, variance is suppressed by rejecting most of the proposals.
+This would come at the cost of having high bias.
+However, as we start to converge, the rejection rate start to decrease and bias is reduced.
+
+As shown by~\citet{10.1214/17-STS611, chatterjee_sample_2018}, the number of particles for acheiving bounded error reduces exponentially with the KL divergence.
+
+%% \citet{wang_exact_2020}~a \textit{lower bound} of the convergence rate of an IMH sampler can be derived such as
+%% \begin{align}
+%%   {\| K^t(\vz, \cdot) - \pi \|}_{\mathrm{TV}} \geq r^t(\vz).
+%% \end{align}
+%% Thus, when the rejection rate is close to 1, the sampler converges very slowly.
+
+\subsection{Convergence of Bias}
+\begin{theoremEnd}[no link to proof]{proposition}
+  The bias of the stochastic gradients is given as
+\end{theoremEnd}
+Recently,~\citet[Theorem 3]{wang_exact_2020} showed that, assuming \(w^* = \sup_{\vz}{ \frac{p(\vz\mid\vx)}{q(\vz)} } < \infty \) (which is necessary for geometric ergodicity) and some Lipschitzness conditions on \(p\) and \(q\), the convergence rate 
+\begin{align}
+  \DTV{K^{n}(\vz, \cdot)}{p(\vz\mid\vx)} = {\left( 1 - \frac{1}{w^*} \right)}^{n},
+  \;\; 
+\end{align}
+holds exactly.
+
+This result is actually quite pessimistic for our purpose.
+Because in general, the KL divergence does not 
+??? Then whan about the result of Prop 2?
+
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:
