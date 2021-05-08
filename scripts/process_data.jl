@@ -5,22 +5,25 @@ using DrWatson
 using UnicodePlots
 using FileIO
 using JLD2
+using Statistics
+using ProgressMeter
 
 function process_data(ks, stats)::Dict
     mapreduce(merge, ks) do k
-        filt_stats = filter(stat -> k ∈ keys(stat))
-        y          = [stat[k] for filt_stats]
-        name       = string(k) * "_y"
-        (name_y => y)
+        filt_stats   = filter(stat -> k ∈ keys(stat), stats)
+        y            = [stat[k] for stat ∈ filt_stats]
+        y[isinf.(y)] = 1e+6
+        name_y     = string(k) * "_y"
+        Dict(name_y => y)
     end
 end
 
-function process_batch(batches)
-    ks     = keys(stats[1])
+function process_batches(batches)
+    ks     = keys(batches[1][1])
     @info "Finding x values"
-    data_x = mapreduce(merge, ks) do k
-        filt_stats = filter(stat -> k ∈ keys(stat))
-        x          = [stat[:iteration] for filt_stats]
+    data_x = map(collect(ks)) do k
+        filt_stats = filter(stat -> k ∈ keys(stat), batches[1])
+        x          = [stat[:iteration] for stat ∈ filt_stats]
         name       = string(k) * "_x"
         Dict(name => x)
     end
@@ -31,27 +34,28 @@ function process_batch(batches)
     end
 
     @info "Computing statistics"
-    data_y = map(ks) do k
-        ys = map(data_batches) do batch
-            batch[k]
+    data_y = map(collect(ks)) do k
+        name_y = string(k) * "_y"
+        ys     = map(data_batches) do batch
+            batch[name_y]
         end
         μ      = mean(ys)
-        name_y = string(k) * "_x"
         Dict(name_y => μ)
     end
-    res = merge(data_x, data_y)
-    println(keys(res))
+    res = merge(data_x..., data_y...)
     res
 end
 
 function main()
-    map(datadir("exp_raw")) do fname
+    @showprogress map(datadir("exp_raw") |> readdir) do fname
         data_name = fname[1:end-5]
-        data      = FileIO.load(fname)
-        data      = data["result"]
+        data      = FileIO.load(datadir("exp_raw", fname))
+        result    = data["result"]
         settings  = data["settings"]
 
         @info "$(fname)" settings
-        process_data(data)
+        processed = process_batches(result)
+
+        FileIO.save(datadir("exp_pro", fname), processed)
     end
 end
