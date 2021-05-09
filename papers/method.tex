@@ -72,17 +72,31 @@ If the ensemble proposal \(\vz^{(1:N)}\) is accepted, a single proposal is resam
 %%   + r\,(\vz_{t-1}) \,\delta_{\vz_{t-1}}(\vz)
 %% \end{align}
 
-\subsection{Bias-Variance Tradeoff of Conditional Importance Sampling}
-\paragraph{Low rejection rate means high conditional variance.}
+\subsection{Bias-Variance Tradeoff of Conditional Importance Sampling}\label{section:bias_variance}
+\paragraph{Variance of Conditional Importance Sampling}
 The IMH (or accept-reject) view in Section~\ref{section:cis_imh} now enables us to discuss the rejection rate of the CIS kernel.
 As discussed in Section~\ref{section:msc_mcmc}, MSC obtains gradients using the conditional estimates of MCMC.
-The variance of the conditional estimate is closely related to the rejection rate as shown in Theorem~\ref{thm:cis_var}
+The variance of the conditional estimate is closely related to the rejection rate such that
+\begin{align}
+  \Vsub{q_{\vlambda}}{f \mid \vz_{t-1}} &= \Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1},\,\vz^{(1:N)} } } + \underbrace{\Esub{q_{\vlambda}}{ \V{ f \mid \vz_{t-1},\,\vz^{(1:N)} } }}_{\text{Rao-Blackwellization gain}} \label{eq:total_variance} \\
+  &\geq \Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1}\,\vz^{(1:N)} } } \\
+  &= \Vsub{q_{\vlambda}}{ \big(1 - r\,(\vz_{t-1}\mid\vz^{(1:N)})\big)\, f_{\mathrm{IS}}
+    + r\,(\vz_{t-1}\mid\vz^{(1:N)})\,f(\vz_{t-1})  } \label{eq:exact_variance} \\
+  &\text{where}\;\; f_{\mathrm{IS}} = \nicefrac{\sum_{i=1}^N w\,(\vz^{(i)}) f(\vz^{(i)})}{\sum_{i=1}^N w\,(\vz^{(i)})} \nonumber 
+\end{align}
 %
-\input{cis_variance}
-%
-If we actually use the Rao-Blackwellized estimate over the accepted states, the equality holds.
-The statement of Theorem~\ref{thm:cis_var} is intuitive; if we reject all the states there is obviously no variance.
-However, Theorem~\ref{thm:cis_var} becomes more interesting combined with the results that will follow.
+The expansion in Equation~\eqref{eq:total_variance} follows from the Law of Total Variance.
+The right-hand term is the Rao-Blackwell variance reduction we gain from using the weighted estimator instead of multinomial resampling. (This was also originally mentioned by~\citet{NEURIPS2020_b2070693}.)
+
+\paragraph{Low rejection rate means high conditional variance.}
+Because of the dependence of \(r\,(\vz_{t-1}\mid\vz^{(1:N)})\) on \(\vz^{(1:N)}\), it is in general difficult to interpret the result of Equation~\eqref{eq:exact_variance}.
+However, since \(r(\vz\mid\vz^{(1:N)}) = \nicefrac{w(\vz_{t-1})}{w(\vz_{t-1}) + \sum_{i=1}^N w\,(\vz^{(i)})}\), when \(w(\vz_{t-1}) \gg w\,(\vz^{(i)})\), \(r(\vz\mid\vz^{(1:N)})\) will be almost independent of \(q_{\vlambda}\).
+In this case, we obtain the approximation,
+\begin{align}
+  \Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1}\,\vz^{(1:N)} } } \approx {\big(1 - r\,(\vz_{t-1})\big)}^2\,\Vsub{q_{\vlambda}}{ f_{\text{IS}} }.\label{eq:approx_var}
+\end{align}
+The statement of Equation~\eqref{eq:approx_var} is intuitive; if we reject all the states there is obviously no variance.
+However, it becomes more interesting combined with the results that will follow.
 
 \paragraph{CIS has high rejection rate in the beginning.}
 We now show that the CIS kernel (and IMH kernels in general) have high rejection rate in the initial steps of MSC.
@@ -97,7 +111,7 @@ This effect cannot in general be mitigated by increasing \(N\) since
   \item the iteration complexity also increases,
   \item and \(w(\vz_t)\) can be easily be large by many orders of magnitude.
 \end{enumerate*}
-As a result, Theorem~\ref{thm:rej_bound} explains why the Markov-chain in Figure~\ref{fig:motivating} does not move until \(\vlambda\) converges.
+As a result, Proposition~\ref{thm:rej_bound} explains why the Markov-chain in Figure~\ref{fig:motivating} does not move until \(\vlambda\) converges.
 This property also holds similarly in any IMH type kernel.
 
 \paragraph{Rejection rate decreases as MSC converges.}
@@ -119,33 +133,67 @@ By the non-negativity of the KL divergence, it is straightforward that the \text
   }.\label{eq:rej_bound}
 \end{align}
 
-The results of~\eqref{eq:rej_bound} guarentee that the rejection rate of IMH automatically decreases as MSC converges.
-Thus, when using an IMH type kernel in MSC, variance is suppressed by rejecting most of the proposals.
-This would come at the cost of having high bias.
-However, as we start to converge, the rejection rate start to decrease and bias is reduced.
+\paragraph{IMH kernels automatic trade-off bias for variance.}
+Equation~\eqref{eq:rej_bound} guarentee that the rejection rate of IMH automatically decreases as MSC converges.
+Thus, as shown in Equation~\eqref{eq:approx_var}, when using an IMH type kernel in MSC, variance is suppressed by rejecting most of the proposals.
+While this would come at the cost of having high bias, as we start to converge, the rejection rate start to decrease and allows bias to be reduced.
+This automatic trade-off mechanism is a unique property of IMH type kernels, and is not true for state-dependent proposals such as in random-walk Metropolis-Hastings or HMC.
 
-As shown by~\citet{10.1214/17-STS611, chatterjee_sample_2018}, the number of particles for acheiving bounded error reduces exponentially with the KL divergence.
+%% \paragraph{Bias Analysis}
+%% The bias of the conditional estimate is indirectly given by the total variation (TV) distance.
+%% For bounded functions, the TV distance provide an upper-bound of the bias.
+%% However, it is in general difficult to obtain guarentees about the TV distance (and hence the bias) with only \(p\) and \(q\).
+%% It is worth noting however, that \citet{wang_exact_2020} show that the TV distance is lower bounded by the rejection rate.
+%% Thus the bias does not decrease until the rejection rate becomes small.
 
-%% \citet{wang_exact_2020}~a \textit{lower bound} of the convergence rate of an IMH sampler can be derived such as
+%% that the KL divergence is related to the maximum importance ratio \(w^* = \sup_{\vz} p(\vz\mid\vx) / q_{\vlambda}(\vz)\) such that
 %% \begin{align}
-%%   {\| K^t(\vz, \cdot) - \pi \|}_{\mathrm{TV}} \geq r^t(\vz).
+%%   \DKL{p}{q_{\vlambda}} = \int p(\vz\mid\vx) \log \frac{p(\vz\mid\vx)}{q_{\vlambda}(\vz)} d\vz < \int p(\vz\mid\vx)  \log w^* d\vz = \log w^*.
 %% \end{align}
-%% Thus, when the rejection rate is close to 1, the sampler converges very slowly.
+%% \(\DKL{p}{q_{\vlambda}} < \infty\) is thus a necessary condition for \(w < \infty\) which is required for \(K\) to be geometrically ergodic~\citep{wang_exact_2020}.
+%% Also, 
 
-\subsection{Convergence of Bias}
-\begin{theoremEnd}[no link to proof]{proposition}
-  The bias of the stochastic gradients is given as
-\end{theoremEnd}
-Recently,~\citet[Theorem 3]{wang_exact_2020} showed that, assuming \(w^* = \sup_{\vz}{ \frac{p(\vz\mid\vx)}{q(\vz)} } < \infty \) (which is necessary for geometric ergodicity) and some Lipschitzness conditions on \(p\) and \(q\), the convergence rate 
+%% the TV distance is bounded 
+%% This implies 
+%% This is not only 
+%As shown by~\citet{10.1214/17-STS611, chatterjee_sample_2018}, the number of particles for acheiving bounded error reduces exponentially with the KL divergence.
+
+\subsection{Redcing Variance with Parallel Indpendent Metropolis-Hastings Markov Chains}\label{section:cis_bias}
+Recall that the CIS kernel uses \(N\) multiple-try type proposals.
+Thus, it would be natural to expect the variance to decrease as \(N\), the computational budget, increases.
+Instead, under specific conditions, the variance \textit{increases} with \(N\).
+
+\paragraph{The variance of CIS can increase with \(N\).}
+The bound in Proposition~\ref{thm:rej_bound}, can be reinterpreted as a bound on the acceptance rate 
 \begin{align}
-  \DTV{K^{n}(\vz, \cdot)}{p(\vz\mid\vx)} = {\left( 1 - \frac{1}{w^*} \right)}^{n},
-  \;\; 
+  1 - r\,(\vz_{t-1}) \leq \frac{N}{ w\,(\vz_{t-1}) + N},
 \end{align}
-holds exactly.
+which in general is very tight.
+More importantly however, when \(w\,(\vz_{t-1})\) is very large, the acceptance rate grows like \(\mathcal{O}(N)\).
+On the other hand, the variance of a SNIS estimator is known to approximately decrease in a rate of \(\mathcal{O}(1/N)\)~\citep{kong_sequential_1994, robert_monte_2004, elvira_rethinking_2018}.
+That is, 
+\begin{align}
+  \Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1}\,\vz^{(1:N)} } } \approx \underbrace{{\big(1 - r\,(\vz_{t-1})\big)}^2}_{\text{approx.}\;\;\mathcal{O}(N^2)} \,
+  \underbrace{\Vsub{q_{\vlambda}}{ f_{\text{IS}} }}_{\text{approx.}\;\;\mathcal{O}(1/N)}.
+\end{align}
+Thus, when \(w\,(\vz_{t-1})\) is very large, the conditional variance of CIS approximately grows linearly with \(N\).
 
-This result is actually quite pessimistic for our purpose.
-Because in general, the KL divergence does not 
-??? Then whan about the result of Prop 2?
+\paragraph{Variance Reduction with Paralel IMH Chains}
+To resolve the aforementioned limitation of the CIS kernel, we propose a simple remedy: running \(N\) parallel IMH (PIMH) Markov-chains \(\vz_t^{(1)}, \vz_t^{(2)}, \ldots, \vz_t^{(N)}\) using only a single proposal each.
+The gradient is then estimated as
+\begin{align}
+  \Esub{p(\vz\mid\vx)}{ s\,(\vz;\,\vlambda) } \approx \frac{1}{N} \sum_{i=1}^N s\,(\vz_t^{(i)};\,\vlambda).\label{eq:pimh}
+\end{align}
+By ensuring that the initial states \(\vz_{0}^{(i)}\) are sampled independently, the estimate of Equation~\eqref{eq:pimh} is an average of \(N\) independent estimators.
+Thus, the variance linearly decreases in an order of \(\mathcal{O}(1/N)\).
+
+\paragraph{Computational Cost of PIMH}
+The sampling cost of PIMH with \(N\) chains is exactly equal to a CIS kernel with \(N\) proposals.
+However, we now need \(N\) evaluations of the score function for computing~\eqref{eq:pimh}.
+This might seem expensive compared to the original MSC algorithm which only needs 1 evaluation of \(s\).
+On the other hand, the cost of PIMH is exactly equal to MSC if we use Rao-Blackwellization.
+Notice that, unlike PIMH, using more expensive MCMC kernels such as HMC require many likelihood evaluations for generating \textit{a single sample}.
+It is therefore likely that the cost of more advanced MCMC kernels (or even an independent sample from \(p(\vz\mid\vx)\)!) might not be worth their benefits.
 
 
 %%% Local Variables:
