@@ -2,8 +2,12 @@
 \section{Related Works}
 \subsection{Connections in Variational Inference}
 \paragraph{Inclusive VI}
+\citet{DBLP:journals/corr/BornscheinB14} propose RWS which minimizes the inclusive KL divergence by occasinally utilizing independent samples from the target posterior.
+\citep{kim2021adaptive} can be regarded as a blend of MSC and RWS, where an MCMC chain replaces the SNIS estimates the sleep phase updates.
 
 \paragraph{MCMC in VI}
+While VI has been regarded as a competitor to MCMC, many VI methods have attempted to make it part of their mechanism.
+Some examples include~\citep{pmlr-v97-ruiz19a}.
 
 \subsection{Connections with Adaptive Markov-chain Monte Carlo}
 \citet{10.1007/s11222-008-9110-y, garthwaite_adaptive_2016} discuss the use of stochastic approximation in adaptive MCMC.
