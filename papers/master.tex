@@ -17,7 +17,7 @@
 
 % to avoid loading the natbib package, add option nonatbib:
 \usepackage[preprint]{neurips_2021}
-\bibliographystyle{plainnat}
+\bibliographystyle{abbrvnat}
 
 \usepackage{xcolor}         % hyperlinks
 \usepackage[algo2e, ruled]{algorithm2e}    % hyperlinks
@@ -29,8 +29,8 @@
 \usepackage{amsfonts}       % blackboard math symbols
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
-\usepackage{setspace}      % microtypography
-\usepackage{wrapfig}     % microtypography
+\usepackage{setspace}
+\usepackage{wrapfig}
 \usepackage[inline]{enumitem}
 \usepackage{caption}     
 \usepackage{subcaption}     
@@ -102,10 +102,15 @@
 \input{introduction.tex}
 \input{background.tex}
 \input{method.tex}
-
-\appendix
-\printProofs
+\input{evaluation.tex}
+\input{relatedworks.tex}
+\input{conclusions.tex}
 
 \bibliography{references}
+
+\newpage
+\appendix
+\section{Proofs}
+\printProofs
 
 \end{document}

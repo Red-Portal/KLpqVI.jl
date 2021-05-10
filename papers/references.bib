@@ -47,6 +47,22 @@
   abstract = {The estimation of patient-specific tissue properties in the form of model parameters is important for personalized physiological models. However, these tissue properties are spatially varying across the underlying anatomical model, presenting a significance challenge of high-dimensional (HD) optimization at the presence of limited measurement data. A common solution to reduce the dimension of the parameter space is to explicitly partition the anatomical mesh, either into a fixed small number of segments or a multi-scale hierarchy. This anatomy-based reduction of parameter space presents a fundamental bottleneck to parameter estimation, resulting in solutions that are either too low in resolution to reflect tissue heterogeneity, or too high in dimension to be reliably estimated within feasible computation. In this paper, we present a novel concept that embeds a generative variational auto-encoder (VAE) into the objective function of Bayesian optimization, providing an implicit low-dimensional (LD) search space that represents the generative code of the HD spatially-varying tissue properties. In addition, the VAE-encoded knowledge about the generative code is further used to guide the exploration of the search space. The presented method is applied to estimating tissue excitability in a cardiac electrophysiological model. Synthetic and real-data experiments demonstrate its ability to improve the accuracy of parameter estimation with more than 10x gain in efficiency.}
 }
 
+@article{10.1007/s11222-008-9110-y,
+  title = {A Tutorial on Adaptive {{MCMC}}},
+  author = {Andrieu, Christophe and Thoms, Johannes},
+  year = {2008},
+  month = dec,
+  volume = {18},
+  pages = {343--373},
+  publisher = {{Kluwer Academic Publishers}},
+  address = {{USA}},
+  abstract = {We review adaptive Markov chain Monte Carlo algorithms (MCMC) as a mean to optimise their performance. Using simple toy examples we review their theoretical underpinnings, and in particular show why adaptive MCMC algorithms might fail when some fundamental properties are not satisfied. This leads to guidelines concerning the design of correct algorithms. We then review criteria and the useful framework of stochastic approximation, which allows one to systematically optimise generally used criteria, but also analyse the properties of adaptive MCMC algorithms. We then propose a series of novel adaptive algorithms which prove to be robust and reliable in practice. These algorithms are applied to artificial and high dimensional scenarios, but also to the classic mine disaster dataset inference problem.},
+  issue_date = {December 2008},
+  journal = {Statistics and Computing},
+  keywords = {Adaptive MCMC,Controlled Markov chain,MCMC,Stochastic approximation},
+  number = {4}
+}
+
 @article{10.1007/s11222-018-9809-3,
   title = {{{GPU}}-{{Accelerated}} Gibbs Sampling: {{A}} Case Study of the Horseshoe Probit Model},
   author = {Terenin, Alexander and Dong, Shawfeng and Draper, David},
@@ -237,6 +253,18 @@
   journal = {Statistical Science},
   keywords = {Absolute continuity,Filtering,importance sampling,Inverse problems,notions of dimension,small noise},
   number = {3}
+}
+
+@article{10.2307/2242610,
+  title = {Rates of Convergence of the Hastings and Metropolis Algorithms},
+  author = {Mengersen, K. L. and Tweedie, R. L.},
+  year = {1996},
+  volume = {24},
+  pages = {101--121},
+  publisher = {{Institute of Mathematical Statistics}},
+  abstract = {We apply recent results in Markov chain theory to Hastings and Metropolis algorithms with either independent or symmetric candidate distributions, and provide necessary and sufficient conditions for the algorithms to converge at a geometric rate to a prescribed distribution {$\pi$}. In the independence case (in Rk) these indicate that geometric convergence essentially occurs if and only if the candidate density is bounded below by a multiple of {$\pi$}; in the symmetric case (in R only) we show geometric convergence essentially occurs if and only if {$\pi$} has geometric tails. We also evaluate recently developed computable bounds on the rates of convergence in this context: examples show that these theoretical bounds can be inherently extremely conservative, although when the chain is stochastically monotone the bounds may well be effective.},
+  journal = {The Annals of Statistics},
+  number = {1}
 }
 
 @article{10.2307/24308995,
@@ -531,6 +559,15 @@
   month = apr,
   volume = {124},
   journal = {3rd International Workshop on Distributed Statistical Computing (DSC 2003); Vienna, Austria}
+}
+
+@article{article,
+  title = {On the Containment Condition for Adaptive Markov Chain Monte Carlo Algorithms},
+  author = {Bai, Yan and Roberts, Gareth and Rosenthal, Jeffrey},
+  year = {2011},
+  month = jan,
+  volume = {21},
+  journal = {Adv. Appl. Stat.}
 }
 
 @article{ashikuzzaman_low_2020,
@@ -1083,6 +1120,20 @@
   publisher = {{ACM Press}},
   address = {{Edmonton, AB, Canada}},
   language = {en}
+}
+
+@article{blei_variational_2017,
+  title = {Variational Inference: {{A}} Review for Statisticians},
+  shorttitle = {Variational {{Inference}}},
+  author = {Blei, David M. and Kucukelbir, Alp and McAuliffe, Jon D.},
+  year = {2017},
+  month = apr,
+  volume = {112},
+  pages = {859--877},
+  file = {/home/msca8h/Zotero/storage/NM6WQLJH/Blei et al. - 2017 - Variational Inference A Review for Statisticians.pdf},
+  journal = {Journal of the American Statistical Association},
+  language = {en},
+  number = {518}
 }
 
 @article{botev_markov_2013,
@@ -2112,6 +2163,21 @@
   publisher = {{Curran Associates, Inc.}}
 }
 
+@article{dhaka_challenges_2021,
+  title = {Challenges and Opportunities in High-Dimensional Variational Inference},
+  author = {Dhaka, Akash Kumar and Catalina, Alejandro and Welandawe, Manushi and Andersen, Michael Riis and Huggins, Jonathan and Vehtari, Aki},
+  year = {2021},
+  month = mar,
+  abstract = {We explore the limitations of and best practices for using black-box variational inference to estimate posterior summaries of the model parameters. By taking an importance sampling perspective, we are able to explain and empirically demonstrate: 1) why the intuitions about the behavior of approximate families and divergences for low-dimensional posteriors fail for higher-dimensional posteriors, 2) how we can diagnose the pre-asymptotic reliability of variational inference in practice by examining the behavior of the density ratios (i.e., importance weights), 3) why the choice of variational objective is not as relevant for higher-dimensional posteriors, and 4) why, although flexible variational families can provide some benefits in higher dimensions, they also introduce additional optimization challenges. Based on these findings, for high-dimensional posteriors we recommend using the exclusive KL divergence that is most stable and easiest to optimize, and then focusing on improving the variational family or using model parameter transformations to make the posterior more similar to the approximating family. Our results also show that in low to moderate dimensions, heavy-tailed variational families and mass-covering divergences can increase the chances that the approximation can be improved by importance sampling.},
+  archiveprefix = {arXiv},
+  eprint = {2103.01085},
+  eprinttype = {arxiv},
+  file = {/home/msca8h/Zotero/storage/NJET7QNK/Dhaka et al. - 2021 - Challenges and Opportunities in High-dimensional V.pdf;/home/msca8h/Zotero/storage/IVMHP8XC/2103.html},
+  journal = {arXiv:2103.01085 [cs, stat]},
+  keywords = {Computer Science - Machine Learning,Statistics - Machine Learning,Statistics - Methodology},
+  primaryclass = {cs, stat}
+}
+
 @article{dhamala_embedding_2020,
   title = {Embedding High-Dimensional {{Bayesian}} Optimization via Generative Modeling: {{Parameter}} Personalization of Cardiac Electrophysiological Models},
   shorttitle = {Embedding High-Dimensional {{Bayesian}} Optimization via Generative Modeling},
@@ -2695,6 +2761,19 @@
   file = {/home/msca8h/Zotero/storage/GRU9QYV8/Garbuno-Inigo et al. - 2016 - Gaussian process hyper-parameter estimation using .pdf},
   journal = {Computational Statistics \& Data Analysis},
   language = {en}
+}
+
+@article{garthwaite_adaptive_2016,
+  title = {Adaptive Optimal Scaling of {{Metropolis}}\textendash{{Hastings}} Algorithms Using the {{Robbins}}\textendash{{Monro}} Process},
+  author = {Garthwaite, P. H. and Fan, Y. and Sisson, S. A.},
+  year = {2016},
+  month = sep,
+  volume = {45},
+  pages = {5098--5111},
+  file = {/home/msca8h/Zotero/storage/H5AFFK39/Garthwaite et al. - 2016 - Adaptive optimal scaling of Metropolis–Hastings al.pdf},
+  journal = {Communications in Statistics - Theory and Methods},
+  language = {en},
+  number = {17}
 }
 
 @article{gast_new_2018,
@@ -3633,6 +3712,16 @@
   number = {47}
 }
 
+@article{JMLR:v18:16-107,
+  title = {Automatic Differentiation Variational Inference},
+  author = {Kucukelbir, Alp and Tran, Dustin and Ranganath, Rajesh and Gelman, Andrew and Blei, David M.},
+  year = {2017},
+  volume = {18},
+  pages = {1--45},
+  journal = {Journal of Machine Learning Research},
+  number = {14}
+}
+
 @article{JMLR:v19:17-084,
   title = {Scalable Bayes via Barycenter in Wasserstein Space},
   author = {Srivastava, Sanvesh and Li, Cheng and Dunson, David B.},
@@ -3701,6 +3790,17 @@
   pages = {120},
   journal = {Applied Statistics},
   number = {1}
+}
+
+@article{jordan_introduction_1999,
+  title = {An Introduction to Variational Methods for Graphical Models},
+  author = {Jordan, Michael I. and Ghahramani, Zoubin and Jaakkola, Tommi S. and Saul, Lawrence K.},
+  year = {1999},
+  volume = {37},
+  pages = {183--233},
+  file = {/home/msca8h/Zotero/storage/IG37GFMG/Jordan et al. - 1999 - [No title found].pdf},
+  journal = {Machine Learning},
+  number = {2}
 }
 
 @inproceedings{jordan_multiobjective_2012,
@@ -3957,6 +4057,13 @@
   journal = {Review of Economic Studies},
   language = {en},
   number = {3}
+}
+
+@inproceedings{kim2021adaptive,
+  title = {Adaptive Strategy for Resetting a Non-Stationary Markov Chain during Learning via Joint Stochastic Approximation},
+  booktitle = {Third Symposium on Advances in Approximate Bayesian Inference},
+  author = {Kim, Hyunsu and Lee, Juho and Yang, Hongseok},
+  year = {2021}
 }
 
 @article{kingma_adam_2017,
@@ -5580,6 +5687,15 @@
   publisher = {{Curran Associates, Inc.}}
 }
 
+@inproceedings{NIPS2016_7750ca35,
+  title = {R\'enyi Divergence Variational Inference},
+  booktitle = {Advances in Neural Information Processing Systems},
+  author = {Li, Yingzhen and Turner, Richard E},
+  year = {2016},
+  volume = {29},
+  publisher = {{Curran Associates, Inc.}}
+}
+
 @inproceedings{NIPS2017_35464c84,
   title = {Variational Inference via \textbackslash chi Upper Bound Minimization},
   booktitle = {Advances in Neural Information Processing Systems},
@@ -5915,6 +6031,21 @@
   abstract = {Stan's Hamilton Monte Carlo (HMC) has demonstrated remarkable sampling robustness and efficiency in a wide range of Bayesian inference problems through carefully crafted adaption schemes to the celebrated No-U-Turn sampler (NUTS) algorithm. It is challenging to implement these adaption schemes robustly in practice, hindering wider adoption amongst practitioners who are not directly working with the Stan modelling language. AdvancedHMC.jl (AHMC) contributes a modular, well-tested, standalone implementation of NUTS that recovers and extends Stan's NUTS algorithm. AHMC is written in Julia, a modern high-level language for scientic computing, benefoting from optional hardware acceleration and interoperability with a wealth of existing software written in both Julia and other languages, such as Python. Efficacy is demonstrated empirically by comparison with Stan through a third-party Markov chain Monte Carlo benchmarking suite.},
   pdf = {http://proceedings.mlr.press/v118/xu20a/xu20a.pdf},
   series = {{{PMLR}}}
+}
+
+@inproceedings{pmlr-v33-ranganath14,
+  title = {Black Box Variational Inference},
+  booktitle = {Proceedings of the Seventeenth International Conference on Artificial Intelligence and Statistics},
+  author = {Ranganath, Rajesh and Gerrish, Sean and Blei, David},
+  year = {2014},
+  month = apr,
+  volume = {33},
+  pages = {814--822},
+  publisher = {{PMLR}},
+  address = {{Reykjavik, Iceland}},
+  abstract = {Variational inference has become a widely used method to approximate posteriors in complex latent variables models. However, deriving a variational inference algorithm generally requires significant model-specific analysis. These efforts can hinder and deter us from quickly developing and exploring a variety of models for a problem at hand. In this paper, we present a ``black box'' variational inference algorithm, one that can be quickly applied to many models with little additional derivation. Our method is based on a stochastic optimization of the variational objective where the noisy gradient is computed from Monte Carlo samples from the variational distribution. We develop a number of methods to reduce the variance of the gradient, always maintaining the criterion that we want to avoid difficult model-based derivations. We evaluate our method against the corresponding black box sampling based methods. We find that our method reaches better predictive likelihoods much faster than sampling methods. Finally, we demonstrate that Black Box Variational Inference lets us easily explore a wide space of models by quickly constructing and evaluating several models of longitudinal healthcare data.},
+  pdf = {http://proceedings.mlr.press/v33/ranganath14.pdf},
+  series = {Proceedings of Machine Learning Research}
 }
 
 @inproceedings{pmlr-v37-kandasamy15,
@@ -6334,6 +6465,13 @@
   pages = {337--357},
   journal = {Methodology and Computing in Applied Probability},
   number = {4}
+}
+
+@incollection{rosenthal_optimal_,
+  title = {Optimal Proposal Distributions and Adaptive {{MCMC}}},
+  booktitle = {Handbook of {{Markov Chain Monte Carlo}}},
+  author = {Rosenthal, Jeffrey S},
+  publisher = {{Chapman and Hall/CRC}}
 }
 
 @article{Rosenthal99parallelcomputing,

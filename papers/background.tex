@@ -10,7 +10,7 @@ In the case of inclusive variational inference, this corresponds to
   = - \Esub{p(\vz\mid\vx)}{ s\,(\vz; \vlambda) }
 \end{align}
 where \(s\,(\vz; \vlambda) = \nabla_{\vlambda} \log q_{\vlambda}(\vz)\) is known as the score function.
-Estimating the gradient requires integrating the score function over \(p\), which is challenging at best.
+Estimating the gradient requires integrating the score function over \(p(\vz\mid\vx)\).
 
 \paragraph{Importance Sampling}
 If samples from the variational approximation \(q_{\lambda}\) are easy to obtain, a simple solution is to use importance sampling (IS, \citealt{robert_monte_2004, mcbook}) such as
@@ -29,6 +29,8 @@ However, SNIS still fails to converge on even moderate dimensional objectives, a
 \subsection{Markovian Score Climbing}
 %
 \begin{figure}[H]
+  \vspace{-0.01in}
+  \small
   \centering
   \subfloat[]{
     \begin{minipage}{0.45\textwidth}
