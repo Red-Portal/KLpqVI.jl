@@ -12,23 +12,21 @@ function process_data(ks, stats)::Dict
     mapreduce(merge, ks) do k
         filt_stats    = filter(stat -> k ∈ keys(stat), stats)
         y             = [stat[k] for stat ∈ filt_stats]
+        x             = [stat[k] for stat ∈ filt_stats]
+        t             = [stat[:elapsed] for stat ∈ filt_stats]
         if(k == :paretok)
             y[isinf.(y)] .= 1e+6
         end
         name_y     = string(k) * "_y"
-        Dict(name_y => y)
+        name_x     = string(k) * "_x"
+        name_t     = string(k) * "_t"
+        Dict(name_y => y, name_x => x, name_t => t)
     end
 end
 
-function process_batches(batches)
-    ks     = keys(batches[1][1])
-    @info "Finding x values"
-    data_x = map(collect(ks)) do k
-        filt_stats = filter(stat -> k ∈ keys(stat), batches[1])
-        x          = [stat[:iteration] for stat ∈ filt_stats]
-        name       = string(k) * "_x"
-        Dict(name => x)
-    end
+function process_batches(batches, path)
+    allkeys = vcat(keys.(batches[1]))
+    ks      = collect(Set(allkeys))
 
     @info "Finding y values"
     data_batches = map(batches) do stats
@@ -36,16 +34,33 @@ function process_batches(batches)
     end
 
     @info "Computing statistics"
-    data_y = map(collect(ks)) do k
+    for k ∈ collect(ks)
         name_y = string(k) * "_y"
-        ys     = map(data_batches) do batch
+        name_t = string(k) * "_t"
+        name_x = string(k) * "_x"
+
+        ts = map(data_batches) do batch
+            batch[name_t]
+        end
+        xs = map(data_batches) do batch
+            batch[name_x]
+        end
+        ys = map(data_batches) do batch
             batch[name_y]
         end
-        μ      = mean(ys)
-        Dict(name_y => μ)
+
+        name_μ = string(k) * "_mean"
+        μ_t    = mean(ts)
+        μ_y    = mean(ys)
+        μtxμy  = hcat(μ_t, xs[1], μ_y)
+        FileIO.save(joinpath(path, name_μ*".csv"), μtxμy)
+
+        for i = 1:length(ys)
+            name = string(k)*string(i)*".csv"
+            txy  = hcat(ts[i], xs[i], ys[i])
+            FileIO.save(joinpath(path, name), txy)
+        end
     end
-    res = merge(data_x..., data_y...)
-    res
 end
 
 function main()
@@ -54,10 +69,12 @@ function main()
         data      = FileIO.load(datadir("exp_raw", fname))
         result    = data["result"]
         settings  = data["settings"]
+        task      = string(settings[:task])
+        method    = string(settings[:method])
+        outpath   = datadir("exp_pro", task, method)
 
-        @info "$(fname)" settings
-        processed = process_batches(result)
-
-        FileIO.save(datadir("exp_pro", fname), processed)
+        @info "$(fname)" settings=merge(
+            settings, Dict(:path=>outpath))
+        process_batches(result, outpath)
     end
 end
