@@ -23,8 +23,8 @@ Thus, it should be possible to treat \(\vz^{(i)}_t\) as genuine samples from the
 \paragraph{Adaptive IMH}
 Adaptive MCMC methods based on independent proposals~\citep{keith_adaptive_2008, holden_adaptive_2009, giordani_adaptive_2010} are very similar with our work.
 In fact,~\citet{keith_adaptive_2008} adapt the proposal distribution using the cross-entropy method, which is equivalent to inclusive variational inference.
-Meanwhile,~\citet{giordani_adaptive_2010} use \(w\,q_o(\vz) + (1-w)\,q_{\vlambda}(\vz)\) as the proposal distribution where \(q_0\) is a heavy tailed distribution in the spirit of defensive mixtures~\citep{hesterberg_weighted_1995}.
-This is to ensure \(w(\vz) < \infty\), which is necessary for having geometric ergodicity.
+Meanwhile,~\citet{giordani_adaptive_2010} use \(w\,q_0(\vz) + (1-w)\,q_{\vlambda}(\vz)\) for some \(0<w<1\) as the proposal distribution where \(q_0\) is a heavy tailed distribution in the spirit of defensive mixtures~\citep{hesterberg_weighted_1995}.
+This is to ensure \(w(\vz) < \infty\), which is necessary for having geometric ergodicity~\citep{mengersen_rates_1996}.
 However, this condition is equivalent to assuming that the inclusive KL is bounded with a constant \(\log M\) since
 \begin{align}
   \DKL{p}{q_{\vlambda}} = \int p(\vz\mid\vx) \log w(\vz)\,d\vz \leq \int p(\vz\mid\vx) \log M \, d\vz = \log M.
