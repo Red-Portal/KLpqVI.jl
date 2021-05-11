@@ -18,6 +18,7 @@
         t          = [stat[:elapsed]   for stat ∈ filt_stats]
         if(k == :paretok)
             y[isinf.(y)] .= 1e+6
+            y[isnan.(y)] .= 1e+6
         end
         if(length(y) > 1000)
             y = y[1:10:end]
