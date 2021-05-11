@@ -19,9 +19,7 @@
         if(k == :paretok)
             y[isinf.(y)] .= 1e+6
         end
-        if(sum(isnan.(y)) > 0)
-            println(k)
-        end
+        y[isnan.(y)] .= 1e+6
         if(length(y) > 1000)
             y = y[1:10:end]
             x = x[1:10:end]
