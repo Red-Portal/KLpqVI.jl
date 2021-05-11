@@ -61,7 +61,7 @@ end
         μ_y    = [median(  [ys[i][t] for i = 1:length(ys)])      for t = 1:length(ys[1])]
         e_l    = [quantile([ys[i][t] for i = 1:length(ys)], 0.1) for t = 1:length(ys[1])]
         e_h    = [quantile([ys[i][t] for i = 1:length(ys)], 0.9) for t = 1:length(ys[1])]
-        y_stat = hcat(μ_y, e_l - μ_y, e_h - μ_y)
+        y_stat = Array(hcat(μ_y, e_l - μ_y, e_h - μ_y)')
 
         Dict(name_t   => μ_t,
              name_x   => xs[1],
