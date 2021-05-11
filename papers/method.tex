@@ -81,19 +81,19 @@ The variance of the conditional estimate is closely related to the rejection rat
   \Vsub{q_{\vlambda}}{f \mid \vz_{t-1}} &= \Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1},\,\vz^{(1:N)} } } + \underbrace{\Esub{q_{\vlambda}}{ \V{ f \mid \vz_{t-1},\,\vz^{(1:N)} } }}_{\text{Rao-Blackwellization gain}} \label{eq:total_variance} \\
   &\geq \Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1}\,\vz^{(1:N)} } } \\
   &= \Vsub{q_{\vlambda}}{ \big(1 - r\,(\vz_{t-1}\mid\vz^{(1:N)})\big)\, f_{\mathrm{IS}}
-    + r\,(\vz_{t-1}\mid\vz^{(1:N)})\,f(\vz_{t-1})  } \label{eq:exact_variance} \\
-  &\text{where}\;\; f_{\mathrm{IS}} = \nicefrac{\sum_{i=1}^N w\,(\vz^{(i)}) f(\vz^{(i)})}{\sum_{i=1}^N w\,(\vz^{(i)})} \nonumber 
+    + r\,(\vz_{t-1}\mid\vz^{(1:N)})\,f(\vz_{t-1}) \,\middle\vert\, \vz_{t-1},\, \vz^{(1:N)} } \label{eq:exact_variance} \\
+  &\text{where}\;\; f_{\mathrm{IS}} = {\sum_{i=1}^N w\,(\vz^{(i)}) f(\vz^{(i)})\,/\,\sum_{i=1}^N w\,(\vz^{(i)})} \nonumber 
 \end{align}
 %
 The expansion in Equation~\eqref{eq:total_variance} follows from the Law of Total Variance.
 The right-hand term is the Rao-Blackwell variance reduction we gain from using the weighted estimator instead of multinomial resampling. (This was also originally mentioned by~\citet{NEURIPS2020_b2070693}.)
 
-\paragraph{Low rejection rate means high conditional variance.}
+\paragraph{Low rejection rate means high conditional variance (which is bad).}
 Because of the dependence of \(r\,(\vz_{t-1}\mid\vz^{(1:N)})\) on \(\vz^{(1:N)}\), it is in general difficult to interpret the result of Equation~\eqref{eq:exact_variance}.
 However, since \(r(\vz\mid\vz^{(1:N)}) = \nicefrac{w(\vz_{t-1})}{w(\vz_{t-1}) + \sum_{i=1}^N w\,(\vz^{(i)})}\), when \(w(\vz_{t-1}) \gg w\,(\vz^{(i)})\), \(r(\vz\mid\vz^{(1:N)})\) will be almost independent of \(q_{\vlambda}\).
-In this case, we obtain the approximation,
+In this case, we obtain the approximation
 \begin{align}
-  \Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1}\,\vz^{(1:N)} } } \approx {\big(1 - r\,(\vz_{t-1})\big)}^2\,\Vsub{q_{\vlambda}}{ f_{\text{IS}} }.\label{eq:approx_var}
+  \Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1}, \vz^{(1:N)} } } \approx {\big(1 - r\,(\vz_{t-1})\big)}^2\,\Vsub{q_{\vlambda}}{ f_{\text{IS}} \,\middle\vert\, \vz_{t-1} }.\label{eq:approx_var}
 \end{align}
 The statement of Equation~\eqref{eq:approx_var} is intuitive; if we reject all the states there is obviously no variance.
 However, it becomes more interesting combined with the results that will follow.
@@ -124,27 +124,28 @@ In particular,~\citet[Theorem 1]{neklyudov_metropolishastings_2019} show that th
       \Big)
     }.
 \end{align}
-By the non-negativity of the KL divergence, it is straightforward that the \textit{marginal rejection rate} \(r=1 - \alpha\) is bounded such that
+By the non-negativity of the KL divergence, the bound on the \textit{marginal rejection rate} \(r=1 - \alpha\) 
 \begin{align}
   r
   \leq 
   \sqrt{ \frac{1}{2}
     \DKL{p}{q_{\vlambda}}
-  }.\label{eq:rej_bound}
+  }\label{eq:rej_bound}
 \end{align}
+directly follows.
 
 \paragraph{IMH kernels automatic trade-off bias for variance.}
-Equation~\eqref{eq:rej_bound} guarentee that the rejection rate of IMH automatically decreases as MSC converges.
+Equation~\eqref{eq:rej_bound} guarentees that the rejection rate of IMH automatically decreases as MSC converges.
 Thus, as shown in Equation~\eqref{eq:approx_var}, when using an IMH type kernel in MSC, variance is suppressed by rejecting most of the proposals.
-While this would come at the cost of having high bias, as we start to converge, the rejection rate start to decrease and allows bias to be reduced.
+While this would come at the cost of having high bias, as we start to converge, the rejection rate start to decrease, allowing bias to be reduced.
 This automatic trade-off mechanism is a unique property of IMH type kernels, and is not true for state-dependent proposals such as in random-walk Metropolis-Hastings or HMC.
 
-%% \paragraph{Bias Analysis}
-%% The bias of the conditional estimate is indirectly given by the total variation (TV) distance.
-%% For bounded functions, the TV distance provide an upper-bound of the bias.
-%% However, it is in general difficult to obtain guarentees about the TV distance (and hence the bias) with only \(p\) and \(q\).
-%% It is worth noting however, that \citet{wang_exact_2020} show that the TV distance is lower bounded by the rejection rate.
-%% Thus the bias does not decrease until the rejection rate becomes small.
+\paragraph{Is bias guarenteed to decrease?}
+The bias of the conditional estimate is closely related to the total variation (TV) distance \(\DTV{K(\vz_{t-1}, \cdot)}{p}\).
+For bounded functions, the TV distance provides an upper-bound of the bias.
+Unfortunately, it is in general difficult to talk about the TV distance (and hence the bias) with respect to \(p\) and \(q\).
+Although,~\citet{wang_exact_2020} recently showed that the rejection rate is related with the TV distance such that \(r(\vz_{t-1}) \leq \DTV{K(\vz_{t-1}, \cdot)}{p(\cdot\mid\vx)}\).
+Therefore, a low rejection rate is a necessary condition for the bias to decrease.
 
 %% that the KL divergence is related to the maximum importance ratio \(w^* = \sup_{\vz} p(\vz\mid\vx) / q_{\vlambda}(\vz)\) such that
 %% \begin{align}
@@ -158,7 +159,7 @@ This automatic trade-off mechanism is a unique property of IMH type kernels, and
 %% This is not only 
 %As shown by~\citet{10.1214/17-STS611, chatterjee_sample_2018}, the number of particles for acheiving bounded error reduces exponentially with the KL divergence.
 
-\subsection{Redcing Variance with Parallel Indpendent Metropolis-Hastings Markov Chains}\label{section:cis_bias}
+\subsection{Reducing Variance with Parallel Indpendent Metropolis-Hastings Markov Chains}\label{section:cis_bias}
 Recall that the CIS kernel uses \(N\) multiple-try type proposals.
 Thus, it would be natural to expect the variance to decrease as \(N\), the computational budget, increases.
 Instead, under specific conditions, the variance \textit{increases} with \(N\).
@@ -195,6 +196,22 @@ On the other hand, the cost of PIMH is exactly equal to MSC if we use Rao-Blackw
 Notice that, unlike PIMH, using more expensive MCMC kernels such as HMC require many likelihood evaluations for generating \textit{a single sample}.
 It is therefore likely that the cost of more advanced MCMC kernels (or even an independent sample from \(p(\vz\mid\vx)\)!) might not be worth their benefits.
 
+\paragraph{Convergence Diagnostics}
+A practical consideration in VI recently highlighted by~\citet{NEURIPS2020_7cac11e2} is to diagnose convergence of SGD.
+\citeauthor{NEURIPS2020_7cac11e2} proposed to compuate the \(\widehat{R}\) diagnostics popularly used in MCMC~\citep{gelman_inference_1992, vehtari_ranknormalization_2020} from the sequence of the variational parameters \(\vlambda_t\).
+Computing \(\widehat{R}\) from \(\vlambda_t\) (denoted as \(\widehat{R}_{\vlambda}\)) is requires running multiple VI runs concurrently, which inconvinent and computationally expansive.
+While~\citeauthor{NEURIPS2020_7cac11e2} makes the remark that the split-\(\widehat{R}\) diagnostic~\citep{gelman_bayesian_2014} can be used only a single sequence of \(\vlambda_t\) (by splitting the sequence in half and treating them two), we later show that this does not work well in practice.
+
+In contrast, our PIMH kernel enables the use of convergence diagnostics only from a single VI run.
+\begin{enumerate*}[label=\textbf{(\roman*)}]
+  \item \textbf{(\(r\)-diagnostic)} First, since we apply the same IMH kernel (internally using \(q_{\vlambda}\)) \(N\) times, we obtain \(N\) unbiased estimates of the marginal rejection rate \(r\).
+    As highlighted in Equation~\eqref{eq:rej_bound}, the marginal rejection rate provides a lower bound of the KL divergence.
+  \item \textbf{(\(\widehat{R}_{\vz}\)-diagnostic)} Second, since we operate \(N\) parallel chains, we can use the \(\widehat{R}\) diagnostics on the sequence of \(\vz_t^{(i)}\) (denoted as \(\widehat{R}_{\vz}\)).
+\end{enumerate*}
+Unlike \(\widehat{R}_{\vlambda}\), which directly diagnoses the convergence of \(\vlambda\), \(\widehat{R}_{\vz}\) is more indirect; it diagnoses the convergence of \(\vz\), which does not necessary imply convergence of \(\vlambda\).
+The convergence of \(\vz\) would imply that the stochastic gradients are reliable, which is convenient in the context of Polyak-Rupert averaging~\citep{ruppert_efficient_1988, polyak_acceleration_1992} suggested for VI by~\citet{NEURIPS2020_7cac11e2}.
+In terms of usability, the \(r\)-diagnostic tend to be highly noisy, which complicates the use of arbitrary threshold.
+On the contrary, \(\widehat{R}_{\vz}\) is relatively well understood, and has time-tested fixed thresholds for detecting convergence.
 
 %%% Local Variables:
 %%% TeX-master: "master"
