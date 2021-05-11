@@ -16,18 +16,20 @@
         y          = [stat[k]          for stat ∈ filt_stats]
         x          = [stat[:iteration] for stat ∈ filt_stats]
         t          = [stat[:elapsed]   for stat ∈ filt_stats]
+
+        y[isnan.(y)] .= typemax(eltype(y))
         if(k == :paretok)
             y[isinf.(y)] .= 1e+6
         end
-        y[isnan.(y)] .= 1e+6
+
         if(length(y) > 1000)
             y = y[1:10:end]
             x = x[1:10:end]
             t = t[1:10:end]
         end
-        name_y     = string(k) * "_y"
-        name_x     = string(k) * "_x"
-        name_t     = string(k) * "_t"
+        name_y = string(k) * "_y"
+        name_x = string(k) * "_x"
+        name_t = string(k) * "_t"
         Dict(name_y => y, name_x => x, name_t => t)
     end
 end
