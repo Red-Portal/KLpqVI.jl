@@ -10,10 +10,10 @@ using ProgressMeter
 
 function process_data(ks, stats)::Dict
     mapreduce(merge, ks) do k
-        filt_stats    = filter(stat -> k ∈ keys(stat), stats)
-        y             = [stat[k] for stat ∈ filt_stats]
-        x             = [stat[k] for stat ∈ filt_stats]
-        t             = [stat[:elapsed] for stat ∈ filt_stats]
+        filt_stats = filter(stat -> k ∈ keys(stat), stats)
+        y          = [stat[k]          for stat ∈ filt_stats]
+        x          = [stat[:iteration] for stat ∈ filt_stats]
+        t          = [stat[:elapsed]   for stat ∈ filt_stats]
         if(k == :paretok)
             y[isinf.(y)] .= 1e+6
         end
