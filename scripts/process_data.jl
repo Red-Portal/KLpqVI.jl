@@ -31,7 +31,7 @@
     end
 end
 
-@everywhere function process_batches(batches, path)
+@everywhere function process_batches(batches)
     allkeys = vcat(collect.(keys.(batches[1]))...)
     ks      = collect(Set(allkeys))
 
@@ -41,7 +41,7 @@ end
     end
 
     @info "Computing statistics"
-    for k ∈ ks
+    mapreduce(merge, ks) do k
         name_y = string(k) * "_y"
         name_t = string(k) * "_t"
         name_x = string(k) * "_x"
@@ -58,17 +58,20 @@ end
 
         name_μ = string(k) * "_mean"
         μ_t    = mean(ts)
-        μ_y    = mean(ys)
-        summ   = DataFrame("t" => ts[1],
-                           "x" => xs[1],
-                           "mean_t" => μ_t,
-                           "mean_y" => μ_y,
-                         )
-        for i = 1:length(ys)
-            insertcols!(summ, Symbol("y$(i)") => ys[i])
-        end
-        name = string(k)*".csv"
-        FileIO.save(joinpath(path, name), summ)
+        μ_y    = [median(  [ys[i][t] for i = 1:length(ys)])      for t = 1:length(ys[1])]
+        e_l    = [quantile([ys[i][t] for i = 1:length(ys)], 0.1) for t = 1:length(ys[1])]
+        e_h    = [quantile([ys[i][t] for i = 1:length(ys)], 0.9) for t = 1:length(ys[1])]
+        y_stat = hcat(μ_y, e_l - μ_y, e_h - μ_y)
+
+        Dict(name_t   => μ_t,
+             name_x   => xs[1],
+             name_y   => y_stat,
+             )
+        # for i = 1:length(ys)
+        #     insertcols!(summ, Symbol("y$(i)") => ys[i])
+        # end
+        #name = string(k)*".csv"
+        #FileIO.save(joinpath(path, name), summ)
     end
 end
 
@@ -81,10 +84,12 @@ function main()
         task      = string(settings[:task])
         method    = string(settings[:method])
         n_samples = string(settings[:n_samples])
-        outpath   = datadir("exp_pro", task, method, n_samples)
 
+        #outpath   = datadir("exp_pro", task, method, n_samples)
         @info "$(fname)" settings=merge(
             settings, Dict(:path=>outpath))
-        process_batches(result, outpath)
+        summary = process_batches(result)
+        
+        FileIO.save(datadir("exp_pro", fname), summary)
     end
 end
