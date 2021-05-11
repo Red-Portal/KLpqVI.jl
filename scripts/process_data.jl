@@ -86,8 +86,7 @@ function main()
         n_samples = string(settings[:n_samples])
 
         #outpath   = datadir("exp_pro", task, method, n_samples)
-        @info "$(fname)" settings=merge(
-            settings, Dict(:path=>outpath))
+        @info "$(fname)" settings=settings
         summary = process_batches(result)
         
         FileIO.save(datadir("exp_pro", fname), summary)
