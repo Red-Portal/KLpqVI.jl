@@ -67,7 +67,9 @@ end
 function general_benchmarks()
     for task ∈ ["pima",
                 "heart",
-                "ionosphere"]
+                "ionosphere",
+                "german",
+                "sonar"]
         for settings ∈ [Dict(:method=>"MSC_PIMH",
                              :task  =>task,
                              :n_samples=>10),

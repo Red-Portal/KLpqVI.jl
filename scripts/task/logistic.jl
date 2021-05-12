@@ -1,3 +1,4 @@
+
 Turing.@model logistic_regression(X, y, d) = begin
     ϵ  = 1e-10
     τ  ~ truncated(Normal(0, 1.0), 0, Inf)
@@ -12,6 +13,29 @@ Turing.@model logistic_regression(X, y, d) = begin
     α  ~ Normal(0, σ)
     s  = X*β .+ α
     y .~ Turing.BernoulliLogit.(s)
+end
+
+function load_dataset(::Val{:german})
+    dataset = DelimitedFiles.readdlm(
+        datadir("dataset", "german.data-numeric"))
+    data_x  = dataset[:, 1:end-1,]
+    data_y  = dataset[:, end] .- 1
+    data_x, data_y
+end
+
+function load_dataset(::Val{:sonar})
+    dataset = DelimitedFiles.readdlm(
+        datadir("dataset", "sonar.csv"), ',', skipstart=1)
+    data_x  = Float64.(dataset[:, 1:end-1,])
+    data_y  = dataset[:, end]
+    data_y  = map(data_y) do s
+        if(s == "Rock")
+            1.0
+        else
+            0.0
+        end
+    end
+    data_x, data_y
 end
 
 function load_dataset(::Val{:pima})
@@ -93,8 +117,25 @@ function hmc_params(task::Val{:ionosphere})
      ϵ, L
 end
 
+function hmc_params(task::Val{:german})
+     ϵ = 0.01
+     L = 256
+     ϵ, L
+end
+
+function hmc_params(task::Val{:sonar})
+     ϵ = 0.05
+     L = 127
+     ϵ, L
+end
+
 function run_task(prng::Random.AbstractRNG,
-                  task::Union{Val{:pima}, Val{:ionosphere}, Val{:heart}},
+                  task::Union{Val{:pima},
+                              Val{:ionosphere},
+                              Val{:heart},
+                              Val{:german},
+                              Val{:sonar},
+                              },
                   objective,
                   n_mc,
                   sleep_interval,
@@ -149,7 +190,10 @@ end
 function sample_posterior(prng::Random.AbstractRNG,
                           task::Union{Val{:pima},
                                       Val{:ionosphere},
-                                      Val{:heart}})
+                                      Val{:heart},
+                                      Val{:sonar},
+                                      Val{:german},
+                                      })
     data_x, data_y = load_dataset(task)
     n_dims         = size(data_x,2)
     model          = logistic_regression(data_x,data_y, n_dims)
