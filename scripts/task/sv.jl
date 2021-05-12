@@ -1,57 +1,7 @@
 
 Turing.@model stochastic_volatility(y, ::Type{F} = Float64) where {F} = begin
-    # T = length(y)
-    # ϵ = 1e-15
-    # μ ~ Cauchy(0, 10)
-    # ϕ ~ Uniform(-1+ϵ, 1-ϵ)
-    # σ ~ truncated(Cauchy(0, 5), 0, Inf)
-
-    # h    = Array{F}(undef, T)
-    # h[1] ~ Normal(μ, σ / sqrt(1 - ϕ^2))
-    # y[1] ~ Normal(0, exp(h[1] / 2))
-    
-    # for t in 2:T
-    #     h[t] ~ Normal(μ + ϕ * (h[t-1] - μ), σ)
-    #     if(h[t] < ϵ)
-    #         Turing.@addlogprob! -Inf
-    #     end
-    # end
-    # y ~ MvNormal(exp.(h / 2))
-
-
-    # T = length(y)
-    # ϵ = 1e-10
-
-    # ϕ ~ Uniform(-1, 1)
-    # σ ~ truncated(Cauchy(0, 5), 0, Inf)
-    # μ ~ Cauchy(0, 10)
-
-    # if(abs(ϕ) > 1-ϵ || σ < ϵ)
-    #     Turing.@addlogprob! -Inf
-    #     return
-    # end
-
-    # h_std ~ MvNormal(T, 1.0)
-    # h     = σ*h_std
-
-    # σ_y    = Array{F}(undef, T)
-    # h′     = Array{F}(undef, T)
-    # @inbounds h′[1]  = h[1] / sqrt(1 - ϕ^2)
-    # @inbounds σ_y[1] = exp((h′[1] + μ) / 2)
-
-    # @inbounds for t in 2:T
-    #     h′[t]  = h[t] + ϕ*h′[t-1]
-    #     σ_y[t] = exp((h′[t] + μ) / 2)
-    # end
-
-    # if(any(x -> x < ϵ || isinf(x) || isnan(x), σ_y))
-    #     Turing.@addlogprob! -Inf
-    #     return
-    # end
-    # y   ~ MvNormal(σ_y)
-
     T = length(y)
-    ϵ = 1e-20
+    ϵ = 1e-10
 
     ϕ ~ Uniform(-1, 1)
     σ ~ truncated(Cauchy(0, 5), 0, Inf)
@@ -65,21 +15,17 @@ Turing.@model stochastic_volatility(y, ::Type{F} = Float64) where {F} = begin
     h_std ~ MvNormal(T, 1.0)
     h     = σ*h_std
 
-    #σ_y    = Array{F}(undef, T)
-    #h      = Array{F}(undef, T)
-    @inbounds h[1] /= sqrt(1 - ϕ^2)
-    h .+= μ
-
-    @inbounds for t in 2:T
-        h[t] += ϕ*(h[t-1] - μ)
+    h′     = Array{F}(undef, T)
+    @inbounds h′[1]  = h[1] / sqrt(1 - ϕ^2)
+    for t in 2:T
+        @inbounds h′[t]  = h[t] + ϕ*h′[t-1]
     end
-    σ_y = exp.(h ./ 2)
+    σ_y = exp.((h′ .+ μ) / 2)
 
     if(any(x -> x < ϵ || isinf(x) || isnan(x), σ_y))
         Turing.@addlogprob! -Inf
         return
     end
-
     y   ~ MvNormal(σ_y)
 end
 
@@ -122,6 +68,9 @@ function run_task(prng::Random.AbstractRNG,
             zs = rand(prng, q, N)
             ℓw = mapslices(zᵢ -> ℓπ(zᵢ) - logpdf(q, zᵢ), zs, dims=1)[1,:]
             ℓZ = StatsFuns.logsumexp(ℓw) - log(N)
+            if(isnan(ℓZ))
+                ℓZ = -Inf
+            end
             (mll = ℓZ,)
         else
             NamedTuple()

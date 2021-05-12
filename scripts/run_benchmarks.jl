@@ -110,40 +110,38 @@ function general_benchmarks()
         end
     end
 
-    task = "sv"
-    for n_samples ∈ [5, 10, 20]
-        for settings ∈ [Dict(:method=>"MSC_PIMH",
-                             :task  =>task,
-                             :n_samples=>n_samples),
+    task      = "sv"
+    n_samples = 10
+    for settings ∈ [Dict(:method=>"MSC_PIMH",
+                         :task  =>task,
+                         :n_samples=>n_samples),
 
-                        Dict(:method=>"MSC_CIS",
-                             :task  =>task,
-                             :n_samples=>n_samples),
+                    Dict(:method=>"MSC_CIS",
+                         :task  =>task,
+                         :n_samples=>n_samples),
 
-                        Dict(:method=>"MSC_CISRB",
-                             :task  =>task,
-                             :n_samples=>n_samples),
+                    Dict(:method=>"MSC_CISRB",
+                         :task  =>task,
+                         :n_samples=>n_samples),
 
-                        Dict(:method=>"SNIS",
-                             :task  =>task,
-                             :n_samples=>n_samples),
+                    Dict(:method=>"SNIS",
+                         :task  =>task,
+                         :n_samples=>n_samples),
 
-                        Dict(:method=>"ELBO",
-                             :task  =>task,
-                             :n_samples=>n_samples),
+                    Dict(:method=>"ELBO",
+                         :task  =>task,
+                         :n_samples=>n_samples),
 
-                        Dict(:method=>"RWS",
-                             :task  =>task,
-                             :n_samples=>n_samples),
-                        ]
-
-            @info "starting epxeriment" settings=settings
-            produce_or_load(datadir("exp_raw"),
-                                    settings,
-				    run_experiment,
-				    suffix="jld2",
-				    loadfile=false)
-        end
+                    Dict(:method=>"RWS",
+                         :task  =>task,
+                         :n_samples=>n_samples),
+                    ]
+        @info "starting epxeriment" settings=settings
+        produce_or_load(datadir("exp_raw"),
+                        settings,
+                        run_experiment,
+                        suffix="jld2",
+                        loadfile=false)
     end
 end
 
