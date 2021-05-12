@@ -43,6 +43,7 @@ function vi(model,
             sleep_params=nothing,
             rhat_interval=0,
             paretok_samples=0,
+            paretok_interval=10,
             show_progress::Bool=false)
     varinfo     = DynamicPPL.VarInfo(model)
     varsyms     = keys(varinfo.metadata)
@@ -135,7 +136,7 @@ function vi(model,
             end
         end
 
-        if(paretok_samples > 0)
+        if(paretok_samples > 0 && mod(t-1, paretok_interval) == 0)
             k    = paretok(rng, q′, logπ, paretok_samples)
             stat = merge(stat, (paretok=k,))
         end
