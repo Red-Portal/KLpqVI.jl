@@ -1,0 +1,30 @@
+
+\begin{theoremEnd}[]{proposition}\label{thm:imh_bound}
+  The rejection rate \(r(\vz_{t-1})\) of the IMH sampler is bounded below such that
+  \[
+  %r(\vz_{t-1}) \geq \frac{1}{1 + N\frac{q_{\vlambda}(\vz_{t-1})}{p(\vz_{t-1}\mid\vx)}}.
+  r(\vz_{t-1}) \geq 1 - \frac{Z}{w(\vz_{t-1})} 
+  \]
+  where \(Z=\int p(\vz,\vx) \, d\vz\) is the normalizing constant.
+\end{theoremEnd}
+\begin{proofEnd}
+  The rejection rate \(r(\vz_{t-1})\) is given as
+  \begin{align}
+    r(\vz_{t-1}) = 1 - \int \alpha\left(\vz, \vz_{t-1} \right) \, q_{\vlambda}(\vz) \, d\vz.
+  \end{align}
+  For an IMH sampler with the Metropolis-Hastings acceptance function and independent proposals, the rejection rate is bounded such that
+  \begin{align}
+    r(\vz_{t-1})
+    &= 1 - \int \min\left(\frac{w(\vz)}{w(\vz_{t-1})}, 1 \right) \, q_{\vlambda}(\vz)\,d\vz \\
+    &= 1 - \frac{1}{w(\vz_{t-1})} \int \min\left(w(\vz), w(\vz_{t-1})\right) \, q_{\vlambda}(\vz)\,d\vz \\
+    &= 1 - \frac{1}{w(\vz_{t-1})} \int \min\left(\frac{p(\vz,\vx)}{q_{\vlambda}(\vz)}, w(\vz_{t-1})\right) \, q_{\vlambda}(\vz)\,d\vz \\
+    &=    1 - \frac{1}{w(\vz_{t-1})} \int \min\Big(p(\vz,\vx), w(\vz_{t-1})\,q_{\vlambda}(\vz)\Big) \, d\vz  \\
+    &\geq 1 - \frac{1}{w(\vz_{t-1})} \int p(\vz,\vx) \, d\vz \label{eq:imh_min_comp} \\
+    &=    1 - \frac{Z}{w(\vz_{t-1})} 
+  \end{align}
+  The inequality in Equation~\eqref{eq:imh_min_comp} follows from \(\min\big(p(\vz,\vx), q_{\vlambda}(\vz)\big) \leq p(\vz,\vx) \) for \(\forall \vz \in \mathcal{Z}\).
+\end{proofEnd}
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:

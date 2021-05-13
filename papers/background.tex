@@ -1,6 +1,6 @@
 
 \section{Background}
-\subsection{Inclusive Variational Inference Until Now}
+\subsection{Inclusive Variational Inference Until Now}\label{section:ivi_previous}
 A typical way to perform VI is to use stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951}), which requires unbiased gradient esimates of the optimization target.
 In the case of inclusive variational inference, this corresponds to 
 %
@@ -21,10 +21,10 @@ If samples from the variational approximation \(q_{\lambda}\) are easy to obtain
 \end{align}
 where \(w\,(\vz) = p\,(\vz,\vx) / q_{\vlambda}(\vz)\) is known as the \textit{importance weight}.
 This scheme is in fact equivalent to adaptive IS methods~\citep{cappe_adaptive_2008, bugallo_adaptive_2017} since we are iteratively optimizing the IS proposal \(q_{\vlambda}\) based on the current samples.
-While IS is unbiased, it is incredibly numerically unstable in practice.
-In contrast, using the \textit{normalized weight} \(\tilde{w}^{(i)} = \nicefrac{w\,(\vz^{(i)})}{\sum_{i=1}^N w\,(\vz^{(i)}) }\)
+While IS is unbiased, it is remarkably unstable in practice.
+In contrast, using the \textit{normalized weight} \(\widetilde{w}^{(i)} = \nicefrac{w\,(\vz^{(i)})}{\sum_{i=1}^N w\,(\vz^{(i)}) }\)
 results in the self-normalized IS (SNIS) approximation, which is often much more stable.
-However, SNIS still fails to converge on even moderate dimensional objectives, and unlike IS, it is no longer unbiased~\citep{robert_monte_2004, mcbook}.
+However, SNIS still fails to converge on even moderate dimensional objectives, and unlike IS, is no longer unbiased~\citep{robert_monte_2004, mcbook}.
 
 \subsection{Markovian Score Climbing}
 %
@@ -40,7 +40,8 @@ However, SNIS still fails to converge on even moderate dimensional objectives, a
         \KwIn{MCMC kernel \(K(\vz,\cdot)\),
           initial sample \(\vz_0\),
           initial parameter \(\vlambda_0\),
-          number of iterations \(T\)}
+          number of iterations \(T\),
+          stepsize schedule \(\gamma_t\)}
         \For{\textcolor{black}{\(t = 1, 2, \ldots, T\)}}{
           \textit{Sample} \hspace{0.035in} \( \vz_{t} \sim K(\vz_{t-1}, \cdot) \)\;
           \textit{Estimate} \( s(\vz; \vlambda) = \nabla_{\vlambda} \log q_{\vlambda}(\vz_t) \)\;
@@ -73,22 +74,6 @@ Thus, until we achieve convergence, the samples from \(K(\vz_{t-1}, \cdot)\) are
 In this work, we show that this counter-intuitive behavior of the CIS kernel is what makes MSC work well in practice.
 
 %
-%% \begin{minipage}{.53\textwidth}
-%%   \begin{algorithm2e}[H]
-%%     \DontPrintSemicolon
-%%     \SetAlgoLined
-%%     \KwIn{previous sample \(\vz_{t-1}\),
-%%       previous parameter \(\vlambda_{t-1}\),
-%%       number of proposals \(N\)
-%%     }
-%%     \(\vz^{(0)} = \vz_{t-1}\) \;
-%%     \textit{Propose} \(\vz^{(i)} \sim q_{\vlambda_{t-1}}(\vz)\) for \(i = 1, 2,\ldots, N\) \;
-%%     \textit{Weight} \hspace{0.01in} \(\tilde{w}^{(i)} = p(\vz^{(i)},\vx) \,/\, q_{\vlambda_{t-1}}(\vz^{(i)}) \) for \(i = 0, 1,\ldots, N\)\;
-%%     \textit{Normalize} \(w^{(i)} = \nicefrac{\tilde{w}^{(i)}}{ \sum^{N}_{i=0} \tilde{w}^{(i)} }\) for \(i = 0, 1,\ldots, N\)\;
-%%     \(\vz_{t} \sim \mathrm{Multinomial}(w_{t-1}, w^{(1)}, \ldots, w^{(N)}) \)\;
-%%     \caption{Conditional Importance Sampling}
-%%   \end{algorithm2e}
-%% \end{minipage}
 
 %%% Local Variables:
 %%% TeX-master: "master"

@@ -1,0 +1,28 @@
+
+\begin{theoremEnd}[no link to proof]{remark}\label{thm:approx_var}
+  Assuming \(w(\vz_{t-1})\) is large enough to make \(r(\vz\mid\vz^{(1:N)})\) approximately independent of \(\vz^{(1:N)}\), we approximate the variance such as
+  \begin{align}
+    \Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1}, \vz^{(1:N)} } } \approx {\big(1 - r\,(\vz_{t-1})\big)}^2\,\Vsub{q_{\vlambda}}{ f_{\text{IS}} \,\middle\vert\, \vz_{t-1} }.
+  \end{align}
+\end{theoremEnd}
+\begin{proof}
+  A detailed derivation can be found in the \textit{supplementary material}.
+\end{proof}
+\begin{proofEnd}
+  Starting from Equation~\eqref{eq:exact_variance}, we approximate the rejection probability as an independent constant.
+  Then,
+  \begin{align}
+    &\Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1}, \vz^{(1:N)} } } \\
+    &= \Vsub{q_{\vlambda}}{ \big(1 - r\,(\vz_{t-1}\mid\vz^{(1:N)})\big)\, f_{\mathrm{IS}}
+      + r\,(\vz_{t-1}\mid\vz^{(1:N)})\,f(\vz_{t-1}) \,\middle\vert\, \vz_{t-1},\, \vz^{(1:N)} } \\
+    &\approx \Vsub{q_{\vlambda}}{ \big(1 - r\,(\vz_{t-1})\big)\, f_{\mathrm{IS}}
+      + r\,(\vz_{t-1})\,f(\vz_{t-1}) \,\middle\vert\, \vz_{t-1},\, \vz^{(1:N)} } \\
+    &= \Vsub{q_{\vlambda}}{ \big(1 - r\,(\vz_{t-1})\big)\, f_{\mathrm{IS}} \,\middle\vert\, \vz_{t-1},\, \vz^{(1:N)} } \label{eq:approx_var_constant} \\
+    &= {\big(1 - r\,(\vz_{t-1})\big)}^2 \Vsub{q_{\vlambda}}{ f_{\mathrm{IS}} \,\middle\vert\, \vz_{t-1},\, \vz^{(1:N)} } \label{eq:approx_var_linear} 
+  \end{align}
+  Equation~\eqref{eq:approx_var_constant} follows from the fact that \(r\,(\vz_{t-1})\,f(\vz_{t-1})\) is a constant.
+\end{proofEnd}
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:

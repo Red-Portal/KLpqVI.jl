@@ -46,13 +46,15 @@
 \usepackage{pgfplotstable}
 
 \usetikzlibrary{patterns}
-\usepgfplotslibrary{external} 
 \usetikzlibrary{fit, calc}
 \usepgfplotslibrary{fillbetween}
 \usepgfplotslibrary{groupplots}
 \usepgfplotslibrary{statistics}
+\usepgfplotslibrary{external} 
 
-\title{Inclusive Variational Inference with \\ Independent Metropolis Hastings}
+\tikzset{external/system call={lualatex -shell-escape -halt-on-error -interaction=batchmode -jobname "\image" "\texsource"}}
+
+\title{Inclusive Variational Inference with \\ Independent Metropolis-Hastings}
 
 % The \author macro works with any number of authors. There are two commands
 % used to separate the names and addresses of multiple authors: \And and \AND.
