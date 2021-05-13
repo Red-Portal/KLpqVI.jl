@@ -118,7 +118,7 @@ function hmc_params(task::Val{:ionosphere})
 end
 
 function hmc_params(task::Val{:german})
-     ϵ = 0.01
+     ϵ = 0.001
      L = 256
      ϵ, L
 end
