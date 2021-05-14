@@ -37,9 +37,9 @@ function load_data(task::Val{:neuron})
 end
 
 function hmc_params(task::Val{:neuron})
-     # ϵ = 0.15
-     # L = 64
-     # ϵ, L
+     ϵ = 0.15
+     L = 64
+     ϵ, L
 end
 
 function run_task(prng::Random.AbstractRNG,
@@ -50,12 +50,12 @@ function run_task(prng::Random.AbstractRNG,
                   sleep_ϵ,
                   sleep_L;
                   show_progress=true)
-    AdvancedVI.setadbackend(:forwarddiff)
-    Turing.Core._setadbackend(Val(:forwarddiff))
+    AdvancedVI.setadbackend(:reversediff)
+    Turing.Core._setadbackend(Val(:reversediff))
 
-    y     = Float64[28,  8, -3,  7, -1,  1, 18, 12]
-    σ     = Float64[15, 10, 16, 11,  9, 11, 10, 18]
-    model = eightschools(y, σ)
+    cnt, N = load_data(task)
+    K      = 3
+    model  = neuron(cnt, N, K)
 
     i      = 1
     function plot_callback(ℓπ, q, objective, klpq)
