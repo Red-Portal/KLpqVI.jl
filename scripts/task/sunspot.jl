@@ -13,13 +13,13 @@ Turing.@model sunspot(y, N) = begin
     μ[1]     = y[1]
     μ[2:end] = exp.(ϕ[1] .+ ϕ[2]*y[1:end-1])
 
-    p  = θ ./ (μ .+ θ)
-    r  = θ
+    p  = clamp.(θ ./ (μ .+ θ), ϵ, 1.0)
+    r  = max(θ, ϵ)
 
-    if(!all(pᵢ -> pᵢ > 0 && pᵢ <= 1, p) || !(r > 0))
-        Turing.@addlogprob! -Inf
-        return
-    end
+    # if(!all(pᵢ -> pᵢ > 0 && pᵢ <= 1, p) || !(r > 0))
+    #     Turing.@addlogprob! -Inf
+    #     return
+    # end
     
     y .~ NegativeBinomial.(r, p)
 end
