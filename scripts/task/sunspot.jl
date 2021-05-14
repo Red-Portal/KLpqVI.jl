@@ -73,7 +73,7 @@ function run_task(prng::Random.AbstractRNG,
     θ           = 0.1*randn(prng, n_params*2)
 
     # Initial parameters need to be feasible
-    θ[3] += 2.0 
+    θ[3] += 1.0 
 
     n_iter      = 10000
     θ, q, stats = vi(model;

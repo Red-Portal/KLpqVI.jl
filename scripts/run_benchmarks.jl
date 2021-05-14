@@ -114,7 +114,6 @@ function general_benchmarks()
 
     n_samples = 10
     for task ∈ ["sv",
-                "sunspot",
                 "neuron"]
         for settings ∈ [Dict(:method=>"MSC_PIMH",
                              :task  =>task,
