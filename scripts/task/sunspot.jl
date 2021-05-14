@@ -14,7 +14,7 @@ Turing.@model sunspot(y, N) = begin
     μ[2:end] = exp.(ϕ[1] .+ ϕ[2]*y[1:end-1])
 
     p  = max.(θ ./ (μ .+ θ), ϵ)
-    r  = θ
+    r  = max(θ, ϵ)
     y .~ NegativeBinomial.(r, p)
 end
 
