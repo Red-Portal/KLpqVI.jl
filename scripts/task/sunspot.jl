@@ -4,7 +4,6 @@ Turing.@model sunspot(y, N) = begin
     From: Bayesian Models for Astrophysical Data, Cambridge Univ. Press
     (c) 2017,  Joseph M. Hilbe, Rafael S. de Souza and Emille E. O. Ishida 
 =##
-
     ϵ = 1e-15
     ϕ ~ MvNormal(zeros(2), 100)
     θ ~ Gamma(1e-3, 1e+3)
@@ -13,13 +12,13 @@ Turing.@model sunspot(y, N) = begin
     μ[1]     = y[1]
     μ[2:end] = exp.(ϕ[1] .+ ϕ[2]*y[1:end-1])
 
-    p  = clamp.(θ ./ (μ .+ θ), ϵ, 1.0)
-    r  = max(θ, ϵ)
+    p  = θ ./ (μ .+ θ)
+    r  = θ
 
-    # if(!all(pᵢ -> pᵢ > 0 && pᵢ <= 1, p) || !(r > 0))
-    #     Turing.@addlogprob! -Inf
-    #     return
-    # end
+    if(!all(pᵢ -> pᵢ > 0 && pᵢ <= 1, p) || !(r > 0))
+        Turing.@addlogprob! -Inf
+        return
+    end
     
     y .~ NegativeBinomial.(r, p)
 end
@@ -67,6 +66,14 @@ function run_task(prng::Random.AbstractRNG,
         i += 1
         stat
     end
+
+    varinfo     = DynamicPPL.VarInfo(model)
+    varsyms     = keys(varinfo.metadata)
+    n_params    = sum([size(varinfo.metadata[sym].vals, 1) for sym ∈ varsyms])
+    θ           = 0.1*randn(prng, n_params*2)
+
+    # Initial parameters need to be feasible
+    θ[2:3] += 1.0 
 
     n_iter      = 10000
     θ, q, stats = vi(model;
