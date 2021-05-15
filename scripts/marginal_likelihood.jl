@@ -71,7 +71,7 @@ function marginal_likelihood()
     end
     @info "sv" logZ = logZ
 
-    ThermodynamicIntegration.set_adbackend(:ReverseDiff) 
+    ThermodynamicIntegration.set_adbackend(:Zygote) 
 
     mat, N = load_data(Val(:neuron))
     model  = neuron(mat, N, 3)
