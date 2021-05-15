@@ -1492,6 +1492,11 @@ version = "0.5.1"
 deps = ["Libdl", "LinearAlgebra", "Serialization", "SparseArrays"]
 uuid = "4607b0f0-06f3-5cda-b6b1-a6196a1729e9"
 
+[[Suppressor]]
+git-tree-sha1 = "a819d77f31f83e5792a76081eee1ea6342ab8787"
+uuid = "fd094767-a336-5f1f-9728-57cf17d0bbfb"
+version = "0.2.0"
+
 [[SweepOperator]]
 deps = ["LinearAlgebra"]
 git-tree-sha1 = "20da2784e79fc0bfdd70592d1b47d7a6034e82d1"
@@ -1552,6 +1557,12 @@ git-tree-sha1 = "af728c38c839aee693637e15e244074a02f16c68"
 uuid = "e0df1984-e451-5cb5-8b61-797a481e67e3"
 version = "1.0.1"
 
+[[ThermodynamicIntegration]]
+deps = ["AdvancedHMC", "ForwardDiff", "LinearAlgebra", "ProgressMeter", "Random", "Requires", "Statistics", "Trapz"]
+git-tree-sha1 = "655a29bf5d26d11e6f39a051287e2634192a43c8"
+uuid = "1022446e-a4a4-4a46-8bce-0ffd39f68cd3"
+version = "0.2.1"
+
 [[ThreadingUtilities]]
 deps = ["VectorizationBase"]
 git-tree-sha1 = "063f52eee44ec303f1721cd59b4d7892cae9f1cc"
@@ -1587,6 +1598,11 @@ deps = ["Adapt", "ArgCheck", "BangBang", "Baselet", "CompositionsBase", "DefineS
 git-tree-sha1 = "c277f1190f76f108cfdb89b9d5da87d9602e5593"
 uuid = "28d57a85-8fef-5791-bfe6-a80928e7c999"
 version = "0.4.64"
+
+[[Trapz]]
+git-tree-sha1 = "aff96deaaa38e3b52a5af1dd3da376d49bf6ec9a"
+uuid = "592b5752-818d-11e9-1e9a-2b8ca4a44cd1"
+version = "2.0.2"
 
 [[TreeViews]]
 deps = ["Test"]
