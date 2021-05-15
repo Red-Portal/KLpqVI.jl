@@ -43,14 +43,15 @@ The largest difference however, is the way we should analyze the variance of the
 %% \end{wrapfigure}
 %
 \subsection{Conditional Importance Sampling as Independent Metropolis Hastings}\label{section:cis_imh}
-We now show that the CIS kernel proposed in~\citep{NEURIPS2020_b2070693} is an independent Metropolis-Hastings (IMH) kernel.
-The IMH view will reveal many interesting properties of the CIS kernel and IMH kernels in general.
+Independent Metropolis-Hastings (IMH) kernels are kernels where proposals generated from an independent of the previous state \(\vz_{t-1}\).
+We first show that the CIS kernel proposed in~\citep{NEURIPS2020_b2070693} is a type of IMH kernel that uses~\citet{barker_monte_1965}'s accept-reject mechanism.
+This IMH view will reveal many interesting properties of the CIS kernel and IMH kernels in general.
 
-\paragraph{Independence Metropolis Hastings}
-In IMH, a proposal \(\vz^*\) (or multiple proposals) is proposed from \(q_{\vlambda}\), which is independent of \(\vz_{t-1}\).
-Then, this proposal is either accepted (\(\vz_{t} = \vz^*\)) or rejected (\(\vz_{t} = \vz_{t-1}\)).
-Multiple consecutive rejections means the sampler gets stuck, which often results in bad statistical performance.
-However, we will later show that this conventional knowledge does not hold in MSC.
+%% \paragraph{Independent Metropolis Hastings}
+%% In IMH, a proposal \(\vz^*\) (or multiple proposals) is proposed from \(q_{\vlambda}\), which is independent of \(\vz_{t-1}\).
+%% Then, this proposal is either accepted (\(\vz_{t} = \vz^*\)) or rejected (\(\vz_{t} = \vz_{t-1}\)).
+%% Multiple consecutive rejections means the sampler gets stuck, which often results in bad statistical performance.
+%% However, we will later show that this conventional knowledge does not hold in MSC.
 
 %\begin{wrapfigure}{r}{.53\textwidth}
 \begin{figure}
@@ -139,12 +140,13 @@ The statement of Remark~\ref{thm:approx_var} is intuitive; if we reject all the 
 However, it becomes more interesting combined with the results that will follow.
 
 \paragraph{CIS has high rejection rate until MSC converges.}
-We now show that the CIS kernel have high rejection rate in the beginning of MSC.
+The following bound provides a condition for the rejection rate of a CIS kernel to be high.
 %
 \input{cis_bound}
 %
 Note that the normalizing constant \(Z\) is in general very small.
-When \(w(\vz_{t-1})\) is large, the bound states that \(r(\vz_{t-1})\) will be close to one, where according to Remark~\ref{thm:approx_var}, the conditional variance will be very small.
+When \(w(\vz_{t-1})\) is large, the bound states that \(r(\vz_{t-1})\) will be close to one.
+In this case, according to Remark~\ref{thm:approx_var}, the conditional variance will be very small.
 
 The interesting fact, however, is that \(w(\vz_{t-1})\) can be very huge when the KL divergence is large.
 Since
@@ -217,6 +219,7 @@ It does not exist in kernels with state-dependent proposals such as random-walk 
 \begin{figure}
   \centering
 \begin{minipage}[t]{0.45\textwidth}
+  \small
   \begin{algorithm2e}[H]
     \DontPrintSemicolon
     \SetAlgoLined
@@ -237,6 +240,7 @@ It does not exist in kernels with state-dependent proposals such as random-walk 
 \end{minipage}
 \hspace{0.2in}
 \begin{minipage}[t]{0.39\textwidth}
+  \small
   \begin{algorithm2e}[H]
     \DontPrintSemicolon
     \SetAlgoLined
@@ -305,22 +309,22 @@ On the other hand, the cost of PIMH is exactly equal to MSC if we use Rao-Blackw
 Notice that, unlike PIMH, using more expensive MCMC kernels such as HMC require many likelihood evaluations for generating \textit{a single sample}.
 It is therefore likely that the cost of more advanced MCMC kernels (or even an independent sample from \(p(\vz\mid\vx)\)!) might not be worth their benefits.
 
-\paragraph{Convergence Diagnostics}
-A practical consideration in VI recently highlighted by~\citet{NEURIPS2020_7cac11e2} is to diagnose convergence of SGD.
-\citeauthor{NEURIPS2020_7cac11e2} proposed to compuate the \(\widehat{R}\) diagnostics popularly used in MCMC~\citep{gelman_inference_1992, vehtari_ranknormalization_2020} from the sequence of the variational parameters \(\vlambda_t\).
-Computing \(\widehat{R}\) from \(\vlambda_t\) (denoted as \(\widehat{R}_{\vlambda}\)) is requires running multiple VI runs concurrently, which inconvinent and computationally expansive.
-While~\citeauthor{NEURIPS2020_7cac11e2} makes the remark that the split-\(\widehat{R}\) diagnostic~\citep{gelman_bayesian_2014} can be used only a single sequence of \(\vlambda_t\) (by splitting the sequence in half and treating them two), we later show that this does not work well in practice.
+%% \paragraph{Convergence Diagnostics}
+%% A practical consideration in VI recently highlighted by~\citet{NEURIPS2020_7cac11e2} is to diagnose convergence of SGD.
+%% \citeauthor{NEURIPS2020_7cac11e2} proposed to compuate the \(\widehat{R}\) diagnostics popularly used in MCMC~\citep{gelman_inference_1992, vehtari_ranknormalization_2020} from the sequence of the variational parameters \(\vlambda_t\).
+%% Computing \(\widehat{R}\) from \(\vlambda_t\) (denoted as \(\widehat{R}_{\vlambda}\)) is requires running multiple VI runs concurrently, which inconvinent and computationally expansive.
+%% While~\citeauthor{NEURIPS2020_7cac11e2} makes the remark that the split-\(\widehat{R}\) diagnostic~\citep{gelman_bayesian_2014} can be used only a single sequence of \(\vlambda_t\) (by splitting the sequence in half and treating them two), we later show that this does not work well in practice.
 
-In contrast, our PIMH kernel enables the use of convergence diagnostics only from a single VI run.
-\begin{enumerate*}[label=\textbf{(\roman*)}]
-  \item \textbf{(\(r\)-diagnostic)} First, since we apply the same IMH kernel (internally using \(q_{\vlambda}\)) \(N\) times, we obtain \(N\) unbiased estimates of the marginal rejection rate \(r\).
-    As highlighted in Remark~\eqref{eq:cis_bound}, the marginal rejection rate provides a lower bound of the KL divergence.
-  \item \textbf{(\(\widehat{R}_{\vz}\)-diagnostic)} Second, since we operate \(N\) parallel chains, we can use the \(\widehat{R}\) diagnostics on the sequence of \(\vz_t^{(i)}\) (denoted as \(\widehat{R}_{\vz}\)).
-\end{enumerate*}
-Unlike \(\widehat{R}_{\vlambda}\), which directly diagnoses the convergence of \(\vlambda\), \(\widehat{R}_{\vz}\) is more indirect; it diagnoses the convergence of \(\vz\), which does not necessary imply convergence of \(\vlambda\).
-The convergence of \(\vz\) would imply that the stochastic gradients are reliable, which is convenient in the context of Polyak-Rupert averaging~\citep{ruppert_efficient_1988, polyak_acceleration_1992} suggested for VI by~\citet{NEURIPS2020_7cac11e2}.
-In terms of usability, the \(r\)-diagnostic tend to be highly noisy, which complicates the use of arbitrary threshold.
-On the contrary, \(\widehat{R}_{\vz}\) is relatively well understood, and has time-tested fixed thresholds for detecting convergence.
+%% In contrast, our PIMH kernel enables the use of convergence diagnostics only from a single VI run.
+%% \begin{enumerate*}[label=\textbf{(\roman*)}]
+%%   \item \textbf{(\(r\)-diagnostic)} First, since we apply the same IMH kernel (internally using \(q_{\vlambda}\)) \(N\) times, we obtain \(N\) unbiased estimates of the marginal rejection rate \(r\).
+%%     As highlighted in Remark~\eqref{eq:cis_bound}, the marginal rejection rate provides a lower bound of the KL divergence.
+%%   \item \textbf{(\(\widehat{R}_{\vz}\)-diagnostic)} Second, since we operate \(N\) parallel chains, we can use the \(\widehat{R}\) diagnostics on the sequence of \(\vz_t^{(i)}\) (denoted as \(\widehat{R}_{\vz}\)).
+%% \end{enumerate*}
+%% Unlike \(\widehat{R}_{\vlambda}\), which directly diagnoses the convergence of \(\vlambda\), \(\widehat{R}_{\vz}\) is more indirect; it diagnoses the convergence of \(\vz\), which does not necessary imply convergence of \(\vlambda\).
+%% The convergence of \(\vz\) would imply that the stochastic gradients are reliable, which is convenient in the context of Polyak-Rupert averaging~\citep{ruppert_efficient_1988, polyak_acceleration_1992} suggested for VI by~\citet{NEURIPS2020_7cac11e2}.
+%% In terms of usability, the \(r\)-diagnostic tend to be highly noisy, which complicates the use of arbitrary threshold.
+%% On the contrary, \(\widehat{R}_{\vz}\) is relatively well understood, and has time-tested fixed thresholds for detecting convergence.
 
 %%% Local Variables:
 %%% TeX-master: "master"
