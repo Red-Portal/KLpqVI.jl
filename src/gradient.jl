@@ -33,6 +33,8 @@ end
                            f::Function,
                            x::AbstractVector,
                            out::DiffResults.MutableDiffResult)
-    tp =  AdvancedVI.tape(f, x)
-    ReverseDiff.gradient!(out, tp, x)
+    ctp, _ = Turing.Core.memoized_taperesult(f, x)
+    ReverseDiff.gradient!(out, ctp, x)
+    #tp =  AdvancedVI.tape(f, x)
+    #ReverseDiff.gradient!(out, tp, x)
 end

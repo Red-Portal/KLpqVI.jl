@@ -1,13 +1,14 @@
 
-Turing.@model neuron(cnt, N, K) = begin
+Turing.@model neuron(graph, N, K) = begin
     ϵ     = 1e-10
     z     ~ MvNormal(N*K, 1)
     z′    = reshape(z, (K,N))
     d_z   = Distances.pairwise(Distances.Euclidean(), z′, dims=2)
     d_z⁻¹ = 1 ./ (d_z .+ ϵ)
+    p_z   = Poisson.(d_z⁻¹)
 
     Turing.@addlogprob! mapreduce(+, CartesianIndices(d_z)) do idx
-        @inbounds logpdf(Poisson(d_z⁻¹[idx]), cnt[idx])
+        logpdf(p_z[idx], graph[idx])
     end
 end
 
@@ -85,9 +86,10 @@ function run_task(prng::Random.AbstractRNG,
                      rng            = prng,
                      sleep_interval = sleep_interval,
                      sleep_params   = (ϵ=sleep_ϵ, L=sleep_L,),
-                     rhat_interval   = 100,
-                     paretok_samples = 128,
-                     optimizer      = Flux.ADAM(0.01),
+                     rhat_interval    = 100,
+                     paretok_samples  = 64,
+                     paretok_interval = 50,
+                     optimizer        = Flux.ADAM(0.01),
                      #optimizer      = AdvancedVI.TruncatedADAGrad(),
                      show_progress = show_progress
                      )

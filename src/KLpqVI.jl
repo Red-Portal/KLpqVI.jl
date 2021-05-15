@@ -5,6 +5,7 @@ using StatsBase
 using StatsFuns
 using Zygote
 using LinearAlgebra
+using Memoization
 
 import Base.Iterators
 import SpecialFunctions
