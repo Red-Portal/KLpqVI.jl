@@ -52,6 +52,7 @@ function run_task(prng::Random.AbstractRNG,
                   sleep_L;
                   show_progress=true)
     AdvancedVI.setadbackend(:reversediff)
+    Turing.Core.setrdcache(true)
     Turing.Core._setadbackend(Val(:reversediff))
 
     cnt, N = load_data(task)
