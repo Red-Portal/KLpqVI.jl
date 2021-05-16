@@ -73,6 +73,7 @@ function grad!(
         hmc_acc = acc
         z
     end
+    cent = vo.z.prob - logpdf(q′, vo.z.val)
 
     f(θ) = if (q isa Distribution)
         -Bijectors.logpdf(AdvancedVI.update(q, θ), vo.z.val)
@@ -85,6 +86,7 @@ function grad!(
     (ess      = ess,
      hmc_aug  = hmc_aug,
      hmc_acc  = hmc_acc,
+     crossent = cent,
      rejected = rejected,
      rej_rate = rej_rate)
 end
