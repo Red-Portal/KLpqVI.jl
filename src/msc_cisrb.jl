@@ -60,7 +60,7 @@ function grad!(
     ess      = 1/sum(w.^2)
     rej_rate = 1 - w[1]
 
-    ℓq   = logpdf.(Ref(q′), eachcol(z))
+    ℓq   = map(zᵢ -> logpdf(q′, zᵢ), eachcol(z))
     cent = -dot(w, ℓp - ℓq)
 
     f(θ) = begin
