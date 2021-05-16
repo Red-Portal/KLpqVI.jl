@@ -73,7 +73,7 @@ function grad!(
         hmc_acc = acc
         z
     end
-    cent = vo.z.prob - logpdf(q′, vo.z.val)
+    cent = -vo.z.prob + logpdf(q′, vo.z.val)
 
     f(θ) = if (q isa Distribution)
         -Bijectors.logpdf(AdvancedVI.update(q, θ), vo.z.val)
