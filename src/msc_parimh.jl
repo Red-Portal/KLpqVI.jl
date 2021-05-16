@@ -20,24 +20,6 @@ function init_state!(msc::MSC_PIMH, rng, q, logπ, n_mc)
     msc.zs = RV{Float64}.(zs, ℓπs)
 end
 
-
-function imh_kernel(rng::Random.AbstractRNG,
-                    z_rv::RV,
-                    ℓπ::Function,
-                    q)
-    _, z′, _, ℓq′ = Bijectors.forward(rng, q)
-
-    ℓw  = z_rv.prob - logpdf(q, z_rv.val)
-    ℓp′ = ℓπ(z′)
-    ℓw′ = ℓp′ - ℓq′
-    α   = min(1.0, exp(ℓw′ - ℓw))
-    if(rand(rng) < α)
-        RV(z′, ℓp′), α, true
-    else
-        z_rv, α, false
-    end
-end
-
 function grad!(
     rng::Random.AbstractRNG,
     vo::MSC_PIMH,
@@ -72,12 +54,15 @@ function grad!(
     end
 
     rs = Vector{Float64}(undef, n_samples)
+    ws = Vector{Float64}(undef, n_samples)
     for i = 1:length(vo.zs)
         z, α, acc   = imh_kernel(rng, vo.zs[i], logπ, q′)
+        ws[i]       = z.prob - logpdf(q′, z.val)
         vo.zs[i]    = z 
         rs[i]       = 1-α
     end
     rej_rate = mean(rs)
+    cent     = -mean(ws)
 
     f(θ) = begin
         q_θ = if (q isa Distribution)
@@ -93,5 +78,6 @@ function grad!(
 
     (hmc_aug  = hmc_aug,
      hmc_acc  = hmc_acc,
+     crossent = cent,
      rej_rate = rej_rate)
 end

@@ -38,6 +38,7 @@ import Turing
 
 include("utils.jl")
 include("cis.jl")
+include("imh.jl")
 include("hmc.jl")
 include("gradient.jl")
 include("vi.jl")
