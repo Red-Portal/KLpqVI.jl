@@ -60,7 +60,7 @@ function grad!(
     end
     
     vo.z = if vo.hmc_freq != 1
-        z, w, ℓp = cis(rng, vo.z, logπ, q′, alg.samples_per_step)
+        z, w, _, ℓp = cis(rng, vo.z, logπ, q′, alg.samples_per_step)
         ess      = 1/sum(w.^2)
         acc_idx  = rand(rng, Categorical(w))
         rejected = (acc_idx == 1)

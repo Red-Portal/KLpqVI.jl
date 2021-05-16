@@ -54,11 +54,12 @@ function grad!(
         hmc_acc = acc
     end
 
-    z, w, ℓp = cis(rng, vo.z, logπ, q′, alg.samples_per_step)
+    z, w, ℓw, ℓp = cis(rng, vo.z, logπ, q′, alg.samples_per_step)
     acc_idx  = rand(rng, Categorical(w))
     vo.z     = RV(z[:,acc_idx], ℓp[acc_idx])
     ess      = 1/sum(w.^2)
     rej_rate = 1 - w[1]
+    cent     = -dot(w, ℓw)
 
     f(θ) = begin
         q_θ = if (q isa Distribution)
@@ -74,6 +75,7 @@ function grad!(
     vo.iter += 1
 
     (ess      = ess,
+     crossent = cent,
      hmc_aug  = hmc_aug,
      hmc_acc  = hmc_acc,
      rej_rate = rej_rate)

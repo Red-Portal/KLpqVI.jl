@@ -22,5 +22,5 @@ function cis(rng::Random.AbstractRNG,
     ℓZ = StatsFuns.logsumexp(ℓw)
     w  = exp.(ℓw .- ℓZ) 
     w  = w / sum(w) # Necessary because of numerical accuracy
-    zs, w, ℓps
+    zs, w, ℓw, ℓps
 end
