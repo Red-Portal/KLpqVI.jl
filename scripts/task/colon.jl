@@ -157,10 +157,10 @@ function sample_posterior_full(prng::Random.AbstractRNG,
     data_x, data_y = load_dataset(task)
     model          = horseshoe(data_x, data_y, size(data_x,1), size(data_x, 2))
 
-    sampler = Turing.NUTS(2000, 0.95;
-                          max_depth=8,
-                          Δ_max=100.0)
-    chain   = Turing.sample(model, sampler, 6000; progress=true)
+    sampler = Turing.NUTS(4000, 0.99;
+                          max_depth=15, 
+                          metricT=AdvancedHMC.DiagEuclideanMetric)
+    chain   = Turing.sample(model, sampler, 10000; progress=true)
     L       = median(chain[:n_steps][:,1])
     ϵ       = mean(chain[:step_size][:,1])
     @info "HMC Tuning Result on $(task)" ϵ=ϵ L=L
