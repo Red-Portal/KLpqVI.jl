@@ -55,6 +55,7 @@ This IMH view will reveal many interesting properties of the CIS kernel, and IMH
 
 %\begin{wrapfigure}{r}{.53\textwidth}
 \begin{figure}
+  \small
   \begin{algorithm2e}[H]
     \DontPrintSemicolon
     \SetAlgoLined
@@ -63,9 +64,9 @@ This IMH view will reveal many interesting properties of the CIS kernel, and IMH
       number of proposals \(N\)
     }
     \(\vz^{(0)} = \vz_{t-1}\) \;
-    \textit{Propose} \(\vz^{(i)} \sim q_{\vlambda_{t-1}}(\vz)\) for \(i = 1, 2,\ldots, N\) \;
-    \textit{Weight} \(w^{(i)} = p(\vz^{(i)},\vx) \,/\, q_{\vlambda_{t-1}}(\vz^{(i)}) \) for \(i = 0, 1,\ldots, N\)\;
-    \textit{Normalize} \(\widetilde{w}^{(i)} = \nicefrac{w^{(i)}}{ \sum^{N}_{i=0} w^{(i)} }\) for \(i = 0, 1,\ldots, N\)\;
+    \textit{Propose} \(\;\vz^{(i)} \sim q_{\vlambda_{t-1}}(\vz)\) for \(i = 1, 2,\ldots, N\) \;
+    \textit{Weight} \(\;w(\vz^{(i)}) = p(\vz^{(i)},\vx) \,/\, q_{\vlambda_{t-1}}(\vz^{(i)}) \) for \(i = 0, 1,\ldots, N\)\;
+    \textit{Normalize} \(\;\widetilde{w}^{(i)} = \nicefrac{w(\vz^{(i)})}{ \sum^{N}_{i=0} w(\vz^{(i)}) }\) for \(i = 0, 1,\ldots, N\)\;
     \(\vz_{t} \sim \mathrm{Multinomial}(\widetilde{w}^{(0)}, \widetilde{w}^{(1)}, \ldots, \widetilde{w}^{(N)}) \)\;
     \caption{Conditional Importance Sampling Kernel}\label{alg:cis}
   \end{algorithm2e}
@@ -97,11 +98,13 @@ where since each component of \(\vz^{(1:N)}\) are independent, \(q_{\vlambda}(\v
   \alpha(\vz_{t-1}, \vz^{(1:N)})
   = \frac{\sum^{N}_{i=1} w\,(\vz^{(i)})}{w\,(\vz_{t-1}) + \sum^{N}_{i=1} w\,(\vz^{(i)})} \label{eq:acc}
 \end{align}
-is the probability of accepting the ensemble state \(\vz^{(1:N)}\) where \(w(\vz) = p(\vz,\vx)/ q_{\vlambda}(\vz)\) is the unnormalized importance weight, and
-\begin{align}
-  r\,(\vz_{t-1}) &= \int r\,(\vz_{t-1} \mid \vz^{(1:N)})\,q_{\vlambda}(\vz^{(1:N)}) \, d\vz^{(1:N)}
-  = \int \left(1 - \alpha\,(\vz_{t-1}, \vz^{(1:N)})\right) q_{\vlambda}(\vz^{(1:N)}) \, d\vz^{(1:N)}
-\end{align}
+is the probability of accepting the ensemble state \(\vz^{(1:N)}\) where \(w(\vz) = p(\vz,\vx)/ q_{\vlambda}(\vz)\) is the unnormalized importance weight, and%
+{\small
+  \begin{align}
+    r\,(\vz_{t-1}) &= \int r\,(\vz_{t-1} \mid \vz^{(1:N)})\,q_{\vlambda}(\vz^{(1:N)}) \, d\vz^{(1:N)}
+    = \int \left(1 - \alpha\,(\vz_{t-1}, \vz^{(1:N)})\right) q_{\vlambda}(\vz^{(1:N)}) \, d\vz^{(1:N)}
+  \end{align}
+}%
 is the probability of rejectiong the ensemble state and staying on \(\vz_{t-1}\).
 \(r\,(\vz_{t-1}\mid \vz^{(1:N)})\) is the rejection rate given \(\vz^{(1:N)}\).
 The acceptance ratio in Equation~\eqref{eq:acc} is known as~\citeauthor{barker_monte_1965}'s acceptance ratio~\citep{barker_monte_1965}, and is a special case of the original~\cite{metropolis_equation_1953} acceptance ratio.
@@ -125,7 +128,7 @@ The variance of the conditional estimate is closely related to the rejection rat
   &\text{where}\;\; f_{\mathrm{IS}} = {\sum_{i=1}^N w\,(\vz^{(i)}) f(\vz^{(i)})\,/\,\sum_{i=1}^N w\,(\vz^{(i)})} \nonumber 
 \end{align}
 %
-The bound in~\eqref{eq:rao_blackwell} is exact if we use Rao-Blackwellization (using the SNIS estimator with the weights \(\widetilde{w}^{(i)}\) instead of multinomial resampling) as mentioned by~\citet{NEURIPS2020_b2070693}.
+The bound in~\eqref{eq:rao_blackwell} is exact if we use Rao-Blackwellization (use the SNIS estimator formed by \(\widetilde{w}^{(0)}, \ldots, \widetilde{w}^{(N)}\}\) instead of multinomial resampling) as mentioned by~\citet{NEURIPS2020_b2070693}.
 The expansion in Equation~\eqref{eq:total_variance} follows from the Law of Total Variance.
 The right-hand term is the variance reduction we gain from using Rao-Blackwellization~\citep{bernton_locally_2015}.
 

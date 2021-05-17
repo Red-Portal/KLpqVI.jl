@@ -15,23 +15,25 @@
     Also, the convergence of MSC-PIMH becomes more stable/monotonic as \(N\) increases.
     The solid lines are the median of 100 repetitions while the colored regions are the 80\% empirical percentiles.
   }\label{fig:gaussian}
+  \vspace{-0.1in}
 \end{figure*}
 
 \section{Evaluations}\label{section:eval}
 \subsection{Experimental Setup}
 \paragraph{Implementation}
 We implemented MSC with PIMH on top of the Turing~\citep{ge2018t} probabilistic programming framework.
-Our implementation works with any probabilistic model described in Turing, which automatically handles distributions with constrained support~\citep{JMLR:v18:16-107}.
+Our implementation works with any model described in Turing, which automatically handles distributions with constrained support~\citep{JMLR:v18:16-107}.
 
 \paragraph{Considered Baselines}
 We compare MSC-PIMH against
 \begin{enumerate*}[label=\textbf{(\roman*)}]
-  \item \textbf{(MSC-CIS)} MSC using the CIS kernel~\citep{NEURIPS2020_b2070693}, 
-  \item \textbf{(MSC-CISRB)} MSC using the CIS kernel with Rao-Blackwellization~\citep{NEURIPS2020_b2070693},
-  \item \textbf{(SNIS)} the adaptive IS method using SNIS as introduced in Section~\ref{section:ivi_previous}.
-  \item \textbf{(RWS)} the reweighted wake-sleep algorithm~\citep{DBLP:journals/corr/BornscheinB14}, 
-  \item \textbf{(ELBO)} and evidence lower-bound minimization~\citep{pmlr-v33-ranganath14, JMLR:v18:16-107}.
+  \item  MSC using the CIS kernel (\textbf{MSC-CIS};~\citealt{NEURIPS2020_b2070693}), 
+  \item  MSC using the CIS kernel with Rao-Blackwellization (\textbf{MSC-CISRB};~\citealt{NEURIPS2020_b2070693})
+  \item the adaptive IS method using SNIS as introduced in Section~\ref{section:ivi_previous} (\textbf{SNIS}).
+  \item the reweighted wake-sleep algorithm (\textbf{RWS};~\citealt{DBLP:journals/corr/BornscheinB14}),  
+  \item and evidence lower-bound minimization (\textbf{ELBO};~\citealt{pmlr-v33-ranganath14}).
 \end{enumerate*}
+Specifically, we use automatic differentiation variational inference~\citep{JMLR:v18:16-107} implemented by Turing.
 
 \begin{figure*}
   \centering
@@ -66,8 +68,6 @@ In our setting, we do not assume that independent samples from \(p(\vz\mid\vx)\)
 Instead, we reinterpret the idea of RWS of alternating between expensive and cheap estimates, and alternate between SNIS estimates and HMC estimates.
 HMC shows excellent statistical performance in practice, but is much expensive as it requires multiple gradients \(\nabla_{\vz} p(\vz, \vx)\) for generating only a single samples.
 As originally recommended by~\citet{DBLP:journals/corr/BornscheinB14}, we set \(K=5\).
-
-For ELBO, we use automatic differentiation variational inference (ADVI,~\citealt{JMLR:v18:16-107}) implemented by Turing.
 
 \subsection{Isotropic Gaussian}
 We first perform experiments with a 100-D isotropic multivariate Gaussian distribution.
