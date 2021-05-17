@@ -1,7 +1,7 @@
 
 \section{Background}
 \subsection{Inclusive Variational Inference Until Now}\label{section:ivi_previous}
-A typical way to perform VI is to use stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951}), which requires unbiased gradient esimates of the optimization target.
+A typical way to perform VI is to use stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951}), which requires unbiased gradient estimates of the optimization target.
 In the case of inclusive variational inference, this corresponds to 
 %
 \begin{align}
@@ -20,10 +20,10 @@ If samples from the variational approximation \(q_{\lambda}\) are easy to obtain
   = \sum_{\vz \sim q_{\lambda}(\vz)} w\,(\vz) \, s\,(\vz; \vlambda).
 \end{align}
 where \(w\,(\vz) = p\,(\vz,\vx) / q_{\vlambda}(\vz)\) is known as the \textit{importance weight}.
-This scheme is in fact equivalent to adaptive IS methods~\citep{cappe_adaptive_2008, bugallo_adaptive_2017} where the IS proposal \(q_{\vlambda}\) is iteratively optimized based on the current samples.
+This scheme is equivalent to adaptive IS methods~\citep{cappe_adaptive_2008, bugallo_adaptive_2017} where the IS proposal \(q_{\vlambda}\) is iteratively optimized based on the current samples.
 While IS is unbiased, it is remarkably unstable in practice.
 Using the \textit{normalized weight} \(\widetilde{w}^{(i)} = \nicefrac{w\,(\vz^{(i)})}{\sum_{i=1}^N w\,(\vz^{(i)}) }\) instead results in the self-normalized IS (SNIS) approximation, which is often much more stable.
-However, SNIS still fails to converge even on moderate dimensional objectives, and unlike IS, is no longer unbiased~\citep{robert_monte_2004, mcbook}.
+However, SNIS still fails to converge even on moderate dimensional objectives, and unlike IS, it is no longer unbiased~\citep{robert_monte_2004, mcbook}.
 
 \subsection{Markovian Score Climbing}\label{section:msc}
 %
@@ -61,17 +61,17 @@ However, SNIS still fails to converge even on moderate dimensional objectives, a
 \paragraph{Description of MSC}
 Recently,~\citet{NEURIPS2020_b2070693} proposed \textit{markovian score climbing} (MSC) for performing inclusive VI.
 They showed that MSC achieves better and robust performance compared to methods such as SNIS and expectation propagation (EP, \citealt{10.5555/2074022.2074067})
-A pseudocode is presented in Algorithm~\ref{alg:msc}.
+The pseudocode is presented in Algorithm~\ref{alg:msc}.
 MSC obtains stochastic gradients from a Markov-chain \(\{\,\vz_1, \vz_2, \ldots \vz_T\,\}\) generated from a \(\pi\)-invariant transition operator \(K(\vz, \cdot)\) running in parallel with the VI optimizer (represented by the sequence \(\{\,\vlambda_1, \vlambda_2, \ldots, \vlambda_T\,\}\)).
 %If \(K(\vz, \cdot)\) is a proper Markov-chain Monte Carlo (MCMC) kernel,~\citeauthor{NEURIPS2020_b2070693} note that the gradient estimates become asymptotically unbiased with \(t \rightarrow \infty\).
 
 \paragraph{A Motivating Mystery}
-Despite the fact that~\citeauthor{NEURIPS2020_b2070693} suggest that the fact that using an MCMC kernel is what makes MSC work well in practice, we present an example that begs for an alternative explanation.
+Despite the fact that~\citeauthor{NEURIPS2020_b2070693} suggested that MSC works well because of the good quality of the MCMC generated gradients, we present an example that begs for an alternative explanation.
 %(asymptotic) unbiasedness is what makes MSC work well in practice, we present an example that motivates an alternative explanation.
-In particular, when using the CIS kernel, our example suggests that \textit{MSC makes most of the progress when the Markov-chain is the least effective}.
+In particular, when using the CIS kernel, our example suggests that \textit{MSC makes the most progress when the Markov-chain is the least effective}.
 In Figure~\ref{fig:motivating}, we show the trace plot of \(\vz_t\) (\textcolor{blue}{blue line}) and noisy estimates of \(\DKL{p}{q_{\vlambda}}\) (\textcolor{red}{red line}).
 Notice that \(\vz_t\) barely moves until iteration 300, where \(\DKL{p}{q_{\vlambda}}\) starts to converge.
-In a traditional accept-reject MCMC kernel, this corresponds to most of the samples being rejected, which says that the kernel is statistically very ineffective; at least, in a conventional understanding of MCMC.
+In a traditional accept-reject MCMC kernel, this corresponds to most of the samples being rejected, which says that the kernel is statistically very ineffective, at least in a conventional understanding of MCMC.
 
 %We later show that this phenomenon is actually 
 %Thus, until we achieve convergence, the samples from \(K(\vz_{t-1}, \cdot)\) are the most biased towards the previous state \(\vz_{t-1}\).
