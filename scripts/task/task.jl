@@ -17,7 +17,6 @@ import SimpleWeightedGraphs
 
 include("gaussian.jl")
 include("logistic.jl")
-#include("gmm.jl")
 include("eightschools.jl")
 include("sv.jl")
 include("lda.jl")
@@ -25,4 +24,3 @@ include("lda_meanfield.jl")
 include("neuron.jl")
 include("sunspot.jl")
 include("colon.jl")
-include("radon.jl")
