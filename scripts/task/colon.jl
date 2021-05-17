@@ -47,10 +47,10 @@ Turing.@model horseshoe(X, y, N, D) = begin
     λ′  = sqrt.(c²)*λ ./ sqrt.(c² .+ τ.^2*λ.^2)
     σ_β = τ*λ′
 
-    # if(!all(σ_β .> ϵ))
-    #     Turing.@addlogprob! -Inf
-    #     return
-    # end
+    if(!all(σ_β .> ϵ))
+        Turing.@addlogprob! -Inf
+        return
+    end
 
     β  ~ MvNormal(zeros(D), σ_β)
     y .~ Turing.BernoulliLogit.(X*β .+ α)
@@ -93,19 +93,11 @@ function run_task(prng::Random.AbstractRNG,
     function plot_callback(ℓπ, q, objective_, klpq)
         β  = get_variational_mode(q, model, Symbol("β"))
         α  = get_variational_mode(q, model, Symbol("α"))
-        λ  = get_variational_mode(q, model, Symbol("λ"))
-        c² = get_variational_mode(q, model, Symbol("c²"))[1]
-        τ  = get_variational_mode(q, model, Symbol("τ"))[1]
 
-        λ′  = sqrt(c²)*λ ./ sqrt.(c² .+ τ.^2*λ.^2)
-        σ_β = τ*λ′
         s   = x_test*β .+ α
         p   = StatsFuns.logistic.(s)
         ll  = sum(logpdf.(Turing.BernoulliLogit.(s), y_test))
-
-        #klpq = ∫pℓp - mean(logpdf.(Ref(q), eachcol(posterior)))
-
-        (ll=ll,)# klpq=klpq)# beta=β, sigma=σ_β)
+        (ll=ll,)
     end
 
     model_fake  = horseshoe_fake(x_train, y_train, size(data_x, 1), size(data_x, 2))
@@ -125,15 +117,15 @@ function run_task(prng::Random.AbstractRNG,
                      callback         = plot_callback,
                      rng              = prng,
                      rhat_interval    = 100,
-                     paretok_samples  = 0,
-                     paretok_interval = 10,
+                     paretok_samples  = 256,
+                     paretok_interval = 100,
                      sleep_interval   = sleep_interval,
                      sleep_params     = (ϵ=sleep_ϵ, L=sleep_L,),
-                     optimizer        = Flux.ADAM(1e-3),
+                     optimizer        = Flux.ADAM(1e-4),
                      show_progress    = show_progress
                      )
-    q
-    #Dict.(pairs.(stats))
+    β  = get_variational_mode(q, model, Symbol("β"))
+    Dict.(pairs.(stats)), β
 end
 
 function sample_posterior(prng::Random.AbstractRNG,

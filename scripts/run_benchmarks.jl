@@ -113,8 +113,7 @@ function general_benchmarks()
     end
 
     n_samples = 10
-    for task ∈ ["sv",
-                "neuron"]
+    for task ∈ ["sv"]
         for settings ∈ [Dict(:method=>"MSC_PIMH",
                              :task  =>task,
                              :n_samples=>n_samples),
@@ -134,10 +133,6 @@ function general_benchmarks()
                         Dict(:method=>"ELBO",
                              :task  =>task,
                              :n_samples=>n_samples),
-
-                        # Dict(:method=>"RWS",
-                        #      :task  =>task,
-                        #      :n_samples=>n_samples),
                         ]
             @info "starting epxeriment" settings=settings
             produce_or_load(datadir("exp_raw"),
@@ -146,6 +141,46 @@ function general_benchmarks()
                             suffix="jld2",
                             loadfile=false)
         end
+    end
+end
+
+function colon_benchmarks()
+    n_samples = 10
+    task      = "colon"
+    for settings ∈ [Dict(:method=>"MSC_PIMH",
+                         :task  =>task,
+                         :n_samples=>n_samples),
+
+                    Dict(:method=>"MSC_CIS",
+                         :task  =>task,
+                         :n_samples=>n_samples),
+
+                    Dict(:method=>"MSC_CISRB",
+                         :task  =>task,
+                         :n_samples=>n_samples),
+
+                    Dict(:method=>"SNIS",
+                         :task  =>task,
+                         :n_samples=>n_samples),
+
+                    Dict(:method=>"ELBO",
+                         :task  =>task,
+                         :n_samples=>n_samples),
+                    ]
+        @info "starting epxeriment" settings=settings
+
+        run_experiment_colon(settings) = begin
+            dict           = run_experiment(settings)
+            res            = dict["result"]
+            dict["result"] = [resᵢ[1] for resᵢ ∈ res]
+            dict["beta"]   = [resᵢ[2] for resᵢ ∈ res]
+            dict
+        end
+        produce_or_load(datadir("exp_raw"),
+                        settings,
+                        run_experiment_colon,
+                        suffix="jld2",
+                        loadfile=false)
     end
 end
 
