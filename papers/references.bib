@@ -741,6 +741,18 @@
   number = {2}
 }
 
+@inbook{barbakh_cross_2009,
+  title = {Cross Entropy Methods},
+  booktitle = {Non-{{Standard Parameter Adaptation}} for {{Exploratory Data Analysis}}},
+  author = {Barbakh, Wesam Ashour and Wu, Ying and Fyfe, Colin},
+  year = {2009},
+  volume = {249},
+  pages = {151--174},
+  publisher = {{Springer Berlin Heidelberg}},
+  address = {{Berlin, Heidelberg}},
+  collaborator = {Barbakh, Wesam Ashour and Wu, Ying and Fyfe, Colin}
+}
+
 @article{barker_monte_1965,
   title = {Monte {{Carlo}} Calculations of the Radial Distribution Functions for a Proton Electron Plasma},
   shorttitle = {Monte {{Carlo Calculations}} of the {{Radial Distribution Functions}} for a {{Proton}}?},
@@ -4508,6 +4520,21 @@
   address = {{Gold Coast, Australia}}
 }
 
+@article{li_approximate_2017,
+  title = {Approximate Inference with Amortised {{MCMC}}},
+  author = {Li, Yingzhen and Turner, Richard E. and Liu, Qiang},
+  year = {2017},
+  month = may,
+  abstract = {We propose a novel approximate inference algorithm that approximates a target distribution by amortising the dynamics of a user-selected MCMC sampler. The idea is to initialise MCMC using samples from an approximation network, apply the MCMC operator to improve these samples, and finally use the samples to update the approximation network thereby improving its quality. This provides a new generic framework for approximate inference, allowing us to deploy highly complex, or implicitly defined approximation families with intractable densities, including approximations produced by warping a source of randomness through a deep neural network. Experiments consider image modelling with deep generative models as a challenging test for the method. Deep models trained using amortised MCMC are shown to generate realistic looking samples as well as producing diverse imputations for images with regions of missing pixels.},
+  archiveprefix = {arXiv},
+  eprint = {1702.08343},
+  eprinttype = {arxiv},
+  file = {/home/msca8h/Zotero/storage/YMZ2XQ9Q/Li et al. - 2017 - Approximate Inference with Amortised MCMC.pdf;/home/msca8h/Zotero/storage/YBE7ZLFP/1702.html},
+  journal = {arXiv:1702.08343 [cs, stat]},
+  keywords = {Computer Science - Machine Learning,Statistics - Machine Learning},
+  primaryclass = {cs, stat}
+}
+
 @incollection{li_communication_2014,
   title = {Communication {{Efficient Distributed Machine Learning}} with the {{Parameter Server}}},
   booktitle = {Advances in {{Neural Information Processing Systems}} 27},
@@ -5303,6 +5330,19 @@
   number = {4}
 }
 
+@article{minh_understanding_2015,
+  title = {Understanding the {{Hastings Algorithm}}},
+  author = {Minh, David D. L. and Minh, Do Le (Paul)},
+  year = {2015},
+  month = feb,
+  volume = {44},
+  pages = {332--349},
+  file = {/home/msca8h/Zotero/storage/23G7T4HA/Minh and Minh - 2015 - Understanding the Hastings Algorithm.pdf},
+  journal = {Communications in Statistics - Simulation and Computation},
+  language = {en},
+  number = {2}
+}
+
 @techreport{minka2005divergence,
   title = {Divergence Measures and Message Passing},
   author = {Minka, Tom},
@@ -5665,6 +5705,15 @@
   publisher = {{Curran Associates, Inc.}}
 }
 
+@inproceedings{NEURIPS2018_584b98aa,
+  title = {Meta-Learning {{MCMC}} Proposals},
+  booktitle = {Advances in Neural Information Processing Systems},
+  author = {Wang, Tongzhou and WU, YI and Moore, Dave and Russell, Stuart J},
+  year = {2018},
+  volume = {31},
+  publisher = {{Curran Associates, Inc.}}
+}
+
 @inproceedings{NEURIPS2019_aec851e5,
   title = {Estimating Convergence of Markov Chains with L-Lag Couplings},
   booktitle = {Advances in Neural Information Processing Systems},
@@ -5672,6 +5721,16 @@
   year = {2019},
   volume = {32},
   pages = {7391--7401},
+  publisher = {{Curran Associates, Inc.}}
+}
+
+@inproceedings{NEURIPS2020_7cac11e2,
+  title = {Robust, Accurate Stochastic Optimization for Variational Inference},
+  booktitle = {Advances in Neural Information Processing Systems},
+  author = {Dhaka, Akash Kumar and Catalina, Alejandro and Andersen, Michael R and Magnusson, M{\aa}ns and Huggins, Jonathan and Vehtari, Aki},
+  year = {2020},
+  volume = {33},
+  pages = {10961--10973},
   publisher = {{Curran Associates, Inc.}}
 }
 
@@ -6000,6 +6059,17 @@
   language = {en}
 }
 
+@article{peskun_optimum_1973,
+  title = {Optimum {{Monte}}-{{Carlo}} Sampling Using {{Markov}} Chains},
+  author = {Peskun, P. H.},
+  year = {1973},
+  volume = {60},
+  pages = {607--612},
+  journal = {Biometrika},
+  language = {en},
+  number = {3}
+}
+
 @article{petrovic_benchmark_2020,
   title = {A Benchmark Set of Highly-Efficient {{CUDA}} and {{OpenCL}} Kernels and Its Dynamic Autotuning with {{Kernel Tuning Toolkit}}},
   author = {Petrovi{\v c}, Filip and St{\v r}el{\'a}k, David and Hozzov{\'a}, Jana and Ol'ha, Jaroslav and Trembeck{\'y}, Richard and Benkner, Siegfried and Filipovi{\v c}, Ji{\v r}{\'i}},
@@ -6099,6 +6169,20 @@
   series = {{{PMLR}}}
 }
 
+@inproceedings{pmlr-v124-ou20a,
+  title = {Joint Stochastic Approximation and Its Application to Learning Discrete Latent Variable Models},
+  booktitle = {Proceedings of the 36th Conference on Uncertainty in Artificial Intelligence ({{UAI}})},
+  author = {Ou, Zhijian and Song, Yunfu},
+  year = {2020},
+  month = aug,
+  volume = {124},
+  pages = {929--938},
+  publisher = {{PMLR}},
+  abstract = {Although with progress in introducing auxiliary amortized inference models, learning discrete latent variable models is still challenging. In this paper, we show that the annoying difficulty of obtaining reliable stochastic gradients for the inference model and the drawback of indirectly optimizing the target log-likelihood can be gracefully addressed in a new method based on stochastic approximation (SA) theory of the Robbins-Monro type. Specifically, we propose to directly maximize the target log-likelihood and simultaneously minimize the inclusive divergence between the posterior and the inference model. The resulting learning algorithm is called joint SA (JSA). To the best of our knowledge, JSA represents the first method that couples an SA version of the EM (expectation-maximization) algorithm (SAEM) with an adaptive MCMC procedure. Experiments on several benchmark generative modeling and structured prediction tasks show that JSA consistently outperforms recent competitive algorithms, with faster convergence, better final likelihoods, and lower variance of gradient estimates.},
+  pdf = {http://proceedings.mlr.press/v124/ou20a/ou20a.pdf},
+  series = {Proceedings of Machine Learning Research}
+}
+
 @inproceedings{pmlr-v33-ranganath14,
   title = {Black Box Variational Inference},
   booktitle = {Proceedings of the Seventeenth International Conference on Artificial Intelligence and Statistics},
@@ -6169,6 +6253,20 @@
   address = {{Fort Lauderdale, FL, USA}},
   abstract = {Bayesian optimization has proven invaluable for black-box optimization of expensive functions. Its main limitation is its exponential complexity with respect to the dimensionality of the search space using typical kernels. Luckily, many objective functions can be decomposed into additive subproblems, which can be optimized independently. We investigate how to automatically discover such (typically unknown) additive structure while simultaneously exploiting it through Bayesian optimization. We propose an efficient algorithm based on Metropolis-Hastings sampling and demonstrate its efficacy empirically on synthetic and real-world data sets. Throughout all our experiments we reliably discover hidden additive structure whenever it exists and exploit it to yield significantly faster convergence.},
   pdf = {http://proceedings.mlr.press/v54/gardner17a/gardner17a.pdf},
+  series = {Proceedings of Machine Learning Research}
+}
+
+@inproceedings{pmlr-v70-hoffman17a,
+  title = {Learning Deep Latent {{Gaussian}} Models with {{Markov}} Chain {{Monte Carlo}}},
+  booktitle = {Proceedings of the 34th International Conference on Machine Learning},
+  author = {Hoffman, Matthew D.},
+  year = {2017},
+  month = aug,
+  volume = {70},
+  pages = {1510--1519},
+  publisher = {{PMLR}},
+  abstract = {Deep latent Gaussian models are powerful and popular probabilistic models of high-dimensional data. These models are almost always fit using variational expectation-maximization, an approximation to true maximum-marginal-likelihood estimation. In this paper, we propose a different approach: rather than use a variational approximation (which produces biased gradient signals), we use Markov chain Monte Carlo (MCMC, which allows us to trade bias for computation). We find that our MCMC-based approach has several advantages: it yields higher held-out likelihoods, produces sharper images, and does not suffer from the variational overpruning effect. MCMC's additional computational overhead proves to be significant, but not prohibitive.},
+  pdf = {http://proceedings.mlr.press/v70/hoffman17a/hoffman17a.pdf},
   series = {Proceedings of Machine Learning Research}
 }
 
@@ -7497,6 +7595,21 @@
   eprinttype = {arxiv},
   file = {/home/msca8h/Zotero/storage/99AXQJU2/Varsi et al. - 2019 - A Single SMC Sampler on MPI that Outperforms a Sin.pdf;/home/msca8h/Zotero/storage/9HC9E6A6/1905.html},
   keywords = {Computer Science - Distributed; Parallel; and Cluster Computing,Statistics - Computation}
+}
+
+@article{vehtari_pareto_2021,
+  title = {Pareto Smoothed Importance Sampling},
+  author = {Vehtari, Aki and Simpson, Daniel and Gelman, Andrew and Yao, Yuling and Gabry, Jonah},
+  year = {2021},
+  month = feb,
+  abstract = {Importance weighting is a general way to adjust Monte Carlo integration to account for draws from the wrong distribution, but the resulting estimate can be noisy when the importance ratios have a heavy right tail. This routinely occurs when there are aspects of the target distribution that are not well captured by the approximating distribution, in which case more stable estimates can be obtained by modifying extreme importance ratios. We present a new method for stabilizing importance weights using a generalized Pareto distribution fit to the upper tail of the distribution of the simulated importance ratios. The method, which empirically performs better than existing methods for stabilizing importance sampling estimates, includes stabilized effective sample size estimates, Monte Carlo error estimates and convergence diagnostics.},
+  archiveprefix = {arXiv},
+  eprint = {1507.02646},
+  eprinttype = {arxiv},
+  file = {/home/msca8h/Zotero/storage/W9HIAV98/Vehtari et al. - 2021 - Pareto Smoothed Importance Sampling.pdf;/home/msca8h/Zotero/storage/L4Z2DYIR/1507.html},
+  journal = {arXiv:1507.02646 [stat]},
+  keywords = {Statistics - Computation,Statistics - Machine Learning,Statistics - Methodology},
+  primaryclass = {stat}
 }
 
 @article{vehtari_ranknormalization_2020,

@@ -16,7 +16,7 @@ In contrast, the inclusive KL is defined as
 where the average is taken cover \(p\), which is the integral we wish to solve in the first place.
 Despite this chicken-and-egg problem, minimizing the inclusive KL has alluded researchers as it does not have some limitations of the exclusive KL divergence~\citep{minka2005divergence, mackay_local_2001}.
 
-For performing inclusive VI,~\citet{NEURIPS2020_b2070693} recently proposed \textit{Markovian score climbing} (MSC), which is a blend of Markov-chain Monte Carlo (MCMC) and variational inference.
+For performing inclusive VI,~\citet{NEURIPS2020_b2070693, pmlr-v124-ou20a} recently proposed \textit{Markovian score climbing} (MSC), which is a blend of Markov-chain Monte Carlo (MCMC) and variational inference.
 In MSC, stochastic gradients of the inclusive KL are obtained by operating a Markov-chain in parallel with the VI optimizer.
 An interesting property of MSC emerges when combined with specific types of MCMC kernels.
 This paper shows that \textit{independent Metropolis-Hastings} (IMH,~\citealt{robert_monte_2004}) type kernels can automatically trade-off bias and variance.

@@ -88,26 +88,35 @@ In particular, the CIS kernel is identical to the previously proposed \textit{en
 \paragraph{Conditional Importance Sampling as Metropolis Hastings}
 We now show that the CIS kernel is an accept-reject type kernel with Barker's acceptance ratio.
 First, by defining \(\vz_t = \vz_{t-1}\) as ``reject'' and \(\vz_t \neq \vz_{t-1}\) as ``accept'', it is easy to notice that the CIS kernel can be understood as an accept-reject type kernel.
-By denoting the \(N\) parallel proposals as an \textit{ensemble state} \(\vz^{(1:N)} = (\vz^{(1)}, \ldots, \vz^{(N)})\)~\citep{neal_mcmc_2011a}, the CIS kernel from \(\vz_{t-1}\) to the next state \(\vz\) can be written as
+By denoting the \(N\) parallel proposals as an \textit{ensemble state} \(\vz^{(1:N)} = (\vz^{(1)}, \ldots, \vz^{(N)})\)~\citep{neal_mcmc_2011a}, the CIS kernel conditional estimate can be written as
 \begin{align}
-  K(\vz_{t-1}, \vz) = \int \alpha\,(\vz_{t-1}, \vz^{(1:N)}) \, q_{\vlambda}(\vz^{(1:N)})\, L\,(\vz^{(1:N)}, \vz) \, d\vz^{(1:N)}
-  + r\,(\vz_{t-1})\,\delta_{\vz_{t-1}}(\vz)
+  &\Esub{K(\vz_{t-1}, \cdot)}{f(\vz)}  = \nonumber \\  
+   &\int \alpha\,(\vz_{t-1}, \vz^{(1:N)}) \,
+    \frac{
+      \sum^{N}_{i=1} w\,(\vz^{(i)})\,f(\vz^{(i)})
+    }
+    {
+      \sum^{N}_{i=1} w\,(\vz^{(i)})
+    } \,
+    q_{\vlambda}(\vz^{(1:N)})\,d\vz^{(1:N)}
+    + r\,(\vz_{t-1}) \, f(\vz_{t-1})\label{eq:cis_kernel}
 \end{align}
-where since each component of \(\vz^{(1:N)}\) are independent, \(q_{\vlambda}(\vz^{(1:N)}) = \prod^N_{i=1} q_{\vlambda}(\vz^{(i)}) \), \(L\,(\vz^{(1:N)}, \vz)\) is a kernel representing the multinomial resampling step,
-\begin{align}
+where \(q_{\vlambda}(\vz^{(1:N)}) = \prod^N_{i=1} q_{\vlambda}(\vz^{(i)}) \),
+\(
   \alpha(\vz_{t-1}, \vz^{(1:N)})
-  = \frac{\sum^{N}_{i=1} w\,(\vz^{(i)})}{w\,(\vz_{t-1}) + \sum^{N}_{i=1} w\,(\vz^{(i)})} \label{eq:acc}
-\end{align}
-is the probability of accepting the ensemble state \(\vz^{(1:N)}\) where \(w(\vz) = p(\vz,\vx)/ q_{\vlambda}(\vz)\) is the unnormalized importance weight, and%
+  = \nicefrac{\sum^{N}_{i=1} w\,(\vz^{(i)})}{\sum^{N}_{i=0} w\,(\vz^{(i)})}
+\)
+is the probability of accepting the ensemble state \(\vz^{(1:N)}\) %% where \(w(\vz) = p(\vz,\vx)/ q_{\vlambda}(\vz)\) is the unnormalized importance weight
+, and%
 {\small
   \begin{align}
     r\,(\vz_{t-1}) &= \int r\,(\vz_{t-1} \mid \vz^{(1:N)})\,q_{\vlambda}(\vz^{(1:N)}) \, d\vz^{(1:N)}
     = \int \left(1 - \alpha\,(\vz_{t-1}, \vz^{(1:N)})\right) q_{\vlambda}(\vz^{(1:N)}) \, d\vz^{(1:N)}
   \end{align}
 }%
-is the probability of rejecting the ensemble state and staying on \(\vz_{t-1}\).
+is the probability of rejecting \textit{any} ensemble state and staying on \(\vz_{t-1}\).
 \(r\,(\vz_{t-1}\mid \vz^{(1:N)})\) is the rejection rate given \(\vz^{(1:N)}\).
-The acceptance ratio in Equation~\eqref{eq:acc} is known as~\citeauthor{barker_monte_1965}'s acceptance ratio~\citep{barker_monte_1965} and is a special case of the original~\cite{metropolis_equation_1953} acceptance ratio.
+The acceptance ratio \(\alpha(\vz_{t-1}, \vz^{(1:N)})\) is known as~\citeauthor{barker_monte_1965}'s acceptance ratio~\citep{barker_monte_1965} and is a special case of the original~\cite{metropolis_equation_1953} acceptance ratio.
 
 %% Now, the transition kernel can be denoted as
 %% \begin{align}
@@ -125,7 +134,7 @@ The variance of the conditional estimate is closely related to the rejection rat
   &\geq \Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1}\,\vz^{(1:N)} } } \label{eq:rao_blackwell}\\
   &= \Vsub{q_{\vlambda}}{ \big(1 - r\,(\vz_{t-1}\mid\vz^{(1:N)})\big)\, f_{\mathrm{IS}}
     + r\,(\vz_{t-1}\mid\vz^{(1:N)})\,f(\vz_{t-1}) \,\middle\vert\, \vz_{t-1},\, \vz^{(1:N)} } \label{eq:exact_variance} \\
-  &\text{where}\;\; f_{\mathrm{IS}} = {\sum_{i=1}^N w\,(\vz^{(i)}) f(\vz^{(i)})\,/\,\sum_{i=1}^N w\,(\vz^{(i)})} \nonumber 
+  &\text{where}\;\; f_{\mathrm{IS}} = {\sum_{i=1}^N w\,(\vz^{(i)}) f(\vz^{(i)})\,/\,\sum_{i=1}^N w\,(\vz^{(i)})}. \nonumber 
 \end{align}
 %
 The bound in~\eqref{eq:rao_blackwell} is exact if we use Rao-Blackwellization (use the SNIS estimator formed by \(\widetilde{w}^{(0)}, \ldots, \widetilde{w}^{(N)}\}\) instead of multinomial resampling) as mentioned by~\citet{NEURIPS2020_b2070693}.
@@ -155,11 +164,11 @@ The interesting fact emerges by the fact that \(w\,(\vz_{t-1})\) can be huge whe
 Since
 \begin{align}
   \DKL{p}{q_{\vlambda}} = \int p\,(\vz\mid\vx) \log \frac{p\,(\vz\mid\vx)}{q_{\vlambda}(\vz)} \, d\vz
-  \leq \log \Esub{p}{\frac{p\,(\vz\mid\vx)}{q_{\vlambda}(\vz_t)}}
+  \leq \log \Esub{p(\vz\mid\vx)}{\frac{p\,(\vz_t\mid\vx)}{q_{\vlambda}(\vz_t)}}
 \end{align}
 by Jensen's equality, 
 \begin{align}
-  \frac{1}{Z}\,\exp\big(\DKL{p}{q_{\vlambda}}\big) \leq \Esub{p}{w(\vz_{t})}.\label{eq:kl_rej}
+  \frac{1}{Z}\,\exp\big(\DKL{p}{q_{\vlambda}}\big) \leq \Esub{p(\vz_t\mid\vx)}{w\,(\vz_{t})}.\label{eq:kl_rej}
 \end{align}
 This result states that in the ideal case that \(\vz_t\) can be seen as samples from the posterior \(\vz_t \sim p\,(\vz\mid\vx)\), the average rejection weight is bounded below exponentially by the KL divergence.
 Thus, until MSC converges such that \(\DKL{p}{q_{\vlambda}}\) is small, the rejection rate will be very high.
@@ -284,7 +293,7 @@ On the other hand, the variance of a SNIS estimator is known to approximately de
 That is, 
 \begin{align}
   \Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1}\,\vz^{(1:N)} } } \approx \underbrace{{\big(1 - r\,(\vz_{t-1})\big)}^2}_{\text{approx.}\;\;\mathcal{O}(N^2)} \,
-  \underbrace{\Vsub{q_{\vlambda}}{ f_{\text{IS}} }}_{\text{approx.}\;\;\mathcal{O}(1/N)}.
+  \underbrace{\Vsub{q_{\vlambda}}{ f_{\text{IS}} }}_{\text{approx.}\;\;\mathcal{O}(1/N)}.\label{eq:cis_variance_incr}
 \end{align}
 Thus, when \(w\,(\vz_{t-1})\gg N\,Z\), the conditional variance of CIS approximately grows linearly with \(N\).
 

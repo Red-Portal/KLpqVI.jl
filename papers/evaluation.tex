@@ -27,13 +27,13 @@ Our implementation works with any model described in Turing, which automatically
 \paragraph{Considered Baselines}
 We compare MSC-PIMH against
 \begin{enumerate*}[label=\textbf{(\roman*)}]
-  \item  MSC using the CIS kernel (\textbf{MSC-CIS};~\citealt{NEURIPS2020_b2070693}), 
-  \item  MSC using the CIS kernel with Rao-Blackwellization (\textbf{MSC-CISRB};~\citealt{NEURIPS2020_b2070693})
+  \item  MSC using the CIS kernel (\textbf{MSC-CIS},~\citealt{NEURIPS2020_b2070693}), 
+  \item  MSC using the CIS kernel with Rao-Blackwellization (\textbf{MSC-CISRB},~\citealt{NEURIPS2020_b2070693})
   \item the adaptive IS method using SNIS as introduced in Section~\ref{section:ivi_previous} (\textbf{SNIS}).
-  \item the reweighted wake-sleep algorithm (\textbf{RWS};~\citealt{DBLP:journals/corr/BornscheinB14}),  
-  \item and evidence lower-bound minimization (\textbf{ELBO};~\citealt{pmlr-v33-ranganath14}).
+  \item the reweighted wake-sleep algorithm (\textbf{RWS},~\citealt{DBLP:journals/corr/BornscheinB14}),  
+  \item and evidence lower-bound minimization (\textbf{ELBO},~\citealt{pmlr-v33-ranganath14}).
 \end{enumerate*}
-Specifically, we use automatic differentiation variational inference~\citep{JMLR:v18:16-107} implemented by Turing.
+Specifically, we use automatic differentiation variational inference (ADVI,~\citealt{JMLR:v18:16-107}) implemented by Turing.
 
 \begin{figure*}
   \centering
@@ -60,7 +60,6 @@ Specifically, we use automatic differentiation variational inference~\citep{JMLR
   }\label{fig:logistic}
 \end{figure*}
 
-
 \paragraph{Reinterpreting RWS}
 The original RWS algorithm assumes that independent samples from \(p(\vz\mid\vx)\) are available possibly with an additional cost.
 It uses these independent samples for estimating the gradient once every \(K\) steps, and uses SNIS for the rest.
@@ -78,14 +77,14 @@ While MSC-PIMH shows some level of overshoot wih \(N=4\), it shows monotonic con
 On the other hand, both MSC-CIS and MSC-CISRB overshoots even with \(N=64\).
 This clearly shows that our PIMH kernel enjoys better gradient estimates compared to the CIS kernel.
 
-\subsection{Logistic Regression}
+\subsection{Hierarchical Logistic Regression}
 \paragraph{Experimental Setup}
 We now evaluate MSC-PIMH on logistic regression problems.
-We consider the Pima Indians diabetes (pima), German credit (german), and heart disease (heart) datasets.
+We consider the Pima Indians diabetes (\textbf{pima}), German credit (\textbf{german}), and heart disease (\textbf{heart}) datasets.
 10\% of the datapoints in each dataset were excluded from training and used as test data.
 The train-test splits were chosen randomly in each of the 100 repetitions.
 
-Instead of the more common porbit/logistic regression models used in VI, we choose a more challenging hierarchical logistic regression model \\
+Instead of the common single-level porbit/logistic regression models used in VI, we choose a more complex hierarchical logistic regression model \\
 \begin{equation}
 y_i \sim \text{Bernoulli-Logit}\,(p),\;
 p \sim \mathcal{N}(\vx_i^{\top}\symbf{\beta} + \alpha,\, \sigma_{\alpha}^2),\;
@@ -93,7 +92,7 @@ p \sim \mathcal{N}(\vx_i^{\top}\symbf{\beta} + \alpha,\, \sigma_{\alpha}^2),\;
 \sigma_{\beta},\,\sigma_{\alpha} \sim \mathcal{N}^{+}(0, 1.0)
 \end{equation}
 where \(\mathcal{N}^+(\mu, \sigma)\) is a positive constrained normal distribution with mean \(\mu\) and standard deviation \(\sigma\), \(\vx_i\) and \(y_i\) are the feature vector and target variable of the \(i\)th datapoint.
-The extra degrees of freedom \(\sigma_{\beta}\) and \(\sigma_{\alpha}\) make this model relatively more challenging to infer.
+The extra degrees of freedom \(\sigma_{\beta}\) and \(\sigma_{\alpha}\) make this model relatively more challenging.
 
 %
 \begin{wrapfigure}{r}{0.4\textwidth}
@@ -113,9 +112,9 @@ Meanwhile, SNIS was the slowest to converge among inclusive VI methods.
 Lastly, despite being much slower to converge, ELBO achieved similar level of performance to MSC-PIMH.
 
 \paragraph{Inclusive VI v.s. Exclusive VI}
-Altough the test accuracy and log-likelihood results in Figure~\ref{fig:logistic} can convey a deceptive conclusion that inclusive and exclusive VI can be similar.
+The test accuracy and log-likelihood results in Figure~\ref{fig:logistic} can convey a deceptive conclusion that inclusive and exclusive VI deliver similar results.
 However, in the perspective of parameter inference, both choose very different optimization paths.
-This is shown in Figure~\ref{fig:paretok}.
+This is shown in Figure~\ref{fig:paretok} through the pareto-\(\widehat{k}\) diagnostic~\citep{vehtari_pareto_2021, NEURIPS2020_7cac11e2}, which determines how reliable are the importance weights computed using \(q_{\vlambda}\).
 While the test accuracy suggests that ELBO converged around \(t=2000\), the pareto-\(\widehat{k}\) takes much longer to converge (about \(t=5000\)).
 This shows that, even if their predictive performance is similar, the inclusive VI chooses a path that has better density coverage as expected.
 
