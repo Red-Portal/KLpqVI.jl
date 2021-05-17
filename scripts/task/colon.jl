@@ -16,10 +16,11 @@ Turing.@model horseshoe_fake(X, y, N, D) = begin
     s  = 2
     ν  = 4
     m₀ = 3
+    μ   = mean(y)
+    σ   = (1/μ)*(1/(1 - μ))
+    τ₀  = m₀ / (D - m₀) * σ / sqrt(N)
 
     α   ~ Normal(0,10) 
-    σ   ~ Gamma(1.0,2.0)
-    τ₀  = m₀ / (D - m₀) * σ / sqrt(N)
     τ   ~ Gamma(1.0, τ₀)
     λ   ~ Turing.filldist(Gamma(1.0,2.0), D)
     c²  ~ InverseGamma(ν/2, ν/2*s^2)
@@ -31,14 +32,15 @@ Turing.@model horseshoe_fake(X, y, N, D) = begin
 end
 
 Turing.@model horseshoe(X, y, N, D) = begin
-    ϵ  = eps(Float64)
-    s  = 2
-    ν  = 4
-    m₀ = 3
+    ϵ   = eps(Float64)
+    s   = 2
+    ν   = 4
+    m₀  = 3
+    μ   = mean(y)
+    σ   = (1/μ)*(1/(1 - μ))
+    τ₀  = m₀ / (D - m₀) * σ / sqrt(N)
 
     α   ~ Normal(0,10) 
-    σ   ~ truncated(Normal(0.0,2.0), 0.0, Inf)
-    τ₀  = m₀ / (D - m₀) * σ / sqrt(N)
     τ   ~ truncated(Cauchy(0.0, τ₀), 0.0, Inf)
     λ   ~ Turing.filldist(truncated(Cauchy(0.0, 1.0), 0.0, Inf), D)
     c²  ~ InverseGamma(ν/2, ν/2*s^2)
@@ -62,7 +64,7 @@ function load_dataset(::Val{:colon})
 end
 
 function hmc_params(task::Val{:colon})
-    ϵ = 0.0005
+    ϵ = 0.0025
     L = 32
     ϵ, L
 end
@@ -155,10 +157,10 @@ function sample_posterior_full(prng::Random.AbstractRNG,
     data_x, data_y = load_dataset(task)
     model          = horseshoe(data_x, data_y, size(data_x,1), size(data_x, 2))
 
-    sampler = Turing.NUTS(2000, 0.99;
+    sampler = Turing.NUTS(2000, 0.95;
                           max_depth=8,
                           Δ_max=100.0)
-    chain   = Turing.sample(model, sampler, 4000; progress=true)
+    chain   = Turing.sample(model, sampler, 6000; progress=true)
     L       = median(chain[:n_steps][:,1])
     ϵ       = mean(chain[:step_size][:,1])
     @info "HMC Tuning Result on $(task)" ϵ=ϵ L=L

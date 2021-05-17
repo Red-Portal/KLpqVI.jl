@@ -1,7 +1,9 @@
 
 using ParserCombinator
 using SparseArrays
+using JLD2
 
+import FileIO
 import Distances
 import JLD
 import MAT
@@ -22,3 +24,5 @@ include("lda.jl")
 include("lda_meanfield.jl")
 include("neuron.jl")
 include("sunspot.jl")
+include("colon.jl")
+include("radon.jl")

@@ -2,6 +2,7 @@
 using DrWatson
 @quickactivate "KLpqVI"
 
+using Memoization
 using ReverseDiff
 using Plots, StatsPlots
 using Flux
@@ -21,21 +22,32 @@ function find_hmc_params()
     Random123.set_counter!(prng, 0)
     Random.seed!(0)
 
+    Turing.Core.setrdcache(true)
     #AdvancedVI.setadbackend(:zygote)
     #Turing.Core._setadbackend(Val(:zygote))
-    #AdvancedVI.setadbackend(:reversediff)
-    #Turing.Core._setadbackend(Val(:reversediff))
+    AdvancedVI.setadbackend(:reversediff)
+    Turing.Core._setadbackend(Val(:reversediff))
+    #AdvancedVI.setadbackend(:forwarddiff)
+    #Turing.Core._setadbackend(Val(:forwarddiff))
 
-    #sample_posterior(prng, Val(:sv))
-
+    #sample_posterior(prng, Val(:schools))
 
     #sample_posterior(prng, Val(:pima))
     #sample_posterior(prng, Val(:heart))
     #sample_posterior(prng, Val(:ionosphere))
+    #sample_posterior(prng, Val(:german))
+    #sample_posterior(prng, Val(:sonar))
 
-    AdvancedVI.setadbackend(:zygote)
-    Turing.Core._setadbackend(Val(:zygote))
+    #AdvancedVI.setadbackend(:zygote)
+    #Turing.Core._setadbackend(Val(:zygote))
+    #sample_posterior(prng, Val(:colon))
+    #sample_posterior(prng, Val(:radon))
 
-    sample_posterior(prng, Val(:gaussian_correlated))
-    sample_posterior(prng, Val(:gaussian))
+    #AdvancedVI.setadbackend(:zygote)
+    #Turing.Core._setadbackend(Val(:zygote))
+
+    #sample_posterior(prng, Val(:gaussian_correlated))
+    #sample_posterior(prng, Val(:gaussian))
+
+    sample_posterior_full(prng, Val(:colon))
 end
