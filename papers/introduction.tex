@@ -2,10 +2,10 @@
 \section{Introduction}
 Variational inference (VI,~\citealt{jordan_introduction_1999, blei_variational_2017}) is a method of converting Bayesian inference into an optimization problem.
 Instead of working directly with our target distribution \(p\,(\vz\mid\vx)\), we find a \textit{variational approximation} \(q_{\lambda}(\vz) \in \mathcal{Q}\) closely approximating \(p\,(\vz\mid\vx)\) according to a discrepancy measure \(D(p, q)\).
-Naturally, choosing a good discrepancy measure, or obejctive function, is a critical part of the problem.
+Naturally, choosing a good discrepancy measure, or objective function, is a critical part of the problem.
 This fact had lead to the quest for good divergence measures~\citep{NIPS2016_7750ca35, NIPS2017_35464c84, pmlr-v97-ruiz19a}.
 However, until now, the exclusive KL divergence \(\DKL{q_{\lambda}}{p}\) (or reverse KL divergence) has seen ``exclusive'' use among various discrepancy measures.
-This is partly due to the fact that the exclusive KL is defined as an average over \(q_{\lambda} \in \mathcal{Q}\) which can often be estimated efficiently.
+This is partly because the exclusive KL is defined as an average over \(q_{\lambda} \in \mathcal{Q}\), which can be computed efficiently.
 In contrast, the inclusive KL is defined as
 %
 \begin{align}
@@ -19,19 +19,19 @@ Despite this chicken-and-egg problem, minimizing the inclusive KL has alluded re
 For performing inclusive VI,~\citet{NEURIPS2020_b2070693} recently proposed \textit{Markovian score climbing} (MSC), which is a blend of Markov-chain Monte Carlo (MCMC) and variational inference.
 In MSC, stochastic gradients of the inclusive KL are obtained by operating a Markov-chain in parallel with the VI optimizer.
 An interesting property of MSC emerges when combined with specific types of MCMC kernels.
-In this paper, we show that, \textit{independent Metropolis-Hastings} (IMH,~\citealt{robert_monte_2004}) type kernels are able to automatically trade-off bias and variance.
+This paper shows that \textit{independent Metropolis-Hastings} (IMH,~\citealt{robert_monte_2004}) type kernels can automatically trade-off bias and variance.
 This family of kernels include the \textit{condition importance sampling} (CIS,~\citealt{NEURIPS2020_b2070693}) kernel originally used by~\citeauthor{NEURIPS2020_b2070693} in MSC.
 Surprisingly, this property is unique to IMH type kernels, and does not occur in MCMC kernels with state-denpendent proposals such as Hamiltonian Monte Carlo (HMC,~\citealt{duane_hybrid_1987, neal_mcmc_2011, betancourt_conceptual_2017}).
 
-We also show that, under specific conditions, the performance of CIS kernel worsens with the number of proposals (or computational budget) used in each Markov-chain transition.
-As a simple solution to this problem, we propose to use parallel IMH (PIMH) chains, which enjoys reduced variance with exactly the same amount of computation.
+We also show that, under specific conditions, the performance of the CIS kernel worsens with the number of proposals (or computational budget) used in each Markov-chain transition.
+As a simple solution to this problem, we propose to use parallel IMH (PIMH) chains, which enjoy reduced variance with the same amount of computation.
 We evaluate the performance of MSC with PIMH against other inclusive~\cite{DBLP:journals/corr/BornscheinB14, NEURIPS2020_b2070693} and exlusive~\cite{pmlr-v33-ranganath14, JMLR:v18:16-107} VI methods.
 Lastly, some interesting connections with adaptive MCMC methods~\citep{10.1007/s11222-008-9110-y} are discussed.
 
 \paragraph{Contribution Summary}
 \begin{enumerate*}[label=\textbf{(\roman*)}]
 \item We show that IMH type kernels (which include the CIS kernel originally used in MSC; \textbf{Section~\ref{section:cis_imh}}) automatically perform bias-variance tradeoff (\textbf{Section~\ref{section:bias_variance}}).
-\item We show that increasing the computation budget of the CIS kernel can \textit{increase} its variance, and propose parallel IMH (PIMH) chains as an alternative (\textbf{Section~\ref{section:cis_bias}}).
+\item We show that increasing the computation budget of the CIS kernel can \textit{increase} its variance and propose parallel IMH (PIMH) chains as an alternative (\textbf{Section~\ref{section:cis_bias}}).
 \item We evaluate the performance of MSC with PIMH against other inclusive and exclusive VI methods (\textbf{Section~\ref{section:eval}}).
 \end{enumerate*}
 
