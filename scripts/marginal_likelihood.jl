@@ -14,7 +14,7 @@ using Random123
 using ProgressMeter
 using DelimitedFiles
 using ThermodynamicIntegration
-using Suppressor
+#using Suppressor
 #using NestedSamplers
 #using Measurements
 
@@ -69,16 +69,12 @@ function thermodynamic()
 
     y      = load_dataset(Val(:sv))
     model  = stochastic_volatility(y)
-    logZ   = @suppress begin
-        alg(model, TIParallelThreads())
-    end
+    logZ   = alg(model, TIParallelThreads())
     results[:sv] = logZ
 
     county, x, y = load_data(Val(:radon))
     model        = radon(county, x, y)
-    logZ         = @suppress begin
-        alg(model, TIParallelThreads())
-    end
+    logZ         = alg(model, TIParallelThreads())
     results[:radon] = logZ
 
     @info "results" logZ = results
