@@ -60,7 +60,7 @@ function thermodynamic()
 
     results   = Dict{Symbol, Float64}()
     n_burn    = 2048
-    n_samples = 2048
+    n_samples = 4096
     n_steps   = 32
     alg       = ThermodynamicIntegration.ThermInt(
         prng, ((1:n_steps) ./ n_steps) .^ 5;
