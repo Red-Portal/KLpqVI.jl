@@ -18,9 +18,8 @@ Turing.@model radon(county, x, y) = begin
     y    ~ MvNormal(μ_y, σ_y)
 end
 
-include(datadir("dataset", "radon.jl"))
 function load_dataset(::Val{:radon})
-    data   = radon_rawdata()
+    data   = FileIO.load(datadir("dataset", "radon.jld2"))
     x      = data["x"]
     y      = data["y"]
     u      = data["county"]
