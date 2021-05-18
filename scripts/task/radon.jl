@@ -30,7 +30,7 @@ function load_dataset(::Val{:radon})
     county, x, y
 end
 
-function hmc_params(task::Val{:sv})
+function hmc_params(task::Val{:radon})
     ϵ = 0.02
     L = 64
     ϵ, L
