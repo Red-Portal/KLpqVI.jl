@@ -57,6 +57,7 @@ function thermodynamic()
     #Turing.Core.setrdcache(true)
     #Turing.Core._setadbackend(Val(:reversediff))
 
+    ThermodynamicIntegration.set_adbackend(:ForwardDiff) 
     results   = Dict{Symbol, Float64}()
     n_burn    = 2048
     n_samples = 4096
@@ -66,7 +67,6 @@ function thermodynamic()
         n_samples=n_samples,
         n_warmup=n_burn)
 
-    ThermodynamicIntegration.set_adbackend(:ForwardDiff) 
     y      = load_dataset(Val(:sv))
     model  = stochastic_volatility(y)
     logZ   =  @suppress_err begin
@@ -75,6 +75,11 @@ function thermodynamic()
     results[:sv] = logZ
 
     ThermodynamicIntegration.set_adbackend(:Zygote) 
+    alg       = ThermodynamicIntegration.ThermInt(
+        prng, ((1:n_steps) ./ n_steps) .^ 5;
+        n_samples=n_samples,
+        n_warmup=n_burn)
+
     county, x, y = load_data(Val(:radon))
     model = radon(county, x, y)
     logZ  =  @suppress_err begin
