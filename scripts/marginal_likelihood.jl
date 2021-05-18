@@ -14,7 +14,7 @@ using Random123
 using ProgressMeter
 using DelimitedFiles
 using ThermodynamicIntegration
-using Suppressor
+#using Suppressor
 #using NestedSamplers
 #using Measurements
 
@@ -69,9 +69,7 @@ function thermodynamic()
 
     y      = load_dataset(Val(:sv))
     model  = stochastic_volatility(y)
-    logZ   =  @suppress_err begin
-        alg(model)
-    end
+    logZ   = alg(model)
     results[:sv] = logZ
 
     ThermodynamicIntegration.set_adbackend(:Zygote) 
@@ -82,9 +80,7 @@ function thermodynamic()
 
     county, x, y = load_data(Val(:radon))
     model = radon(county, x, y)
-    logZ  =  @suppress_err begin
-        alg(model)
-    end
+    logZ  = alg(model)
     results[:radon] = logZ
 
     @info "results" logZ = results
