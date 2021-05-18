@@ -21,6 +21,41 @@ using ThermodynamicIntegration
 include(srcdir("KLpqVI.jl"))
 include("task/task.jl")
 
+Turing.@model stochastic_volatility_unconstr(y, ::Type{F} = Float64) where {F} = begin
+    T = length(y)
+    ϵ = 1e-10
+
+    ϕ ~ Uniform(-1, 1)
+    σ ~ truncated(Cauchy(0, 5), 0, Inf)
+    μ ~ Cauchy(0, 10)
+
+    h_std ~ MvNormal(T, 1.0)
+    h     = σ*h_std
+
+    h′     = Array{F}(undef, T)
+    @inbounds h′[1]  = h[1] / sqrt(1 - ϕ^2)
+    for t in 2:T
+        @inbounds h′[t]  = h[t] + ϕ*h′[t-1]
+    end
+    σ_y = exp.((h′ .+ μ) / 2)
+    y   ~ MvNormal(σ_y)
+end
+
+Turing.@model radon_unconstr(county, x, y) = begin
+    ϵ    = eps(Float64)
+    σ_a1 ~ Gamma(1, 50)
+    σ_a2 ~ Gamma(1, 50)
+    σ_y  ~ Gamma(1, 50)
+    μ_a1 ~ Normal(0,1)
+    μ_a2 ~ Normal(0,1)
+
+    a1   ~ MvNormal(fill(μ_a1, 85), fill(σ_a1, 85))
+    a2   ~ MvNormal(fill(μ_a2, 85), fill(σ_a2, 85))
+
+    μ_y  = a1[county] + a2[county].*x
+    y    ~ MvNormal(μ_y, σ_y)
+end
+
 @eval ThermodynamicIntegration begin
     function sample_powerlogπ(powerlogπ, alg::ThermInt, x_init)
         D = length(x_init)
@@ -68,7 +103,7 @@ function thermodynamic()
         n_warmup=n_burn)
 
     y      = load_dataset(Val(:sv))
-    model  = stochastic_volatility(y)
+    model  = stochastic_volatility_unconstr(y)
     logZ   = alg(model)
     results[:sv] = logZ
 
@@ -79,7 +114,7 @@ function thermodynamic()
         n_warmup=n_burn)
 
     county, x, y = load_data(Val(:radon))
-    model = radon(county, x, y)
+    model = radon_unconstr(county, x, y)
     logZ  = alg(model)
     results[:radon] = logZ
 
