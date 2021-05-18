@@ -114,7 +114,6 @@ function radon_sample(prng, county, x, y)
     θ[6+85:5+85+85] = rand(prng, MvNormal(fill(μ_a2, 85), fill(σ_a2, 85)))
 end
 
-
 function radon_like(θ, county, x, y)
     ϵ    = eps(Float64)
     σ_a1 = θ[1]
@@ -168,7 +167,7 @@ function thermodynamic()
     ThermodynamicIntegration.set_adbackend(:ForwardDiff) 
     results   = Dict{Symbol, Float64}()
     n_burn    = 2048
-    n_samples = 4096
+    n_samples = 2048
     n_steps   = 32
     alg       = ThermodynamicIntegration.ThermInt(
         prng, ((1:n_steps) ./ n_steps) .^ 5;
