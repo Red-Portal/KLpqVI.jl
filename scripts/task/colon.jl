@@ -121,7 +121,7 @@ function run_task(prng::Random.AbstractRNG,
                      paretok_interval = 100,
                      sleep_interval   = sleep_interval,
                      sleep_params     = (ϵ=sleep_ϵ, L=sleep_L,),
-                     optimizer        = Flux.ADAM(1e-4),
+                     optimizer        = Flux.ADAM(1e-3),
                      show_progress    = show_progress
                      )
     β  = get_variational_mode(q, model, Symbol("β"))
