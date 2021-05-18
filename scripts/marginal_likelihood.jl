@@ -14,7 +14,7 @@ using Random123
 using ProgressMeter
 using DelimitedFiles
 using ThermodynamicIntegration
-#using Suppressor
+using Suppressor
 #using NestedSamplers
 #using Measurements
 
@@ -54,7 +54,6 @@ function thermodynamic()
     Random123.set_counter!(prng, 0)
     Random.seed!(0)
 
-    ThermodynamicIntegration.set_adbackend(:Zygote) 
     #Turing.Core.setrdcache(true)
     #Turing.Core._setadbackend(Val(:reversediff))
 
@@ -67,14 +66,20 @@ function thermodynamic()
         n_samples=n_samples,
         n_warmup=n_burn)
 
+    ThermodynamicIntegration.set_adbackend(:ForwardDiff) 
     y      = load_dataset(Val(:sv))
     model  = stochastic_volatility(y)
-    logZ   = alg(model)
+    logZ   =  @suppress_err begin
+        alg(model)
+    end
     results[:sv] = logZ
 
+    ThermodynamicIntegration.set_adbackend(:Zygote) 
     county, x, y = load_data(Val(:radon))
-    model        = radon(county, x, y)
-    logZ         = alg(model)
+    model = radon(county, x, y)
+    logZ  =  @suppress_err begin
+        alg(model)
+    end
     results[:radon] = logZ
 
     @info "results" logZ = results
