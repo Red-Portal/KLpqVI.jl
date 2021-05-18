@@ -104,7 +104,7 @@ function thermodynamic()
 
     y      = load_dataset(Val(:sv))
     model  = stochastic_volatility_unconstr(y)
-    logZ   = alg(model)
+    logZ   = alg(model, TIParallelThreads())
     results[:sv] = logZ
 
     ThermodynamicIntegration.set_adbackend(:Zygote) 
@@ -115,7 +115,7 @@ function thermodynamic()
 
     county, x, y = load_data(Val(:radon))
     model = radon_unconstr(county, x, y)
-    logZ  = alg(model)
+    logZ  = alg(model, TIParallelThreads())
     results[:radon] = logZ
 
     @info "results" logZ = results
