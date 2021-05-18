@@ -130,6 +130,10 @@ function general_benchmarks()
                              :task  =>task,
                              :n_samples=>n_samples),
 
+                        Dict(:method=>"RWS",
+                             :task  =>task,
+                             :n_samples=>n_samples),
+
                         Dict(:method=>"ELBO",
                              :task  =>task,
                              :n_samples=>n_samples),
