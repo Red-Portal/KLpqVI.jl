@@ -15,6 +15,8 @@ using ProgressMeter
 using DelimitedFiles
 using ThermodynamicIntegration
 using Suppressor
+#using NestedSamplers
+#using Measurements
 
 include(srcdir("KLpqVI.jl"))
 include("task/task.jl")
@@ -46,15 +48,15 @@ include("task/task.jl")
 #     end
 # end
 
-function marginal_likelihood()
+function thermodynamic()
     seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
     prng = Random123.Philox4x(UInt64, seed, 8);
     Random123.set_counter!(prng, 0)
     Random.seed!(0)
 
-    ThermodynamicIntegration.set_adbackend(:ForwardDiff) 
-    Turing.Core.setrdcache(true)
-    Turing.Core._setadbackend(Val(:reversediff))
+    ThermodynamicIntegration.set_adbackend(:Zygote) 
+    #Turing.Core.setrdcache(true)
+    #Turing.Core._setadbackend(Val(:reversediff))
 
     n_burn    = 2048
     n_samples = 2048
@@ -73,10 +75,38 @@ function marginal_likelihood()
 
     ThermodynamicIntegration.set_adbackend(:Zygote) 
 
-    mat, N = load_data(Val(:neuron))
-    model  = neuron(mat, N, 3)
-    logZ   = @suppress begin
+    county, x, y = load_data(Val(:radon))
+    model        = radon(county, x, y)
+    logZ         = @suppress begin
         alg(model, TIParallelThreads())
     end
     @info "neuron" logZ = logZ
 end
+
+# function nested()
+#     seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
+#     prng = Random123.Philox4x(UInt64, seed, 8);
+#     Random123.set_counter!(prng, 0)
+#     Random.seed!(0)
+
+#     ThermodynamicIntegration.set_adbackend(:Zygote) 
+#     #Turing.Core.setrdcache(true)
+#     #Turing.Core._setadbackend(Val(:reversediff))
+
+#     bounds  = Bounds.MultiEllipsoid
+#     prop    = Proposals.Slice(slices=10)
+#     sampler = Nested(2, 1000; bounds=bounds, poprosal=prop)
+
+
+#     y      = load_dataset(Val(:sv))
+#     model  = stochastic_volatility(y)
+#     state  = sample(model, sampler; dlogz=0.2)
+#     @info "sv" logZ = state.logz ± state.logzerr
+
+#     ThermodynamicIntegration.set_adbackend(:Zygote) 
+
+#     county, x, y = load_data(Val(:radon))
+#     model        = radon(county, x, y)
+#     state        = sample(model, sampler; dlogz=0.2)
+#     @info "neuron" logZ = state.logz ± state.logzerr
+# end
