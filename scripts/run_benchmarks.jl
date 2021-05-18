@@ -113,7 +113,7 @@ function general_benchmarks()
     end
 
     n_samples = 10
-    for task ∈ ["sv"]
+    for task ∈ ["sv", "radon"]
         for settings ∈ [Dict(:method=>"MSC_PIMH",
                              :task  =>task,
                              :n_samples=>n_samples),
