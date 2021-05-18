@@ -76,7 +76,7 @@ end
     logpdf(MvNormal(σ_y), y)
 end
 
- function radon_prior(θ, county, x, y)
+function radon_prior(θ, county, x, y)
     ϵ      = eps(Float64)
     σ_a1   = θ[1]
     σ_a2   = θ[2]
@@ -90,6 +90,11 @@ end
     ℓprior += logpdf(Gamma(1, 50), σ_a1)
     ℓprior += logpdf(Gamma(1, 50), σ_a2)
     ℓprior += logpdf(Gamma(1, 50), σ_y)
+
+    if(σ_a1 <= 0.0 || σ_a2 <= 0.0 || σ_y <= 0.0)
+        return -Inf
+    end
+
     ℓprior += logpdf(Normal(0,1),  μ_a1)
     ℓprior += logpdf(Normal(0,1),  μ_a2)
     ℓprior += logpdf(MvNormal(fill(μ_a1, 85), fill(σ_a1, 85)), a1)
@@ -112,6 +117,7 @@ function radon_sample(prng, county, x, y)
     μ_a2   = θ[5]
     θ[6:5+85]       = rand(prng, MvNormal(fill(μ_a1, 85), fill(σ_a1, 85)))   
     θ[6+85:5+85+85] = rand(prng, MvNormal(fill(μ_a2, 85), fill(σ_a2, 85)))
+    θ
 end
 
 function radon_like(θ, county, x, y)
@@ -188,11 +194,11 @@ function thermodynamic()
         n_samples=n_samples,
         n_warmup=n_burn)
 
-    county, x, y   = load_data(Val(:radon))
-    radon_prior(θ) = radon_prior(θ, county, x, y)
-    radon_like(θ)  = radon_like(θ, county, x, y)
-    θ_init         = radon_sample(prng, county, x, y)
-    logZ  = alg(radon_prior, radon_like, θ_init, TIParallelThreads())
+    county, x, y   = load_dataset(Val(:radon))
+    rd_prior(θ) = radon_prior(θ, county, x, y)
+    rd_like(θ)  = radon_like(θ, county, x, y)
+    θ_init      = radon_sample(prng, county, x, y)
+    logZ  = alg(rd_prior, rd_like, θ_init, TIParallelThreads())
     results[:radon] = logZ
 
     @info "results" logZ = results
