@@ -58,6 +58,7 @@ function thermodynamic()
     #Turing.Core.setrdcache(true)
     #Turing.Core._setadbackend(Val(:reversediff))
 
+    results   = Dict{Symbol, Float64}()
     n_burn    = 2048
     n_samples = 2048
     n_steps   = 32
@@ -71,16 +72,17 @@ function thermodynamic()
     logZ   = @suppress begin
         alg(model, TIParallelThreads())
     end
-    @info "sv" logZ = logZ
-
-    ThermodynamicIntegration.set_adbackend(:Zygote) 
+    results[:sv] = logZ
 
     county, x, y = load_data(Val(:radon))
     model        = radon(county, x, y)
     logZ         = @suppress begin
         alg(model, TIParallelThreads())
     end
-    @info "neuron" logZ = logZ
+    results[:radon] = logZ
+
+    @info "results" logZ = results
+    results
 end
 
 # function nested()
