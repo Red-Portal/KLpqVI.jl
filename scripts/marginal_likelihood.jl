@@ -21,54 +21,111 @@ using ThermodynamicIntegration
 include(srcdir("KLpqVI.jl"))
 include("task/task.jl")
 
-Turing.@model stochastic_volatility_unconstr(y, ::Type{F} = Float64) where {F} = begin
+@inbounds function stochastic_volatility_prior(θ, y)
+    ϵ     = 1e-10
+    T     = length(y)
+    ϕ     = θ[1]
+    σ     = θ[2]
+    μ     = θ[3]
+    h_std = θ[4:3+T]
+    
+    ℓprior  = 0.0
+    ℓprior += logpdf(Uniform(-1+ϵ, 1-ϵ),              ϕ)
+    ℓprior += logpdf(truncated(Cauchy(0, 5), ϵ, Inf), σ)
+    ℓprior += logpdf(Cauchy(0, 10),                   μ)
+    ℓprior += logpdf(MvNormal(T, 1.0),                h_std)
+    ℓprior
+end
+
+@inbounds function stochastic_volalitility_sample(prng, y)
+    ϵ        = 1e-10
+    T        = length(y)
+    θ        = Array{Float64}(undef, T+3)
+    θ[1]     = rand(prng, Uniform(-1+ϵ, 1-ϵ))
+    θ[2]     = rand(prng, truncated(Cauchy(0, 5), ϵ, Inf))
+    θ[3]     = rand(prng, Cauchy(0, 10))
+    θ[4:end] = rand(prng, MvNormal(T, 1.0))
+    θ
+end
+
+@inbounds function stochastic_volatility_like(θ, y)
     T = length(y)
     ϵ = 1e-10
 
-    ϕ ~ Uniform(-1+ϵ, 1-ϵ)
-    σ ~ truncated(Cauchy(0, 5), ϵ, Inf)
-    μ ~ Cauchy(0, 10)
-
-    h_std ~ MvNormal(T, 1.0)
-    h     = σ*h_std
+    T     = length(y)
+    ϕ     = θ[1]
+    σ     = θ[2]
+    μ     = θ[3]
+    h_std = θ[4:3+T]
 
     if(1 - ϕ^2 <= 0.0 || σ <= 0.0)
-        Turing.@addlogprob! -Inf
-        return
+        return -Inf
     end
 
-    h′     = Array{F}(undef, T)
-    @inbounds h′[1]  = h[1] / sqrt(1 - ϕ^2)
+    h     = σ*h_std
+    h′    = Array{eltype(θ)}(undef, T)
+    h′[1] = h[1] / sqrt(1 - ϕ^2)
     for t in 2:T
-        @inbounds h′[t]  = h[t] + ϕ*h′[t-1]
+        h′[t]  = h[t] + ϕ*h′[t-1]
     end
     σ_y = exp.((h′ .+ μ) / 2)
 
     if(any(x -> x <= 0.0 || isinf(x) || isnan(x), σ_y))
-        Turing.@addlogprob! -Inf
-        return
+        return -Inf
     end
-    y   ~ MvNormal(σ_y)
+    logpdf(MvNormal(σ_y), y)
 end
 
-Turing.@model radon_unconstr(county, x, y) = begin
+ function radon_prior(θ, county, x, y)
+    ϵ      = eps(Float64)
+    σ_a1   = θ[1]
+    σ_a2   = θ[2]
+    σ_y    = θ[3]
+    μ_a1   = θ[4]
+    μ_a2   = θ[5]
+    a1     = θ[6:5+85]
+    a2     = θ[6+85:5+85+85]
+
+    ℓprior  = 0.0
+    ℓprior += logpdf(Gamma(1, 50), σ_a1)
+    ℓprior += logpdf(Gamma(1, 50), σ_a2)
+    ℓprior += logpdf(Gamma(1, 50), σ_y)
+    ℓprior += logpdf(Normal(0,1),  μ_a1)
+    ℓprior += logpdf(Normal(0,1),  μ_a2)
+    ℓprior += logpdf(MvNormal(fill(μ_a1, 85), fill(σ_a1, 85)), a1)
+    ℓprior += logpdf(MvNormal(fill(μ_a2, 85), fill(σ_a2, 85)), a2)
+    ℓprior
+end
+
+function radon_sample(prng, county, x, y)
+    θ      = Array{Float64}(undef, 85+85+5)
+
+    θ[1] = rand(prng, Gamma(1, 50))
+    θ[2] = rand(prng, Gamma(1, 50))
+    θ[3] = rand(prng, Gamma(1, 50))
+    θ[4] = rand(prng, Normal(0, 1))
+    θ[5] = rand(prng, Normal(0, 1))
+
+    σ_a1   = θ[1]
+    σ_a2   = θ[2]
+    μ_a1   = θ[4]
+    μ_a2   = θ[5]
+    θ[6:5+85]       = rand(prng, MvNormal(fill(μ_a1, 85), fill(σ_a1, 85)))   
+    θ[6+85:5+85+85] = rand(prng, MvNormal(fill(μ_a2, 85), fill(σ_a2, 85)))
+end
+
+
+function radon_like(θ, county, x, y)
     ϵ    = eps(Float64)
-    σ_a1 ~ Gamma(1, 50)
-    σ_a2 ~ Gamma(1, 50)
-    σ_y  ~ Gamma(1, 50)
-    μ_a1 ~ Normal(0,1)
-    μ_a2 ~ Normal(0,1)
-
-    if(σ_a1 <= 0.0 || σ_a2 <= 0.0 || σ_y <= 0.0)
-        Turing.@addlogprob! -Inf
-        return
-    end
-
-    a1   ~ MvNormal(fill(μ_a1, 85), fill(σ_a1, 85))
-    a2   ~ MvNormal(fill(μ_a2, 85), fill(σ_a2, 85))
-
+    σ_a1 = θ[1]
+    σ_a2 = θ[2]
+    σ_y  = θ[3]
+    μ_a1 = θ[4]
+    μ_a2 = θ[5]
+    a1   = θ[6:5+85]
+    a2   = θ[6+85:5+85+85]
     μ_y  = a1[county] + a2[county].*x
-    y    ~ MvNormal(μ_y, σ_y)
+    logpdf(MvNormal(μ_y, σ_y), y)
 end
 
 @eval ThermodynamicIntegration begin
@@ -107,6 +164,7 @@ function thermodynamic()
     #Turing.Core.setrdcache(true)
     #Turing.Core._setadbackend(Val(:reversediff))
 
+    #ThermodynamicIntegration.set_adbackend(:Zygote) 
     ThermodynamicIntegration.set_adbackend(:ForwardDiff) 
     results   = Dict{Symbol, Float64}()
     n_burn    = 2048
@@ -117,10 +175,13 @@ function thermodynamic()
         n_samples=n_samples,
         n_warmup=n_burn)
 
-    y      = load_dataset(Val(:sv))
-    model  = stochastic_volatility_unconstr(y)
-    logZ   = alg(model, TIParallelThreads())
+    y           = load_dataset(Val(:sv))
+    sv_prior(θ) = stochastic_volatility_prior(θ, y)
+    sv_like(θ)  = stochastic_volatility_like(θ, y)
+    θ_init      = stochastic_volalitility_sample(prng, y)
+    logZ        = alg(sv_prior, sv_like, θ_init, TIParallelThreads())
     results[:sv] = logZ
+    @info "results" logZ = results
 
     ThermodynamicIntegration.set_adbackend(:Zygote) 
     alg       = ThermodynamicIntegration.ThermInt(
@@ -128,39 +189,13 @@ function thermodynamic()
         n_samples=n_samples,
         n_warmup=n_burn)
 
-    county, x, y = load_data(Val(:radon))
-    model = radon_unconstr(county, x, y)
-    logZ  = alg(model, TIParallelThreads())
+    county, x, y   = load_data(Val(:radon))
+    radon_prior(θ) = radon_prior(θ, county, x, y)
+    radon_like(θ)  = radon_like(θ, county, x, y)
+    θ_init         = radon_sample(prng, county, x, y)
+    logZ  = alg(radon_prior, radon_like, θ_init, TIParallelThreads())
     results[:radon] = logZ
 
     @info "results" logZ = results
     results
 end
-
-# function nested()
-#     seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
-#     prng = Random123.Philox4x(UInt64, seed, 8);
-#     Random123.set_counter!(prng, 0)
-#     Random.seed!(0)
-
-#     ThermodynamicIntegration.set_adbackend(:Zygote) 
-#     #Turing.Core.setrdcache(true)
-#     #Turing.Core._setadbackend(Val(:reversediff))
-
-#     bounds  = Bounds.MultiEllipsoid
-#     prop    = Proposals.Slice(slices=10)
-#     sampler = Nested(2, 1000; bounds=bounds, poprosal=prop)
-
-
-#     y      = load_dataset(Val(:sv))
-#     model  = stochastic_volatility(y)
-#     state  = sample(model, sampler; dlogz=0.2)
-#     @info "sv" logZ = state.logz ± state.logzerr
-
-#     ThermodynamicIntegration.set_adbackend(:Zygote) 
-
-#     county, x, y = load_data(Val(:radon))
-#     model        = radon(county, x, y)
-#     state        = sample(model, sampler; dlogz=0.2)
-#     @info "neuron" logZ = state.logz ± state.logzerr
-# end
