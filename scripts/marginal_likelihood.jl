@@ -25,8 +25,8 @@ Turing.@model stochastic_volatility_unconstr(y, ::Type{F} = Float64) where {F} =
     T = length(y)
     ϵ = 1e-10
 
-    ϕ ~ Uniform(-1, 1)
-    σ ~ truncated(Cauchy(0, 5), 0, Inf)
+    ϕ ~ Uniform(-1+ϵ, 1-ϵ)
+    σ ~ truncated(Cauchy(0, 5), ϵ, Inf)
     μ ~ Cauchy(0, 10)
 
     h_std ~ MvNormal(T, 1.0)
@@ -38,6 +38,11 @@ Turing.@model stochastic_volatility_unconstr(y, ::Type{F} = Float64) where {F} =
         @inbounds h′[t]  = h[t] + ϕ*h′[t-1]
     end
     σ_y = exp.((h′ .+ μ) / 2)
+
+    if(any(x -> x <= 0.0 || isinf(x) || isnan(x), σ_y))
+        Turing.@addlogprob! -Inf
+        return
+    end
     y   ~ MvNormal(σ_y)
 end
 
@@ -48,6 +53,11 @@ Turing.@model radon_unconstr(county, x, y) = begin
     σ_y  ~ Gamma(1, 50)
     μ_a1 ~ Normal(0,1)
     μ_a2 ~ Normal(0,1)
+
+    if(σ_a1 <= 0.0 || σ_a2 <= 0.0 || σ_y <= 0.0)
+        Turing.@addlogprob! -Inf
+        return
+    end
 
     a1   ~ MvNormal(fill(μ_a1, 85), fill(σ_a1, 85))
     a2   ~ MvNormal(fill(μ_a2, 85), fill(σ_a2, 85))
