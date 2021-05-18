@@ -32,6 +32,11 @@ Turing.@model stochastic_volatility_unconstr(y, ::Type{F} = Float64) where {F} =
     h_std ~ MvNormal(T, 1.0)
     h     = σ*h_std
 
+    if(1 - ϕ^2 <= 0.0 || σ <= 0.0)
+        Turing.@addlogprob! -Inf
+        return
+    end
+
     h′     = Array{F}(undef, T)
     @inbounds h′[1]  = h[1] / sqrt(1 - ϕ^2)
     for t in 2:T
