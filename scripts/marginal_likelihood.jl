@@ -202,7 +202,7 @@ function thermodynamic()
     θ_init       = stochastic_volalitility_sample(prng, y)
     θ_init[1:3] .= 0.0
     θ_init[2]    = 1.0
-    logZ         = alg(sv_prior, sv_like, θ_init)#, TIParallelThreads())
+    logZ         = alg(sv_prior, sv_like, θ_init, TIParallelThreads())
     results[:sv] = logZ
     @info "results" logZ = results
 
