@@ -14,9 +14,10 @@ using Random123
 using ProgressMeter
 using DelimitedFiles
 using ThermodynamicIntegration
+using NestedSamplers
+using Measurements
+using DiffResults
 #using Suppressor
-#using NestedSamplers
-#using Measurements
 
 include(srcdir("KLpqVI.jl"))
 include("task/task.jl")
@@ -134,6 +135,20 @@ function radon_like(θ, county, x, y)
 end
 
 @eval ThermodynamicIntegration begin
+    function ∂ℓπ∂θ_reversediff(ℓπ, θ::AbstractVector)
+        res = DiffResults.GradientResult(θ)
+        tp  = ReverseDiff.GradientTape(ℓπ, θ)
+        ReverseDiff.gradient!(res, tp, θ)
+        #ctp, _ = Turing.Core.memoized_taperesult(ℓπ, θ)
+        ReverseDiff.gradient!(res, tp, θ)
+        return DiffResults.value(res), DiffResults.gradient(res)
+    end
+
+    function get_hamiltonian(metric, ℓπ, ::ThermInt{:ReverseDiff})
+        ∂ℓπ∂θ(θ::AbstractVecOrMat) = ∂ℓπ∂θ_reversediff(ℓπ, θ)
+        return Hamiltonian(metric, ℓπ, ∂ℓπ∂θ)
+    end
+
     function sample_powerlogπ(powerlogπ, alg::ThermInt, x_init)
         D = length(x_init)
         metric = DiagEuclideanMetric(D)
@@ -170,7 +185,8 @@ function thermodynamic()
     #Turing.Core._setadbackend(Val(:reversediff))
 
     #ThermodynamicIntegration.set_adbackend(:Zygote) 
-    ThermodynamicIntegration.set_adbackend(:ForwardDiff) 
+    #ThermodynamicIntegration.set_adbackend(:ForwardDiff) 
+    ThermodynamicIntegration.set_adbackend(:ReverseDiff) 
     results   = Dict{Symbol, Float64}()
     n_burn    = 2048
     n_samples = 2048
@@ -180,11 +196,13 @@ function thermodynamic()
         n_samples=n_samples,
         n_warmup=n_burn)
 
-    y           = load_dataset(Val(:sv))
-    sv_prior(θ) = stochastic_volatility_prior(θ, y)
-    sv_like(θ)  = stochastic_volatility_like(θ, y)
-    θ_init      = stochastic_volalitility_sample(prng, y)
-    logZ        = alg(sv_prior, sv_like, θ_init, TIParallelThreads())
+    y            = load_dataset(Val(:sv))
+    sv_prior(θ)  = stochastic_volatility_prior(θ, y)
+    sv_like(θ)   = stochastic_volatility_like(θ, y)
+    θ_init       = stochastic_volalitility_sample(prng, y)
+    θ_init[1:3] .= 0.0
+    θ_init[2]    = 1.0
+    logZ         = alg(sv_prior, sv_like, θ_init)#, TIParallelThreads())
     results[:sv] = logZ
     @info "results" logZ = results
 
@@ -203,4 +221,33 @@ function thermodynamic()
 
     @info "results" logZ = results
     results
+end
+
+function nested()
+    seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
+    prng = Random123.Philox4x(UInt64, seed, 8);
+    Random123.set_counter!(prng, 0)
+    Random.seed!(0)
+
+    bounds    = Bounds.MultiEllipsoid
+    prop      = Proposals.Slice(slices=10)
+    n_samples = 1000
+
+    y           = load_dataset(Val(:sv))
+    sv_prior(θ) = stochastic_volatility_prior(θ, y)
+    sv_like(θ)  = stochastic_volatility_like(θ, y)
+    model       = NestedModel(sv_like, sv_prior)
+    θ_init      = stochastic_volalitility_sample(prng, y)
+    sampler     = Nested(length(θ_init), length(θ_init)*10)
+    state       = sample(model, sampler; dlogz=0.2)
+    @info "sv" logZ = state.logz ± state.logzerr
+
+    county, x, y = load_data(Val(:radon))
+    rd_prior(θ)  = radon_prior(θ, county, x, y)
+    rd_like(θ)   = radon_like(θ, county, x, y)
+    θ_init       = radon_sample(prng, county, x, y)
+    sampler      = Nested(length(θ_init), length(θ_init)*10)
+    model        = NestedModel(sv_like, sv_prior)
+    state        = sample(model, sampler; dlogz=0.2)
+    @info "neuron" logZ = state.logz ± state.logzerr
 end
