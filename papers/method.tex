@@ -77,7 +77,7 @@ The original algorithmic description of CIS is to
 \end{enumerate*}
 %
 While particle MCMC originally inspired the CIS kernel~\citep{andrieu_particle_2010}, it is possible to find connections in multiple-try MCMC methods~\citep{martino_review_2018}.
-In particular, the CIS kernel is identical to the previously proposed \textit{ensemble MCMC sampler}~\citep{neal_mcmc_2011a, austad_parallel_2007} with independent proposals~\citep[Table 12]{martino_review_2018}.
+In particular, the CIS kernel is identical to the previously proposed \textit{ensemble MCMC sampler}~\citep{austad_parallel_2007, neal_mcmc_2011a} with independent proposals~\citep[Table 12]{martino_review_2018}.
 
 \vspace{-0.1in}
 \paragraph{Conditional Importance Sampling as Metropolis Hastings}
@@ -85,7 +85,7 @@ We now show that the CIS kernel is an accept-reject type kernel with Barker's ac
 First, by defining \(\vz_t = \vz_{t-1}\) as ``reject'' and \(\vz_t \neq \vz_{t-1}\) as ``accept'', it is easy to notice that the CIS kernel can be understood as an accept-reject type kernel.
 By denoting the \(N\) parallel proposals as an \textit{ensemble state} \(\vz^{(1:N)} = (\vz^{(1)}, \ldots, \vz^{(N)})\)~\citep{neal_mcmc_2011a}, the CIS kernel conditional estimate can be written as
 \begin{align}
-  &\Esub{K(\vz_{t-1}, \cdot)}{f(\vz)}  = \nonumber \\  
+  &\Esub{K(\vz_{t-1}, \vz)}{f(\vz)}  = \nonumber \\  
    &\int \alpha\,(\vz_{t-1}, \vz^{(1:N)}) \,
     \frac{
       \sum^{N}_{i=1} w\,(\vz^{(i)})\,f(\vz^{(i)})
@@ -102,15 +102,16 @@ where \(q_{\vlambda}(\vz^{(1:N)}) = \prod^N_{i=1} q_{\vlambda}(\vz^{(i)}) \),
   = \nicefrac{\sum^{N}_{i=1} w\,(\vz^{(i)})}{\sum^{N}_{i=0} w\,(\vz^{(i)})}
 \)
 is the probability of accepting the ensemble state \(\vz^{(1:N)}\), and
-{\small
+{%\small
   \begin{align}
-    r\,(\vz_{t-1}) &= \int r\,(\vz_{t-1} \mid \vz^{(1:N)})\,q_{\vlambda}(\vz^{(1:N)}) \, d\vz^{(1:N)}
+    &r\,(\vz_{t-1}) = \nonumber \\ 
+    &\int r\,(\vz_{t-1} \mid \vz^{(1:N)})\,q_{\vlambda}(\vz^{(1:N)}) \, d\vz^{(1:N)}
     = \int \left(1 - \alpha\,(\vz_{t-1}, \vz^{(1:N)})\right) q_{\vlambda}(\vz^{(1:N)}) \, d\vz^{(1:N)}
   \end{align}
 }%
 is the probability of rejecting \textit{any} ensemble state and staying on \(\vz_{t-1}\).
 \(r\,(\vz_{t-1}\mid \vz^{(1:N)})\) is the rejection rate given \(\vz^{(1:N)}\).
-The acceptance ratio \(\alpha(\vz_{t-1}, \vz^{(1:N)})\) is known as~\citeauthor{barker_monte_1965}'s acceptance ratio~\citep{barker_monte_1965} and is a special case of the original~\cite{metropolis_equation_1953} acceptance ratio.
+The acceptance ratio \(\alpha\,(\vz_{t-1}, \vz^{(1:N)})\) is known as~\citeauthor{barker_monte_1965}'s acceptance ratio~\citep{barker_monte_1965} and is a special case of the original~\cite{metropolis_equation_1953} acceptance ratio.
 
 %% Now, the transition kernel can be denoted as
 %% \begin{align}
@@ -124,22 +125,24 @@ The IMH (or accept-reject) view in~\cref{section:cis_imh} now enables us to disc
 As discussed in~\cref{section:msc_mcmc}, MSC obtains gradients using the conditional estimates of MCMC.
 The variance of the conditional estimate is closely related to the rejection rate such that
 \begin{align}
-  \Vsub{q_{\vlambda}}{f \mid \vz_{t-1}} &= \Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1},\,\vz^{(1:N)} } } + \underbrace{\Esub{q_{\vlambda}}{ \V{ f \mid \vz_{t-1},\,\vz^{(1:N)} } }}_{\text{Rao-Blackwellization gain}} \label{eq:total_variance} \\
+  \Vsub{q_{\vlambda}}{f \mid \vz_{t-1}} 
+  &=\Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1},\,\vz^{(1:N)} } } + \underbrace{\Esub{q_{\vlambda}}{ \V{ f \mid \vz_{t-1},\,\vz^{(1:N)} } }}_{\text{Rao-Blackwellization gain}} \label{eq:total_variance} \\
   &\geq \Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1}\,\vz^{(1:N)} } } \label{eq:rao_blackwell}\\
   &= \Vsub{q_{\vlambda}}{ \big(1 - r\,(\vz_{t-1}\mid\vz^{(1:N)})\big)\, f_{\mathrm{IS}}
     + r\,(\vz_{t-1}\mid\vz^{(1:N)})\,f(\vz_{t-1}) \,\middle\vert\, \vz_{t-1},\, \vz^{(1:N)} } \label{eq:exact_variance} \\
   &\text{where}\;\; f_{\mathrm{IS}} = {\sum_{i=1}^N w\,(\vz^{(i)}) f(\vz^{(i)})\,/\,\sum_{i=1}^N w\,(\vz^{(i)})}. \nonumber 
 \end{align}
 %
-The bound in~\eqref{eq:rao_blackwell} is exact if we use Rao-Blackwellization (use the SNIS estimator formed by \(\widetilde{w}^{(0)}, \ldots, \widetilde{w}^{(N)}\}\) instead of multinomial resampling) as mentioned by~\citet{NEURIPS2020_b2070693}.
+The bound in~\eqref{eq:rao_blackwell} is exact if we use Rao-Blackwellization (that is, if we use the SNIS estimator \(\sum^{N}_{i=1} \widetilde{w}^{(i)}\,f\,(\vz^{(i)})\) instead of multinomial resampling) as mentioned by~\citet{NEURIPS2020_b2070693}.
 The expansion in~\eqref{eq:total_variance} follows from the Law of Total Variance.
 The right-hand term is the variance reduction we gain from using Rao-Blackwellization~\citep{bernton_locally_2015}.
 
 \vspace{-0.1in}
 \paragraph{Low rejection rate means high conditional variance.}
 Because of the dependence of \(r\,(\vz_{t-1}\mid\vz^{(1:N)})\) on \(\vz^{(1:N)}\), it is in general difficult to interpret the result of~\eqref{eq:exact_variance}.
-Nonetheless, when \(w\,(\vz_{t-1}) \gg w\,(\vz^{(i)})\), \(r(\vz\mid\vz^{(1:N)})\) will be almost independent of \(q_{\vlambda}\) and close to 1.
-Then, we perform the following approximation.
+Nonetheless, when \(w\,(\vz_{t-1}) \gg w\,(\vz^{(i)})\), \(r(\vz\mid\vz^{(1:N)})\) is close to 1 almost independent of \(q_{\vlambda}\).
+The intuition is that, if the \textit{rejection weight} \(w\,(\vz_{t-1})\) is large, most proposals will be rejected regardless of their value.
+By translating this intuition into an approximation, we obtain the following result.
 %
 \input{variance_approx}
 %
@@ -152,11 +155,10 @@ The following bound provides a condition for the rejection rate of a CIS kernel 
 %
 \input{cis_bound}
 %
-The normalizing constant \(Z\) is, in general, tiny.
 When \(w\,(\vz_{t-1})\) is large, the bound states that \(r(\vz_{t-1})\) will be close to one.
 In this case, according to~\cref{thm:approx_var}, the conditional variance will be minimal.
 
-The interesting fact emerges by the fact that \(w\,(\vz_{t-1})\) can be huge when the KL divergence is large.
+In the context of VI, the following shows that \(w\,(\vz_{t-1})\) can be huge when the KL divergence is large.
 %
 \input{cis_bound_kl}
 %
@@ -184,9 +186,9 @@ These properties hold similarly in any IMH type kernel.
 \paragraph{Is bias guaranteed to decrease?}
 The bias of the conditional estimate is closely related to the total variation (TV) distance \(\DTV{K(\vz_{t-1}, \cdot)}{p(\cdot\mid\vx)}\).
 For bounded functions, the TV distance provides an upper bound of the bias.
-Unfortunately, it is in general difficult to talk about the TV distance (and hence the bias) with respect to \(p\) and \(q\).
+Unfortunately, it is in general difficult to talk about the TV distance (and hence the bias) with respect to \(p(\vz\mid\vx)\) and \(q_{\vlambda}(\vz)\).
 Although,~\citet{wang_exact_2020} recently showed that the rejection rate is related with the TV distance such that \(r(\vz_{t-1}) \leq \DTV{K(\vz_{t-1}, \cdot)}{p(\cdot\mid\vx)}\).
-Therefore, a low rejection rate is a necessary condition for the bias to decrease.
+Therefore, a low rejection rate is \textit{necessary} for the bias to decrease.
 
 \vspace{-0.1in}
 \paragraph{IMH type kernels automatic trade-off bias for variance.}
@@ -269,7 +271,7 @@ On the contrary, under specific conditions, the variance actually \textit{increa
 \paragraph{The variance of CIS can increase with \(N\).}
 The bound in~\cref{thm:cis_bound}, can be reinterpreted as a bound on the acceptance rate 
 \begin{align}
-  \alpha = 1 - r\,(\vz_{t-1}) \leq \frac{N\,Z}{ w\,(\vz_{t-1}) + N\,Z},
+  1 - r\,(\vz_{t-1}) \leq \frac{N\,Z}{ w\,(\vz_{t-1}) + N\,Z},
 \end{align}
 which in general is very tight.
 More importantly, when \(w\,(\vz_{t-1}) \gg N\,Z\), the acceptance rate grows like \(\mathcal{O}(N)\).
@@ -280,6 +282,7 @@ That is,
   \underbrace{\Vsub{q_{\vlambda}}{ f_{\text{IS}} }}_{\text{approx.}\;\;\mathcal{O}(1/N)}.\label{eq:cis_variance_incr}
 \end{align}
 Thus, when \(w\,(\vz_{t-1})\gg N\,Z\), the conditional variance of CIS approximately grows linearly with \(N\).
+We provide simulation results that support our analysis in the \textit{supplementary material}.
 
 \vspace{-0.1in}
 \paragraph{Bias and Variance Reduction with Paralel IMH Chains}
