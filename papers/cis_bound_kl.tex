@@ -1,0 +1,71 @@
+
+\begin{theoremEnd}[]{theorem}\label{thm:cis_bound_kl}
+  The average rejection rate \(r = \int r(\vz_{t-1}) \, p(\vz_{t-1}\mid\vx) \, d\vz_{t-1} \) of the CIS sampler with \(N\) proposals is bounded below such that
+  \[
+  r \geq 1 \big/ 
+    \left(1 + \frac{N}{
+      \exp\big(\DKL{p}{q_{\vlambda}}\big)
+    }
+    \right).
+  \]
+\end{theoremEnd}
+\begin{proofEnd}
+  We first show a simple Lemma that relates the rejection weight \(w\,(\vz_{t-1})\) with the KL divergence.
+  \begin{framedlemma}
+    The average unnormalized weight of the rejection states is bounded below by the KL divergence such as
+    \[
+    Z\,\exp\big(\DKL{p}{q_{\vlambda}}\big) \leq \Esub{\vz_{t-1} \sim p(\vz\mid\vx)}{w\,(\vz_{t-1})}.
+    \]
+  \begin{proof}
+    By the definition of the inclusive KL divergence,
+    \begin{align}
+      \DKL{p}{q_{\vlambda}} = \int p\,(\vz\mid\vx) \log \frac{p\,(\vz\mid\vx)}{q_{\vlambda}(\vz)} \, d\vz
+      &\leq \log \Esub{p(\vz\mid\vx)}{\frac{p\,(\vz\mid\vx)}{q_{\vlambda}(\vz)}} \\
+      &= \log \Esub{p(\vz\mid\vx)}{ \frac{w\,(\vz)}{Z} } \label{eq:weight_bound_kl}
+    \end{align}
+    where the right-hand side follows from Jensen's inequality.
+    By a simple change of notation, we relate~\eqref{eq:weight_bound_kl} with the rejection states \(\vz_{t-1}\) such as
+    \begin{align}
+      \DKL{p}{q_{\vlambda}} &\leq \log \Esub{\vz_{t-1} \sim p(\vz\mid\vx)}{\frac{w\,(\vz_{t-1})}{Z}}.
+    \end{align}
+    Then,
+    \begin{align}
+      \exp\big(\DKL{p}{q_{\vlambda}}\big) &\leq \Esub{\vz_{t-1} \sim p(\vz\mid\vx)}{
+        \frac{w\,(\vz_{t-1})}{Z}} \\
+      Z \exp\big(\DKL{p}{q_{\vlambda}}\big) &\leq \Esub{\vz_{t-1} \sim p(\vz\mid\vx)}{w\,(\vz_{t-1})}.
+    \end{align}
+  \end{proof}
+  \end{framedlemma}
+  Now, 
+  \begin{align}
+    \Esub{\vz_{t-1} \,\sim\, p(\vz\mid\vx)}{ r(\vz_{t-1}) } &\geq \Esub{\vz_{t-1} \,\sim\, p(\vz\mid\vx)}{ \frac{w(\vz_{t-1})}{w(\vz_{t-1}) + N\,Z}}. \\
+\intertext{By Jensen's inequality,}
+    &\geq
+    \frac{
+      \Esub{\vz_{t-1} \,\sim\, p(\vz\mid\vx)}{ w(\vz_{t-1}) }
+    }{
+      \Esub{\vz_{t-1} \,\sim\, p(\vz\mid\vx)}{ w(\vz_{t-1}) } + N\,Z.
+    } \\
+\intertext{Lastly, by the monotonicity of \(\nicefrac{x}{x + NX}\),}
+    &\geq
+    \frac{
+      Z\,\exp\big(\DKL{p}{q_{\vlambda}}\big)
+    }{
+      Z\,\exp\big(\DKL{p}{q_{\vlambda}}\big) + N\,Z
+    } \\
+    &= \frac{
+      \exp\big(\DKL{p}{q_{\vlambda}}\big)
+    }{
+      \exp\big(\DKL{p}{q_{\vlambda}}\big) + N.
+    } \\
+    &= \frac{1}{
+       1 + \frac{N}{
+         \exp\big(\DKL{p}{q_{\vlambda}}\big) 
+      }.
+    }
+  \end{align}
+\end{proofEnd}
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:
