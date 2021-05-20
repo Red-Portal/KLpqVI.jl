@@ -184,12 +184,6 @@ git-tree-sha1 = "e2f47f6d8337369411569fd45ae5753ca10394c6"
 uuid = "83423d85-b0ee-5818-9007-b63ccbeb887a"
 version = "1.16.0+6"
 
-[[Calculus]]
-deps = ["LinearAlgebra"]
-git-tree-sha1 = "f641eb0a4f00c343bbc32346e1217b86f3ce9dad"
-uuid = "49dc2e85-a5d0-5ad3-a950-438e2897f1b9"
-version = "0.5.1"
-
 [[ChainRules]]
 deps = ["ChainRulesCore", "Compat", "LinearAlgebra", "Random", "Reexport", "Requires", "Statistics"]
 git-tree-sha1 = "3f1d9907dc8559cc7d568c5dd6eb1b583ac00aec"
@@ -973,12 +967,6 @@ version = "1.0.3"
 deps = ["Artifacts", "Libdl"]
 uuid = "c8ffd9c3-330d-5841-b78e-0817d7145fa1"
 
-[[Measurements]]
-deps = ["Calculus", "LinearAlgebra", "Printf", "RecipesBase", "Requires"]
-git-tree-sha1 = "31c8c0569b914111c94dd31149265ed47c238c5b"
-uuid = "eff96d63-e80a-5855-80a2-b1b0885c5ab7"
-version = "2.6.0"
-
 [[Measures]]
 git-tree-sha1 = "e498ddeee6f9fdb4551ce855a46f54dbd900245f"
 uuid = "442fdcdd-2543-5da2-b0f3-8c86c306513e"
@@ -1076,12 +1064,6 @@ deps = ["Distances", "StaticArrays"]
 git-tree-sha1 = "9afd724797039125e8e2cc362098f01dab60bc3a"
 uuid = "b8a86587-4115-5ab1-83bc-aa920d37bbce"
 version = "0.4.8"
-
-[[NestedSamplers]]
-deps = ["AbstractMCMC", "Clustering", "Distributions", "LinearAlgebra", "MCMCChains", "Parameters", "Printf", "ProgressLogging", "Random", "StatsBase", "StatsFuns"]
-git-tree-sha1 = "35dd51d11ff504dc028586d0b6ec0469aeee7e5e"
-uuid = "41ceaf6f-1696-4a54-9b49-2e7a9ec3782e"
-version = "0.6.3"
 
 [[NetworkOptions]]
 uuid = "ca575930-c2e3-43a9-ace4-1e988b2c1908"
