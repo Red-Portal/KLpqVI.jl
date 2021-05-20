@@ -4,6 +4,7 @@
 \usepackage{mathtools}
 \setmathfont{STIX2Math.otf}
 \usepackage{dsfont}
+\usepackage{algorithm2e}
 
 \usepackage{proof-at-the-end}
 \newtheorem{remark}{\textbf{Remark}}
@@ -12,6 +13,25 @@
 \newtheorem{theorem}{\textbf{Theorem}}
 \newtheorem{proposition}{\textbf{Proposition}}
 \newtheorem{definition}{\textbf{Definition}}
+
+\usepackage{mdframed}
+\newmdtheoremenv{framedtheorem}{\textbf{Theorem}}
+\newmdtheoremenv{framedproposition}{\textbf{Proposition}}
+\newmdtheoremenv{framedlemma}{\textbf{Lemma}}
+
+\usepackage{hyperref}
+\usepackage[noabbrev, capitalise, nameinlink]{cleveref}
+
+
+%% \newcommand*{\figref}[2][]{%
+%%   \hyperref[{#2}]{%
+%%     Figure~\ref*{#2}%
+%%     \ifx\\#1\\%
+%%     \else
+%%       \,#1%
+%%     \fi
+%%   }%
+%% }
 
 \pgfkeys{/prAtEnd/global custom defaults/.style={
     %proof at the end,
