@@ -13,6 +13,7 @@ parameters {
   real<lower=2.22e-16> sigma_a1;
   real<lower=2.22e-16> sigma_a2;
   real<lower=2.22e-16> sigma_y;
+  real<lower=0,upper=1> beta;
 }
 transformed parameters {
   vector[N] y_hat;
@@ -24,14 +25,14 @@ transformed parameters {
   loglikelihood = normal_lpdf(y | y_hat, sigma_y);
 } 
 model {
-  sigma_a1 ~ Gamma(1, 0.02)
-  sigma_a2 ~ Gamma(1, 0.02)
-  sigma_y  ~ Gamma(1, 0.02)
+  sigma_a1 ~ Gamma(1, 0.02);
+  sigma_a2 ~ Gamma(1, 0.02);
+  sigma_y  ~ Gamma(1, 0.02);
 
   mu_a1 ~ normal(0, 1);
   a1 ~ normal(mu_a1, sigma_a1);
   mu_a2 ~ normal(0, 1);
   a2 ~ normal(0.1 * mu_a2, sigma_a2);
 
-  target += t*loglikelihood;
+  target += beta*loglikelihood;
 }

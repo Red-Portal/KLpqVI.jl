@@ -2,7 +2,7 @@
 data {
   int<lower=0> T;   // # time points (equally spaced)
   vector[T] y;      // mean corrected return at time t
-  real<lower=0,upper=1> t;
+  real<lower=0,upper=1> beta;
 }
 parameters {
   real mu;                     // mean log volatility
@@ -26,5 +26,5 @@ model {
   mu ~ cauchy(0, 10);  
   h_std ~ std_normal();
 
-  target += t*loglikelihood;
+  target += beta*loglikelihood;
 }
