@@ -25,9 +25,9 @@ transformed parameters {
   loglikelihood = normal_lpdf(y | y_hat, sigma_y);
 } 
 model {
-  sigma_a1 ~ Gamma(1, 0.02);
-  sigma_a2 ~ Gamma(1, 0.02);
-  sigma_y  ~ Gamma(1, 0.02);
+  sigma_a1 ~ gamma(1, 0.02);
+  sigma_a2 ~ gamma(1, 0.02);
+  sigma_y  ~ gamma(1, 0.02);
 
   mu_a1 ~ normal(0, 1);
   a1 ~ normal(mu_a1, sigma_a1);
