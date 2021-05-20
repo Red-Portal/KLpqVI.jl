@@ -14,8 +14,6 @@ using Random123
 using ProgressMeter
 using DelimitedFiles
 using ThermodynamicIntegration
-using NestedSamplers
-using Measurements
 using DiffResults
 #using Suppressor
 
@@ -36,6 +34,20 @@ include("task/task.jl")
     ℓprior += logpdf(Cauchy(0, 10),                   μ)
     ℓprior += logpdf(MvNormal(T, 1.0),                h_std)
     ℓprior
+end
+
+function stochastic_volatility_transform_prior(ϵ, y)
+    ε       = 1e-10
+    T       = length(y)
+    ϕ       = ϵ[1]
+    ϵ_σ     = ϵ[2]
+    ϵ_μ     = ϵ[3]
+    ϵ_h_std = ϵ[4:3+T]
+    ϕ       = quantile(Uniform(-1+ε, 1-ε), ϵ[1])
+    σ       = quantile(truncated(Cauchy(0, 5), ε, Inf), ϵ[2])
+    μ       = quantile(Cauchy(0, 10), ϵ[3])
+    h_std   = quantile.(Ref(Normal()), ϵ[4:3+T])
+    vcat(ϕ, σ, μ, h_std)
 end
 
 @inbounds function stochastic_volalitility_sample(prng, y)
@@ -221,33 +233,4 @@ function thermodynamic()
 
     @info "results" logZ = results
     results
-end
-
-function nested()
-    seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
-    prng = Random123.Philox4x(UInt64, seed, 8);
-    Random123.set_counter!(prng, 0)
-    Random.seed!(0)
-
-    bounds    = Bounds.MultiEllipsoid
-    prop      = Proposals.Slice(slices=10)
-    n_samples = 1000
-
-    y           = load_dataset(Val(:sv))
-    sv_prior(θ) = stochastic_volatility_prior(θ, y)
-    sv_like(θ)  = stochastic_volatility_like(θ, y)
-    model       = NestedModel(sv_like, sv_prior)
-    θ_init      = stochastic_volalitility_sample(prng, y)
-    sampler     = Nested(length(θ_init), length(θ_init)*10)
-    state       = sample(model, sampler; dlogz=0.2)
-    @info "sv" logZ = state.logz ± state.logzerr
-
-    county, x, y = load_data(Val(:radon))
-    rd_prior(θ)  = radon_prior(θ, county, x, y)
-    rd_like(θ)   = radon_like(θ, county, x, y)
-    θ_init       = radon_sample(prng, county, x, y)
-    sampler      = Nested(length(θ_init), length(θ_init)*10)
-    model        = NestedModel(sv_like, sv_prior)
-    state        = sample(model, sampler; dlogz=0.2)
-    @info "neuron" logZ = state.logz ± state.logzerr
 end
