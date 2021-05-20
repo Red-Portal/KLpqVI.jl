@@ -21,7 +21,7 @@ transformed parameters {
   for (i in 1:N)
     y_hat[i] = a1[county[i]] + a2[county[i]] * x[i];
 
-  loglikelihood = normal_lpdf(y | y_hat, sigma_y)
+  loglikelihood = normal_lpdf(y | y_hat, sigma_y);
 } 
 model {
   sigma_a1 ~ Gamma(1, 0.02)
