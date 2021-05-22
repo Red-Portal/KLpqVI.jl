@@ -1,20 +1,25 @@
 
 \begin{theoremEnd}[]{theorem}\label{thm:cis_bound_kl}
-  The average rejection rate \(r = \int r(\vz_{t-1}) \, p(\vz_{t-1}\mid\vx) \, d\vz_{t-1} \) of the CIS sampler with \(N\) proposals is bounded below such that
+  The average rejection rate \(r = \int r(\vz_{t-1}) \, p(\vz_{t-1}\mid\vx) \, d\vz_{t-1} \) of a CIS kernel with \(N\) proposals is bounded below such that
   \[
   r \geq 1 \big/ 
     \left(1 + \frac{N}{
       \exp\big(\DKL{p}{q_{\vlambda}}\big)
     }
-    \right).
+    \right) - \delta,
   \]
+  which is sharp since
+  \(
+   0 \leq \delta \leq {\big( Z \exp\,( \DKL{p}{q_{\vlambda}} ) \big)}^{-2} 
+  \)
+  where \(Z = \int p\,(\vz,\vx) \, d\vz\).
 \end{theoremEnd}
 \begin{proofEnd}
   We first show a simple Lemma that relates the rejection weight \(w\,(\vz_{t-1})\) with the KL divergence.
-  \begin{framedlemma}
+  \begin{framedlemma}\label{thm:rej_kl_bound}
     The average unnormalized weight of the rejection states is bounded below by the KL divergence such as
     \[
-    Z\,\exp\big(\DKL{p}{q_{\vlambda}}\big) \leq \Esub{\vz_{t-1} \sim p(\vz\mid\vx)}{w\,(\vz_{t-1})}.
+    Z\,\exp\big(\DKL{p}{q_{\vlambda}}\big) \leq \Esub{p(\vz_{t-1}\mid\vx)}{w\,(\vz_{t-1})}.
     \]
   \begin{proof}
     By the definition of the inclusive KL divergence,
@@ -26,44 +31,121 @@
     where the right-hand side follows from Jensen's inequality.
     By a simple change of notation, we relate~\eqref{eq:weight_bound_kl} with the rejection states \(\vz_{t-1}\) such as
     \begin{align}
-      \DKL{p}{q_{\vlambda}} &\leq \log \Esub{\vz_{t-1} \sim p(\vz\mid\vx)}{\frac{w\,(\vz_{t-1})}{Z}}.
+      \DKL{p}{q_{\vlambda}} &\leq \log \Esub{p(\vz_{t-1}\mid\vx)}{\frac{w\,(\vz_{t-1})}{Z}}.
     \end{align}
     Then,
     \begin{align}
-      \exp\big(\DKL{p}{q_{\vlambda}}\big) &\leq \Esub{\vz_{t-1} \sim p(\vz\mid\vx)}{
+      \exp\big(\DKL{p}{q_{\vlambda}}\big) &\leq \Esub{p(\vz_{t-1}\mid\vx)}{
         \frac{w\,(\vz_{t-1})}{Z}} \\
-      Z \exp\big(\DKL{p}{q_{\vlambda}}\big) &\leq \Esub{\vz_{t-1} \sim p(\vz\mid\vx)}{w\,(\vz_{t-1})}.
+      Z \exp\big(\DKL{p}{q_{\vlambda}}\big) &\leq \Esub{p(\vz_{t-1}\mid\vx)}{w\,(\vz_{t-1})}.
     \end{align}
   \end{proof}
   \end{framedlemma}
-  Now, 
+  Now, from the result of~\cref{thm:cis_bound},
+  \begin{equation}
+    \Esub{p(\vz_{t-1}\mid\vx)}{ r(\vz_{t-1}) } \geq \Esub{p(\vz_{t-1}\mid\vx)}{ \frac{w(\vz_{t-1})}{w(\vz_{t-1}) + N\,Z}} =
+    \Esub{p(\vz_{t-1}\mid\vx)}{ \varphi\left( w(\vz_{t-1}) \right)  },
+  \end{equation}
+  where \(\varphi(x) = \nicefrac{x}{(x + N\,Z)}\).
+  The lower bound has the following relationship
+  \begin{equation}
+    \varphi\left(\,
+    \Esub{p(\vz_{t-1}\mid\vx)}{ w(\vz_{t-1}) }
+    \,\right)
+    \geq
+    \Esub{p(\vz_{t-1}\mid\vx)}{ \varphi\,\left( w\,(\vz_{t-1}) \right)  }
+  \end{equation}
+  by the concavity of \(\varphi\) and Jensen's inequality.
+  From this, we denote the \textit{Jensen gap}
+  \begin{equation}
+    0 \leq \delta = 
+    \varphi\left(\,
+    \Esub{p(\vz_{t-1}\mid\vx)}{ w(\vz_{t-1}) }
+    \,\right)
+    -
+    \Esub{p(\vz_{t-1}\mid\vx)}{ \varphi\,\big( w(\vz_{t-1}) \big)  }.
+  \end{equation}
+  Then,
   \begin{align}
-    \Esub{\vz_{t-1} \,\sim\, p(\vz\mid\vx)}{ r(\vz_{t-1}) } &\geq \Esub{\vz_{t-1} \,\sim\, p(\vz\mid\vx)}{ \frac{w(\vz_{t-1})}{w(\vz_{t-1}) + N\,Z}}. \\
-\intertext{By Jensen's inequality,}
-    &\geq
-    \frac{
-      \Esub{\vz_{t-1} \,\sim\, p(\vz\mid\vx)}{ w(\vz_{t-1}) }
-    }{
-      \Esub{\vz_{t-1} \,\sim\, p(\vz\mid\vx)}{ w(\vz_{t-1}) } + N\,Z.
-    } \\
-\intertext{Lastly, by the monotonicity of \(\nicefrac{x}{x + NX}\),}
-    &\geq
+    \Esub{p(\vz_{t-1}\mid\vx)}{ r(\vz_{t-1}) }
+    &\geq \Esub{p(\vz_{t-1}\mid\vx)}{ \varphi\,\big( w\,(\vz_{t-1}) \big)  } \\
+    &= \varphi\left(\,
+    \Esub{p(\vz_{t-1}\mid\vx)}{ w(\vz_{t-1}) }
+    \,\right) - \delta, \\
+\intertext{and by the monotonicity of \(\varphi\) and~\cref{thm:rej_kl_bound},}
+    &\geq \varphi\left(\,
+    Z\,\exp\big(\DKL{p}{q_{\vlambda}}\big)
+    \,\right) - \delta \\
+    &=
     \frac{
       Z\,\exp\big(\DKL{p}{q_{\vlambda}}\big)
     }{
       Z\,\exp\big(\DKL{p}{q_{\vlambda}}\big) + N\,Z
-    } \\
+    } - \delta \\
     &= \frac{
       \exp\big(\DKL{p}{q_{\vlambda}}\big)
     }{
-      \exp\big(\DKL{p}{q_{\vlambda}}\big) + N.
-    } \\
+      \exp\big(\DKL{p}{q_{\vlambda}}\big) + N
+    } - \delta \\
     &= \frac{1}{
        1 + \frac{N}{
          \exp\big(\DKL{p}{q_{\vlambda}}\big) 
-      }.
-    }
+      }
+    } - \delta.
   \end{align}
+  We lastly discuss the Jensen gap \(\delta\), which directly gives the sharpness of our lower bound.
+  \citet[Theorem 1]{liao_sharpening_2019} show that, for a random variable \(X \in (a, b), -\infty \leq a < b \leq \infty\) and a \textit{convex} function \(\widetilde{\varphi}\,(x)\), the Jensen gap is bounded such that
+  \begin{align}
+    \E{\widetilde{\varphi}\,(x)} - \widetilde{\varphi}\,(\E{x})
+    \leq
+    \sup_{x \in (a,b)} h\,(x; \mu) \, \sigma^2
+    \quad \text{where}\quad h\,(x; \nu) = \frac{\widetilde{\varphi}\,(x) - \widetilde{\varphi}\,(\nu)}{{(x - \nu)}^2} - \frac{ \widetilde{\varphi}\,\prime(\nu) }{ x - \nu },
+  \end{align}
+\(\mu\) and \(\sigma^2\) are the mean and variance of \(X\).
+Also, \citet[Lemma 1]{liao_sharpening_2019} show that, if \(\varphi\prime\,(x)\) is concave,  \(\sup_{x \in (a,b)} h\,(x; \mu) = \lim_{x \rightarrow a} h\,(x; \mu) \). \\
+
+In our case, the domain is \((a = 0, b = \infty)\) since \(w\,(\vz_{t-1}) \geq 0\).
+We then define our convex function \(\widetilde{\varphi}\,(x) = - \varphi\,(x)\).
+Since \(\varphi\,\prime(x) = \nicefrac{N\,Z}{{(x + N\,Z)}^2}\) is convex, \(\widetilde{\varphi}\,\prime(x)\) is concave. Then, 
+\begin{align}
+  \lim_{x \rightarrow 0} h\,(x; \mu)
+  &=
+  \lim_{x \rightarrow 0} \; \frac{1}{{(x - \mu)}^2} \left( \widetilde{\varphi}\,(x) - \widetilde{\varphi}\,(\mu) \right)
+  - \frac{1}{ x - \mu }  \widetilde{\varphi}\,\prime(\mu)  \\
+  &=
+  \lim_{x \rightarrow 0} \frac{1}{{(x - \mu)}^2}
+  \left(
+  - \frac{x}{x + N\,Z} + \frac{\mu}{\mu + N\,Z}
+  \right)
+  -
+  \frac{1}{x - \mu}
+  \left(
+  - \frac{N\,Z}{ {(\mu + N\,Z)}^2 }
+  \right) \\
+  &= \frac{1}{\mu^2} \left( \frac{\mu}{\mu + N\,Z} \right)
+  - \frac{1}{\mu} \left( \frac{N\,Z}{{(\mu + N\,Z)}^2} \right) \\
+  &= \frac{1}{ \mu \, (\mu + N\,Z) }
+  - \frac{N\,Z}{ \mu \, {(\mu + N\,Z)}^2} \\
+  &< \frac{1}{\mu^2}
+\end{align}
+Notice that in the context of the original problem, \(\mu = \Esub{p(\vz_{t-1}\mid\vx)}{ w\,(\vz_{t-1}) }\).
+And also, we obtain the relationship with our original problem as
+\begin{align}
+  0 \leq \delta
+  = \varphi\,(\E{x}) - \E{\varphi\,(x)}
+  = \E{-\varphi\,(x)} - \varphi\,(-\E{x})
+  = \E{\widetilde{\varphi}\,(x)} - \widetilde{\varphi}\,(\E{x}).
+\end{align}
+Finally,
+\begin{align}
+  0 \leq \delta
+  &\leq \sup_{x \in (a,b)} h\,(x; \mu) \, \sigma^2 \\
+  &= \lim_{x \rightarrow 0} h\,(x; \mu)  \\
+  &< \frac{1}{\mu^2} \\
+  &= \frac{1}{ {\Esub{p(\vz_{t-1}\mid\vx)}{ w\,(\vz_{t-1}) }}^2 }, \\
+\intertext{and by~\cref{thm:rej_kl_bound},}
+  &\leq \frac{1}{ {\big( Z \exp\,( \DKL{p}{q_{\vlambda}} ) \big)}^2 }.
+\end{align}
 \end{proofEnd}
 
 %%% Local Variables:

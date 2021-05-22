@@ -126,14 +126,37 @@ This is shown in~\cref{fig:paretok} through the pareto-\(\widehat{k}\) diagnosti
 While the test accuracy suggests that ELBO converged around \(t=2000\), the pareto-\(\widehat{k}\) takes much longer to converge (about \(t=5000\)).
 This shows that, even if their predictive performance is similar, the inclusive VI chooses a path that has better density coverage as expected.
 
+%
+\begin{figure*}
+  \centering
+  \begin{minipage}[b]{0.17\linewidth}
+    \centering
+    \includegraphics[scale=0.8]{figures/radon_03.pdf}
+  \end{minipage}
+  \begin{minipage}[b]{0.35\linewidth}
+    \centering
+    \includegraphics[scale=0.7]{figures/radon_02.pdf}
+    \subcaption{Radon}
+  \end{minipage}
+  \begin{minipage}[b]{0.35\linewidth}
+    \centering
+    \includegraphics[scale=0.7]{figures/sv_02.pdf}\label{fig:sv}
+    \subcaption{Stock}
+  \end{minipage}
+  \caption{Marginal log-likelihood (\(\log Z\)) estimates of considered methods.
+    ELBO is not shown in~\cref{fig:sv} because it failed to deliver reasonable estimates of \(\log Z\).
+    The solid lines are the median of 100 repetitions while the colored regions are the 80\% empirical percentiles.
+  }\label{fig:marginal_likelihood}
+\end{figure*}
+%
 \subsection{General Bayesian Inference}
+We estimated the marginal likelihood using \textit{thermodynamic integration} (TI,~\citealt{gelman_simulating_1998, neal_annealed_2001, lartillot_computing_2006}) with HMC implemented by Stan~\citep{carpenter_stan_2017, betancourt_conceptual_2017}.
+
 \paragraph{Did inclusive VI live up to its hype?}
 \citet{dhaka_challenges_2021} showed that, inclusive VI works against our intuitions in higher dimensions.
 However, if the posterior is strongly correlated, inclusive VI can fail even in lower dimensions.
 On the other hand, if the posterior is not strongly correlated, our experiments suggest that inclusive VI can work better than exclusive VI.
 Furthermore, posterior correlation affects all methods relying on the mean-field approximation, not only inclusive VI.
-
-Thermodynamic integration~\citep{gelman_simulating_1998, neal_annealed_2001}.
 
 %%% Local Variables:
 %%% TeX-master: "master"
