@@ -12,13 +12,15 @@ parameters {
 }
 transformed parameters {
   real loglikelihood;
-  vector<lower=-46.0>[T] h = h_std * sigma;  // now h ~ normal(0, sigma)
-  h[1] /= sqrt(1 - phi * phi);  // rescale h[1]
-  h += mu;
-  for (t in 2:T)
-    h[t] += phi * (h[t-1] - mu);
-
-  loglikelihood = normal_lpdf(y | 0, exp(h / 2));
+  {
+    vector[T] h;
+    h = h_std * sigma;  // now h ~ normal(0, sigma)
+    h[1] /= sqrt(1 - phi * phi);  // rescale h[1]
+    h += mu;
+    for (t in 2:T)
+      h[t] += phi * (h[t-1] - mu);
+    loglikelihood = normal_lpdf(y | 0, exp(h / 2));
+  }
 }
 model {
   phi ~ uniform(-1, 1);

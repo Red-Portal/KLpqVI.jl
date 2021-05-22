@@ -3,7 +3,7 @@ data {
   int<lower=1,upper=85> county[N];
   vector[N] x;
   vector[N] y;
-  real<lower=0,upper=1> t;
+  real<lower=0,upper=1> beta;
 } 
 parameters {
   vector[85] a1;
@@ -13,7 +13,6 @@ parameters {
   real<lower=2.22e-16> sigma_a1;
   real<lower=2.22e-16> sigma_a2;
   real<lower=2.22e-16> sigma_y;
-  real<lower=0,upper=1> beta;
 }
 transformed parameters {
   vector[N] y_hat;
