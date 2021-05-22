@@ -4,7 +4,7 @@ Variational inference (VI,~\citealt{jordan_introduction_1999, blei_variational_2
 Instead of working directly with our target distribution \(p\,(\vz\mid\vx)\), we find a \textit{variational approximation} \(q_{\lambda}(\vz) \in \mathcal{Q}\) closely approximating \(p\,(\vz\mid\vx)\) according to a discrepancy measure \(D(p, q)\).
 Naturally, choosing a good discrepancy measure, or objective function, is a critical part of the problem.
 This fact had lead to the quest for good divergence measures~\citep{NIPS2016_7750ca35, NIPS2017_35464c84, pmlr-v97-ruiz19a}.
-However, until now, the exclusive KL divergence \(\DKL{q_{\lambda}}{p}\) (or reverse KL divergence) has seen ``exclusive'' use among various discrepancy measures.
+So far, the exclusive KL divergence \(\DKL{q_{\lambda}}{p}\) (or reverse KL divergence) has been use ``exclusively'' among various discrepancy measures.
 This is partly because the exclusive KL is defined as an average over \(q_{\lambda} \in \mathcal{Q}\), which can be computed efficiently.
 In contrast, the inclusive KL is defined as
 %
@@ -13,37 +13,28 @@ In contrast, the inclusive KL is defined as
   = \Esub{p(\vz\mid\vx)}{\log\big(\, p\,(\vz\mid\vx)/q_{\lambda}(\vz) \,\big) } \label{eq:klpq}
 \end{align}
 %
-where the average is taken cover \(p\), which is the integral we wish to solve in the first place.
-Despite this chicken-and-egg problem, minimizing the inclusive KL has alluded researchers as it does not have some limitations of the exclusive KL divergence~\citep{minka2005divergence, mackay_local_2001}.
+where the average is taken over \(p\).%, which is what we ultimately want to know.
+Interestingly, this is a chicken-and-egg problem, and minimizing~\eqref{eq:klpq} has drawn the attention of researchers because it can overcome the limitations of the exclusive KL~\citep{minka2005divergence, mackay_local_2001}.
 
 For performing inclusive VI,~\citet{NEURIPS2020_b2070693, pmlr-v124-ou20a} recently proposed \textit{Markovian score climbing} (MSC), which is a blend of Markov-chain Monte Carlo (MCMC) and variational inference.
 In MSC, stochastic gradients of the inclusive KL are obtained by operating a Markov-chain in parallel with the VI optimizer.
 An interesting property of MSC emerges when combined with specific types of MCMC kernels.
-This paper shows that \textit{independent Metropolis-Hastings} (IMH,~\citealt{robert_monte_2004}) type kernels can automatically trade-off bias and variance.
+This paper shows that \textit{independent Metropolis-Hastings} (IMH,~\citealt{robert_monte_2004}) type kernels can automatically trade off bias and variance.
 This family of kernels include the \textit{condition importance sampling} (CIS,~\citealt{NEURIPS2020_b2070693}) kernel originally used by~\citeauthor{NEURIPS2020_b2070693} in MSC.
-Surprisingly, this property is unique to IMH type kernels, and does not occur in MCMC kernels with state-denpendent proposals such as Hamiltonian Monte Carlo (HMC,~\citealt{duane_hybrid_1987, neal_mcmc_2011, betancourt_conceptual_2017}).
+Surprisingly, this automatic tradeoff property is unique to IMH type kernels, and does not occur in MCMC kernels with state-depenpendent proposals such as Hamiltonian Monte Carlo (HMC,~\citealt{duane_hybrid_1987, neal_mcmc_2011, betancourt_conceptual_2017}).
 
-We also show that, under specific conditions, the performance of the CIS kernel worsens with the number of proposals (or computational budget) used in each Markov-chain transition.
-As a simple solution to this problem, we propose to use parallel IMH (PIMH) chains, which enjoy reduced variance with the same amount of computation.
-We evaluate the performance of MSC with PIMH against other inclusive~\cite{DBLP:journals/corr/BornscheinB14, NEURIPS2020_b2070693} and exlusive~\cite{pmlr-v33-ranganath14, JMLR:v18:16-107} VI methods.
-Lastly, some interesting connections with adaptive MCMC methods~\citep{10.1007/s11222-008-9110-y} are discussed.
+We also show that, the performance of the CIS kernel can be degraded with the number of proposals (or computational budget) used in each Markov-chain transition.
+As a simple solution to this, we propose to use parallel IMH (MSC-PIMH) chains, which reduces variance with same amount of computation.
+We evaluate the performance of MSC with PIMH against other inclusive VI~\citep{DBLP:journals/corr/BornscheinB14, NEURIPS2020_b2070693} and exlusive VI~\citep{pmlr-v33-ranganath14, JMLR:v18:16-107} methods.
+Finally, some interesting connections with adaptive MCMC methods~\citep{10.1007/s11222-008-9110-y} are discussed.
 
 \paragraph{Contribution Summary}
 \begin{enumerate*}[label=\textbf{(\roman*)}]
 \item We show that IMH type kernels (which include the CIS kernel originally used in MSC; \textbf{\cref{section:cis_imh}}) automatically perform bias-variance tradeoff (\textbf{\cref{section:bias_variance}}).
-\item We show that increasing the computation budget of the CIS kernel can \textit{increase} its variance and propose parallel IMH (PIMH) chains as an alternative (\textbf{\cref{section:cis_bias}}).
+\item We show that increasing the computation budget of the CIS kernel may \textit{increase} its variance and propose parallel IMH (PIMH) chains as an alternative (\textbf{\cref{section:cis_bias}}).
 \item We evaluate the performance of MSC with PIMH against other inclusive and exclusive VI methods (\textbf{\cref{section:eval}}).
+\item We discuss connections with adaptive IMH methods (\textbf{\cref{section:related}}).
 \end{enumerate*}
-
-%Conveniently, parallel IMH (PIMH) enables the use of convergence metrics such as the the average rejection rate~\citep{neklyudov_metropolishastings_2019} or the \(\widehat{R}\) metric popularly used in MCMC~\cite{gelman_inference_2011, vehtari_ranknormalization_2020}.
-%We discuss various connections with adaptive MH and show that the samples sued 
-
-%% The key contributions of this paper are as follows:
-%% \begin{itemize}
-%%   \item We show that Independent Metropolis-Hastings kernels automatically trade-off bias and variance when used in Markovian score climibing.
-%%   \item We propose parallel Independent Metropolis-Hastings for reducing the variance of the condition importance sampling kernel originally used by~\citet{NEURIPS2020_b2070693}.
-%%   \item We show parallel Independent Metropolis-Hastings has not only technical but also practical benefits such as convergence diagnostics.
-%% \end{itemize}
 
 
 %%% Local Variables:

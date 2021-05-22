@@ -1,10 +1,10 @@
 
 Markovian score climbing (MSC) is a recently proposed variational inference (VI) method based on Markov-chain Monte Carlo (MCMC) for minimizing the inclusive Kullback-Leibler (KL) divergence.
-In this paper, we show that, when combined with independent Metropolis-Hastings (IMH) type of kernels, MSC shows very interesting properties.
-In particluar, IMH kernels are able to automatically trade-off bias and variance during stochastic optimization.
-Based on our analysis, we show that the original conditional importance sampling kernel can increase in variance with a larger computational budget.
-As fix to this issue, we propose to use parallel IMH (PIMH) chains for obtaining the stochastic gradients.
-MSC with PIMH is able to converge faster compared to other inclusive and exlusive VI methods, which motivates the use of inclusive KL divergence.
+In this paper, we show that, when combined with independent Metropolis-Hastings (IMH) type of kernels, MSC has interesting properties.
+Specifically, IMH kernels can automatically trade off bias and variance during stochastic optimization.
+We show that the original conditional importance sampling kernel can increase in variance with a larger computational budget.
+To fix this, we propose to use parallel IMH (PIMH) chains for obtaining stochastic gradients.
+We find that MSC with PIMH converges faster compared to other inclusive and exlusive VI methods, which encourages the use of inclusive KL divergence henceforth.
 
 %%% Local Variables:
 %%% TeX-master: "master"

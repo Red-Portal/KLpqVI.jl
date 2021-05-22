@@ -1,51 +1,32 @@
 
 \section{Inclusive Variational Inference with Independent Metropolis-Hastings}
-
 \subsection{Markov-Chain Monte Carlo in Markovian Score Climbing}\label{section:msc_mcmc}
 \paragraph{MCMC uses marginal estimates.}
-To explain the mysterious phenomenon shown in~\cref{section:msc}, we first discuss a subtle difference between the usual MCMC setting and the MSC setting.
+To explain the counterintuitive shown in~\cref{fig:motivating}, we first discuss a subtle difference between the usual MCMC setting and the MSC setting.
 In MCMC, we are interested in the estimate provided by the average of \textit{all} the states.
 Thus, the marginal estimate of \(f\) is given as
 \begin{align}
   \frac{1}{T} \sum^{T}_{t=1} f(\vz_t) = \E{f(\vz_t)} = \E{\Esub{K(\vz_{t-1},\,\vz)}{ f(\vz) \mid \vz_{t-1}}}
 \end{align}
-where \(\Esub{K(\vz_{t-1},\,\vz)}{ f(\vz) \mid \vz_{t-1}}\) is the \textit{conditional estimate} of \(K\) given the previous state \(\vz_{t-1}\).
+where \(\Esub{K(\vz_{t-1},\,\vz_{t})}{ f(\vz_t) \mid \vz_{t-1}}\) is the \textit{conditional estimate} of \(K(\vz_{t-1},\cdot)\) given the previous state \(\vz_{t-1}\).
 
 \paragraph{MSC uses conditional estimates.}
-On the other hand, in MSC, the stochastic gradient is estimated using a \textit{single} state of the Markov-chain \(\vz_t \sim K(\vz_{t-1}, \cdot)\).
-This means that we are estimating the gradients using the conditional estimate such as
+On the other hand, in MSC, the stochastic gradient is estimated using a \textit{single} state of the Markov-chain denoted as \(\vz_t \sim K(\vz_{t-1}, \cdot)\).
+This means that we estimate the gradients using the conditional estimate such as
 \begin{align}
   \nabla_{\lambda} \DKL{q_{\lambda}}{p} \approx \Esub{K(\vz_{t-1},\vz_t)}{s\,(\vz_t;\, \vlambda) \mid \vz_{t-1}}.
 \end{align}
-This seemingly subtle difference of using either the marginal or conditional estimate reveals many interesting facts about MSC.
+This seemingly subtle difference of using either the marginal or conditional estimate reveals the following facts about MSC.
 \begin{enumerate*}[label=(\roman*)]
 \item The usual central limit theorem (CLT) guarantees of MCMC do not apply.
 \item Also, ergodicity guarantees work differently since, at each iteration, \(q_{\vlambda}\) is updated.
 \end{enumerate*}
-The most important difference, however, is the way we should analyze the variance of the estimates.
+The most important difference, however, is the way we analyze the variance of the estimates.
 
-%% \begin{wrapfigure}{r}{0.35\textwidth}
-%%   \vspace{-0.2in}
-%%   \begin{algorithm2e}[H]
-%%     \DontPrintSemicolon
-%%     \SetAlgoLined
-%%     \KwIn{Proposal \(q_{\vlambda}\),
-%%     Previous state \(\vz_{t-1}\)}
-%%     \(\vz^* \sim q_{\vlambda}(\vz)\)\\
-%%     \eIf{\(\vz^*\) is accepted}{
-%%       \textit{(Accept)} \(\vz_t = \vz^*\)
-%%     }
-%%     {
-%%       \textit{(Reject)} \(\vz_t = \vz_{t-1}\)
-%%     }
-%%     \caption{Generic IMH Kernel}\label{alg:imh}
-%%   \end{algorithm2e}
-%% \end{wrapfigure}
-%
 \subsection{Conditional Importance Sampling as Independent Metropolis-Hastings}\label{section:cis_imh}
 Independent Metropolis-Hastings (IMH) kernels are kernels where proposals are generated independently of the previous state \(\vz_{t-1}\).
 We first show that the CIS kernel proposed in~\citep{NEURIPS2020_b2070693} is a type of IMH kernel that uses Barker's accept-reject mechanism~\citep{barker_monte_1965}.
-This IMH view will reveal several properties of the CIS kernel and IMH kernels in general.
+This IMH view enables the analysis of the \textit{rejection rate} of the CIS kernel.
 
 \begin{figure}
   \small
@@ -80,38 +61,52 @@ While particle MCMC originally inspired the CIS kernel~\citep{andrieu_particle_2
 In particular, the CIS kernel is identical to the previously proposed \textit{ensemble MCMC sampler}~\citep{austad_parallel_2007, neal_mcmc_2011a} with independent proposals~\citep[Table 12]{martino_review_2018}.
 
 \vspace{-0.1in}
-\paragraph{Conditional Importance Sampling as Metropolis Hastings}
+\paragraph{Conditional Importance Sampling as Metropolis-Hastings}
 We now show that the CIS kernel is an accept-reject type kernel with Barker's acceptance ratio.
-First, by defining \(\vz_t = \vz_{t-1}\) as ``reject'' and \(\vz_t \neq \vz_{t-1}\) as ``accept'', it is easy to notice that the CIS kernel can be understood as an accept-reject type kernel.
+First, by defining \(\vz_t = \vz_{t-1}\) as ``reject'' and \(\vz_t \neq \vz_{t-1}\) as ``accept'', the CIS kernel can be understood as an accept-reject type kernel.
 By denoting the \(N\) parallel proposals as an \textit{ensemble state} \(\vz^{(1:N)} = (\vz^{(1)}, \ldots, \vz^{(N)})\)~\citep{neal_mcmc_2011a}, the CIS kernel conditional estimate can be written as
+%% \begin{align}
+%%   &\Esub{K(\vz_{t-1}, \vz)}{f(\vz)}  = \nonumber \\  
+%%    &\int \alpha\,(\vz_{t-1}, \vz^{(1:N)}) \,
+%%     \frac{
+%%       \sum^{N}_{i=1} w\,(\vz^{(i)})\,f(\vz^{(i)})
+%%     }
+%%     {
+%%       \sum^{N}_{i=1} w\,(\vz^{(i)})
+%%     } \,
+%%     q_{\vlambda}(\vz^{(1:N)})\,d\vz^{(1:N)}
+%%     + r\,(\vz_{t-1}) \, f(\vz_{t-1})\label{eq:cis_kernel}
+%% \end{align}
 \begin{align}
-  &\Esub{K(\vz_{t-1}, \vz)}{f(\vz)}  = \nonumber \\  
-   &\int \alpha\,(\vz_{t-1}, \vz^{(1:N)}) \,
+  \Esub{K(\vz_{t-1}, \vz)}{f(\vz)}  = 
+  \Esub{q_{\vlambda}(\vz^{(1:N)})}{
+    \alpha\,(\vz_{t-1}, \vz^{(1:N)}) \,
     \frac{
       \sum^{N}_{i=1} w\,(\vz^{(i)})\,f(\vz^{(i)})
     }
     {
       \sum^{N}_{i=1} w\,(\vz^{(i)})
-    } \,
-    q_{\vlambda}(\vz^{(1:N)})\,d\vz^{(1:N)}
-    + r\,(\vz_{t-1}) \, f(\vz_{t-1})\label{eq:cis_kernel}
+    }
+  }
+  + r\,(\vz_{t-1}) \, f(\vz_{t-1})\label{eq:cis_kernel}
 \end{align}
 where \(q_{\vlambda}(\vz^{(1:N)}) = \prod^N_{i=1} q_{\vlambda}(\vz^{(i)}) \),
+the acceptance ratio
 \(
   \alpha(\vz_{t-1}, \vz^{(1:N)})
   = \nicefrac{\sum^{N}_{i=1} w\,(\vz^{(i)})}{\sum^{N}_{i=0} w\,(\vz^{(i)})}
 \)
 is the probability of accepting the ensemble state \(\vz^{(1:N)}\), and
-{%\small
-  \begin{align}
-    &r\,(\vz_{t-1}) = \nonumber \\ 
-    &\int r\,(\vz_{t-1} \mid \vz^{(1:N)})\,q_{\vlambda}(\vz^{(1:N)}) \, d\vz^{(1:N)}
-    = \int \left(1 - \alpha\,(\vz_{t-1}, \vz^{(1:N)})\right) q_{\vlambda}(\vz^{(1:N)}) \, d\vz^{(1:N)}
-  \end{align}
-}%
-is the probability of rejecting \textit{any} ensemble state and staying on \(\vz_{t-1}\).
-\(r\,(\vz_{t-1}\mid \vz^{(1:N)})\) is the rejection rate given \(\vz^{(1:N)}\).
-The acceptance ratio \(\alpha\,(\vz_{t-1}, \vz^{(1:N)})\) is known as~\citeauthor{barker_monte_1965}'s acceptance ratio~\citep{barker_monte_1965} and is a special case of the original~\cite{metropolis_equation_1953} acceptance ratio.
+\begin{align}
+  r\,(\vz_{t-1}) = \Esub{q_{\vlambda}(\vz^{(1:N)})}{
+    r\,(\vz_{t-1} \mid \vz^{(1:N)})
+  }
+  = \Esub{q_{\vlambda}(\vz^{(1:N)})}{
+    \left(1 - \alpha\,(\vz_{t-1}, \vz^{(1:N)})\right)
+  }
+\end{align}
+is the probability of staying on \(\vz_{t-1}\) by rejecting \textit{any} ensemble state, \(r\,(\vz_{t-1}\mid \vz^{(1:N)})\) is the rejection rate given \(\vz^{(1:N)}\).
+\(\alpha\,(\vz_{t-1}, \vz^{(1:N)})\) is specifically known as Barker's acceptance ratio~\citep{barker_monte_1965}, which is a special case of the original Metropolis ratio~\citep{metropolis_equation_1953}.
 
 %% Now, the transition kernel can be denoted as
 %% \begin{align}
@@ -123,7 +118,7 @@ The acceptance ratio \(\alpha\,(\vz_{t-1}, \vz^{(1:N)})\) is known as~\citeautho
 \paragraph{Variance of Conditional Importance Sampling}
 The IMH (or accept-reject) view in~\cref{section:cis_imh} now enables us to discuss the rejection rate of the CIS kernel.
 As discussed in~\cref{section:msc_mcmc}, MSC obtains gradients using the conditional estimates of MCMC.
-The variance of the conditional estimate is closely related to the rejection rate such that
+The variance of the conditional estimate is closely related to the rejection rate such as
 \begin{align}
   \Vsub{q_{\vlambda}}{f \mid \vz_{t-1}} 
   &=\Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1},\,\vz^{(1:N)} } } + \underbrace{\Esub{q_{\vlambda}}{ \V{ f \mid \vz_{t-1},\,\vz^{(1:N)} } }}_{\text{Rao-Blackwellization gain}} \label{eq:total_variance} \\
@@ -133,9 +128,8 @@ The variance of the conditional estimate is closely related to the rejection rat
   &\text{where}\;\; f_{\mathrm{IS}} = {\sum_{i=1}^N w\,(\vz^{(i)}) f(\vz^{(i)})\,/\,\sum_{i=1}^N w\,(\vz^{(i)})}. \nonumber 
 \end{align}
 %
-The bound in~\eqref{eq:rao_blackwell} is exact if we use Rao-Blackwellization (that is, if we use the SNIS estimator \(\sum^{N}_{i=1} \widetilde{w}^{(i)}\,f\,(\vz^{(i)})\) instead of multinomial resampling) as mentioned by~\citet{NEURIPS2020_b2070693}.
-The expansion in~\eqref{eq:total_variance} follows from the Law of Total Variance.
-The right-hand term is the variance reduction we gain from using Rao-Blackwellization~\citep{bernton_locally_2015}.
+The bound in~\eqref{eq:rao_blackwell} becomes exact if we use Rao-Blackwellization (that is, if we use the SNIS estimator \(\sum^{N}_{i=1} \widetilde{w}^{(i)}\,f\,(\vz^{(i)})\) instead of multinomial resampling) as mentioned by~\citet{NEURIPS2020_b2070693}.
+The expansion in~\eqref{eq:total_variance} follows from the Law of Total Variance where the right-hand term is the variance reduction we gain from using Rao-Blackwellization~\citep{bernton_locally_2015}.
 
 \vspace{-0.1in}
 \paragraph{Low rejection rate means high conditional variance.}
@@ -171,13 +165,14 @@ In the context of VI, the following shows that \(w\,(\vz_{t-1})\) can be huge wh
 %% \begin{align}
 %%   \frac{1}{Z}\,\exp\big(\DKL{p}{q_{\vlambda}}\big) \leq \Esub{p(\vz_t\mid\vx)}{w\,(\vz_{t})}.\label{eq:kl_rej}
 %% \end{align}
-This result states that, in the ideal case that the Markov-chain has achieved stationarity and \(\vz_{t-1}\) closely follows \(p\,(\vz\mid\vx)\), the average rejection weight is bounded below exponentially by the KL divergence.
+This result states that, in the ideal case when the Markov-chain has achieved stationarity and \(\vz_{t-1}\) closely follows \(p\,(\vz\mid\vx)\), the average rejection weight is bounded below exponentially by the KL divergence.
+The bound is tight as long as \(\DKL{p}{q_{\vlambda}}\) is large.
 Thus, until MSC converges such that \(\DKL{p}{q_{\vlambda}}\) is small, the rejection rate will be very high.
 
-This interesting interaction between the inclusive KL and the rejection rate cannot, in general, be mitigated by increasing \(N\) since
+This interaction between the inclusive KL and the rejection rate cannot, in general, be mitigated by increasing \(N\) since
 \begin{enumerate*}[label=(\roman*)]
-  \item the iteration complexity also increases,
-  \item and \(w(\vz_t)\) can easily be larger by many orders of magnitude.
+  \item the iteration complexity also increases, and
+  \item \(w(\vz_t)\) can easily be larger by many orders of magnitude.
 \end{enumerate*}
 \cref{thm:cis_bound_kl} explains why the Markov-chain in Figure~\ref{fig:motivating} does not move until MSC converges, and combined with~\cref{thm:approx_var}, explains why MSC works well with the CIS kernel.
 These properties hold similarly in any IMH type kernel.
@@ -186,18 +181,17 @@ These properties hold similarly in any IMH type kernel.
 \paragraph{Is bias guaranteed to decrease?}
 The bias of the conditional estimate is closely related to the total variation (TV) distance \(\DTV{K(\vz_{t-1}, \cdot)}{p(\cdot\mid\vx)}\).
 For bounded functions, the TV distance provides an upper bound of the bias.
-Unfortunately, it is in general difficult to talk about the TV distance (and hence the bias) with respect to \(p(\vz\mid\vx)\) and \(q_{\vlambda}(\vz)\).
-Although,~\citet{wang_exact_2020} recently showed that the rejection rate is related with the TV distance such that \(r(\vz_{t-1}) \leq \DTV{K(\vz_{t-1}, \cdot)}{p(\cdot\mid\vx)}\).
+Unfortunately, it is in general difficult to specify the TV distance (and hence the bias) with respect to \(p(\vz\mid\vx)\) and \(q_{\vlambda}(\vz)\).
+Neverthless,~\citet{wang_exact_2020} recently showed that the rejection rate is related with the TV distance such that \(r(\vz_{t-1}) \leq \DTV{K(\vz_{t-1}, \cdot)}{p(\cdot\mid\vx)}\).
 Therefore, a low rejection rate is \textit{necessary} for the bias to decrease.
 
 \vspace{-0.1in}
-\paragraph{IMH type kernels automatic trade-off bias for variance.}
-To summarize, IMH type kernels (including the CIS kernel) have an automatic bias-variance trade-off mechanism.
+\paragraph{Automatic Bias-Variance Tradeoff of IMH Type Kernels}
+To summarize, IMH type kernels (including the CIS kernel) have an automatic bias-variance tradeoff mechanism.
 In the initial steps where the inclusive KL divergence is large, variance is suppressed by rejecting most of the proposals.
 However, as MSC converges, the bound on the rejection rate becomes loose, admitting a lower rejection rate, which enables bias to decrease.
 This mechanism provides an interesting case where rejections in MCMC can actually be beneficial.
-Lastly, we note that the automatic trade-off mechanism is a unique property of IMH type kernels.
-It does not exist in kernels with state-dependent proposals such as random-walk Metropolis-Hastings or HMC.
+Lastly, we note that the automatic tradeoff mechanism is a unique property of IMH type kernels; it does not exist in kernels with state-dependent proposals such as random-walk Metropolis-Hastings or HMC.
 
 %% that the KL divergence is related to the maximum importance ratio \(w^* = \sup_{\vz} p(\vz\mid\vx) / q_{\vlambda}(\vz)\) such that
 %% \begin{align}
@@ -211,57 +205,6 @@ It does not exist in kernels with state-dependent proposals such as random-walk 
 %% This is not only 
 %As shown by~\citet{10.1214/17-STS611, chatterjee_sample_2018}, the number of particles for acheiving bounded error reduces exponentially with the KL divergence.
 
-\begin{figure}
-  \centering
-\begin{minipage}[t]{0.45\textwidth}
-  \small
-  \begin{algorithm2e}[H]
-    \DontPrintSemicolon
-    \SetAlgoLined
-    \KwIn{initial samples \(\vz_0^{(1)},\, \ldots,\, \vz_0^{(N)}\),
-      initial parameter \(\vlambda_0\),
-      number of iterations \(T\),
-      stepsize schedule \(\gamma_t\)
-    }
-    \For{\textcolor{black}{\(t = 1, 2, \ldots, T\)}}{
-      \textcolor{blue}{
-        \For{\textcolor{blue}{\(i = 1, 2, \ldots, N\)}}{
-          \(\vz^{(i)}_{t} \sim K(\vz^{(i)}_{t-1}, \cdot)\)
-        }
-      }
-      \( s(\vz^{(i)}_t; \vlambda) = \nabla_{\vlambda} \log q_{\vlambda}(\vz_t^{(i)}) \)\;
-      \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t\,
-      \textcolor{blue}{\frac{1}{N} \sum^{N}_{i=1} s\,(\vz_t^{(i)};\vlambda_{t-1})} \)\;
-    }
-    \caption{Markovian Score Climbing with Parallel Chains}\label{alg:pimh}
-  \end{algorithm2e}
-\end{minipage}
-\hspace{0.2in}
-\begin{minipage}[t]{0.39\textwidth}
-  \small
-  \begin{algorithm2e}[H]
-    \DontPrintSemicolon
-    \SetAlgoLined
-    \KwIn{previous sample \(\vz_{t-1}\),
-      previous parameter \(\vlambda_{t-1}\),
-    }
-    \(\vz^* \sim q_{\vlambda_{t-1}}(\vz)\)\;
-    \(w(\vz) = p(\vz,\vx)/q_{\vlambda_{t-1}}(\vz) \)\;
-    \(\alpha = \min\left( w\,(\vz^*)/w\,(\vz_{t-1}), 1\right)\)\;
-    \(u \sim \mathrm{Uniform}(0, 1) \)\;
-    \eIf{u < \(\alpha\)}
-        {
-          \(\vz_t \leftarrow \vz^*\)
-        }
-        {
-          \(\vz_t \leftarrow \vz_{t-1}\)
-        }
-        \caption{\\ Independent Metropolis-Hastings}\label{alg:imh}
-  \end{algorithm2e}
-\end{minipage}
-\vspace{-0.15in}
-\end{figure}
-%
 \subsection{Reducing Variance with Parallel Independent Metropolis-Hastings Markov-Chains}\label{section:cis_bias}
 Recall that the CIS kernel uses \(N\) multiple-try type proposals.
 Thus, it would be natural to expect the variance to decrease as \(N\), the computational budget, increases.
@@ -281,12 +224,14 @@ That is,
   \Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1}\,\vz^{(1:N)} } } \approx \underbrace{{\big(1 - r\,(\vz_{t-1})\big)}^2}_{\text{approx.}\;\;\mathcal{O}(N^2)} \,
   \underbrace{\Vsub{q_{\vlambda}}{ f_{\text{IS}} }}_{\text{approx.}\;\;\mathcal{O}(1/N)}.\label{eq:cis_variance_incr}
 \end{align}
-Thus, when \(w\,(\vz_{t-1})\gg N\,Z\), the conditional variance of CIS approximately grows linearly with \(N\).
-We provide simulation results that support our analysis in the \textit{supplementary material}.
+Thus, when \(w\,(\vz_{t-1})\gg N\,Z\), the conditional variance of CIS approximately grows as \(\mathcal{O}(N)\).
+We provide numerical simulations that support our analysis in the \textit{supplementary material}.
+
+\input{pimh_algorithm}
 
 \vspace{-0.1in}
 \paragraph{Bias and Variance Reduction with Paralel IMH Chains}
-To resolve the aforementioned limitation of the CIS kernel, we propose a simple remedy: running \(N\) parallel IMH (PIMH) Markov-chains (\(\vz_t^{(1)}, \vz_t^{(2)}, \ldots, \vz_t^{(N)}\)).
+To resolve the aforementioned limitation of the CIS kernel, we propose a simple but effective remedy: running \(N\) parallel IMH (PIMH) Markov-chains (\(\vz_t^{(1)}, \vz_t^{(2)}, \ldots, \vz_t^{(N)}\)).
 Each of the chains performs a Metropolis-Hastings test with only a single proposal each.
 The modified MSC algorithm incorporating parallel chains is shown in~\cref{alg:pimh}, (the modified parts are highlighted in \textcolor{blue}{blue}), while the pseudocode of the IMH kernel is shown in~\cref{alg:imh}.
 Since the parallel chains generate an \textit{independent} conditional estimate each, the gradient estimate \(\nicefrac{1}{N} \sum^{N}_{i=1} s\,(\vz_t^{(i)}; \vlambda)\) is an average of \(N\) independent and identical estimators.
