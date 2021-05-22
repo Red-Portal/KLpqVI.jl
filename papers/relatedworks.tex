@@ -9,32 +9,38 @@ Meanwhile, a synonymous method to MSC, \textit{general stochastic approximation}
 
 \vspace{-0.1in}
 \paragraph{Adaptive MCMC}
-MSC is structurally equivalent to adaptive MCMC methods as pointed out in~\cite{pmlr-v124-ou20a}.
-The only difference is that MSC focuses on \(q_{\vlambda}\), while MCMC focuses on the samples \(\vz_t\) generated during optimization.
-In the MCMC front, \citet{10.1007/s11222-008-9110-y, garthwaite_adaptive_2016} discuss the use of stochastic approximation in adaptive MCMC.
-Since the step-size rules used in SGD generally satisfy the \textit{diminishing adaptation condition}~\cite{10.1007/s11222-008-9110-y}, it should be possible to treat \(\vz^{(i)}_t\) as genuine samples from the posterior.
-Neverthless, in this work, we focus on the VI view of MSC.
+As pointed out by~\citet{pmlr-v124-ou20a}, MSC is structurally equivalent to adaptive MCMC methods.
+%The only difference is that MSC focuses on \(q_{\vlambda}\), while MCMC focuses on the samples \(\vz_t\) generated during optimization.
+Strong resemblence can be found in methods using stochastic approximation for adapting the proposal distribution used inside the MCMC kernel.
+In particular,~\citet{10.1007/s11222-008-9110-y, garthwaite_adaptive_2016} discuss the use of stochastic approximation in adaptive MCMC.
+%Since the step-size rules used in SGD generally satisfy the \textit{diminishing adaptation condition}~\cite{10.1007/s11222-008-9110-y}, it should be possible to treat \(\vz^{(i)}_t\) as genuine samples from the posterior.
+%Neverthless, in this work, we focus on the VI view of MSC.
 
 \vspace{-0.1in}
 \paragraph{Adaptive IMH}
-Within MCMC, our method is closely related to adaptive MCMC methods that use independent proposals~\citep{andrieu_ergodicity_2006, keith_adaptive_2008, holden_adaptive_2009, giordani_adaptive_2010}.
-For instance, inclusive VI is mathematically identical to \textit{cross-entroy minimization}~\citet{barbakh_cross_2009}, which was employed by~\citet{keith_adaptive_2008} for adapting the proposal distribution.
-However, our work differs with previous adaptive IMH algorithms in that we use SGD for adaptation, and the family of proposals (variational family in the context of VI) is taken to be much more general using methods such as ADVI~\citep{JMLR:v18:16-107}.
+Among adaptive MCMC methods, those that use independent proposals~\citep{andrieu_ergodicity_2006, keith_adaptive_2008, holden_adaptive_2009, giordani_adaptive_2010} are the most similar.
+\citet{keith_adaptive_2008} propose to use \textit{cross-entroy minimization}~\citet{barbakh_cross_2009}, which is mathematically identical to inclusive VI, for adaptation.
+Our work, on the other hand, contrasts with previous adaptive IMH algorithms in that we use SGD for adaptng \(q_{\vlambda}(\vz)\).
+This enables VI methods such as ADVI to consider proposals that are much more complex~\citep{JMLR:v18:16-107}.
 
 \vspace{-0.1in}
 \paragraph{Ergodicity and Inclusive VI}
 Meanwhile, in the context of MCMC,~\citet{10.2307/2242610} showed that it is necessary to ensure \(\sup_{\vz} w(\vz) = M < \infty\) (finite weight condition) for an IMH kernel to be geometrically ergodic.
 While this might seem less relevant for inclusive VI, the bound
+%
+\vspace{-0.02in}
 \begin{align}
   \DKL{p}{q_{\vlambda}} = \int p(\vz\mid\vx) \log w(\vz)\,d\vz \leq \int p(\vz\mid\vx) \log M \, d\vz = \log M.
 \end{align}
+\vspace{-0.02in}
+%
 suggests that it is in fact a necessary condition for the KL divergence to be finite.
 This condition can easily be violated as shown by \citet{10.1007/s11222-008-9110-y}.
-To ensure that the boundedness condition is satisfied,~\citet{giordani_adaptive_2010, holden_adaptive_2009} use \(w\,q_0(\vz) + (1-w)\,q_{\vlambda}(\vz)\) for some \(0<w<1\) as the proposal distribution for their adaptive IMH algorith.
+To ensure this does not happen,~\citet{giordani_adaptive_2010, holden_adaptive_2009} use proposal distributions of the form of \(w\,q_0(\vz) + (1-w)\,q_{\vlambda}(\vz)\) for some \(0<w<1\) for their adaptive IMH sampler.
 Here, \(q_0\) is supposed to be a heavy tailed distribution in the spirit of defensive mixtures~\citep{hesterberg_weighted_1995}.
-However, in the benchmark problems we considered, we observed that MSC converges without such precaution.
-A research direction in the interest of both adaptive MCMC and inclusive VI would be to investigate whether the finite weight condition is \textit{always necessary} for convergence.
-If that is the case, it would be beneficial to consider variational families of heavy-tailed distributions such as elliptical distribtions as proposed by~\citet{NEURIPS2018_25db67c5} for exclusive VI.
+%In the benchmark problems we considered, we observed that MSC converges without such precaution.
+A research direction in the interest of both adaptive MCMC and inclusive VI would be to investigate whether such precaution is actually necessary for convergence.
+If that is the case, it would be beneficial to consider variational families of heavy-tailed distributions as proposed by~\citet{NEURIPS2018_25db67c5} for exclusive VI.
 
 %Therefore, for problems where MSC is not geometricaly ergodic, inclusive VI would also fail to converge.
 %% On the other hand, for problems where MSC converges without problem, defensive mixtures shouldn't be necessary.

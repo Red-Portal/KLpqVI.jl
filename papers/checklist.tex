@@ -26,11 +26,20 @@
   \item Do the main claims made in the abstract and introduction accurately reflect the paper's contributions and scope?
     \answerYes{}
   \item Did you describe the limitations of your work?
-    \answerTODO{}
+    \answerYes{} \\
+    \textit{The newly proposed methodology of our work is a simple extension of the original Markovian score climbing (MSC) algorithm.
+      It thus inhibits the limitations of MSC, but does not have any significant limitation of its own.
+      However, our theoretical analysis use approximations and inequalities.
+      We stated in the respective sections the assumptions and conditions for them to hold.
+    }
   \item Did you discuss any potential negative societal impacts of your work?
-    \answerTODO{}
+    \answerNo{} \\
+    \textit{Our work does not have direct societal impact.
+      However, advances in inclusive VI would lead to better uncertainty quantification in our machine learning models.
+      This could enhance decision making in failure critical applications.
+    }
   \item Have you read the ethics review guidelines and ensured that your paper conforms to them?
-    \answerTODO{}
+    \answerYes{}
 \end{enumerate}
 
 \item If you are including theoretical results...
@@ -45,41 +54,49 @@
 \item If you ran experiments...
 \begin{enumerate}
   \item Did you include the code, data, and instructions needed to reproduce the main experimental results (either in the supplemental material or as a URL)?
-    \answerTODO{}
+    \answerYes{} \\
+    \textit{We provide all of the code and data used in our experiments in the supplementary material.
+    We will also add the link to our public github repository in the paper once published.}
   \item Did you specify all the training details (e.g., data splits, hyperparameters, how they were chosen)?
-    \answerTODO{}
-	\item Did you report error bars (e.g., with respect to the random seed after running experiments multiple times)?
+    \answerYes{} \\
+    \textit{We specified the data splits, optimizer, and learning rate used in our experiments.
+    Any additional detail can be found directly in the provided source code.}
+  \item Did you report error bars (e.g., with respect to the random seed after running experiments multiple times)?
     \answerYes{} \\
     \textit{We report the median and 80\% empirical percentiles computed from 100 repetitions in all of our experiments.}
-	\item Did you include the total amount of compute and the type of resources used (e.g., type of GPUs, internal cluster, or cloud provider)?
-    \answerTODO{}
+     \item Did you include the total amount of compute and the type of resources used (e.g., type of GPUs, internal cluster, or cloud provider)? 
+     \answerNo{} \\
+     \textit{
+      All of our experiments were conducted on a CPU based server.
+      Thus, we did not specify the resources we used, as our experiments should be easy to reproduce on any commodity hardware.
+     }
 \end{enumerate}
 
 \item If you are using existing assets (e.g., code, data, models) or curating/releasing new assets...
 \begin{enumerate}
   \item If your work uses existing assets, did you cite the creators?
-    \answerTODO{}
+    \answerYes{} \\
+    \textit{We cited the publication related to the asset if any.}
   \item Did you mention the license of the assets?
     \answerTODO{}
   \item Did you include any new assets either in the supplemental material or as a URL?
-    \answerTODO{}
+    \answerNo{}
   \item Did you discuss whether and how consent was obtained from people whose data you're using/curating?
-    \answerTODO{}
+    \answerNA{} \\
+    \textit{Our work uses only publically available datasets.}
   \item Did you discuss whether the data you are using/curating contains personally identifiable information or offensive content?
-    \answerTODO{}
+    \answerNA{} \\
+    \textit{Our work uses only publically available datasets.}
 \end{enumerate}
 
 \item If you used crowdsourcing or conducted research with human subjects...
 \begin{enumerate}
   \item Did you include the full text of instructions given to participants and screenshots, if applicable?
-    \answerNA{}. \\
-    \textit{Our work does not involve live participants.}
+    \answerNA{}.
   \item Did you describe any potential participant risks, with links to Institutional Review Board (IRB) approvals, if applicable?
-    \answerNA{}. \\
-    \textit{Our work does not involve live participants.}
+    \answerNA{}.
   \item Did you include the estimated hourly wage paid to participants and the total amount spent on participant compensation?
-    \answerNA{}. \\
-    \textit{Our work does not involve live participants.}
+    \answerNA{}.
 \end{enumerate}
 
 \end{enumerate}

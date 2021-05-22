@@ -1,19 +1,20 @@
 
 \begin{figure*}
+  \vspace{-0.3in}
   \centering
   \subfloat[\(N=2^2\)]{
-    \includegraphics[scale=0.85]{figures/gaussian_01.pdf}
+    \includegraphics[scale=0.80]{figures/gaussian_01.pdf}
   }
   \subfloat[\(N=2^4\)]{
-    \includegraphics[scale=0.85]{figures/gaussian_02.pdf}
+    \includegraphics[scale=0.80]{figures/gaussian_02.pdf}
   }
   \subfloat[\(N=2^6\)]{
-    \includegraphics[scale=0.85]{figures/gaussian_03.pdf}
+    \includegraphics[scale=0.80]{figures/gaussian_03.pdf}
   }
   \caption{100-D isotropic Gaussian example with a varying computational budget \(N\).
-    MSC-PIMH kernel converges faster than MSC-CIS with and MSC-CISRB regardless of \(N\).
+    MSC-PIMH converges faster than MSC-CIS and MSC-CISRB regardless of \(N\).
     Also, the convergence of MSC-PIMH becomes more stable/monotonic as \(N\) increases.
-    The solid lines are the median of 100 repetitions while the colored regions are the 80\% empirical percentiles.
+    The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
   }\label{fig:gaussian}
   \vspace{-0.15in}
 \end{figure*}
@@ -31,34 +32,34 @@ We compare MSC-PIMH against
 \begin{enumerate*}[label=\textbf{(\roman*)}]
   \item  MSC using the CIS kernel (\textbf{MSC-CIS},~\citealt{NEURIPS2020_b2070693}), 
   \item  MSC using the CIS kernel with Rao-Blackwellization (\textbf{MSC-CISRB},~\citealt{NEURIPS2020_b2070693})
-  \item the adaptive IS method using SNIS as introduced in~\cref{section:ivi_previous} (\textbf{SNIS}).
-  \item the reweighted wake-sleep algorithm (\textbf{RWS},~\citealt{DBLP:journals/corr/BornscheinB14}),  
-  \item and evidence lower-bound minimization (\textbf{ELBO},~\citealt{pmlr-v33-ranganath14}).
+  \item the adaptive IS method using SNIS as introduced in~\cref{section:ivi_previous} (\textbf{SNIS}),
+  \item the reweighted wake-sleep algorithm (\textbf{RWS},~\citealt{DBLP:journals/corr/BornscheinB14}), and  
+  \item evidence lower-bound minimization (\textbf{ELBO},~\citealt{pmlr-v33-ranganath14}).
 \end{enumerate*}
-Specifically, we use automatic differentiation variational inference (ADVI,~\citealt{JMLR:v18:16-107}) implemented by Turing.
+Specifically, we use automatic differentiation VI (ADVI,~\citealt{JMLR:v18:16-107}) implemented by Turing.
 
 \begin{figure*}
   \centering
-  \subfloat[Pima]{
+  \subfloat[\texttt{pima}]{
     \includegraphics[scale=0.80]{figures/pima_02.pdf}
   }
-  \subfloat[Heart]{
+  \subfloat[\texttt{heart}]{
     \includegraphics[scale=0.80]{figures/heart_02.pdf}
   }
-  \subfloat[German]{
+  \subfloat[\texttt{german}]{
     \includegraphics[scale=0.80]{figures/german_02.pdf}
   } \\
-  \subfloat[Pima]{
+  \subfloat[\texttt{pima}]{
     \includegraphics[scale=0.80]{figures/pima_03.pdf}
   }
-  \subfloat[Heart]{
+  \subfloat[\texttt{heart}]{
     \includegraphics[scale=0.80]{figures/heart_03.pdf}
   }
-  \subfloat[German]{
+  \subfloat[\texttt{german}]{
     \includegraphics[scale=0.80]{figures/german_03.pdf}
   }
   \caption{Test accuracy and log-likelihood of logistic regression problems.
-    The solid lines are the median of 100 repetitions while the colored regions are the 80\% empirical percentiles.
+    The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
   }\label{fig:logistic}
   \vspace{-0.15in}
 \end{figure*}
@@ -66,68 +67,75 @@ Specifically, we use automatic differentiation variational inference (ADVI,~\cit
 \vspace{-0.1in}
 \paragraph{Reinterpreting RWS}
 The original RWS algorithm assumes that independent samples from \(p(\vz\mid\vx)\) are available possibly with an additional cost.
-It uses these independent samples for estimating the gradient once every \(K\) steps, and uses SNIS for the rest.
-In our setting, we do not assume that independent samples from \(p(\vz\mid\vx)\) are available.
-Instead, we reinterpret the idea of RWS of alternating between expensive and cheap estimates, and alternate between SNIS estimates and HMC estimates.
-HMC shows excellent statistical performance in practice, but is much expensive as it requires multiple gradients \(\nabla_{\vz} p(\vz, \vx)\) for generating only a single samples.
-As originally recommended by~\citet{DBLP:journals/corr/BornscheinB14}, we set \(K=5\).
+%It uses these independent samples for estimating the gradient once every \(K\) steps, and uses SNIS for the rest.
+%In our setting, we do not assume that independent samples from \(p(\vz\mid\vx)\) are available.
+Since this is not the case in our setting, we reinterpret RWS as alternating between cheap (\textit{sleep update}) and expensive estimates (\textit{wake update}).
+We use respectively use SNIS and HMC for the sleep and wake updates, where we use perform the wake update every \(K=5\) steps as originally recommended by~\citet{DBLP:journals/corr/BornscheinB14}.
+%HMC shows excellent statistical performance in practice, but is much expensive as it requires multiple gradients \(\nabla_{\vz} p(\vz, \vx)\) for generating only a single samples.
 
 \subsection{Isotropic Gaussian}
-We first perform experiments with a 100-D isotropic multivariate Gaussian distribution.
-The KL divergence between two multivariate Gaussian is available in a closed form, enabling exact analysis.
-We first compare the performance of MSC-PIMH, MSC-CIS, and MSC-CISRB with respect to the N (number of proposals for MSC-CIS(RB); number of parallel chains for MSC-PIMH).
+We first perform experiments with an 100-D isotropic multivariate Gaussian distribution.
+With Gaussian distributions, convergence can be evaluated exactly since their KL divergence is available in a closed form.
+We compare the performance of MSC-PIMH, MSC-CIS, and MSC-CISRB with respect to the \(N\) (number of proposals for MSC-CIS, MSC-CISRB; number of parallel chains for MSC-PIMH).
 The results are shown in~\cref{fig:gaussian}.
 While MSC-PIMH shows some level of overshoot wih \(N=4\), it shows monotonic convergence with larger \(N\).
 On the other hand, both MSC-CIS and MSC-CISRB overshoots even with \(N=64\).
 This clearly shows that our PIMH kernel enjoys better gradient estimates compared to the CIS kernel.
 
 \subsection{Hierarchical Logistic Regression}\label{section:logistic}
+\vspace{-0.05in}
 \paragraph{Experimental Setup}
 We now evaluate MSC-PIMH on logistic regression problems.
-We consider the Pima Indians diabetes (\textbf{pima}), German credit (\textbf{german}), and heart disease (\textbf{heart}) datasets.
-10\% of the datapoints in each dataset were excluded from training and used as test data.
+We consider the Pima Indians diabetes (\textbf{\texttt{pima}}, \(\vz \in \mathbb{R}^{11}\),~\citealt{smith_using_1988}), German credit (\textbf{\texttt{german}}, \(\vz \in \mathbb{R}^{27}\)), and heart disease (\textbf{\texttt{heart}}, \(\vz \in \mathbb{R}^{16}\),~\citealt{detrano_international_1989}) datasets obtained from the UCI repository~\cite{Dua:2019}.
+10\% of the datapoints in each dataset were used as test data.
 The train-test splits were chosen randomly in each of the 100 repetitions.
 We set a computational budget of \(N=10\) for all methods.
 
+\vspace{-0.1in}
 \paragraph{Probabilistic Model}
-Instead of the common single-level porbit/logistic regression models used in VI, we choose a more complex hierarchical logistic regression model \\
+Instead of the usual single-level probit/logistic regression models used in VI, we choose a more complex hierarchical logistic regression model 
+%
 \begin{equation}
 y_i \sim \text{Bernoulli-Logit}\,(p),\;
 p \sim \mathcal{N}(\vx_i^{\top}\symbf{\beta} + \alpha,\, \sigma_{\alpha}^2),\;
 \symbf{\beta} \sim \mathcal{N}(\symbf{0},\, \sigma_{\beta}^2 \mI),\;
 \sigma_{\beta},\,\sigma_{\alpha} \sim \mathcal{N}^{+}(0, 1.0)
 \end{equation}
+%
 where \(\mathcal{N}^+(\mu, \sigma)\) is a positive constrained normal distribution with mean \(\mu\) and standard deviation \(\sigma\), \(\vx_i\) and \(y_i\) are the feature vector and target variable of the \(i\)th datapoint.
 The extra degrees of freedom \(\sigma_{\beta}\) and \(\sigma_{\alpha}\) make this model relatively more challenging.
 
 %
 \begin{wrapfigure}{r}{0.4\textwidth}
-  \vspace{-0.3in}
-  \includegraphics[scale=0.8]{figures/german_01.pdf}
-  \caption{Pareto-\(\widehat{k}\) statistic.}\label{fig:paretok}
-  \vspace{-0.1in}
+  \vspace{-0.2in}
+  \includegraphics[scale=0.75]{figures/german_01.pdf}
+  \caption{Pareto-\(\widehat{k}\) statistics on \texttt{german}.
+    The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
+    }\label{fig:paretok}
+  \vspace{-0.2in}
 \end{wrapfigure}
 %
 \vspace{-0.1in}
-\paragraph{Results Summary}
+\paragraph{Results}
 The test accuracy and test log-likelihood results are shown in~\cref{fig:logistic}.
-MSC-PIMH was the fastest to converge on all of the datasets.
-Despite being able to utilize high-quality samples generated from HMC, RWS failed to achieve similar level of performance to MSC-PIMH.
+Our proposed MSC-PIMH is the fastests to converge on all of the datasets.
+Despite having access to high-quality HMC samples, RWS fails to achieve similar level of performance to MSC-PIMH.
 However, compared to MSC-CIS and MSC-CISRB, it converged faster.
 Among the two, MSC-CISRB performed only marginally better than MSC-CIS.
 Meanwhile, SNIS was the slowest to converge among inclusive VI methods.
-Lastly, despite being much slower to converge, ELBO achieved similar level of performance to MSC-PIMH.
+Although much slower to converge, ELBO achieved competitive results.
 
 \vspace{-0.1in}
 \paragraph{Inclusive VI v.s. Exclusive VI}
-The test accuracy and log-likelihood results in~\cref{fig:logistic} can convey a deceptive conclusion that inclusive and exclusive VI deliver similar results.
-However, in the perspective of parameter inference, both choose very different optimization paths.
-This is shown in~\cref{fig:paretok} through the pareto-\(\widehat{k}\) diagnostic~\citep{vehtari_pareto_2021, NEURIPS2020_7cac11e2}, which determines how reliable are the importance weights computed using \(q_{\vlambda}\).
-While the test accuracy suggests that ELBO converged around \(t=2000\), the pareto-\(\widehat{k}\) takes much longer to converge (about \(t=5000\)).
+The results of~\cref{fig:logistic} can convey a deceptive conclusion that inclusive and exclusive VI deliver similar results.
+However, in the parameter space, they choose very different optimization paths.
+This is shown in~\cref{fig:paretok} through the Pareto-\(\widehat{k}\) diagnostic~\citep{vehtari_pareto_2021, NEURIPS2020_7cac11e2}, which determines how reliable are the importance weights computed using \(q_{\vlambda}(\vz)\).
+While the test accuracy suggests that ELBO converged around \(t=2000\), in terms of pareto-\(\widehat{k}\), it takes much longer to converge (about \(t=5000\)).
 This shows that, even if their predictive performance is similar, the inclusive VI chooses a path that has better density coverage as expected.
 
 %
 \begin{figure*}
+  \vspace{-0.1in}
   \centering
   \begin{minipage}[b]{0.17\linewidth}
     \centering
@@ -136,27 +144,37 @@ This shows that, even if their predictive performance is similar, the inclusive 
   \begin{minipage}[b]{0.35\linewidth}
     \centering
     \includegraphics[scale=0.7]{figures/radon_02.pdf}
-    \subcaption{Radon}
+    \subcaption{\texttt{radon}}
   \end{minipage}
   \begin{minipage}[b]{0.35\linewidth}
     \centering
     \includegraphics[scale=0.7]{figures/sv_02.pdf}\label{fig:sv}
-    \subcaption{Stock}
+    \subcaption{\texttt{stock}}
   \end{minipage}
   \caption{Marginal log-likelihood (\(\log Z\)) estimates of considered methods.
-    ELBO is not shown in~\cref{fig:sv} because it failed to deliver reasonable estimates of \(\log Z\).
-    The solid lines are the median of 100 repetitions while the colored regions are the 80\% empirical percentiles.
+    ELBO ommited in~\cref{fig:sv} as it failed to deliver reasonable estimates.
+    The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
   }\label{fig:marginal_likelihood}
+  \vspace{-0.15in}
 \end{figure*}
 %
-\subsection{General Bayesian Inference}
-We estimated the marginal likelihood using \textit{thermodynamic integration} (TI,~\citealt{gelman_simulating_1998, neal_annealed_2001, lartillot_computing_2006}) with HMC implemented by Stan~\citep{carpenter_stan_2017, betancourt_conceptual_2017}.
+\subsection{Marginal Likelihood Estimation}
+\paragraph{Experimental Setup}
+We now estimate the marginal log-likelihood \(\log Z\) of a stochastic volatility model (\texttt{stock}, \(\vz \in \mathbb{R}^{2613}\),~\citealt{kim_stochastic_1998}) and a hierarchical regression model with partial pooling (\texttt{radon}, \(\vz \in \mathbb{R}^{175}\),~\citealt{gelman_data_2007}) for modeling radon levels in U.S homes.
+For \texttt{stock}, we use 10 years of the S\&P index daily closing price (May 3 2007 to May 3 2017).
+\texttt{stock} is highly challenging as it is both high dimensional and strongly correlated.
+We estimated the reference marginal likelihood using \textit{thermodynamic integration} (TI,~\citealt{gelman_simulating_1998, neal_annealed_2001, lartillot_computing_2006}) with HMC implemented by Stan~\citep{carpenter_stan_2017, betancourt_conceptual_2017}.
 
-\paragraph{Did inclusive VI live up to its hype?}
-\citet{dhaka_challenges_2021} showed that, inclusive VI works against our intuitions in higher dimensions.
-However, if the posterior is strongly correlated, inclusive VI can fail even in lower dimensions.
-On the other hand, if the posterior is not strongly correlated, our experiments suggest that inclusive VI can work better than exclusive VI.
-Furthermore, posterior correlation affects all methods relying on the mean-field approximation, not only inclusive VI.
+\vspace{-0.10in}
+\paragraph{Results}
+The results are shown in~\cref{fig:marginal_likelihood}.
+On \texttt{radon}, MSC-PIMH converges quickly, and provides the most accurate estimate.
+In contrast, MSC-CIS and MSC-CISRB are much slower to converge.
+SNIS and ELBO on the other hand overestimate \(\log Z\), which can be attributed to the mode seeking behavior of ELBO, and the small sample bias of SNIS.
+On \texttt{stock}, SNIS unexpectedly is the most accurate.
+Unfortunately, MSC-PIMH, MSC-CIS, MSC-CISRB underestimate \(\log Z\).
+Neverthless, MSC-PIMH provides much better estimates than the two.
+Lastly, we observe that only ELBO fails to converge given the same amount of SGD steps.
 
 %%% Local Variables:
 %%% TeX-master: "master"

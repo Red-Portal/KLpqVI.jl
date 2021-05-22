@@ -13,18 +13,18 @@
     \For{\textcolor{black}{\(t = 1, 2, \ldots, T\)}}{
       \textcolor{blue}{
         \For{\textcolor{blue}{\(i = 1, 2, \ldots, N\)}}{
-          \(\vz^{(i)}_{t} \sim K(\vz^{(i)}_{t-1}, \cdot)\)
+          \(\vz^{(i)}_{t} \sim K(\vz^{(i)}_{t-1}, \cdot)\)\;
         }
       }
       \( s(\vz^{(i)}_t; \vlambda) = \nabla_{\vlambda} \log q_{\vlambda}(\vz_t^{(i)}) \)\;
       \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t\,
-      \textcolor{blue}{\frac{1}{N} \sum^{N}_{i=1} s\,(\vz_t^{(i)};\vlambda_{t-1})} \)\;
+      \textcolor{purple}{\frac{1}{N} \sum^{N}_{i=1} s\,(\vz_t^{(i)};\vlambda_{t-1})} \)\;
     }
     \caption{Markovian Score Climbing with Parallel Chains}\label{alg:pimh}
   \end{algorithm2e}
 \end{minipage}
 \hspace{0.02\textwidth}
-\begin{minipage}[l]{0.39\textwidth}
+\begin{minipage}[l]{0.37\textwidth}
   \small
   \begin{algorithm2e}[H]
     \DontPrintSemicolon

@@ -124,7 +124,7 @@ The variance of the conditional estimate is closely related to the rejection rat
   &=\Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1},\,\vz^{(1:N)} } } + \underbrace{\Esub{q_{\vlambda}}{ \V{ f \mid \vz_{t-1},\,\vz^{(1:N)} } }}_{\text{Rao-Blackwellization gain}} \label{eq:total_variance} \\
   &\geq \Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1}\,\vz^{(1:N)} } } \label{eq:rao_blackwell}\\
   &= \Vsub{q_{\vlambda}}{ \big(1 - r\,(\vz_{t-1}\mid\vz^{(1:N)})\big)\, f_{\mathrm{IS}}
-    + r\,(\vz_{t-1}\mid\vz^{(1:N)})\,f(\vz_{t-1}) \,\middle\vert\, \vz_{t-1},\, \vz^{(1:N)} } \label{eq:exact_variance} \\
+    + r\,(\vz_{t-1}\mid\vz^{(1:N)})\,f(\vz_{t-1}) \,\middle\vert\, \vz_{t-1} } \label{eq:exact_variance} \\
   &\text{where}\;\; f_{\mathrm{IS}} = {\sum_{i=1}^N w\,(\vz^{(i)}) f(\vz^{(i)})\,/\,\sum_{i=1}^N w\,(\vz^{(i)})}. \nonumber 
 \end{align}
 %
@@ -227,15 +227,17 @@ That is,
 Thus, when \(w\,(\vz_{t-1})\gg N\,Z\), the conditional variance of CIS approximately grows as \(\mathcal{O}(N)\).
 We provide numerical simulations that support our analysis in the \textit{supplementary material}.
 
+\vspace{-0.02in}
 \input{pimh_algorithm}
+\vspace{-0.01in}
 
 \vspace{-0.1in}
 \paragraph{Bias and Variance Reduction with Paralel IMH Chains}
-To resolve the aforementioned limitation of the CIS kernel, we propose a simple but effective remedy: running \(N\) parallel IMH (PIMH) Markov-chains (\(\vz_t^{(1)}, \vz_t^{(2)}, \ldots, \vz_t^{(N)}\)).
+To resolve the aforementioned limitation of the CIS kernel, we propose a simple but effective remedy: running \(N\) parallel IMH (PIMH) Markov-chains \( \big\{\,\vz_t^{(1)}\big\}, \big\{\,\vz_t^{(2)}\big\}, \ldots, \big\{\,\vz_t^{(N)}\big\}\).
 Each of the chains performs a Metropolis-Hastings test with only a single proposal each.
-The modified MSC algorithm incorporating parallel chains is shown in~\cref{alg:pimh}, (the modified parts are highlighted in \textcolor{blue}{blue}), while the pseudocode of the IMH kernel is shown in~\cref{alg:imh}.
+The modified MSC algorithm incorporating parallel chains is shown in~\cref{alg:pimh}, (the modified parts are highlighted in \textcolor{blue}{blue} and \textcolor{purple}{purple}), while the IMH kernel is described in~\cref{alg:imh}.
 Since the parallel chains generate an \textit{independent} conditional estimate each, the gradient estimate \(\nicefrac{1}{N} \sum^{N}_{i=1} s\,(\vz_t^{(i)}; \vlambda)\) is an average of \(N\) independent and identical estimators.
-This trivially reduces the variance of a single conditional estimate in a rate of \(\mathcal{O}(1/N)\).
+This obviously reduces the variance of a single conditional estimate as \(\mathcal{O}(1/N)\).
 %Also, the estimates are now proper marginal esimates, which enjoy a tighter bound on the TV distance (and hence the bias).
 %
 %\input{bias_reduction}
@@ -250,15 +252,16 @@ That is, a lower bound similar to~\cref{thm:cis_bound} can be shown.
 In this case, we can see that the bound does not depend on \(N\), unlike CIS.
 This means the rejection rate will \textit{not} prematurely increase.
 We thus obtain all the benefits of CIS except its limitations.
-Using~\cref{thm:imh_bound}, a similar result to~\cref{thm:cis_bound_kl} can be obtained.
+%Using~\cref{thm:imh_bound}, a similar result to~\cref{thm:cis_bound_kl} can be obtained.
 
 \vspace{-0.1in}
-\paragraph{Computational Cost of PIMH}
-The sampling cost of PIMH with \(N\) chains is exactly equal to a CIS kernel with \(N\) proposals.
-However, we now need \(N\) evaluations of the score function.
-This might seem expensive compared to the original MSC algorithm, which only needs 1 evaluation of \(s\) but is exactly equal to MSC with Rao-Blackwellization.
-%% Meanwhile, unlike PIMH, using more expensive MCMC kernels such as HMC require many likelihood evaluations for generating \textit{a single sample}.
-%% It is therefore likely that the cost of more advanced MCMC kernels (or even an independent sample from \(p(\vz\mid\vx)\)!) might not be worth their benefits.
+\paragraph{Costs and Limitation of PIMH}
+The computational cost of sampling \(\vz^{(i)}_{t}\) (\textcolor{blue}{blue} region in \cref{alg:pimh}) for \(N\) chains is equal to a CIS kernel with \(N\) proposals.
+On the other hand, the cost of estimating the stochastic gradient (\textcolor{purple}{purple} region in \cref{alg:pimh}) is now \(\mathcal{O}(N)\) instead of \(\mathcal{O}(1)\) of the CIS kernel.
+This cost, however, is also imposed on the CIS kernel if we use Rao-Blackwellization.
+Thus, the overall computational cost of PIMH is more or less equal to that of the CIS kernel.
+The only downside of PIMH is that the Metropolis-Hastings acceptance ratio that we use has a slightly larger acceptance rate than Barker's~\citep{peskun_optimum_1973, minh_understanding_2015}.
+In the small \(N\) regime, this results in PIMH having slightly larger conditional variance, which can be easily fixed by also using Barker's ratio.
 
 %%% Local Variables:
 %%% TeX-master: "master"
