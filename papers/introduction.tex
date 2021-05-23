@@ -4,7 +4,7 @@ Variational inference (VI,~\citealt{jordan_introduction_1999, blei_variational_2
 Instead of working directly with our target distribution \(p\,(\vz\mid\vx)\), we find a \textit{variational approximation} \(q_{\lambda}(\vz) \in \mathcal{Q}\) that closely approximates \(p\,(\vz\mid\vx)\) according to a discrepancy measure \(D(p, q)\).
 Naturally, choosing a good discrepancy measure, or objective function, is a critical part of the problem.
 This fact had lead to a quest for good divergence measures~\citep{NIPS2016_7750ca35, NIPS2017_35464c84, NEURIPS2018_1cd138d0, pmlr-v97-ruiz19a}.
-So far, the exclusive KL divergence \(\DKL{q_{\lambda}}{p}\) (or reverse KL divergence) has been use ``exclusively'' among various discrepancy measures.
+So far, the exclusive KL divergence \(\DKL{q_{\lambda}}{p}\) (or reverse KL divergence) has been used ``exclusively'' among various discrepancy measures.
 This is partly because the exclusive KL is defined as an average over \(q_{\lambda} \in \mathcal{Q}\), which can be estimated efficiently.
 In contrast, the inclusive KL is defined as
 %
@@ -20,12 +20,12 @@ For performing inclusive VI,~\citet{NEURIPS2020_b2070693, pmlr-v124-ou20a} recen
 In MSC, stochastic gradients of the inclusive KL are obtained by operating a Markov-chain in parallel with the VI optimizer.
 An interesting property of MSC emerges when combined with specific types of MCMC kernels.
 In particular, we show that \textit{independent Metropolis-Hastings} (IMH,~\citealt{robert_monte_2004}) type kernels can automatically trade off bias and variance when used for MSC.
-This family of kernels include the \textit{condition importance sampling} (CIS,~\citealt{NEURIPS2020_b2070693}) kernel originally proposed for MSC.
-Surprisingly, this automatic tradeoff property is unique to IMH type kernels, and does not occur in MCMC kernels with state-depenpendent proposals such as Hamiltonian Monte Carlo (HMC,~\citealt{duane_hybrid_1987, neal_mcmc_2011, betancourt_conceptual_2017}).
+This family of kernels includes the \textit{condition importance sampling} (CIS,~\citealt{NEURIPS2020_b2070693}) kernel originally proposed for MSC.
+Surprisingly, this automatic tradeoff property is unique to IMH type kernels and does not occur in MCMC kernels with state-dependent proposals such as Hamiltonian Monte Carlo (HMC,~\citealt{duane_hybrid_1987, neal_mcmc_2011, betancourt_conceptual_2017}).
 
 Following our analysis of the CIS kernel, we also show that its performance can degrade with the number of proposals (or computational budget) used in each Markov-chain transition.
-As a simple solution to this, we propose to use parallel IMH (MSC-PIMH) chains, which reduces variance with same amount of computation.
-We evaluate the performance of MSC with PIMH against other inclusive VI~\citep{DBLP:journals/corr/BornscheinB14, NEURIPS2020_b2070693} and exlusive VI~\citep{pmlr-v33-ranganath14, JMLR:v18:16-107} methods.
+As a simple solution to this, we propose to use parallel IMH (MSC-PIMH) chains, which reduces variance with the same amount of computation.
+We evaluate the performance of MSC with PIMH against other inclusive VI~\citep{DBLP:journals/corr/BornscheinB14, NEURIPS2020_b2070693} and exclusive VI~\citep{pmlr-v33-ranganath14, JMLR:v18:16-107} methods.
 Finally, some interesting connections with adaptive MCMC methods~\citep{10.1007/s11222-008-9110-y} are discussed.
 
 \paragraph{Contribution Summary}

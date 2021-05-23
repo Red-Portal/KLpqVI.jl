@@ -25,7 +25,7 @@
 \paragraph{Implementation}
 We implemented MSC with PIMH on top of the Turing~\citep{ge2018t} probabilistic programming framework.
 Our implementation works with any model described in Turing, which automatically handles distributions with constrained support~\citep{JMLR:v18:16-107}.
-We use the ADAM optimizer by~\citet{kingma_adam_2017} with a learning rate of 0.01 in all of experiments.
+We use the ADAM optimizer by~\citet{kingma_adam_2017} with a learning rate of 0.01 in all of the experiments.
 We set a computational budget of \(N=10\) and \(T=10^4\) for all experiments unless mentioned otherwise.
 
 \vspace{-0.1in}
@@ -69,11 +69,11 @@ Specifically, we use automatic differentiation VI (ADVI,~\citealt{JMLR:v18:16-10
 
 \vspace{-0.1in}
 \paragraph{Reinterpreting RWS}
-The original RWS algorithm assumes that independent samples from \(p(\vz\mid\vx)\) are available possibly with an additional cost.
+The original RWS algorithm assumes that independent samples from \(p(\vz\mid\vx)\) are available, possibly with an additional cost.
 %It uses these independent samples for estimating the gradient once every \(K\) steps, and uses SNIS for the rest.
 %In our setting, we do not assume that independent samples from \(p(\vz\mid\vx)\) are available.
 Since this is not the case in our setting, we reinterpret RWS as alternating between cheap (\textit{sleep update}) and expensive (\textit{wake update}) estimates.
-We use respectively use SNIS and HMC for the sleep and wake updates, where we use perform the wake update every \(K=5\) steps as originally recommended by~\citet{DBLP:journals/corr/BornscheinB14}.
+We use respectively use SNIS and HMC for the sleep and wake updates, where we perform the wake update every \(K=5\) steps as originally recommended by~\citet{DBLP:journals/corr/BornscheinB14}.
 %HMC shows excellent statistical performance in practice, but is much expensive as it requires multiple gradients \(\nabla_{\vz} p(\vz, \vx)\) for generating only a single samples.
 
 %% \subsection{Isotropic Gaussian}
@@ -90,7 +90,7 @@ We use respectively use SNIS and HMC for the sleep and wake updates, where we us
 \paragraph{Experimental Setup}
 We now evaluate MSC-PIMH on logistic regression problems.
 We consider the Pima Indians diabetes (\textbf{\texttt{pima}}, \(\vz \in \mathbb{R}^{11}\),~\citealt{smith_using_1988}), German credit (\textbf{\texttt{german}}, \(\vz \in \mathbb{R}^{27}\)), and heart disease (\textbf{\texttt{heart}}, \(\vz \in \mathbb{R}^{16}\),~\citealt{detrano_international_1989}) datasets obtained from the UCI repository~\citep{Dua:2019}.
-10\% of the datapoints were randomly selected in each of the 100 repetitions as test data.
+10\% of the data points were randomly selected in each of the 100 repetitions as test data.
 
 \vspace{-0.1in}
 \paragraph{Probabilistic Model}
@@ -119,8 +119,8 @@ The extra degrees of freedom \(\sigma_{\beta}\) and \(\sigma_{\alpha}\) make thi
 \vspace{-0.1in}
 \paragraph{Results}
 The test accuracy and test log-likelihood results are shown in~\cref{fig:logistic}.
-Our proposed MSC-PIMH is the fastests to converge on all of the datasets.
-Despite having access to high-quality HMC samples, RWS fails to achieve similar level of performance to MSC-PIMH.
+Our proposed MSC-PIMH is the fastest to converge on all of the datasets.
+Despite having access to high-quality HMC samples, RWS fails to achieve a similar level of performance to MSC-PIMH.
 However, compared to MSC-CIS and MSC-CISRB, it converges faster.
 Among the two, MSC-CISRB performs only marginally better than MSC-CIS.
 Meanwhile, SNIS is the slowest to converge among inclusive VI methods.
@@ -154,7 +154,7 @@ This shows that, even if their predictive performance is similar, the inclusive 
     \subcaption{\texttt{stock}}
   \end{minipage}
   \caption{Marginal log-likelihood (\(\log Z\)) estimates of considered methods.
-    ELBO is ommited in~\cref{fig:sv} as it failed to deliver reasonable estimates.
+    ELBO is omitted in~\cref{fig:sv} as it failed to deliver reasonable estimates.
     The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
   }\label{fig:marginal_likelihood}
   \vspace{-0.15in}
@@ -162,19 +162,19 @@ This shows that, even if their predictive performance is similar, the inclusive 
 %
 \paragraph{Experimental Setup}
 We now estimate the marginal log-likelihood \(\log Z\) of a stochastic volatility model (\texttt{stock}, \(\vz \in \mathbb{R}^{2613}\),~\citealt{kim_stochastic_1998}) and a hierarchical regression model with partial pooling (\texttt{radon}, \(\vz \in \mathbb{R}^{175}\),~\citealt{gelman_data_2007}) for modeling radon levels in U.S homes.
-For \texttt{stock}, we use 10 years of the S\&P index daily closing price (May 3 2007 to May 3 2017).
+For \texttt{stock}, we use 10 years of the S\&P index daily closing price (May 3, 2007, to May 3, 2017).
 \texttt{stock} is highly challenging as it is both high dimensional and strongly correlated.
 We estimated the reference marginal likelihood using \textit{thermodynamic integration} (TI,~\citealt{gelman_simulating_1998, neal_annealed_2001, lartillot_computing_2006}) with HMC implemented by Stan~\citep{carpenter_stan_2017, betancourt_conceptual_2017}.
 
 \vspace{-0.10in}
 \paragraph{Results}
 The results are shown in~\cref{fig:marginal_likelihood}.
-On \texttt{radon}, MSC-PIMH converges quickly, and provides the most accurate estimate.
+On \texttt{radon}, MSC-PIMH converges quickly and provides the most accurate estimate.
 In contrast, MSC-CIS and MSC-CISRB are much slower to converge.
-SNIS and ELBO on the other hand overestimate \(\log Z\), which can be attributed to the mode seeking behavior of ELBO, and the small sample bias of SNIS.
+SNIS and ELBO, on the other hand, overestimate \(\log Z\), which can be attributed to the mode-seeking behavior of ELBO and the small sample bias of SNIS.
 On \texttt{stock}, SNIS is unexpectedly the most accurate.
 Unfortunately, MSC-PIMH, MSC-CIS, MSC-CISRB all underestimate \(\log Z\).
-Neverthless, MSC-PIMH provides much better estimates than the later two.
+Nevertheless, MSC-PIMH provides much better estimates than the latter two.
 Lastly, we observe that only ELBO fails to converge given the same amount of SGD steps.
 
 %%% Local Variables:

@@ -127,7 +127,7 @@ The expansion in~\eqref{eq:total_variance} follows from the Law of Total Varianc
 \paragraph{Low rejection rate means high conditional variance.}
 Because of the dependence of \(r\,(\vz_{t-1}\mid\vz^{(1:N)})\) on \(\vz^{(1:N)}\), it is in general difficult to interpret the result of~\eqref{eq:exact_variance}.
 Nonetheless, when \(w\,(\vz_{t-1}) \gg w\,(\vz^{(i)})\), \(r(\vz\mid\vz^{(1:N)})\) is close to 1 almost independently of \(q_{\vlambda}(\vz)\).
-The intuition is that, if the \textit{rejection weight} \(w\,(\vz_{t-1})\) is large, most proposals will be rejected regardless of their value.
+The intuition is that if the \textit{rejection weight} \(w\,(\vz_{t-1})\) is large, most proposals will be rejected regardless of their value.
 By translating this intuition into an approximation, we obtain the following result.
 %
 \input{variance_approx}
@@ -148,7 +148,7 @@ In the context of VI, the following shows that \(r\,(\vz_{t-1})\) is huge when t
 %
 \input{cis_bound_kl}
 %
-This result states that, in the ideal case when the Markov-chain has achieved stationarity and \(\vz_{t-1}\) closely follows \(p\,(\vz\mid\vx)\), the average rejection weight is bounded below exponentially by the KL divergence.
+This result states that in the ideal case when the Markov-chain has achieved stationarity and \(\vz_{t-1}\) closely follows \(p\,(\vz\mid\vx)\), the average rejection weight is bounded below exponentially by the KL divergence.
 The bound is tight as long as \(\DKL{p}{q_{\vlambda}}\) is large.
 In practical conditions, the rejection rate cannot be improved by increasing \(N\) since
 \begin{enumerate*}[label=(\roman*)]
@@ -158,7 +158,7 @@ In practical conditions, the rejection rate cannot be improved by increasing \(N
 
 The results of \cref{thm:cis_bound_kl} signify that, until MSC converges such that \(\DKL{p}{q_{\vlambda}}\) is small, the rejection rate will be very high.
 And by~\cref{thm:approx_var}, the variance will be small, improving the convergence of SGD.
-This explains why the Markov-chain in~\cref{fig:motivating} does not move until MSC converges, and why MSC works well with the CIS kernel.
+This explains why the Markov-chain in~\cref{fig:motivating} does not move until MSC converges and why MSC works well with the CIS kernel.
 Note that these properties hold similarly in any IMH type kernel.
 
 
@@ -244,7 +244,7 @@ On the other hand, the cost of estimating the stochastic gradient (\textcolor{pu
 This cost, however, is also imposed on the CIS kernel if we use Rao-Blackwellization.
 Thus, the overall computational cost of PIMH is more or less equal to that of the CIS kernel.
 The only downside of PIMH is that the Metropolis-Hastings acceptance ratio that we use has a slightly larger acceptance rate than Barker's~\citep{peskun_optimum_1973, minh_understanding_2015}.
-In the small \(N\) regime, this results in PIMH having slightly larger conditional variance, which can be easily fixed by also using Barker's ratio.
+In the small \(N\) regime, PIMH has a slightly larger conditional variance, which can be easily fixed by using Barker's ratio.
 
 %%% Local Variables:
 %%% TeX-master: "master"
