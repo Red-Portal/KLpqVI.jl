@@ -25,9 +25,9 @@ Though IS is unbiased, it is highly unstable in practice.
 Using the \textit{normalized weight} \(\widetilde{w}^{(i)} = \nicefrac{w\,(\vz^{(i)})}{\sum_{i=1}^N w\,(\vz^{(i)}) }\) results in the self-normalized IS (SNIS) approximation, which is often much more stable.
 However, SNIS still fails to converge even on moderate dimensional objectives, and unlike IS, it is no longer unbiased~\citep{robert_monte_2004, mcbook}.
 
-\subsection{Markovian Score Climbing}\label{section:msc}
 %
   \begin{minipage}[l]{0.45\linewidth}
+    \vspace{-0.1in}
     \small
     \centering
     \begin{algorithm2e}[H]
@@ -45,19 +45,23 @@ However, SNIS still fails to converge even on moderate dimensional objectives, a
       }
       \caption{Markovian Score Climbing}\label{alg:msc}
     \end{algorithm2e}
+    \vspace{-0.1in}
   \end{minipage}
   \qquad
   \begin{minipage}[r]{0.5\linewidth}
+    \vspace{-0.1in}
     \begin{figure}[H]
       \centering
       \input{figures/trace.tex}
-      \caption{KL divergence and trace of Markov-chain in MSC with a CIS kernel.
-        \(\vz_t\) barely makes any movement until \(t=300\) where \(\DKL{p}{q_{\vlambda}}\) starts to converge.}\label{fig:motivating}
+      \caption{KL divergence and trace of \(\vz_t\) of MSC with a CIS kernel.
+        \(\vz_t\) barely moves until \(t=300\) where \(\DKL{p}{q_{\vlambda}}\) starts to converge.}\label{fig:motivating}
     \end{figure}
+    \vspace{-0.1in}
   \end{minipage}
 %
+\subsection{Markovian Score Climbing}\label{section:msc}
 %
-\vspace{-0.1in}
+%\vspace{-0.1in}
 \paragraph{Description of MSC}
 Recently,~\citet{NEURIPS2020_b2070693} proposed \textit{Markovian score climbing} (MSC) for performing inclusive VI.
 They showed that MSC achieves better and robust performance compared to methods such as SNIS and expectation propagation (EP, \citealt{10.5555/2074022.2074067})

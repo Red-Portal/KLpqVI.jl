@@ -1,23 +1,23 @@
 
-\begin{figure*}
-  \vspace{-0.3in}
-  \centering
-  \subfloat[\(N=2^2\)]{
-    \includegraphics[scale=0.80]{figures/gaussian_01.pdf}
-  }
-  \subfloat[\(N=2^4\)]{
-    \includegraphics[scale=0.80]{figures/gaussian_02.pdf}
-  }
-  \subfloat[\(N=2^6\)]{
-    \includegraphics[scale=0.80]{figures/gaussian_03.pdf}
-  }
-  \caption{100-D isotropic Gaussian example with a varying computational budget \(N\).
-    MSC-PIMH converges faster than MSC-CIS and MSC-CISRB regardless of \(N\).
-    Also, the convergence of MSC-PIMH becomes more stable/monotonic as \(N\) increases.
-    The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
-  }\label{fig:gaussian}
-  \vspace{-0.15in}
-\end{figure*}
+%% \begin{figure*}
+%%   \vspace{-0.3in}
+%%   \centering
+%%   \subfloat[\(N=2^2\)]{
+%%     \includegraphics[scale=0.75]{figures/gaussian_01.pdf}
+%%   }
+%%   \subfloat[\(N=2^4\)]{
+%%     \includegraphics[scale=0.75]{figures/gaussian_02.pdf}
+%%   }
+%%   \subfloat[\(N=2^6\)]{
+%%     \includegraphics[scale=0.75]{figures/gaussian_03.pdf}
+%%   }
+%%   \caption{100-D isotropic Gaussian example with a varying computational budget \(N\).
+%%     MSC-PIMH converges faster than MSC-CIS and MSC-CISRB regardless of \(N\).
+%%     Also, the convergence of MSC-PIMH becomes more stable/monotonic as \(N\) increases.
+%%     The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
+%%   }\label{fig:gaussian}
+%%   \vspace{-0.15in}
+%% \end{figure*}
 
 \section{Evaluations}\label{section:eval}
 \subsection{Experimental Setup}
@@ -41,22 +41,22 @@ Specifically, we use automatic differentiation VI (ADVI,~\citealt{JMLR:v18:16-10
 \begin{figure*}
   \centering
   \subfloat[\texttt{pima}]{
-    \includegraphics[scale=0.80]{figures/pima_02.pdf}
+    \includegraphics[scale=0.75]{figures/pima_02.pdf}
   }
   \subfloat[\texttt{heart}]{
-    \includegraphics[scale=0.80]{figures/heart_02.pdf}
+    \includegraphics[scale=0.75]{figures/heart_02.pdf}
   }
   \subfloat[\texttt{german}]{
-    \includegraphics[scale=0.80]{figures/german_02.pdf}
+    \includegraphics[scale=0.75]{figures/german_02.pdf}
   } \\
   \subfloat[\texttt{pima}]{
-    \includegraphics[scale=0.80]{figures/pima_03.pdf}
+    \includegraphics[scale=0.75]{figures/pima_03.pdf}
   }
   \subfloat[\texttt{heart}]{
-    \includegraphics[scale=0.80]{figures/heart_03.pdf}
+    \includegraphics[scale=0.75]{figures/heart_03.pdf}
   }
   \subfloat[\texttt{german}]{
-    \includegraphics[scale=0.80]{figures/german_03.pdf}
+    \includegraphics[scale=0.75]{figures/german_03.pdf}
   }
   \caption{Test accuracy and log-likelihood of logistic regression problems.
     The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
@@ -73,20 +73,20 @@ Since this is not the case in our setting, we reinterpret RWS as alternating bet
 We use respectively use SNIS and HMC for the sleep and wake updates, where we use perform the wake update every \(K=5\) steps as originally recommended by~\citet{DBLP:journals/corr/BornscheinB14}.
 %HMC shows excellent statistical performance in practice, but is much expensive as it requires multiple gradients \(\nabla_{\vz} p(\vz, \vx)\) for generating only a single samples.
 
-\subsection{Isotropic Gaussian}
-We first perform experiments with an 100-D isotropic multivariate Gaussian distribution.
-With Gaussian distributions, convergence can be evaluated exactly since their KL divergence is available in a closed form.
-We compare the performance of MSC-PIMH, MSC-CIS, and MSC-CISRB with respect to the \(N\) (number of proposals for MSC-CIS, MSC-CISRB; number of parallel chains for MSC-PIMH).
-The results are shown in~\cref{fig:gaussian}.
-While MSC-PIMH shows some level of overshoot wih \(N=4\), it shows monotonic convergence with larger \(N\).
-On the other hand, both MSC-CIS and MSC-CISRB overshoots even with \(N=64\).
-This clearly shows that our PIMH kernel enjoys better gradient estimates compared to the CIS kernel.
+%% \subsection{Isotropic Gaussian}
+%% We first perform experiments with an 100-D isotropic multivariate Gaussian distribution.
+%% With Gaussian distributions, convergence can be evaluated exactly since their KL divergence is available in a closed form.
+%% We compare the performance of MSC-PIMH, MSC-CIS, and MSC-CISRB with respect to the \(N\) (number of proposals for MSC-CIS, MSC-CISRB; number of parallel chains for MSC-PIMH).
+%% The results are shown in~\cref{fig:gaussian}.
+%% While MSC-PIMH shows some level of overshoot wih \(N=4\), it shows monotonic convergence with larger \(N\).
+%% On the other hand, both MSC-CIS and MSC-CISRB overshoots even with \(N=64\).
+%% This clearly shows that our PIMH kernel enjoys better gradient estimates compared to the CIS kernel.
 
 \subsection{Hierarchical Logistic Regression}\label{section:logistic}
 \vspace{-0.05in}
 \paragraph{Experimental Setup}
 We now evaluate MSC-PIMH on logistic regression problems.
-We consider the Pima Indians diabetes (\textbf{\texttt{pima}}, \(\vz \in \mathbb{R}^{11}\),~\citealt{smith_using_1988}), German credit (\textbf{\texttt{german}}, \(\vz \in \mathbb{R}^{27}\)), and heart disease (\textbf{\texttt{heart}}, \(\vz \in \mathbb{R}^{16}\),~\citealt{detrano_international_1989}) datasets obtained from the UCI repository~\cite{Dua:2019}.
+We consider the Pima Indians diabetes (\textbf{\texttt{pima}}, \(\vz \in \mathbb{R}^{11}\),~\citealt{smith_using_1988}), German credit (\textbf{\texttt{german}}, \(\vz \in \mathbb{R}^{27}\)), and heart disease (\textbf{\texttt{heart}}, \(\vz \in \mathbb{R}^{16}\),~\citealt{detrano_international_1989}) datasets obtained from the UCI repository~\citep{Dua:2019}.
 10\% of the datapoints in each dataset were used as test data.
 The train-test splits were chosen randomly in each of the 100 repetitions.
 We set a computational budget of \(N=10\) for all methods.
@@ -107,7 +107,7 @@ The extra degrees of freedom \(\sigma_{\beta}\) and \(\sigma_{\alpha}\) make thi
 
 %
 \begin{wrapfigure}{r}{0.4\textwidth}
-  \vspace{-0.2in}
+  \vspace{-0.3in}
   \includegraphics[scale=0.75]{figures/german_01.pdf}
   \caption{Pareto-\(\widehat{k}\) statistics on \texttt{german}.
     The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
@@ -134,12 +134,12 @@ While the test accuracy suggests that ELBO converged around \(t=2000\), in terms
 This shows that, even if their predictive performance is similar, the inclusive VI chooses a path that has better density coverage as expected.
 
 %
-\begin{figure*}
-  \vspace{-0.1in}
+\begin{figure}[H]
+  %\vspace{-0.1in}
   \centering
   \begin{minipage}[b]{0.17\linewidth}
     \centering
-    \includegraphics[scale=0.8]{figures/radon_03.pdf}
+    \includegraphics[scale=0.75]{figures/radon_03.pdf}
   \end{minipage}
   \begin{minipage}[b]{0.35\linewidth}
     \centering
@@ -156,7 +156,7 @@ This shows that, even if their predictive performance is similar, the inclusive 
     The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
   }\label{fig:marginal_likelihood}
   \vspace{-0.15in}
-\end{figure*}
+\end{figure}
 %
 \subsection{Marginal Likelihood Estimation}
 \paragraph{Experimental Setup}
