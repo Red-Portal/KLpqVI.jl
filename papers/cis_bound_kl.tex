@@ -43,7 +43,7 @@
   Now, from the result of~\cref{thm:cis_bound},
   \begin{equation}
     \Esub{p(\vz_{t-1}\mid\vx)}{ r(\vz_{t-1}) } \geq \Esub{p(\vz_{t-1}\mid\vx)}{ \frac{w(\vz_{t-1})}{w(\vz_{t-1}) + N\,Z}} =
-    \Esub{p(\vz_{t-1}\mid\vx)}{ \varphi\left( w(\vz_{t-1}) \right)  },
+    \Esub{p(\vz_{t-1}\mid\vx)}{ \varphi\left( w(\vz_{t-1}) \right)  },\label{eq:mean_bound}
   \end{equation}
   where \(\varphi(x) = \nicefrac{x}{(x + N\,Z)}\).
   The lower bound has the following relationship
@@ -57,14 +57,15 @@
   by the concavity of \(\varphi\) and Jensen's inequality.
   From this, we denote the \textit{Jensen gap}
   \begin{equation}
-    0 \leq \delta = 
+    \delta = 
     \varphi\left(\,
     \Esub{p(\vz_{t-1}\mid\vx)}{ w(\vz_{t-1}) }
     \,\right)
     -
-    \Esub{p(\vz_{t-1}\mid\vx)}{ \varphi\,\big( w(\vz_{t-1}) \big)  }.
+    \Esub{p(\vz_{t-1}\mid\vx)}{ \varphi\,\big( w(\vz_{t-1}) \big)  }\label{eq:jensen_gap}
   \end{equation}
-  Then,
+  where \(\delta \geq 0\).
+  Then, by applying~\eqref{eq:jensen_gap} to~\eqref{eq:mean_bound},
   \begin{align}
     \Esub{p(\vz_{t-1}\mid\vx)}{ r(\vz_{t-1}) }
     &\geq \Esub{p(\vz_{t-1}\mid\vx)}{ \varphi\,\big( w\,(\vz_{t-1}) \big)  } \\
@@ -93,7 +94,7 @@
     } - \delta.
   \end{align}
   We lastly discuss the Jensen gap \(\delta\), which directly gives the sharpness of our lower bound.
-  \citet[Theorem 1]{liao_sharpening_2019} show that, for a random variable \(X \in (a, b), -\infty \leq a < b \leq \infty\) and a \textit{convex} function \(\widetilde{\varphi}\,(x)\), the Jensen gap is bounded such that
+  \citet[Theorem 1]{liao_sharpening_2019} showed that, for a random variable \(X \in (a, b), -\infty \leq a < b \leq \infty\) and a \textit{convex} function \(\widetilde{\varphi}\,(x)\), the Jensen gap is bounded such that
   \begin{align}
     \E{\widetilde{\varphi}\,(x)} - \widetilde{\varphi}\,(\E{x})
     \leq
@@ -101,9 +102,9 @@
     \quad \text{where}\quad h\,(x; \nu) = \frac{\widetilde{\varphi}\,(x) - \widetilde{\varphi}\,(\nu)}{{(x - \nu)}^2} - \frac{ \widetilde{\varphi}\,\prime(\nu) }{ x - \nu },
   \end{align}
 \(\mu\) and \(\sigma^2\) are the mean and variance of \(X\).
-Also, \citet[Lemma 1]{liao_sharpening_2019} show that, if \(\varphi\prime\,(x)\) is concave,  \(\sup_{x \in (a,b)} h\,(x; \mu) = \lim_{x \rightarrow a} h\,(x; \mu) \). \\
+Also, \citet[Lemma 1]{liao_sharpening_2019} show that, if \(\varphi\prime\,(x)\) is concave,  \(\sup_{x \in (a,b)} h\,(x; \mu) = \lim_{x \rightarrow a} h\,(x; \mu) \). 
 
-In our case, the domain is \((a = 0, b = \infty)\) since \(w\,(\vz_{t-1}) \geq 0\).
+In our case, the domain is \((a,b) = (0, \infty)\) since \(w\,(\vz_{t-1}) \geq 0\).
 We then define our convex function \(\widetilde{\varphi}\,(x) = - \varphi\,(x)\).
 Since \(\varphi\,\prime(x) = \nicefrac{N\,Z}{{(x + N\,Z)}^2}\) is convex, \(\widetilde{\varphi}\,\prime(x)\) is concave. Then, 
 \begin{align}
@@ -130,7 +131,7 @@ Since \(\varphi\,\prime(x) = \nicefrac{N\,Z}{{(x + N\,Z)}^2}\) is convex, \(\wid
 Notice that in the context of the original problem, \(\mu = \Esub{p(\vz_{t-1}\mid\vx)}{ w\,(\vz_{t-1}) }\).
 And also, we obtain the relationship with our original problem as
 \begin{align}
-  0 \leq \delta
+  \delta
   = \varphi\,(\E{x}) - \E{\varphi\,(x)}
   = \E{-\varphi\,(x)} - \varphi\,(-\E{x})
   = \E{\widetilde{\varphi}\,(x)} - \widetilde{\varphi}\,(\E{x}).
@@ -138,13 +139,15 @@ And also, we obtain the relationship with our original problem as
 Finally,
 \begin{align}
   0 \leq \delta
-  &\leq \sup_{x \in (a,b)} h\,(x; \mu) \, \sigma^2 \\
-  &= \lim_{x \rightarrow 0} h\,(x; \mu)  \\
-  &< \frac{1}{\mu^2} \\
-  &= \frac{1}{ {\Esub{p(\vz_{t-1}\mid\vx)}{ w\,(\vz_{t-1}) }}^2 }, \\
-\intertext{and by~\cref{thm:rej_kl_bound},}
-  &\leq \frac{1}{ {\big( Z \exp\,( \DKL{p}{q_{\vlambda}} ) \big)}^2 }.
+  \leq \sup_{x \in (a,b)} h\,(x; \mu) \, \sigma^2
+  = \lim_{x \rightarrow 0} h\,(x; \mu) 
+  < \frac{1}{\mu^2}
+  = \frac{1}{ {\Esub{p(\vz_{t-1}\mid\vx)}{ w\,(\vz_{t-1}) }}^2 },
 \end{align}
+and by~\cref{thm:rej_kl_bound},
+\begin{equation}
+  0 \leq \delta \leq \frac{1}{ {\big( Z \exp\,( \DKL{p}{q_{\vlambda}} ) \big)}^2 }.
+\end{equation}
 \end{proofEnd}
 
 %%% Local Variables:

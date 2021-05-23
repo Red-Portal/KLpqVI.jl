@@ -3,14 +3,14 @@
 \textit{Detailed derivation of \textbf{Equation}~\eqref{eq:cis_kernel}}
 \begin{proof}[\unskip\nopunct]
 \begin{align}
-  &\Esub{K(\vz_{t-1}, \cdot)}{f(\vz)} \\
+  &\Esub{K(\vz_{t-1}, \vz)}{f(\vz)} \\
   &= \Esub{q_{\vlambda}}{
       \sum^{N}_{i=0} w\,(\vz^{(i)}) f(\vz^{(i)}) 
       \,/\,
       \sum^{N}_{i=0} w\,(\vz^{(i)})
   } \\
   \intertext{
-    (with a slight abuse of notation \(\vz_{t-1} = \vz^{(0)}\))
+    (with a slight abuse of notation, \(\vz_{t-1} = \vz^{(0)}\))
   }
   &= \Esub{q_{\vlambda}}{
     \Big(
@@ -73,7 +73,7 @@
     }
     +
     r\,(\vz_{t-1}\mid\vz^{(1:N)}) \, f(\vz_{t-1})
-  } \\ 
+  }\label{eq:cis_kernel_inter} \\ 
   \intertext{where we denote
     \(
     \alpha\,(\vz_{t-1}, \vz^{(1:N)}) =
