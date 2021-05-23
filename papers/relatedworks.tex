@@ -3,7 +3,7 @@
 \paragraph{Inclusive VI with SGD}
 Our method directly builds on top of MSC~\citep{NEURIPS2020_b2070693}, which is a method for minizing the inclusive KL divergence.
 While many works minimizing the inclusive KL have emerged~\citep{DBLP:journals/corr/BornscheinB14, li_approximate_2017, 10.5555/2074022.2074067, pmlr-v124-ou20a, kim2021adaptive}, only a few have been proposed for general VI based on SGD.
-Notably,~\citet{DBLP:journals/corr/BornscheinB14} use SNIS for estimating the stochastic gradients, while~\citet{li_approximate_2017} use an MCMC kernel to refine samples \(q_{\vlambda}(\vz)\) to better resemble samples from \(p(\vz\mid\vx)\).
+Notably,~\citet{DBLP:journals/corr/BornscheinB14} use SNIS for estimating the stochastic gradients, while~\citet{li_approximate_2017} use an MCMC kernel to refine samples from \(q_{\vlambda}(\vz)\) to better resemble samples from \(p(\vz\mid\vx)\).
 Meanwhile, a synonymous method to MSC, \textit{general stochastic approximation} (GSA) by~\citet[Algorithm 1]{pmlr-v124-ou20a} has been proposed concurrently in the context of discrete latent variables.
 \citet{kim2021adaptive} recently proposed a method that essentially blends GSA/MSC with RWS.
 
@@ -18,9 +18,9 @@ In particular,~\citet{10.1007/s11222-008-9110-y, garthwaite_adaptive_2016} discu
 
 \vspace{-0.1in}
 \paragraph{Adaptive IMH}
-Among adaptive MCMC methods, those that use independent proposals~\citep{andrieu_ergodicity_2006, keith_adaptive_2008, holden_adaptive_2009, giordani_adaptive_2010} are the most similar.
-\citet{keith_adaptive_2008} propose to use \textit{cross-entroy minimization}~\citet{barbakh_cross_2009}, which is mathematically identical to inclusive VI, for adaptation.
-Our work, on the other hand, contrasts with previous adaptive IMH algorithms in that we use SGD for adaptng \(q_{\vlambda}(\vz)\).
+Among adaptive MCMC methods, those that use independent proposals~\citep{andrieu_ergodicity_2006, keith_adaptive_2008, holden_adaptive_2009, giordani_adaptive_2010} are the most related to our work.
+\citet{keith_adaptive_2008} propose to use \textit{cross-entroy minimization}~\citep{barbakh_cross_2009}, which is mathematically identical to inclusive VI, for adaptation.
+Our work, on the other hand, contrasts with previous adaptive IMH algorithms in that we use SGD for adapting \(q_{\vlambda}(\vz)\).
 This enables VI methods such as ADVI to consider proposals that are much more complex~\citep{JMLR:v18:16-107}.
 
 \vspace{-0.1in}
