@@ -22,8 +22,10 @@
 
 \usepackage{xcolor}         % hyperlinks
 \usepackage[algo2e, ruled]{algorithm2e}    % hyperlinks
-\usepackage[utf8]{inputenc} % allow utf-8 input
-\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+%\usepackage[utf8]{inputenc} % allow utf-8 input
+%\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{fontspec}
+%\usepckage{}
 \usepackage{hyperref}       % hyperlinks
 \usepackage{url}            % simple URL typesetting
 \usepackage{booktabs}       % professional-quality tables
@@ -36,6 +38,11 @@
 \usepackage{caption}     
 \usepackage{subcaption}     
 \usepackage{float}     
+%\usepackage[1-14]{pagesel}
+
+\usepackage{minted}
+\usepackage{newunicodechar}
+\setmonofont{DejaVu Sans Mono}[Scale=MatchLowercase]
 
 \input{krkmath.tex}
 \setmainfont{Times New Roman}
@@ -112,9 +119,15 @@
 
 \newpage
 \appendix
-\section{Additional Experimental Results}
+\section{Additional Information}
+\subsection{Experimental Environment}\label{section:resources}
+All of our experiments presented in this paper were executed on a server with 20 Intel Xeon E5--2640 CPUs and 64GB RAM.
+Each of the CPUs has 20 logical threads with 32k L1 cache, 256k L2 cache, and 25MB L3 cache.
+All of our experiments can be executed within a few days on a system with similar computational capabilities.
+
 \input{paretok_additional}
 \input{simulations}
+\input{prob_models}
 
 \section{Proofs}
 \input{cis_kernel}

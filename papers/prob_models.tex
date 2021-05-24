@@ -1,0 +1,57 @@
+
+\subsection{Probabilistic Models Used in Experiments}
+We present the probabilistic models used in our experiments in~\cref{section:eval}.
+
+\subsubsection{Hierarchical Logistic Regression}
+\begin{align*}
+    \sigma_{\beta}  &\sim \mathcal{N}^+\left(0, 1.0\right) \\
+    \sigma_{\alpha} &\sim \mathcal{N}^+\left(0, 1.0\right) \\
+    \symbf{\beta} &\sim \mathcal{N}\left(\symbf{0}, \sigma_{\beta}^2\,\symbf{I}\right) \\
+    \alpha        &\sim \mathcal{N}\left(0, \sigma_{\alpha}^2\right) \\
+    p             &\sim \mathcal{N}\left(\vx_i^{\top}\symbf{\beta} + \alpha,\, \sigma_{\alpha}^2\right)\\
+    y_i           &\sim \text{Bernoulli-Logit}\,(p)
+\end{align*}
+
+\subsubsection{Stochastic Volatility}
+\begin{align*}
+    \mu    &\sim \mathrm{Cauchy}(0, 10) \\
+    \phi   &\sim \mathrm{Uniform}\,(-1, 1) \\
+    \sigma &\sim \mathrm{Cauchy}^+(0, 5) \\
+    h_1    &\sim \mathcal{N}\left( 0, \frac{\sigma^2}{1 - \phi^2} \right) \\
+    h_{t+1} &\sim \mathcal{N}\left( \mu + \phi\,\left( h_{t} - \mu \right), \sigma^2 \right) \\
+    y_t    &\sim \mathcal{N}\left( 0, \exp\left( h_{t} \right) \right)
+\end{align*}
+\(y_t\) is the stock price at the \(t\)th point in time.
+
+\subsubsection{Radon Hierarchical Regression}
+\begin{align*}
+  \sigma_{a_1} &\sim \mathrm{Gamma}\left( \alpha = 1, \beta = 0.02 \right) \\
+  \sigma_{a_2} &\sim \mathrm{Gamma}\left( \alpha = 1, \beta = 0.02 \right) \\
+  \sigma_{y}  &\sim \mathrm{Gamma}\left( \alpha = 1, \beta = 0.02 \right) \\
+  \mu_{a_1}    &\sim \mathcal{N}\left( 0, 1 \right) \\
+  \mu_{a_2}    &\sim \mathcal{N}\left( 0, 1 \right) \\
+  a_{1,\, c}     &\sim \mathcal{N}\left( \mu_{a_1}, \sigma_{a_1}^2 \right) \\
+  a_{2,\, c}     &\sim \mathcal{N}\left( \mu_{a_2}, \sigma_{a_2}^2 \right) \\
+  y_i         &\sim \mathcal{N}\left( a_{1,\, c_i} + a_{2,\, c_i}\,x_i,\, \sigma_y^2 \right)
+\end{align*}
+\(a_{1,\,c}\) is the intercept at the county \(c\), \(a_{2,\,c}\) is the slope at the county \(c\), \(c_i\) is the county of the \(i\)th datapoint, \(x_i\) is the floor predictor of the measurement, and \(y_i\) is the measured radon level.
+
+%% \begin{align}
+%% Turing.@model radon(county, x, y) = begin
+%%     σ_a1 ~ Gamma(1, 50)
+%%     σ_a2 ~ Gamma(1, 50)
+%%     σ_y  ~ Gamma(1, 50)
+%%     μ_a1 ~ Normal(0,1)
+%%     μ_a2 ~ Normal(0,1)
+
+%%     a1   ~ MvNormal(fill(μ_a1, 85), fill(σ_a1, 85))
+%%     a2   ~ MvNormal(fill(μ_a2, 85), fill(σ_a2, 85))
+
+%%     μ_y  = a1[county] + a2[county].*x
+%%     y    ~ MvNormal(μ_y, σ_y)
+%% end
+%% \end{align}
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:
