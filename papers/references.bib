@@ -293,14 +293,13 @@
 
 @inproceedings{10.5555/2074022.2074067,
   title = {Expectation Propagation for Approximate Bayesian Inference},
-  booktitle = {Proceedings of the Seventeenth Conference on Uncertainty in Artificial Intelligence},
+  booktitle = {Proceedings of the 17th Conference on Uncertainty in Artificial Intelligence ({{UAI}})},
   author = {Minka, Thomas P.},
   year = {2001},
   pages = {362--369},
   publisher = {{Morgan Kaufmann Publishers Inc.}},
   address = {{San Francisco, CA, USA}},
-  abstract = {This paper presents a new deterministic approximation technique in Bayesian networks. This method, "Expectation Propagation," unifies two previous techniques: assumed-density filtering, an extension of the Kalman filter, and loopy belief propagation, an extension of belief propagation in Bayesian networks. Loopy belief propagation, because it propagates exact belief states, is useful for a limited class of belief networks, such as those which are purely discrete. Expectation Propagation approximates the belief states by only retaining expectations, such as mean and varitmce, and iterates until these expectations are consistent throughout the network. This makes it applicable to hybrid networks with discrete and continuous nodes. Experiments with Gaussian mixture models show Expectation Propagation to be donvincingly better than methods with similar computational cost: Laplace's method, variational Bayes, and Monte Carlo. Expectation Propagation also provides an efficient algorithm for training Bayes point machine classifiers.},
-  series = {{{UAI}}'01}
+  abstract = {This paper presents a new deterministic approximation technique in Bayesian networks. This method, "Expectation Propagation," unifies two previous techniques: assumed-density filtering, an extension of the Kalman filter, and loopy belief propagation, an extension of belief propagation in Bayesian networks. Loopy belief propagation, because it propagates exact belief states, is useful for a limited class of belief networks, such as those which are purely discrete. Expectation Propagation approximates the belief states by only retaining expectations, such as mean and varitmce, and iterates until these expectations are consistent throughout the network. This makes it applicable to hybrid networks with discrete and continuous nodes. Experiments with Gaussian mixture models show Expectation Propagation to be donvincingly better than methods with similar computational cost: Laplace's method, variational Bayes, and Monte Carlo. Expectation Propagation also provides an efficient algorithm for training Bayes point machine classifiers.}
 }
 
 @article{10.5555/235610.235641,
@@ -2110,11 +2109,11 @@
 
 @inproceedings{DBLP:journals/corr/BornscheinB14,
   title = {Reweighted Wake-Sleep},
-  booktitle = {3rd {{International Conference}} on {{Learning Representation}} ({{ICLR}})},
+  booktitle = {Proceedings of the 3rd {{International Conference}} on {{Learning Representation}} ({{ICLR}})},
   author = {Bornschein, J{\"o}rg and Bengio, Yoshua},
   year = {2015},
   month = may,
-  address = {{San diego, CA, US}},
+  address = {{San Diego, California, USA}},
   bibsource = {dblp computer science bibliography, https://dblp.org},
   biburl = {https://dblp.org/rec/journals/corr/BornscheinB14.bib},
   timestamp = {Wed, 17 Jul 2019 10:40:54 +0200}
@@ -2865,24 +2864,16 @@
   abstract = {The GNU Compiler Collection includes front ends for C, C++, Objective-C, Fortran, Ada, Go, and D, as well as libraries for these languages (libstdc++,...)}
 }
 
-@inproceedings{ge_turing_2018,
-  title = {Turing: A Language for Flexible Probabilistic Inference},
-  booktitle = {International {{Conference}} on {{Artificial Intelligence}} and {{Statistics}}, {{AISTATS}} 2018, 9-11 {{April}} 2018, {{Playa Blanca}}, {{Lanzarote}}, {{Canary Islands}}, {{Spain}}},
-  author = {Ge, Hong and Xu, Kai and Ghahramani, Zoubin},
-  year = {2018},
-  pages = {1682--1690}
-}
-
 @inproceedings{ge2018t,
   title = {Turing: A Language for Flexible Probabilistic Inference},
-  booktitle = {Proceedings of the {{Twenty}}-{{First International Conference}} on {{Artificial Intelligence}} and {{Statistics}} ({{AISTATS}}'18)},
+  booktitle = {Proceedings of the 21st {{International Conference}} on {{Artificial Intelligence}} and {{Statistics}} ({{AISTATS}})},
   author = {Ge, Hong and Xu, Kai and Ghahramani, Zoubin},
   year = {2018},
   volume = {84},
   pages = {1682--1690},
-  publisher = {{Proceedings of Machine Learning Research}},
+  publisher = {{ML Research Press}},
   biburl = {https://dblp.org/rec/bib/conf/aistats/GeXG18},
-  series = {{{PMLR}}}
+  series = {Proceedings of {{Machine Learning Research}}}
 }
 
 @article{geirhos_shortcut_2020,
@@ -2918,7 +2909,7 @@
   author = {Gelman, Andrew and Hill, Jennifer},
   year = {2007},
   publisher = {{Cambridge University Press}},
-  address = {{Cambridge ; New York}},
+  address = {{Cambridge; New York}},
   annotation = {OCLC: ocm67375137},
   keywords = {Multilevel models (Statistics),Regression analysis},
   lccn = {HA31.3 .G45 2007},
@@ -4181,24 +4172,23 @@
 
 @inproceedings{kim2021adaptive,
   title = {Adaptive Strategy for Resetting a Non-Stationary Markov Chain during Learning via Joint Stochastic Approximation},
-  booktitle = {Third Symposium on Advances in Approximate Bayesian Inference},
+  booktitle = {To Appear in {{Proceedings}} of the 3rd Symposium on Advances in Approximate Bayesian Inference ({{AABI}})},
   author = {Kim, Hyunsu and Lee, Juho and Yang, Hongseok},
   year = {2021}
 }
 
-@article{kingma_adam_2017,
+@inproceedings{kingma_adam_2015,
   title = {Adam: {{A Method}} for {{Stochastic Optimization}}},
+  booktitle = {Proceedings of the 3rd {{International Conference}} for {{Learning Representations}} ({{ICLR}})},
   author = {Kingma, Diederik P. and Ba, Jimmy},
-  year = {2017},
-  month = jan,
+  year = {2015},
+  address = {{San Diego, California, USA}},
   abstract = {We introduce Adam, an algorithm for first-order gradient-based optimization of stochastic objective functions, based on adaptive estimates of lower-order moments. The method is straightforward to implement, is computationally efficient, has little memory requirements, is invariant to diagonal rescaling of the gradients, and is well suited for problems that are large in terms of data and/or parameters. The method is also appropriate for non-stationary objectives and problems with very noisy and/or sparse gradients. The hyper-parameters have intuitive interpretations and typically require little tuning. Some connections to related algorithms, on which Adam was inspired, are discussed. We also analyze the theoretical convergence properties of the algorithm and provide a regret bound on the convergence rate that is comparable to the best known results under the online convex optimization framework. Empirical results demonstrate that Adam works well in practice and compares favorably to other stochastic optimization methods. Finally, we discuss AdaMax, a variant of Adam based on the infinity norm.},
   archiveprefix = {arXiv},
   eprint = {1412.6980},
   eprinttype = {arxiv},
   file = {/home/msca8h/Zotero/storage/ICB6B4IV/Kingma and Ba - 2017 - Adam A Method for Stochastic Optimization.pdf;/home/msca8h/Zotero/storage/REWW72SC/1412.html},
-  journal = {arXiv:1412.6980 [cs]},
-  keywords = {Computer Science - Machine Learning},
-  primaryclass = {cs}
+  keywords = {Computer Science - Machine Learning}
 }
 
 @inproceedings{klambauer_selfnormalizing_2017,
@@ -5784,7 +5774,7 @@
 
 @inproceedings{NEURIPS2018_1cd138d0,
   title = {Variational Inference with Tail-Adaptive f-{{Divergence}}},
-  booktitle = {Advances in Neural Information Processing Systems},
+  booktitle = {Advances in Neural Information Processing Systems ({{NIPS}})},
   author = {Wang, Dilin and Liu, Hao and Liu, Qiang},
   year = {2018},
   volume = {31},
@@ -5821,7 +5811,7 @@
 
 @inproceedings{NEURIPS2020_7cac11e2,
   title = {Robust, Accurate Stochastic Optimization for Variational Inference},
-  booktitle = {Advances in Neural Information Processing Systems},
+  booktitle = {Advances in Neural Information Processing Systems ({{NeurIPS}})},
   author = {Dhaka, Akash Kumar and Catalina, Alejandro and Andersen, Michael R and Magnusson, M{\aa}ns and Huggins, Jonathan and Vehtari, Aki},
   year = {2020},
   volume = {33},
@@ -5830,8 +5820,8 @@
 }
 
 @inproceedings{NEURIPS2020_b2070693,
-  title = {Markovian Score Climbing: {{Variational}} Inference with {{KL}}(Pq)},
-  booktitle = {Advances in Neural Information Processing Systems},
+  title = {Markovian Score Climbing: {{Variational}} Inference with \${{KL}}(P||q)\$},
+  booktitle = {Advances in Neural Information Processing Systems ({{NeurIPS}})},
   author = {Naesseth, Christian and Lindsten, Fredrik and Blei, David},
   year = {2020},
   volume = {33},
@@ -5899,7 +5889,7 @@
 
 @inproceedings{NIPS2016_7750ca35,
   title = {R\'enyi Divergence Variational Inference},
-  booktitle = {Advances in Neural Information Processing Systems},
+  booktitle = {Advances in Neural Information Processing Systems ({{NIPS}})},
   author = {Li, Yingzhen and Turner, Richard E},
   year = {2016},
   volume = {29},
@@ -5907,12 +5897,14 @@
 }
 
 @inproceedings{NIPS2017_35464c84,
-  title = {Variational Inference via \textbackslash chi Upper Bound Minimization},
-  booktitle = {Advances in Neural Information Processing Systems},
+  title = {Variational Inference via \$\textbackslash chi\$ Upper Bound Minimization},
+  booktitle = {Advances in Neural Information Processing Systems ({{NIPS}})},
   author = {Dieng, Adji Bousso and Tran, Dustin and Ranganath, Rajesh and Paisley, John and Blei, David},
   year = {2017},
   volume = {30},
-  publisher = {{Curran Associates, Inc.}}
+  pages = {2729--2738},
+  publisher = {{Curran Associates, Inc.}},
+  address = {{Long Beach, California, USA}}
 }
 
 @incollection{NIPS2019_9107,
@@ -6270,13 +6262,13 @@
 
 @inproceedings{pmlr-v33-ranganath14,
   title = {Black Box Variational Inference},
-  booktitle = {Proceedings of the Seventeenth International Conference on Artificial Intelligence and Statistics},
+  booktitle = {Proceedings of the 17th International Conference on Artificial Intelligence and Statistics ({{AISTATS}})},
   author = {Ranganath, Rajesh and Gerrish, Sean and Blei, David},
   year = {2014},
   month = apr,
   volume = {33},
   pages = {814--822},
-  publisher = {{PMLR}},
+  publisher = {{ML Research Press}},
   address = {{Reykjavik, Iceland}},
   abstract = {Variational inference has become a widely used method to approximate posteriors in complex latent variables models. However, deriving a variational inference algorithm generally requires significant model-specific analysis. These efforts can hinder and deter us from quickly developing and exploring a variety of models for a problem at hand. In this paper, we present a ``black box'' variational inference algorithm, one that can be quickly applied to many models with little additional derivation. Our method is based on a stochastic optimization of the variational objective where the noisy gradient is computed from Monte Carlo samples from the variational distribution. We develop a number of methods to reduce the variance of the gradient, always maintaining the criterion that we want to avoid difficult model-based derivations. We evaluate our method against the corresponding black box sampling based methods. We find that our method reaches better predictive likelihoods much faster than sampling methods. Finally, we demonstrate that Black Box Variational Inference lets us easily explore a wide space of models by quickly constructing and evaluating several models of longitudinal healthcare data.},
   pdf = {http://proceedings.mlr.press/v33/ranganath14.pdf},
@@ -6386,13 +6378,13 @@
 
 @inproceedings{pmlr-v97-ruiz19a,
   title = {A Contrastive Divergence for Combining Variational Inference and {{MCMC}}},
-  booktitle = {Proceedings of the 36th International Conference on Machine Learning},
+  booktitle = {Proceedings of the 36th International Conference on Machine Learning ({{ICML}})},
   author = {Ruiz, Francisco and Titsias, Michalis},
   year = {2019},
   month = jun,
   volume = {97},
   pages = {5537--5545},
-  publisher = {{PMLR}},
+  publisher = {{ML Research Press}},
   abstract = {We develop a method to combine Markov chain Monte Carlo (MCMC) and variational inference (VI), leveraging the advantages of both inference approaches. Specifically, we improve the variational distribution by running a few MCMC steps. To make inference tractable, we introduce the variational contrastive divergence (VCD), a new divergence that replaces the standard Kullback-Leibler (KL) divergence used in VI. The VCD captures a notion of discrepancy between the initial variational distribution and its improved version (obtained after running the MCMC steps), and it converges asymptotically to the symmetrized KL divergence between the variational distribution and the posterior of interest. The VCD objective can be optimized efficiently with respect to the variational parameters via stochastic optimization. We show experimentally that optimizing the VCD leads to better predictive performance on two latent variable models: logistic matrix factorization and variational autoencoders (VAEs).},
   pdf = {http://proceedings.mlr.press/v97/ruiz19a/ruiz19a.pdf},
   series = {Proceedings of Machine Learning Research}
@@ -8206,6 +8198,18 @@
   file = {/home/msca8h/Zotero/storage/FZVRSM9D/Zeng and Yin - 2018 - On Nonconvex Decentralized Gradient Descent.pdf},
   journal = {IEEE Transactions on Signal Processing},
   number = {11}
+}
+
+@article{zhang_advances_2019,
+  title = {Advances in Variational Inference},
+  author = {Zhang, Cheng and Butepage, Judith and Kjellstrom, Hedvig and Mandt, Stephan},
+  year = {2019},
+  month = aug,
+  volume = {41},
+  pages = {2008--2026},
+  file = {/home/msca8h/Zotero/storage/TVNGVPC9/Zhang et al. - 2019 - Advances in Variational Inference.pdf},
+  journal = {IEEE Transactions on Pattern Analysis and Machine Intelligence},
+  number = {8}
 }
 
 @article{zhang_autogeneration_2013,

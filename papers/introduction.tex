@@ -1,6 +1,6 @@
 
 \section{Introduction}
-Variational inference (VI,~\citealt{jordan_introduction_1999, blei_variational_2017}) is a method of converting Bayesian inference into an optimization problem.
+Variational inference (VI,~\citealt{jordan_introduction_1999, blei_variational_2017, zhang_advances_2019}) is a method of converting Bayesian inference into an optimization problem.
 Instead of working directly with our target distribution \(p\,(\vz\mid\vx)\), we find a \textit{variational approximation} \(q_{\lambda}(\vz) \in \mathcal{Q}\) that closely approximates \(p\,(\vz\mid\vx)\) according to a discrepancy measure \(D(p, q)\).
 Naturally, choosing a good discrepancy measure, or objective function, is a critical part of the problem.
 This fact had lead to a quest for good divergence measures~\citep{NIPS2016_7750ca35, NIPS2017_35464c84, NEURIPS2018_1cd138d0, pmlr-v97-ruiz19a}.
