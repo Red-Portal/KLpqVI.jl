@@ -1,6 +1,6 @@
 
 \begin{theoremEnd}[]{theorem}\label{thm:cis_bound_kl}
-  The average rejection rate \(r = \int r(\vz_{t-1}) \, p(\vz_{t-1}\mid\vx) \, d\vz_{t-1} \) of a CIS kernel with \(N\) proposals is bounded below such that
+  Assuming \(\sup_{\vz} \nicefrac{p(\vz\mid\vx)}{q_{\vlambda}(\vz)} = M < \infty\), the average rejection rate \(r = \int r(\vz_{t-1}) \, p(\vz_{t-1}\mid\vx) \, d\vz_{t-1} \) of a CIS kernel with \(N\) proposals is bounded below such that
   \[
   r \geq 1 \big/ 
     \left(1 + \frac{N}{
@@ -9,7 +9,7 @@
     \right) - \delta,
   \]
   where \(
-  0 \leq \delta \leq {\big( Z \exp\,( \DKL{p}{q_{\vlambda}} ) \big)}^{-2} 
+  0 \leq \delta \leq \frac{M}{\exp^2\,\big( \DKL{p}{q_{\vlambda}}\big) }
   \)
   is the sharpness of the bound, and \(Z = \int p\,(\vz,\vx) \, d\vz\).
 \end{theoremEnd}
@@ -99,7 +99,7 @@
     \E{\widetilde{\varphi}\,(x)} - \widetilde{\varphi}\,(\E{x})
     \leq
     \sup_{x \in (a,b)} h\,(x; \mu) \, \sigma^2
-    \quad \text{where}\quad h\,(x; \nu) = \frac{\widetilde{\varphi}\,(x) - \widetilde{\varphi}\,(\nu)}{{(x - \nu)}^2} - \frac{ \widetilde{\varphi}\,\prime(\nu) }{ x - \nu },
+    \quad \text{where}\quad h\,(x; \nu) = \frac{\widetilde{\varphi}\,(x) - \widetilde{\varphi}\,(\nu)}{{(x - \nu)}^2} - \frac{ \widetilde{\varphi}\,\prime(\nu) }{ x - \nu },\label{eq:jensen_gap_bound}
   \end{align}
 \(\mu\) and \(\sigma^2\) are the mean and variance of \(X\).
 Also, \citet[Lemma 1]{liao_sharpening_2019} show that, if \(\varphi\prime\,(x)\) is concave,  \(\sup_{x \in (a,b)} h\,(x; \mu) = \lim_{x \rightarrow a} h\,(x; \mu) \). 
@@ -129,24 +129,47 @@ Since \(\varphi\,\prime(x) = \nicefrac{N\,Z}{{(x + N\,Z)}^2}\) is convex, \(\wid
   &< \frac{1}{\mu^2}
 \end{align}
 Notice that in the context of the original problem, \(\mu = \Esub{p(\vz_{t-1}\mid\vx)}{ w\,(\vz_{t-1}) }\).
-And also, we obtain the relationship with our original problem as
+We obtain the relationship with our original problem as
 \begin{align}
   \delta
   = \varphi\,(\E{x}) - \E{\varphi\,(x)}
   = \E{-\varphi\,(x)} - \varphi\,(-\E{x})
   = \E{\widetilde{\varphi}\,(x)} - \widetilde{\varphi}\,(\E{x}).
 \end{align}
-Finally,
+
+We finally discuss the variance term \(\sigma^2\) present in~\eqref{eq:jensen_gap_bound}.
+Since we assume \(\sup \nicefrac{p\,(\vz\mid\vx)}{q_{\vlambda}(\vz)} = M < \infty \), \( 0 < \frac{p\,(\vz\mid\vx)}{q_{\vlambda}(\vz)} < M \) for all \(\vz \in \mathcal{Z}\).
+Then, since the variance is defined as
+\begin{align}
+    \sigma^2 &= \E{w^2\,(\vz)} - {\E{w\,(\vz)}}^2 \\
+             &= \E{ {\left( \frac{Z\,p\,(\vz\mid\vx)}{q_{\vlambda}(\vz) } \right)}^2 } - {\E{\frac{Z\,p\,(\vz\mid\vx)}{q_{\vlambda}(\vz) }}}^2 \\
+             &= Z^2 \left(\; \E{ {\left( \frac{p\,(\vz\mid\vx)}{q_{\vlambda}(\vz) } \right)}^2 } - {\E{\frac{p\,(\vz\mid\vx)}{q_{\vlambda}(\vz) }}}^2 \;\right) \\
+             &= Z^2 \, \V{ \frac{p\,(\vz\mid\vx)}{q_{\vlambda}(\vz) } } ,
+\end{align}
+by Bhatia-Davis's inequality,
+\begin{equation}
+    0 \leq \sigma^2 
+    \leq Z^2 \, \V{ \frac{p\,(\vz\mid\vx)}{q_{\vlambda}(\vz) } }
+    \leq Z^2 \, (M - \mu)\,\mu.
+\end{equation}
+
+By combining the results, 
 \begin{align}
   0 \leq \delta
   \leq \sup_{x \in (a,b)} h\,(x; \mu) \, \sigma^2
-  = \lim_{x \rightarrow 0} h\,(x; \mu) 
-  < \frac{1}{\mu^2}
-  = \frac{1}{ {\Esub{p(\vz_{t-1}\mid\vx)}{ w\,(\vz_{t-1}) }}^2 },
+  = \sigma^2 \lim_{x \rightarrow 0} h\,(x; \mu) 
+  < \frac{\sigma^2}{\mu^2}
+  < \frac{Z^2 M }{\mu^2}
+  < \frac{
+    Z^2 \, M
+  }
+  {
+    {\Esub{p(\vz_{t-1}\mid\vx)}{ w\,(\vz_{t-1}) }}^2 
+  }\;,
 \end{align}
 and by~\cref{thm:rej_kl_bound},
 \begin{equation}
-  0 \leq \delta \leq \frac{1}{ {\big( Z \exp\,( \DKL{p}{q_{\vlambda}} ) \big)}^2 }.
+  0 \leq \delta < \frac{ M }{ \exp^2\,\big( \DKL{p}{q_{\vlambda}} \big) }.
 \end{equation}
 \end{proofEnd}
 
