@@ -4,7 +4,7 @@
 \paragraph{MCMC uses marginal estimates.}
 To explain the counterintuitive observation in~\cref{fig:motivating}, we first discuss a subtle difference between the usual MCMC setting and the MSC setting.
 In MCMC, what matters is the estimate provided by the average of \textit{all} the states.
-This \textit{marginal} estimate of \(f\) is given by
+This \textit{marginal} estimate of \(f\) is 
 \begin{align}
   \frac{1}{T} \sum^{T}_{t=1} f(\vz_t) = \E{f(\vz_t)} = \E{\Esub{K(\vz_{t-1},\,\vz_t)}{ f(\vz_t) \mid \vz_{t-1}}}
 \end{align}
@@ -24,8 +24,10 @@ This seemingly subtle difference of using either the marginal or conditional est
 The most important difference, however, is the way we analyze the variance of the estimates.
 
 \subsection{Interpreting Conditional Importance Sampling as Independent Metropolis-Hastings}\label{section:cis_imh}
-In independent Metropolis-Hastings (IMH) kernels, proposals are generated independently of the previous state \(\vz_{t-1}\).
-We show that the CIS kernel proposed by~\citet{NEURIPS2020_b2070693} turns out to be a type of IMH kernel that uses Barker's accept-reject mechanism~\citep{barker_monte_1965}.
+Many popular MCMC kernels are based on the Metropolis-Hastings test where a random proposal \(\vz^*\) is either accepted into the Markov-chain (\(\vz_{t} = \vz^*\)) or rejected (\(\vz_t = \vz_{t-1}\)).
+Among these, independent Metropolis-Hastings (IMH) kernels generate proposals independently of \(\vz_{t-1}\) such as \(\vz^* \sim q\,(\vz)\) instead of \(\vz^* \sim q\,(\vz\mid\vz_{t-1})\).% for \textit{state-dependent}.
+%This constrasts with other kernels that generate  proposals such as .
+We show that the CIS kernel proposed by~\citet{NEURIPS2020_b2070693} turns out to be a type of IMH kernel that uses Barker's acceptance ratio~\citep{barker_monte_1965} for the Metropolis-Hastings test.
 This interpretation enables the analysis of the \textit{rejection rate} of the CIS kernel.
 
 \begin{figure}[H]
