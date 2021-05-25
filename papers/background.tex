@@ -1,6 +1,8 @@
 
 \section{Background}
+\vspace{-0.05in}
 \subsection{Inclusive Variational Inference Until Now}\label{section:ivi_previous}
+\vspace{-0.05in}
 A typical way to perform VI is to use stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951, bottou_online_1999}), which requires unbiased gradient estimates of the optimization target.
 In the case of inclusive variational inference, this corresponds to estimating
 %
@@ -12,6 +14,7 @@ In the case of inclusive variational inference, this corresponds to estimating
 where \(s\,(\vz; \vlambda) = \nabla_{\vlambda} \log q_{\vlambda}(\vz)\) is known as the \textit{score function}.
 Evidently, estimating \(\nabla_{\vlambda} \DKL{p}{q_{\lambda}}\) requires integrating the score function over \(p(\vz\mid\vx)\), which is prohibitive.
 
+\vspace{-0.1in}
 \paragraph{Importance Sampling}
 When the variational approximation \(q_{\lambda}\) is easy to sample from, one can use importance sampling (IS, \citealt{robert_monte_2004, mcbook}) since 
 \begin{align}
@@ -25,9 +28,9 @@ Though IS is unbiased, it is highly unstable in practice.
 A more stable alternative is to use the \textit{normalized weight} \(\widetilde{w}^{(i)} = \nicefrac{w\,(\vz^{(i)})}{\sum_{i=1}^N w\,(\vz^{(i)}) }\), resulting in the self-normalized IS (SNIS) approximation.
 Unfortunately, SNIS still fails to converge even on moderate dimensional objectives, and unlike IS, is no longer unbiased~\citep{robert_monte_2004, mcbook}.
 
+\vspace{-0.1in}
 %
   \begin{minipage}[l]{0.45\linewidth}
-    \vspace{-0.1in}
     \small
     \centering
     \begin{algorithm2e}[H]
