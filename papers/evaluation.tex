@@ -26,14 +26,14 @@
 We implemented MSC with PIMH on top of the Turing~\citep{ge2018t} probabilistic programming framework.
 Our implementation works with any model described in Turing, which automatically handles distributions with constrained support~\citep{JMLR:v18:16-107}.
 We use the ADAM optimizer by~\citet{kingma_adam_2015} with a learning rate of 0.01 in all of the experiments.
-We set a computational budget of \(N=10\) and \(T=10^4\) for all experiments unless mentioned otherwise.
+We set the computational budget \(N=10\) and \(T=10^4\) for all experiments unless specified.
 
 \vspace{-0.1in}
 \paragraph{Considered Baselines}
 We compare MSC-PIMH against
 \begin{enumerate*}[label=\textbf{(\roman*)}]
-  \item  MSC using the CIS kernel (\textbf{MSC-CIS},~\citealt{NEURIPS2020_b2070693}), 
-  \item  MSC using the CIS kernel with Rao-Blackwellization (\textbf{MSC-CISRB},~\citealt{NEURIPS2020_b2070693})
+  \item MSC using the CIS kernel (\textbf{MSC-CIS},~\citealt{NEURIPS2020_b2070693}), 
+  \item MSC using the CIS kernel with Rao-Blackwellization (\textbf{MSC-CISRB},~\citealt{NEURIPS2020_b2070693}),
   \item the adaptive IS method using SNIS as introduced in~\cref{section:ivi_previous} (\textbf{SNIS}),
   \item the reweighted wake-sleep algorithm (\textbf{RWS},~\citealt{DBLP:journals/corr/BornscheinB14}), and  
   \item evidence lower-bound minimization (\textbf{ELBO},~\citealt{pmlr-v33-ranganath14}).
@@ -88,8 +88,7 @@ We use respectively use SNIS and HMC for the sleep and wake updates, where we pe
 \subsection{Hierarchical Logistic Regression}\label{section:logistic}
 \vspace{-0.05in}
 \paragraph{Experimental Setup}
-We now evaluate MSC-PIMH on logistic regression problems.
-We consider the Pima Indians diabetes (\textbf{\texttt{pima}}, \(\vz \in \mathbb{R}^{11}\),~\citealt{smith_using_1988}), German credit (\textbf{\texttt{german}}, \(\vz \in \mathbb{R}^{27}\)), and heart disease (\textbf{\texttt{heart}}, \(\vz \in \mathbb{R}^{16}\),~\citealt{detrano_international_1989}) datasets obtained from the UCI repository~\citep{Dua:2019}.
+We evaluate MSC-PIMH on logistic regression with the Pima Indians diabetes (\textbf{\texttt{pima}}, \(\vz \in \mathbb{R}^{11}\),~\citealt{smith_using_1988}), German credit (\textbf{\texttt{german}}, \(\vz \in \mathbb{R}^{27}\)), and heart disease (\textbf{\texttt{heart}}, \(\vz \in \mathbb{R}^{16}\),~\citealt{detrano_international_1989}) datasets obtained from the UCI repository~\citep{Dua:2019}.
 10\% of the data points were randomly selected in each of the 100 repetitions as test data.
 
 \vspace{-0.1in}
@@ -119,19 +118,19 @@ The extra degrees of freedom \(\sigma_{\beta}\) and \(\sigma_{\alpha}\) make thi
 \vspace{-0.1in}
 \paragraph{Results}
 The test accuracy and test log-likelihood results are shown in~\cref{fig:logistic}.
-Our proposed MSC-PIMH is the fastest to converge on all of the datasets.
+Our proposed MSC-PIMH is the fastest to converge on all the datasets.
 Despite having access to high-quality HMC samples, RWS fails to achieve a similar level of performance to MSC-PIMH.
-However, compared to MSC-CIS and MSC-CISRB, it converges faster.
+However, RWS converges faster than MSC-CIS and MSC-CISRB.
 Among the two, MSC-CISRB performs only marginally better than MSC-CIS.
-Meanwhile, SNIS is the slowest to converge among inclusive VI methods.
+Meanwhile, SNIS converges the most slowly among inclusive VI methods.
 Although much slower to converge, ELBO achieves competitive results.
 
 \vspace{-0.1in}
 \paragraph{Inclusive VI v.s. Exclusive VI}
-The results of~\cref{fig:logistic} can convey a deceptive conclusion that inclusive and exclusive VI deliver similar results.
+The results of~\cref{fig:logistic} might be misleading to conclude that inclusive and exclusive VI deliver similar results.
 However, in the parameter space, they choose very different optimization paths.
-This is shown in~\cref{fig:paretok} through the Pareto-\(\widehat{k}\) diagnostic~\citep{NEURIPS2020_7cac11e2, vehtari_pareto_2021}, which determines how reliable are the importance weights computed using \(q_{\vlambda}(\vz)\).
-While the test accuracy suggests that ELBO converged around \(t=2000\), in terms of Pareto-\(\widehat{k}\), it takes much longer to converge (about \(t=5000\)).
+This is shown in~\cref{fig:paretok} through the Pareto-\(\widehat{k}\) diagnostic~\citep{NEURIPS2020_7cac11e2, vehtari_pareto_2021}, which determines how reliable the importance weights are when computed using \(q_{\vlambda}(\vz)\).
+While the test accuracy suggests that ELBO converges around \(t=2000\), in terms of Pareto-\(\widehat{k}\), it takes much longer to converge (about \(t=5000\)).
 This shows that, even if their predictive performance is similar, the inclusive VI chooses paths that have better density coverage as expected.
 
 \subsection{Marginal Likelihood Estimation}\label{section:mll}
@@ -170,7 +169,7 @@ We estimated the reference marginal likelihood using \textit{thermodynamic integ
 \paragraph{Results}
 The results are shown in~\cref{fig:marginal_likelihood}.
 On \texttt{radon}, MSC-PIMH converges quickly and provides the most accurate estimate.
-In contrast, MSC-CIS and MSC-CISRB are much slower to converge.
+By contrast, MSC-CIS and MSC-CISRB converge much slowly.
 SNIS and ELBO, on the other hand, overestimate \(\log Z\), which can be attributed to the mode-seeking behavior of ELBO and the small sample bias of SNIS.
 On \texttt{stock}, SNIS is unexpectedly the most accurate.
 Unfortunately, MSC-PIMH, MSC-CIS, MSC-CISRB all underestimate \(\log Z\).

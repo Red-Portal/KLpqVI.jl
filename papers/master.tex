@@ -26,9 +26,9 @@
 %\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
 \usepackage{fontspec}
 %\usepckage{}
-\usepackage{hyperref}       % hyperlinks
-\usepackage{url}            % simple URL typesetting
-\usepackage{booktabs}       % professional-quality tables
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs,threeparttable}
 \usepackage{amsfonts}       % blackboard math symbols
 \usepackage{nicefrac}       % compact symbols for 1/2, etc.
 \usepackage{microtype}      % microtypography
@@ -59,6 +59,11 @@
 \usepgfplotslibrary{groupplots}
 \usepgfplotslibrary{statistics}
 \usepgfplotslibrary{external} 
+
+\usepackage{pifont}
+\usepackage{xcolor}
+\newcommand{\cmark}{\textcolor{green!80!black}{\ding{51}}}
+\newcommand{\xmark}{\textcolor{red}{\ding{55}}}
 
 \tikzset{external/system call={lualatex -shell-escape -halt-on-error -interaction=batchmode -jobname "\image" "\texsource"}}
 
@@ -119,6 +124,8 @@
 
 \newpage
 \appendix
+\input{figures/relationship}
+
 \section{Additional Experimental Results}
 \subsection{Experimental Environment}\label{section:resources}
 All of our experiments presented in this paper were executed on a server with 20 Intel Xeon E5--2640 CPUs and 64GB RAM.
@@ -127,11 +134,9 @@ All of our experiments can be executed within a few days on a system with simila
 
 \input{paretok_additional}
 \input{simulations}
-
-\newpage
 \input{prob_models}
 
-\newpage
+%\newpage
 \section{Proofs}
 \input{cis_kernel}
 \printProofs

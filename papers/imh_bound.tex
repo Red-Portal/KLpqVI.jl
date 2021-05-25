@@ -1,14 +1,14 @@
 
 \begin{theoremEnd}[]{proposition}\label{thm:imh_bound}
   The rejection rate \(r\,(\vz_{t-1})\) of a IMH sampler is bounded below such that
+  \vspace{-0.02in}
   \[
-  %r(\vz_{t-1}) \geq \frac{1}{1 + N\frac{q_{\vlambda}(\vz_{t-1})}{p(\vz_{t-1}\mid\vx)}}.
-  r\,(\vz_{t-1}) \geq 1 - \nicefrac{Z}{w\,(\vz_{t-1})} 
+  r\,(\vz_{t-1}) \geq 1 - \frac{Z}{w\,(\vz_{t-1})} 
+  \quad \text{where} \quad Z=\int p\,(\vz,\vx) \, d\vz.
   \]
-  where \(Z=\int p\,(\vz,\vx) \, d\vz\) is the normalizing constant.
 \end{theoremEnd}
 \begin{proofEnd}
-  The rejection rate \(r(\vz_{t-1})\) is given as
+  The rejection rate \(r(\vz_{t-1})\) is given by
   \begin{align}
     r\,(\vz_{t-1}) = 1 - \int \alpha\left(\vz, \vz_{t-1} \right) \, q_{\vlambda}(\vz) \, d\vz.
   \end{align}

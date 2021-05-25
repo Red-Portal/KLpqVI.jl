@@ -16,7 +16,7 @@ Evidently, estimating \(\nabla_{\vlambda} \DKL{p}{q_{\lambda}}\) requires integr
 
 \vspace{-0.1in}
 \paragraph{Importance Sampling}
-When the variational approximation \(q_{\lambda}\) is easy to sample from, one can use importance sampling (IS, \citealt{robert_monte_2004, mcbook}) since 
+When it is easy to sample from the variational approximation \(q_{\lambda}(\vz)\), one can use importance sampling (IS, \citealt{robert_monte_2004, mcbook}) since 
 \begin{align}
   \Esub{p(\vz\mid\vx)}{ s\,(\vz; \vlambda) }
   \propto \Esub{q_{\vlambda}}{ w\,(\vz) \, s\,(\vz; \vlambda) }
@@ -26,7 +26,8 @@ where \(w\,(\vz) = p\,(\vz,\vx) / q_{\vlambda}(\vz)\) is known as the \textit{im
 This scheme is equivalent to adaptive IS methods~\citep{cappe_adaptive_2008, bugallo_adaptive_2017} since the IS proposal \(q_{\vlambda}(\vz)\) is iteratively optimized based on the current samples.
 Though IS is unbiased, it is highly unstable in practice.
 A more stable alternative is to use the \textit{normalized weight} \(\widetilde{w}^{(i)} = \nicefrac{w\,(\vz^{(i)})}{\sum_{i=1}^N w\,(\vz^{(i)}) }\), resulting in the self-normalized IS (SNIS) approximation.
-Unfortunately, SNIS still fails to converge even on moderate dimensional objectives, and unlike IS, is no longer unbiased~\citep{robert_monte_2004, mcbook}.
+Unfortunately, SNIS still fails to converge even on moderate dimensional objectives.
+Furthermore, unlike IS, SNIS is no longer unbiased~\citep{robert_monte_2004, mcbook}.
 
 \vspace{-0.1in}
 %
@@ -57,7 +58,7 @@ Unfortunately, SNIS still fails to converge even on moderate dimensional objecti
       \centering
       \input{figures/trace.tex}
       \caption{KL divergence and trace of \(\vz_t\) of MSC with a CIS kernel.
-        \(\vz_t\) barely moves until \(t=300\) where \(\DKL{p}{q_{\vlambda}}\) starts to converge.}\label{fig:motivating}
+        \(\vz_t\) barely moves until \(t=300\) around which \(\DKL{p}{q_{\vlambda}}\) starts to converge.}\label{fig:motivating}
     \end{figure}
     \vspace{-0.1in}
   \end{minipage}
@@ -76,13 +77,12 @@ It obtains stochastic gradients from a Markov-chain \(\{\,\vz_1, \vz_2, \ldots \
 
 \vspace{-0.1in}
 \paragraph{A Motivating Mystery}
-Even though~\citeauthor{NEURIPS2020_b2070693} suggested that \textit{any} good MCMC kernel would work, we present an example that suggests that the CIS kernel does something unusual when used for MSC.
-%(asymptotic) unbiasedness is what makes MSC work well in practice, we present an example that motivates an alternative explanation.
-In more detail, our example suggests that \textit{MSC makes the most progress when the CIS Markov-chain is the least effective}, which is counter-intuitive.
+Even though~\citeauthor{NEURIPS2020_b2070693} claimed that \textit{any} good MCMC kernel would work, we present a counterexample showing that the CIS kernel may operate unusually when used for MSC.
+In fact, \textit{MSC makes the most progress when the CIS Markov-chain is the least effective}.
 In~\cref{fig:motivating}, we show the trace plot of \(\vz_t\) (\textcolor{blue}{blue line}) and noisy estimates of \(\DKL{p}{q_{\vlambda}}\) (\textcolor{red}{red line}).
-Notice that \(\vz_t\) barely moves until iteration 300, where \(\DKL{p}{q_{\vlambda}}\) starts to converge.
-In a traditional accept-reject MCMC kernel, this corresponds to most of the samples being rejected, which implies that the kernel is statistically no longer effective, at least in a conventional understanding of MCMC.
-In this work, we show that this is actually a positive \textit{feature} of the CIS kernel, contributing to the empirical success of MSC.
+Notice that \(\vz_t\) barely moves until iteration 300, around which \(\DKL{p}{q_{\vlambda}}\) starts to converge.
+In a traditional accept-reject MCMC kernel, this implies that most of the samples are rejected, and the kernel is no longer statistically effective from a conventional view point.
+However, our analysis shows that this is a \textit{positive feature} of the CIS kernel, contributing to the empirical success of MSC.
 
 %Our work investigates this phenomenon
 %We later show that this phenomenon is actually 
