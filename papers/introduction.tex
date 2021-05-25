@@ -9,8 +9,10 @@ This is partly because the exclusive KL is defined as an average over \(q_{\lamb
 In contrast, the inclusive KL is defined as
 %
 \begin{align}
-  \DKL{p}{q_{\lambda}} = \int p\,(\vz\mid\vx) \log\big(\, p\,(\vz\mid\vx)/q_{\lambda}(\vz) \,\big)\,d\vz
-  = \Esub{p(\vz\mid\vx)}{\log\big(\, p\,(\vz\mid\vx)/q_{\lambda}(\vz) \,\big) } \label{eq:klpq}
+  %% \DKL{p}{q_{\lambda}} = \int p\,(\vz\mid\vx) \log\big(\, p\,(\vz\mid\vx)/q_{\lambda}(\vz) \,\big)\,d\vz
+  %% = \Esub{p(\vz\mid\vx)}{\log\big(\, p\,(\vz\mid\vx)/q_{\lambda}(\vz) \,\big) } \label{eq:klpq}
+  \DKL{p}{q_{\lambda}} = \int p\,(\vz\mid\vx) \log \frac{p\,(\vz\mid\vx)\,}{\,q_{\lambda}(\vz)} \,d\vz
+  = \Esub{p(\vz\mid\vx)}{\log \frac{p\,(\vz\mid\vx)\,}{\,q_{\lambda}(\vz)} } \label{eq:klpq}
 \end{align}
 %
 where the average is taken over \(p\,(\vz\mid\vx)\). 

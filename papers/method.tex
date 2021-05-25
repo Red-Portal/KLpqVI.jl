@@ -113,14 +113,14 @@ As discussed in~\cref{section:msc_mcmc}, MSC obtains gradients using the conditi
 The variance of the conditional estimate is closely related to the rejection rate such as
 \begin{align}
   \Vsub{K(\vz_{t-1},\cdot)}{f \mid \vz_{t-1}} 
-  &=\Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1},\,\vz^{(1:N)} } } + \underbrace{\Esub{q_{\vlambda}(\vz^{(1:N)})}{ \V{ f \mid \vz_{t-1},\,\vz^{(1:N)} } }}_{\text{Rao-Blackwellization gain}} \label{eq:total_variance} \\
+  &=\Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1},\,\vz^{(1:N)} } } + \underbrace{\Esub{q_{\vlambda}}{ \V{ f \mid \vz_{t-1},\,\vz^{(1:N)} } }}_{\text{Rao-Blackwellization gain}} \label{eq:total_variance} \\
   &\geq \Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1},\,\vz^{(1:N)} } } \label{eq:rao_blackwell}\\
   &= \Vsub{q_{\vlambda}}{ \big(1 - r\,(\vz_{t-1}\mid\vz^{(1:N)})\big)\, f_{\mathrm{IS}}
     + r\,(\vz_{t-1}\mid\vz^{(1:N)})\,f(\vz_{t-1}) \;\middle\vert\; \vz_{t-1} } \label{eq:exact_variance} \\
   &\text{where}\;\; f_{\mathrm{IS}} = {\sum_{i=1}^N w\,(\vz^{(i)}) f(\vz^{(i)})\,/\,\sum_{i=1}^N w\,(\vz^{(i)})}. \nonumber 
 \end{align}
 %
-The bound in~\eqref{eq:rao_blackwell} becomes exact if we use Rao-Blackwellization (that is, if we use the SNIS estimator \(\sum^{N}_{i=1} \widetilde{w}^{(i)}\,f\,(\vz^{(i)})\) instead of multinomial resampling) as mentioned by~\citet{NEURIPS2020_b2070693}.
+The bound in~\eqref{eq:rao_blackwell} becomes exact if we use Rao-Blackwellization (that is, if we use the SNIS estimator \(\sum^{N}_{i=1} \widetilde{w}^{(i)}\,f\,(\vz^{(i)})\) instead of the resampled \(\vz_t\)) as mentioned by~\citet{NEURIPS2020_b2070693}.
 The expansion in~\eqref{eq:total_variance} follows from the Law of Total Variance where the right-hand term is the variance reduction we gain from using Rao-Blackwellization~\citep{bernton_locally_2015}.
 
 \vspace{-0.1in}
@@ -148,8 +148,9 @@ In the context of VI, the following shows that \(r\,(\vz_{t-1})\) is huge when t
 %
 \input{cis_bound_kl}
 %
-This result states that in the ideal case when the Markov-chain has achieved stationarity and \(\vz_{t-1}\) closely follows \(p\,(\vz\mid\vx)\), the average rejection weight is bounded below exponentially by the KL divergence.
+This result states that, in the ideal case when the Markov-chain has achieved stationarity and \(\vz_{t-1}\) closely follows \(p\,(\vz\mid\vx)\), the average rejection weight is bounded below exponentially by the KL divergence.
 The bound is tight as long as \(\DKL{p}{q_{\vlambda}}\) is large.
+For example, in the worst case of \(\DKL{p}{q_{\vlambda}} = M\), \(\delta \leq \nicefrac{1}{M}\).
 In practical conditions, the rejection rate cannot be improved by increasing \(N\) since
 \begin{enumerate*}[label=(\roman*)]
   \item the iteration complexity also increases, and
