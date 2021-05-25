@@ -16,7 +16,7 @@ This means that one needs to estimate the gradients using the conditional estima
 \begin{align}
   \nabla_{\lambda} \DKL{p}{q_{\lambda}} \approx \Esub{K(\vz_{t-1},\,\vz_t)}{s\,(\vz_t;\, \vlambda) \mid \vz_{t-1}}.
 \end{align}
-This seemingly subtle difference of using either the marginal or conditional estimate reveals the following facts about MSC.
+This seemingly subtle difference of using either the marginal or conditional estimate reveals the following facts about MSC:
 \begin{enumerate*}[label=(\roman*)]
 \item The usual central limit theorem guarantees of MCMC do not apply to MSC.
 \item In addition, ergodicity guarantees work differently since, at each iteration, \(q_{\vlambda}(\vz)\) is updated.
@@ -25,7 +25,7 @@ The most important difference, however, is the way we analyze the variance of th
 
 \subsection{Interpreting Conditional Importance Sampling as Independent Metropolis-Hastings}\label{section:cis_imh}
 In independent Metropolis-Hastings (IMH) kernels, proposals are generated independently of the previous state \(\vz_{t-1}\).
-We show that the CIS kernel proposed in~\citep{NEURIPS2020_b2070693} turns out to be a type of IMH kernel that uses Barker's accept-reject mechanism~\citep{barker_monte_1965}.
+We show that the CIS kernel proposed by~\citet{NEURIPS2020_b2070693} turns out to be a type of IMH kernel that uses Barker's accept-reject mechanism~\citep{barker_monte_1965}.
 This interpretation enables the analysis of the \textit{rejection rate} of the CIS kernel.
 
 \begin{figure}[H]
@@ -63,7 +63,7 @@ In particular, the CIS kernel is identical to the previously proposed \textit{en
 
 \vspace{-0.1in}
 \paragraph{Conditional Importance Sampling as Metropolis-Hastings}
-Now we show that the CIS kernel is an accept-reject type kernel with Barker's acceptance ratio.
+Now, we show that the CIS kernel is an accept-reject type kernel with Barker's acceptance ratio.
 First, by defining \(\vz_t = \vz_{t-1}\) as ``reject'' and \(\vz_t \neq \vz_{t-1}\) as ``accept'', the CIS kernel can be understood as an accept-reject type kernel.
 By denoting the \(N\) parallel proposals as an \textit{ensemble state} \(\vz^{(1:N)} = (\vz^{(1)}, \ldots, \vz^{(N)})\)~\citep{neal_mcmc_2011a}, the CIS kernel conditional estimate can be written as
 %

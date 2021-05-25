@@ -78,11 +78,11 @@ It obtains stochastic gradients from a Markov-chain \(\{\,\vz_1, \vz_2, \ldots \
 \vspace{-0.1in}
 \paragraph{A Motivating Mystery}
 Even though~\citeauthor{NEURIPS2020_b2070693} claimed that \textit{any} good MCMC kernel would work, we present a counterexample showing that the CIS kernel may operate unusually when used for MSC.
-In fact, \textit{MSC makes the most progress when the CIS Markov-chain is the least effective}.
+In fact, \textit{MSC makes the most progress when the CIS-generated Markov-chain is the least effective}.
 In~\cref{fig:motivating}, we show the trace plot of \(\vz_t\) (\textcolor{blue}{blue line}) and noisy estimates of \(\DKL{p}{q_{\vlambda}}\) (\textcolor{red}{red line}).
 Notice that \(\vz_t\) barely moves until iteration 300, around which \(\DKL{p}{q_{\vlambda}}\) starts to converge.
-In a traditional accept-reject MCMC kernel, this implies that most of the samples are rejected, and the kernel is no longer statistically effective from a conventional view point.
-However, our analysis shows that this is a \textit{positive feature} of the CIS kernel, contributing to the empirical success of MSC.
+In a traditional accept-reject MCMC kernel view, this implies that most of the samples are rejected, making the kernel no longer statistically effective.
+However, our analysis shows that this is actually a \textit{positive feature} of the CIS kernel, contributing to the empirical success of MSC.
 
 %Our work investigates this phenomenon
 %We later show that this phenomenon is actually 
