@@ -23,7 +23,7 @@ This seemingly subtle difference of using either the marginal or conditional est
 \end{enumerate*}
 The most important difference, however, is the way we analyze the variance of the estimates.
 
-\subsection{Interprating Conditional Importance Sampling as Independent Metropolis-Hastings}\label{section:cis_imh}
+\subsection{Interpreting Conditional Importance Sampling as Independent Metropolis-Hastings}\label{section:cis_imh}
 In independent Metropolis-Hastings (IMH) kernels, proposals are generated independently of the previous state \(\vz_{t-1}\).
 We show that the CIS kernel proposed in~\citep{NEURIPS2020_b2070693} turns out to be a type of IMH kernel that uses Barker's accept-reject mechanism~\citep{barker_monte_1965}.
 This interpretation enables the analysis of the \textit{rejection rate} of the CIS kernel.
@@ -148,7 +148,7 @@ In the context of VI, the following shows that \(r\,(\vz_{t-1})\) is huge when t
 %
 \input{cis_bound_kl}
 %
-This result states that, in the ideal case when the Markov-chain has achieved stationarity and \(\vz_{t-1}\) closely follows \(p\,(\vz\mid\vx)\), the average rejection weight is bounded below exponentially by the KL divergence.
+This result states that in the ideal case when the Markov-chain has achieved stationarity and \(\vz_{t-1}\) closely follows \(p\,(\vz\mid\vx)\), the average rejection weight is bounded below exponentially by the KL divergence.
 The bound is tight as long as \(\DKL{p}{q_{\vlambda}}\) is large.
 For example, in the worst case of \(\DKL{p}{q_{\vlambda}} = M\), \(\delta \leq \nicefrac{1}{M}\).
 In practical conditions, the rejection rate cannot be improved by increasing \(N\) since
@@ -174,7 +174,7 @@ Therefore, a low rejection rate is \textit{necessary} for the bias to decrease.
 \vspace{-0.1in}
 \paragraph{Automatic Bias-Variance Tradeoff of IMH Type Kernels}
 To summarize, IMH type kernels (including the CIS kernel) have an automatic bias-variance tradeoff mechanism.
-In the initial steps where the inclusive KL divergence is large, variance is suppressed by rejecting most of the proposals.
+In the initial steps where the inclusive KL divergence is large, variance is suppressed by rejecting most proposals.
 However, as MSC converges, the bound on the rejection rate becomes loose, admitting a lower rejection rate, which enables bias to decrease.
 This mechanism provides an interesting case where rejections in MCMC can actually be beneficial.
 Lastly, we note that the automatic tradeoff mechanism is a unique property of IMH type kernels; it does not exist in kernels with state-dependent proposals such as random-walk Metropolis-Hastings or HMC.
@@ -194,7 +194,7 @@ Lastly, we note that the automatic tradeoff mechanism is a unique property of IM
 \subsection{Reducing Variance with Parallel Independent Metropolis-Hastings Markov-Chains}\label{section:cis_bias}
 Recall that the CIS kernel uses \(N\) multiple-try type proposals.
 Thus, it is natural to expect the variance to decrease as the (per-transition) computational budget \(N\) increases.
-However, we find that, under specific conditions, the variance actually \textit{increases} with \(N\).
+However, under specific conditions, we find that the variance actually \textit{increases} with \(N\).
 
 \vspace{-0.1in}
 \paragraph{The variance of CIS can increase with \(N\).}
@@ -204,7 +204,7 @@ The bound in~\cref{thm:cis_bound} can be reinterpreted as a bound on the accepta
 \end{align}
 which is, in general, very tight.
 More importantly, when \(w\,(\vz_{t-1}) \gg N\,Z\), the acceptance rate grows like \(\mathcal{O}(N)\).
-On the other hand, the variance of an SNIS estimator is known to approximately decrease at a rate of \(\mathcal{O}(1/N)\)~\citep{kong_sequential_1994, robert_monte_2004, elvira_rethinking_2018}.
+On the other hand, the variance of an SNIS estimator is known to decrease approximately at a rate of \(\mathcal{O}(1/N)\)~\citep{kong_sequential_1994, robert_monte_2004, elvira_rethinking_2018}.
 That is, 
 \begin{align}
   \Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1},\,\vz^{(1:N)} } } \approx \underbrace{{\big(1 - r\,(\vz_{t-1})\big)}^2}_{\text{approx.}\;\;\mathcal{O}(N^2)} \,
