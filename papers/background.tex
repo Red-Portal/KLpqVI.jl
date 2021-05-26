@@ -20,7 +20,7 @@ When it is easy to sample from the variational approximation \(q_{\lambda}(\vz)\
 \begin{align}
   \Esub{p(\vz\mid\vx)}{ s\,(\vz; \vlambda) }
   \propto \Esub{q_{\vlambda}}{ w\,(\vz) \, s\,(\vz; \vlambda) }
-  \approx \frac{1}{N} \sum^{N}_{i=1} w\,(\vz^{(i)}) \, s\,(\vz^{(i)}; \vlambda) .
+  \approx \frac{1}{N} \sum^{N}_{i=1} w\,(\vz^{(i)}) \, s\,(\vz^{(i)}; \vlambda)
 \end{align}
 where \(w\,(\vz) = p\,(\vz,\vx) / q_{\vlambda}(\vz)\) is known as the \textit{importance weight}, and \(\vz^{(1)},\, \ldots,\, \vz^{(N)}\) are \(N\) independent samples from \(q_{\vlambda}(\vz)\).
 This scheme is equivalent to adaptive IS methods~\citep{cappe_adaptive_2008, bugallo_adaptive_2017} since the IS proposal \(q_{\vlambda}(\vz)\) is iteratively optimized based on the current samples.
@@ -67,7 +67,7 @@ Furthermore, unlike IS, SNIS is no longer unbiased~\citep{robert_monte_2004, mcb
 %
 %\vspace{-0.1in}
 \paragraph{Description of MSC}
-Recently,~\citet{NEURIPS2020_b2070693} proposed \textit{Markovian score climbing} (MSC) for performing inclusive VI.
+Very recently,~\citet{NEURIPS2020_b2070693} proposed \textit{Markovian score climbing} (MSC) for performing inclusive VI.
 They showed that MSC achieves better and more robust performance compared to methods such as SNIS and expectation propagation (EP, \citealt{10.5555/2074022.2074067}).
 MSC is described in~\cref{alg:msc}.
 It obtains stochastic gradients from a Markov-chain \(\{\,\vz_1, \vz_2, \ldots \vz_T\,\}\) generated from a \(\pi\)-invariant transition operator \(K(\vz, \cdot)\) running in parallel with the VI optimizer (represented by the sequence \(\{\,\vlambda_1, \vlambda_2, \ldots, \vlambda_T\,\}\)).
@@ -77,12 +77,12 @@ It obtains stochastic gradients from a Markov-chain \(\{\,\vz_1, \vz_2, \ldots \
 
 \vspace{-0.1in}
 \paragraph{A Motivating Mystery}
-Even though~\citeauthor{NEURIPS2020_b2070693} claimed that \textit{any} good MCMC kernel would work, we present a counterexample showing that the CIS kernel may operate unusually when used for MSC.
+Even though~\citeauthor{NEURIPS2020_b2070693} suggested that \textit{any} good MCMC kernel would work, we present a counterexample showing that the CIS kernel may operate unusually when used for MSC.
 In fact, \textit{MSC makes the most progress when the CIS-generated Markov-chain is the least effective}.
 In~\cref{fig:motivating}, we show the trace plot of \(\vz_t\) (\textcolor{blue}{blue line}) and noisy estimates of \(\DKL{p}{q_{\vlambda}}\) (\textcolor{red}{red line}).
 Notice that \(\vz_t\) barely moves until iteration 300, around which \(\DKL{p}{q_{\vlambda}}\) starts to converge.
 In a traditional accept-reject MCMC kernel view, this implies that most of the samples are rejected, making the kernel no longer statistically effective.
-However, our analysis shows that this is actually a \textit{positive feature} of the CIS kernel, contributing to the empirical success of MSC.
+However, our analysis will show that this is actually a \textit{positive feature} of the CIS kernel, contributing to the empirical success of MSC.
 
 %Our work investigates this phenomenon
 %We later show that this phenomenon is actually 

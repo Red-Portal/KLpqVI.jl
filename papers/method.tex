@@ -21,7 +21,7 @@ This seemingly subtle difference of using either the marginal or conditional est
 \item The usual central limit theorem guarantees of MCMC do not apply to MSC.
 \item In addition, ergodicity guarantees work differently since, at each iteration, \(q_{\vlambda}(\vz)\) is updated.
 \end{enumerate*}
-The most important difference, however, is the way we analyze the variance of the estimates.
+The most important difference is, however, the way we analyze the variance of the estimates.
 
 \subsection{Interpreting Conditional Importance Sampling as Independent Metropolis-Hastings}\label{section:cis_imh}
 Many popular MCMC kernels are based on the Metropolis-Hastings test where a random proposal \(\vz^*\) is either accepted into the Markov-chain (\(\vz_{t} = \vz^*\)) or rejected (\(\vz_t = \vz_{t-1}\)).
@@ -65,7 +65,7 @@ In particular, the CIS kernel is identical to the previously proposed \textit{en
 
 \vspace{-0.1in}
 \paragraph{Conditional Importance Sampling as Metropolis-Hastings}
-Now, we show that the CIS kernel is an accept-reject type kernel with Barker's acceptance ratio.
+Now we show that the CIS kernel is an accept-reject type kernel with Barker's acceptance ratio.
 First, by defining \(\vz_t = \vz_{t-1}\) as ``reject'' and \(\vz_t \neq \vz_{t-1}\) as ``accept'', the CIS kernel can be understood as an accept-reject type kernel.
 By denoting the \(N\) parallel proposals as an \textit{ensemble state} \(\vz^{(1:N)} = (\vz^{(1)}, \ldots, \vz^{(N)})\)~\citep{neal_mcmc_2011a}, the CIS kernel conditional estimate can be written as
 %
@@ -123,7 +123,7 @@ The variance of the conditional estimate is closely related to the rejection rat
 \end{align}
 %
 The bound in~\eqref{eq:rao_blackwell} becomes exact if we use Rao-Blackwellization (that is, if we use the SNIS estimator \(\sum^{N}_{i=1} \widetilde{w}^{(i)}\,f\,(\vz^{(i)})\) instead of the resampled \(\vz_t\)) as mentioned by~\citet{NEURIPS2020_b2070693}.
-The expansion in~\eqref{eq:total_variance} follows from the Law of Total Variance where the right-hand term is the variance reduction we gain from using Rao-Blackwellization~\citep{bernton_locally_2015}.
+The expansion in~\eqref{eq:total_variance} follows from the law of total variance where the right-hand term is the variance reduction we gain from using Rao-Blackwellization~\citep{bernton_locally_2015}.
 
 \vspace{-0.1in}
 \paragraph{Low rejection rate means high conditional variance.}
@@ -144,7 +144,7 @@ The following bound provides a condition for the rejection rate of a CIS kernel 
 \input{cis_bound}
 %
 When \(w\,(\vz_{t-1})\) is large, the lower bound of \(r(\vz_{t-1})\) becomes close to one.
-In this case, according to~\cref{thm:approx_var}, the conditional variance will be minimal.
+In this case, according to~\cref{thm:approx_var}, the conditional variance becomes minimal.
 
 In the context of VI, the following shows that \(r\,(\vz_{t-1})\) is huge when the KL divergence is large.
 %
@@ -244,7 +244,7 @@ We thus obtain all the benefits of CIS except its limitations.
 \paragraph{Costs and Limitation of PIMH}
 The computational cost of sampling \(\vz^{(i)}_{t}\) (\textcolor{blue}{blue} region in \cref{alg:pimh}) for \(N\) chains is equal to a CIS kernel with \(N\) proposals.
 On the other hand, the cost of estimating the stochastic gradient (\textcolor{purple}{purple} region in \cref{alg:pimh}) is now \(\mathcal{O}(N)\) instead of \(\mathcal{O}(1)\) of the CIS kernel.
-This cost, however, is also imposed on the CIS kernel if we use Rao-Blackwellization.
+This cost is, however, also imposed on the CIS kernel if we use Rao-Blackwellization.
 Thus, the overall computational cost of PIMH is more or less equal to that of the CIS kernel.
 The only downside of PIMH is that the Metropolis-Hastings acceptance ratio that we use has a slightly larger acceptance rate than Barker's~\citep{peskun_optimum_1973, minh_understanding_2015}.
 In the small \(N\) regime, PIMH has a slightly larger conditional variance, but it can be easily fixed by using Barker's ratio.
