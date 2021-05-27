@@ -25,7 +25,7 @@ When it is easy to sample from the variational approximation \(q_{\lambda}(\vz)\
 where \(w\,(\vz) = p\,(\vz,\vx) / q_{\vlambda}(\vz)\) is known as the \textit{importance weight}, and \(\vz^{(1)},\, \ldots,\, \vz^{(N)}\) are \(N\) independent samples from \(q_{\vlambda}(\vz)\).
 This scheme is equivalent to adaptive IS methods~\citep{cappe_adaptive_2008, bugallo_adaptive_2017} since the IS proposal \(q_{\vlambda}(\vz)\) is iteratively optimized based on the current samples.
 Though IS is unbiased, it is highly unstable in practice.
-A more stable alternative is to use the \textit{normalized weight} \(\widetilde{w}^{(i)} = \nicefrac{w\,(\vz^{(i)})}{\sum_{i=1}^N w\,(\vz^{(i)}) }\), resulting in the self-normalized IS (SNIS) approximation.
+A more stable alternative is to use the \textit{normalized weight} \(\widetilde{w}^{(i)} = \nicefrac{w\,(\vz^{(i)})}{\sum_{i=1}^N w\,(\vz^{(i)}) }\), which is known as the self-normalized IS (SNIS) approximation.
 Unfortunately, SNIS still fails to converge even on moderate dimensional objectives.
 Furthermore, unlike IS, SNIS is no longer unbiased~\citep{robert_monte_2004, mcbook}.
 
@@ -58,7 +58,7 @@ Furthermore, unlike IS, SNIS is no longer unbiased~\citep{robert_monte_2004, mcb
       \centering
       \input{figures/trace.tex}
       \caption{KL divergence and trace of \(\vz_t\) of MSC with a CIS kernel.
-        \(\vz_t\) barely moves until \(t=300\) around which \(\DKL{p}{q_{\vlambda}}\) starts to converge.}\label{fig:motivating}
+        \(\vz_t\) barely moves until \(t=250\) around which \(\DKL{p}{q_{\vlambda}}\) starts to converge.}\label{fig:motivating}
     \end{figure}
     \vspace{-0.1in}
   \end{minipage}
@@ -79,8 +79,8 @@ It obtains stochastic gradients from a Markov-chain \(\{\,\vz_1, \vz_2, \ldots \
 \paragraph{A Motivating Mystery}
 Even though~\citeauthor{NEURIPS2020_b2070693} suggested that \textit{any} good MCMC kernel would work, we present a counterexample showing that the CIS kernel may operate unusually when used for MSC.
 In fact, \textit{MSC makes the most progress when the CIS-generated Markov-chain is the least effective}.
-In~\cref{fig:motivating}, we show the trace plot of \(\vz_t\) (\textcolor{blue}{blue line}) and noisy estimates of \(\DKL{p}{q_{\vlambda}}\) (\textcolor{red}{red line}).
-Notice that \(\vz_t\) barely moves until iteration 300, around which \(\DKL{p}{q_{\vlambda}}\) starts to converge.
+In~\cref{fig:motivating}, we show the trace plot of \(\vz_t\) (\textcolor{blue}{blue line}) and \(\DKL{p}{q_{\vlambda}}\) (\textcolor{red}{red line}).
+Notice that \(\vz_t\) barely moves until iteration 250, around which \(\DKL{p}{q_{\vlambda}}\) starts to converge.
 In a traditional accept-reject MCMC kernel view, this implies that most of the samples are rejected, making the kernel no longer statistically effective.
 However, our analysis will show that this is actually a \textit{positive feature} of the CIS kernel, contributing to the empirical success of MSC.
 

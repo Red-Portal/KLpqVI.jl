@@ -38,10 +38,12 @@
     \(u \sim \mathrm{Uniform}(0, 1) \)\;
     \eIf{u < \(\alpha\)}
         {
-          \(\vz_t \leftarrow \vz^*\)
+          %\(\vz_t \leftarrow \vz^*\)
+          \(\vz_t = \vz^*\)
         }
         {
-          \(\vz_t \leftarrow \vz_{t-1}\)
+          %\(\vz_t \leftarrow \vz_{t-1}\)
+          \(\vz_t = \vz_{t-1}\)
         }
         \caption{\\ Independent Metropolis-Hastings}\label{alg:imh}
   \end{algorithm2e}

@@ -19,7 +19,7 @@ This means that one needs to estimate the gradients using the conditional estima
 This seemingly subtle difference of using either the marginal or conditional estimate reveals the following facts about MSC:
 \begin{enumerate*}[label=(\roman*)]
 \item The usual central limit theorem guarantees of MCMC do not apply to MSC.
-\item In addition, ergodicity guarantees work differently since, at each iteration, \(q_{\vlambda}(\vz)\) is updated.
+\item In addition, ergodicity guarantees work differently since \(q_{\vlambda}(\vz)\) is updated at each iteration.
 \end{enumerate*}
 The most important difference is, however, the way we analyze the variance of the estimates.
 
@@ -64,7 +64,7 @@ While particle MCMC~\citep{andrieu_particle_2010} originally inspired the CIS ke
 In particular, the CIS kernel is identical to the previously proposed \textit{ensemble MCMC sampler}~\citep{austad_parallel_2007, neal_mcmc_2011a} with independent proposals, which is an instance of multiple-try MCMC~\citep[Table 12]{martino_review_2018}.
 
 \vspace{-0.1in}
-\paragraph{Conditional Importance Sampling as Metropolis-Hastings}
+\paragraph{CIS as a Metropolis-Hastings Kernel}
 Now we show that the CIS kernel is an accept-reject type kernel with Barker's acceptance ratio.
 First, by defining \(\vz_t = \vz_{t-1}\) as ``reject'' and \(\vz_t \neq \vz_{t-1}\) as ``accept'', the CIS kernel can be understood as an accept-reject type kernel.
 By denoting the \(N\) parallel proposals as an \textit{ensemble state} \(\vz^{(1:N)} = (\vz^{(1)}, \ldots, \vz^{(N)})\)~\citep{neal_mcmc_2011a}, the CIS kernel conditional estimate can be written as
@@ -101,6 +101,7 @@ is the probability of accepting the ensemble state \(\vz^{(1:N)}\), and
 \end{align}
 is the probability of staying on \(\vz_{t-1}\) by rejecting \textit{any} ensemble state, \(r\,(\vz_{t-1}\mid \vz^{(1:N)})\) is the rejection rate given \(\vz^{(1:N)}\).
 The expression of \(\alpha\,(\vz_{t-1}, \vz^{(1:N)})\) is known as Barker's acceptance ratio~\citep{barker_monte_1965}, which is a special case of the original Metropolis ratio~\citep{metropolis_equation_1953}.
+(A detailed derivation is in the \textit{supplementary material}.)
 
 %% Now, the transition kernel can be denoted as
 %% \begin{align}
@@ -123,7 +124,7 @@ The variance of the conditional estimate is closely related to the rejection rat
 \end{align}
 %
 The bound in~\eqref{eq:rao_blackwell} becomes exact if we use Rao-Blackwellization (that is, if we use the SNIS estimator \(\sum^{N}_{i=1} \widetilde{w}^{(i)}\,f\,(\vz^{(i)})\) instead of the resampled \(\vz_t\)) as mentioned by~\citet{NEURIPS2020_b2070693}.
-The expansion in~\eqref{eq:total_variance} follows from the law of total variance where the right-hand term is the variance reduction we gain from using Rao-Blackwellization~\citep{bernton_locally_2015}.
+The expansion in~\eqref{eq:total_variance} follows from the law of total variance where the right-hand term is the variance reduction we gain from using Rao-Blackwellization~\citep{bernton_locally_2015}, and the equality in~\eqref{eq:exact_variance} follows from~\eqref{eq:cis_kernel}.
 
 \vspace{-0.1in}
 \paragraph{Low rejection rate means high conditional variance.}

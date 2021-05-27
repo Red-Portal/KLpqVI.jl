@@ -18,8 +18,9 @@ By contrast, the inclusive KL is defined as
 \end{align}
 \vspace{-0.02in}
 %
-where the average is taken over \(p\,(\vz\mid\vx)\). 
-Interestingly, this is a chicken-and-egg problem, and minimizing~\eqref{eq:klpq} has drawn the attention of researchers because it can overcome some known limitations of the exclusive KL~\citep{minka2005divergence, mackay_local_2001}.
+where the average is taken over \(p\,(\vz\,|\,\vx)\). 
+Interestingly, this is a chicken-and-egg problem as our goal is to obtain \(p\,(\vz\,|\,\vx)\) in the first place.
+Despite this challenge, minimizing~\eqref{eq:klpq} has drawn the attention of researchers because it can overcome some known limitations of the exclusive KL~\citep{minka2005divergence, mackay_local_2001}.
 
 For performing inclusive VI,~\citet{NEURIPS2020_b2070693, pmlr-v124-ou20a} recently proposed \textit{Markovian score climbing} (MSC), which is a blend of Markov-chain Monte Carlo (MCMC) and variational inference.
 In MSC, stochastic gradients of the inclusive KL are obtained by operating a Markov-chain in parallel with the VI optimizer.
@@ -29,7 +30,7 @@ This family of kernels includes the \textit{condition importance sampling} (CIS,
 Surprisingly, this automatic tradeoff property is unique to IMH type kernels and does not occur in MCMC kernels with state-dependent proposals such as Hamiltonian Monte Carlo (HMC,~\citealt{duane_hybrid_1987, neal_mcmc_2011, betancourt_conceptual_2017}).
 
 Following our analysis of the CIS kernel, we also show that its performance can degrade with the number of proposals (which is equivalent to the \textit{per-transition computational budget}) used in each Markov-chain transition.
-As a simple solution to this, we propose to use parallel IMH (MSC-PIMH) chains, which reduce variance with the same amount of computation.
+As a simple solution to this, we propose to use parallel IMH (MSC-PIMH) chains, which reduce variance given the same amount of computation.
 We evaluate the performance of MSC with PIMH against other inclusive VI~\citep{DBLP:journals/corr/BornscheinB14, NEURIPS2020_b2070693} and exclusive VI~\citep{pmlr-v33-ranganath14, JMLR:v18:16-107} methods.
 %Finally, some interesting connections with adaptive MCMC methods~\citep{10.1007/s11222-008-9110-y} are discussed.
 

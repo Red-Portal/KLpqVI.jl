@@ -5,7 +5,7 @@ We organize the sampling methods described in this work in~\cref{table:kernel}.
 \begin{center}
 \footnotesize
 \begin{threeparttable}
-  \caption{Comparison of Sampling Method Design}\label{table:kernel}
+  \caption{Comparison of Sampling Method Designs}\label{table:kernel}
 \begin{tabular}{lcccccl}\toprule
   \multicolumn{1}{c}{\textbf{Algorithm}} &
   \multicolumn{1}{c}{\textbf{Origin}}    &
@@ -33,7 +33,7 @@ We organize the sampling methods described in this work in~\cref{table:kernel}.
 \end{center}
 
 In this paper, we designated kernels that use independent proposals and perform a Metropolis-Hastings (M-H) test as ``IMH type'' kernels.
-While the original paper of CIS does not mention it as an IMH type, we showed in~\cref{section:msc_mcmc} that it is indeed an IMH type kernel that uses Barker's acceptance ratio and multiple proposals per transition.
+While the original paper of CIS does not mention it as an IMH type, we have shown in~\cref{section:msc_mcmc} that it is indeed an IMH type kernel that uses Barker's acceptance ratio and multiple proposals per transition.
 This, in turn, reveals close connections with ensemble MCMC by~\citet{neal_mcmc_2011a}.
 While parallel multiple proposals MCMC by~\citet{austad_parallel_2007} also uses Barker's acceptance ratio and multiple proposals, it only considers dependent proposals, unlike ensemble MCMC.
 Although in principle, it should work with independent proposals without modification.

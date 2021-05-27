@@ -3,7 +3,8 @@
   The rejection rate \(r\,(\vz_{t-1})\) of a CIS sampler with \(N\) proposals is bounded below such that
   \[
   %r(\vz_{t-1}) \geq \frac{1}{1 + N\frac{q_{\vlambda}(\vz_{t-1})}{p(\vz_{t-1}\mid\vx)}}.
-  r\,(\vz_{t-1}) \geq \frac{w\,(\vz_{t-1})}{w\,(\vz_{t-1}) + N\,Z}
+  %r\,(\vz_{t-1}) \geq \frac{w\,(\vz_{t-1})}{w\,(\vz_{t-1}) + N\,Z}
+  r\,(\vz_{t-1}) \geq \frac{1}{1 + \frac{N\,Z}{w(\vz_{t-1})}}
   \]
   where \(Z=\Esub{q_{\vlambda}(\vz)}{\nicefrac{p(\vz,\vx)}{q_{\vlambda}(\vz)}} = \int p\,(\vz,\vx)\,d\vz\) is the normalizing constant.
 \end{theoremEnd}
@@ -18,8 +19,8 @@
     &=    \frac{1}{1 + \frac{1}{w(\vz_{t-1})} \Esub{q_{\vlambda}}{ \sum^{N}_{k=1} w(\vz^{(k)}) } }. \\
 \intertext{From the independence of the \(N\) proposals, we obtain}
     &=    \frac{1}{1 + \frac{1}{w(\vz_{t-1})} N \Esub{q_{\vlambda}}{ w(\vz) } } \\
-    &=    \frac{1}{1 + \frac{1}{w(\vz_{t-1})}\,N\,Z } \\
-    &=    \frac{w(\vz_{t-1})}{w(\vz_{t-1}) + N\,Z}.
+    &=    \frac{1}{1 + \frac{1}{w(\vz_{t-1})}\,N\,Z }.% \\
+    %&=    \frac{w(\vz_{t-1})}{w(\vz_{t-1}) + N\,Z}.
   \end{align}
 \end{proofEnd}
 

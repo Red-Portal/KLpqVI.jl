@@ -2,11 +2,16 @@
 \begin{theoremEnd}[]{theorem}\label{thm:cis_bound_kl}
   Assuming \(\sup_{\vz} \nicefrac{p(\vz\mid\vx)}{q_{\vlambda}(\vz)} = M < \infty\), the average rejection rate \(r = \int r(\vz_{t-1}) \, p(\vz_{t-1}\mid\vx) \, d\vz_{t-1} \) of a CIS kernel with \(N\) proposals is bounded below such that
   \[
-  r \geq 1 \big/ 
-    \left(1 + \frac{N}{
+  %% r \geq 1 \big/ 
+  %%   \left(1 + \frac{N}{
+  %%     \exp\big(\DKL{p}{q_{\vlambda}}\big)
+  %%   }
+  %%   \right) - \delta,
+  r \geq \frac{1}{
+    1 + \frac{N}{
       \exp\big(\DKL{p}{q_{\vlambda}}\big)
     }
-    \right) - \delta,
+    } - \delta,
   \]
   where the sharpness of the bound is given as \(
   0 \leq \delta \leq \frac{M}{\exp^2\,\big( \DKL{p}{q_{\vlambda}}\big) }
@@ -85,7 +90,7 @@
       \exp\big(\DKL{p}{q_{\vlambda}}\big)
     }{
       \exp\big(\DKL{p}{q_{\vlambda}}\big) + N
-    } - \delta \\
+    } - \delta  \\
     &= \frac{1}{
        1 + \frac{N}{
          \exp\big(\DKL{p}{q_{\vlambda}}\big) 
