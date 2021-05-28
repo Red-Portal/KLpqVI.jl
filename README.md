@@ -3,7 +3,7 @@
 
 This code base is using the Julia Language and [DrWatson](https://juliadynamics.github.io/DrWatson.jl/stable/)
 to make a reproducible scientific project named
->  Inclusive Variational Inference with Independent Metropolis­Hastings
+>  Inclusive Variational Inference with Independent Metropolis\­Hastings
 
 ## Project Structure
 | Path  | Description  |
