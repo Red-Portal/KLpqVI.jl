@@ -24,6 +24,7 @@ The datasets used in this work are as follows:
 * [Heart disease](https://archive.ics.uci.edu/ml/datasets/heart+disease)
 * [Radon](https://github.com/stan-dev/example-models/blob/master/ARM/Ch.19/radon.data.R)
 * [Stochastic volatility](https://github.com/TuringLang/TuringExamples/blob/master/benchmarks/sto_volatility/data.csv)
+Please refer to the `load_dataset(task)` function in the respective task in `scripts/task` to see how to set up the datasets.
 
 1. Open a Julia console and do:
    ```
