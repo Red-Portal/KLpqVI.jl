@@ -26,7 +26,7 @@ where \(y_t\) is the stock price at the \(t\)th point in time.
 We used the reparameterized version where \(h_{t}\) is sampled from a white multivariate Gaussian described by the~\citet{stan2020}.
 
 \subsection{Radon Hierarchical Regression}
-The stochastic volatility model used in~\cref{section:mll} is
+The partially pooled linear regression model used in~\cref{section:mll} is
 \begin{align*}
   \sigma_{a_1} &\sim \mathrm{Gamma}\left( \alpha = 1, \beta = 0.02 \right) \\
   \sigma_{a_2} &\sim \mathrm{Gamma}\left( \alpha = 1, \beta = 0.02 \right) \\

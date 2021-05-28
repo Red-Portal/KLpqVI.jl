@@ -220,11 +220,12 @@ We provide numerical simulations that support our analysis in the \textit{supple
 \input{pimh_algorithm}
 
 \vspace{-0.1in}
-\paragraph{Bias and Variance Reduction with Paralel IMH Chains}
+\paragraph{Variance Reduction with Paralel IMH Chains}
 To resolve the aforementioned limitation of the CIS kernel, we propose a simple but effective remedy: running \(N\) parallel IMH (PIMH) Markov-chains \( \big\{\,\vz_t^{(1)}\big\}, \big\{\,\vz_t^{(2)}\big\}, \ldots, \big\{\,\vz_t^{(N)}\big\}\) where each of the chains performs a Metropolis-Hastings test with only a \textit{single} proposal each.
 The modified MSC algorithm incorporating parallel chains is shown in~\cref{alg:pimh} (the modified parts are highlighted in \textcolor{blue}{blue} and \textcolor{purple}{purple}), while the IMH kernel is described in~\cref{alg:imh}.
 Since the parallel chains generate an \textit{independent} conditional estimate each, the gradient estimate \(\nicefrac{1}{N} \sum^{N}_{i=1} s\,(\vz_t^{(i)}; \vlambda)\) is an average of \(N\) independent and identical estimators.
 This obviously reduces the variance of a single conditional estimate as \(\mathcal{O}(1/N)\).
+Relative to CIS, PIMH will have a variance reduction close to \(\mathcal{O}(1/N^2)\) in the best case.
 %Also, the estimates are now proper marginal esimates, which enjoy a tighter bound on the TV distance (and hence the bias).
 %
 %\input{bias_reduction}
