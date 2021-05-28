@@ -66,7 +66,7 @@
     \Esub{p(\vz_{t-1}\mid\vx)}{ w(\vz_{t-1}) }
     \,\right)
     -
-    \Esub{p(\vz_{t-1}\mid\vx)}{ \varphi\,\big( w(\vz_{t-1}) \big)  }\label{eq:jensen_gap}
+    \Esub{p(\vz_{t-1}\mid\vx)}{ \varphi\,\big( w(\vz_{t-1}) \big)  },\label{eq:jensen_gap}
   \end{equation}
   where \(\delta \geq 0\).
   Then, by applying~\eqref{eq:jensen_gap} to~\eqref{eq:mean_bound},
@@ -97,74 +97,66 @@
       }
     } - \delta.
   \end{align}
-  We lastly discuss the Jensen gap \(\delta\), which directly gives the sharpness of our lower bound.
-  \citet[Theorem 1]{liao_sharpening_2019} showed that, for a random variable \(X \in (a, b), -\infty \leq a < b \leq \infty\) and a \textit{convex} function \(\widetilde{\varphi}\,(x)\), the Jensen gap is bounded such that
+  Now we discuss the Jensen gap \(\delta\), which directly gives the sharpness of our lower bound.
+  \citet[Theorem 1]{liao_sharpening_2019} have shown that, for a random variable \(X\) satisfying \(P(X \in (a, b))=1\), where \(-\infty \leq a < b \leq \infty\), and a differentiable function \(\widetilde{\varphi}\,(x)\), the following inequality holds:
   \begin{align}
-    \E{\widetilde{\varphi}\,(x)} - \widetilde{\varphi}\,(\E{x})
+    \inf_{x \in (a,b)} h\,(x; \mu) \, \sigma^2
     \leq
-    \sup_{x \in (a,b)} h\,(x; \mu) \, \sigma^2
+    \E{\widetilde{\varphi}\,(X)} - \widetilde{\varphi}\,(\E{X}),
     \quad \text{where}\quad h\,(x; \nu) = \frac{\widetilde{\varphi}\,(x) - \widetilde{\varphi}\,(\nu)}{{(x - \nu)}^2} - \frac{ \widetilde{\varphi}\,\prime(\nu) }{ x - \nu },\label{eq:jensen_gap_bound}
   \end{align}
-\(\mu\) and \(\sigma^2\) are the mean and variance of \(X\).
-Also, \citet[Lemma 1]{liao_sharpening_2019} show that, if \(\varphi\prime\,(x)\) is concave,  \(\sup_{x \in (a,b)} h\,(x; \mu) = \lim_{x \rightarrow a} h\,(x; \mu) \). 
+\(\mu\) and \(\sigma^2\) are the mean and variance of \(X\), respectively.
+Also, \citet[Lemma 1]{liao_sharpening_2019} have shown that, if \(\widetilde{\varphi}\prime\,(x)\) is convex, then \(\inf_{x \in (a,b)} h\,(x; \mu) = \lim_{x \rightarrow a} h\,(x; \mu) \). 
 
 In our case, the domain is \((a,b) = (0, \infty)\) since \(w\,(\vz_{t-1}) > 0\).
-We then define our convex function \(\widetilde{\varphi}\,(x) = - \varphi\,(x)\).
-Since \(\varphi\,\prime(x) = \nicefrac{N\,Z}{{(x + N\,Z)}^2}\) is convex, \(\widetilde{\varphi}\,\prime(x)\) is concave. Then, 
+Since \(\varphi\,\prime(x) = \nicefrac{N\,Z}{{(x + N\,Z)}^2}\) is convex, we have 
 \begin{align}
   \lim_{x \rightarrow 0} h\,(x; \mu)
   &=
-  \lim_{x \rightarrow 0} \; \frac{1}{{(x - \mu)}^2} \left( \widetilde{\varphi}\,(x) - \widetilde{\varphi}\,(\mu) \right)
-  - \frac{1}{ x - \mu }  \widetilde{\varphi}\,\prime(\mu)  \\
+  \lim_{x \rightarrow 0} \; \frac{1}{{(x - \mu)}^2} \left( \varphi\,(x) - \varphi\,(\mu) \right)
+  - \frac{1}{ x - \mu }  \varphi\,\prime(\mu)  \\
   &=
   \lim_{x \rightarrow 0} \frac{1}{{(x - \mu)}^2}
   \left(
-  - \frac{x}{x + N\,Z} + \frac{\mu}{\mu + N\,Z}
+  \frac{x}{x + N\,Z} - \frac{\mu}{\mu + N\,Z}
   \right)
   -
   \frac{1}{x - \mu}
   \left(
-  - \frac{N\,Z}{ {(\mu + N\,Z)}^2 }
+  \frac{N\,Z}{ {(\mu + N\,Z)}^2 }
   \right) \\
-  &= \frac{1}{\mu^2} \left( \frac{\mu}{\mu + N\,Z} \right)
-  - \frac{1}{\mu} \left( \frac{N\,Z}{{(\mu + N\,Z)}^2} \right) \\
-  &= \frac{1}{ \mu \, (\mu + N\,Z) }
-  - \frac{N\,Z}{ \mu \, {(\mu + N\,Z)}^2} \\
-  &< \frac{1}{\mu^2}
+  &= -\frac{1}{\mu^2} \left( \frac{\mu}{\mu + N\,Z} \right)
+  + \frac{1}{\mu} \left( \frac{N\,Z}{{(\mu + N\,Z)}^2} \right) \\
+  &= -\frac{1}{ \mu \, (\mu + N\,Z) }
+  + \frac{N\,Z}{ \mu \, {(\mu + N\,Z)}^2} \\
+  &>- \frac{1}{\mu^2}.
 \end{align}
 Notice that in the context of the original problem, \(\mu = \Esub{p(\vz_{t-1}\mid\vx)}{ w\,(\vz_{t-1}) }\).
-We obtain the relationship with our original problem as
-\begin{align}
-  \delta
-  = \varphi\,(\E{x}) - \E{\varphi\,(x)}
-  = \E{-\varphi\,(x)} - \varphi\,(-\E{x})
-  = \E{\widetilde{\varphi}\,(x)} - \widetilde{\varphi}\,(\E{x}).
-\end{align}
 
-We finally discuss the variance term \(\sigma^2\) present in~\eqref{eq:jensen_gap_bound}.
+We finally discuss the variance term \(\sigma^2\) in~\eqref{eq:jensen_gap_bound}.
 Since we assume \(\sup \nicefrac{p\,(\vz\mid\vx)}{q_{\vlambda}(\vz)} = M < \infty \), \( 0 < \frac{p\,(\vz\mid\vx)}{q_{\vlambda}(\vz)} < M \) for all \(\vz \in \mathcal{Z}\).
-Then, since the variance is defined as
+Then,
 \begin{align}
     \sigma^2 &= \E{w^2\,(\vz)} - {\E{w\,(\vz)}}^2 \\
              &= \E{ {\left( \frac{Z\,p\,(\vz\mid\vx)}{q_{\vlambda}(\vz) } \right)}^2 } - {\E{\frac{Z\,p\,(\vz\mid\vx)}{q_{\vlambda}(\vz) }}}^2 \\
              &= Z^2 \left(\; \E{ {\left( \frac{p\,(\vz\mid\vx)}{q_{\vlambda}(\vz) } \right)}^2 } - {\E{\frac{p\,(\vz\mid\vx)}{q_{\vlambda}(\vz) }}}^2 \;\right) \\
              &= Z^2 \, \V{ \frac{p\,(\vz\mid\vx)}{q_{\vlambda}(\vz) } } ,
 \end{align}
-by~\citet{bhatia_better_2000}'s inequality,
+and by~\citet{bhatia_better_2000}'s inequality,
 \begin{equation}
     0 \leq \sigma^2 
     = Z^2 \, \V{ \frac{p\,(\vz\mid\vx)}{q_{\vlambda}(\vz) } }
     \leq Z^2 \, (M - \mu)\,\mu.
 \end{equation}
 
-By combining the results, 
+By combining the results, we obtain
 \begin{align}
   0 \leq \delta
-  \leq \sup_{x \in (a,b)} h\,(x; \mu) \, \sigma^2
-  = \sigma^2 \lim_{x \rightarrow 0} h\,(x; \mu) 
+  \leq -\inf_{x \in (a,b)} h\,(x; \mu) \, \sigma^2
+  = - \sigma^2 \lim_{x \rightarrow 0} h\,(x; \mu) 
   < \frac{\sigma^2}{\mu^2}
   < \frac{Z^2 M }{\mu^2}
-  < \frac{
+  = \frac{
     Z^2 \, M
   }
   {
