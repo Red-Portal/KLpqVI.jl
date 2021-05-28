@@ -18,13 +18,13 @@ to make a reproducible scientific project named
 To (locally) reproduce this project, do the following:
 
 0. Download this code base. Notice datasets are not included and need to be downloaded independently.
-The datasets used in this work are as follows: \
+Please refer to the `load_dataset(task)` function in the respective task in `scripts/task` to see how to set up the datasets.
+The datasets used in this work are as follows: 
 * [German credit](https://archive.ics.uci.edu/ml/datasets/statlog+(german+credit+data))
 * [Pima indians diabetes](https://www.kaggle.com/uciml/pima-indians-diabetes-database)
 * [Heart disease](https://archive.ics.uci.edu/ml/datasets/heart+disease)
 * [Radon](https://github.com/stan-dev/example-models/blob/master/ARM/Ch.19/radon.data.R)
 * [Stochastic volatility](https://github.com/TuringLang/TuringExamples/blob/master/benchmarks/sto_volatility/data.csv) \
-Please refer to the `load_dataset(task)` function in the respective task in `scripts/task` to see how to set up the datasets.
 
 1. Open a Julia console and do:
    ```
