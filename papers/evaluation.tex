@@ -36,7 +36,7 @@ We compare MSC-PIMH with
   \item MSC using the CIS kernel with Rao-Blackwellization (\textbf{MSC-CISRB},~\citealt{NEURIPS2020_b2070693}),
   \item the adaptive IS method using SNIS as introduced in~\cref{section:ivi_previous} (\textbf{SNIS}),
   \item the reweighted wake-sleep algorithm (\textbf{RWS},~\citealt{DBLP:journals/corr/BornscheinB14}), and  
-  \item evidence lower-bound minimization (\textbf{ELBO},~\citealt{pmlr-v33-ranganath14}).
+  \item evidence lower-bound maximization (\textbf{ELBO},~\citealt{pmlr-v33-ranganath14}).
 \end{enumerate*}
 Specifically, we use automatic differentiation VI (ADVI,~\citealt{JMLR:v18:16-107}) implemented by Turing.
 
@@ -73,7 +73,7 @@ The original RWS algorithm assumes that independent samples from \(p(\vz\mid\vx)
 %It uses these independent samples for estimating the gradient once every \(K\) steps, and uses SNIS for the rest.
 %In our setting, we do not assume that independent samples from \(p(\vz\mid\vx)\) are available.
 Since this is not the case in our setting, we reinterpret RWS as alternating between cheap (\textit{sleep update}) and expensive (\textit{wake update}) estimates.
-We use respectively use SNIS and HMC for the sleep and wake updates, where we perform the wake update every \(K=5\) steps as originally recommended by~\citet{DBLP:journals/corr/BornscheinB14}.
+We respectively use SNIS and HMC for the sleep and wake updates, and perform the wake update every \(K=5\) steps as originally recommended by~\citet{DBLP:journals/corr/BornscheinB14}.
 %HMC shows excellent statistical performance in practice, but is much expensive as it requires multiple gradients \(\nabla_{\vz} p(\vz, \vx)\) for generating only a single samples.
 
 %% \subsection{Isotropic Gaussian}
@@ -128,7 +128,7 @@ Although much slower to converge, ELBO achieves competitive results.
 \vspace{-0.1in}
 \paragraph{Inclusive VI v.s. Exclusive VI}
 The results of~\cref{fig:logistic} might be misleading to conclude that inclusive and exclusive VI deliver similar results.
-However, in the parameter space, they choose very different optimization paths.
+However, in the parameter space, they choose different optimization paths.
 This is shown in~\cref{fig:paretok} through the Pareto-\(\widehat{k}\) diagnostic~\citep{NEURIPS2020_7cac11e2, vehtari_pareto_2021}, which determines how reliable the importance weights are when computed using \(q_{\vlambda}(\vz)\).
 While the test accuracy suggests that ELBO converges around \(t=2000\), in terms of Pareto-\(\widehat{k}\), it takes much longer to converge (about \(t=5000\)).
 This shows that, even if their predictive performance is similar, the inclusive VI chooses paths that have better density coverage as expected.

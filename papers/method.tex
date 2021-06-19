@@ -153,7 +153,6 @@ In the context of VI, the following shows that \(r\,(\vz_{t-1})\) is huge when t
 %
 This result states that in the ideal case when the Markov-chain has achieved stationarity and \(\vz_{t-1}\) closely follows \(p\,(\vz\mid\vx)\), the average rejection weight is bounded below exponentially by the KL divergence.
 The bound is tight as long as \(\DKL{p}{q_{\vlambda}}\) is large.
-For example, in the worst case of \(\DKL{p}{q_{\vlambda}} = M\), \(\delta \leq \nicefrac{1}{M}\).
 In practical conditions, the rejection rate cannot be improved by increasing \(N\) since
 \begin{enumerate*}[label=(\roman*)]
   \item the iteration complexity also increases, and
@@ -225,7 +224,7 @@ To resolve the aforementioned limitation of the CIS kernel, we propose a simple 
 The modified MSC algorithm incorporating parallel chains is shown in~\cref{alg:pimh} (the modified parts are highlighted in \textcolor{blue}{blue} and \textcolor{purple}{purple}), while the IMH kernel is described in~\cref{alg:imh}.
 Since the parallel chains generate an \textit{independent} conditional estimate each, the gradient estimate \(\nicefrac{1}{N} \sum^{N}_{i=1} s\,(\vz_t^{(i)}; \vlambda)\) is an average of \(N\) independent and identical estimators.
 This obviously reduces the variance of a single conditional estimate as \(\mathcal{O}(1/N)\).
-Relative to CIS, PIMH will have a variance reduction close to \(\mathcal{O}(1/N^2)\) in the best case.
+In the best case, relative to CIS, PIMH will have a variance reduction close to \(\mathcal{O}(1/N^2)\).
 %Also, the estimates are now proper marginal esimates, which enjoy a tighter bound on the TV distance (and hence the bias).
 %
 %\input{bias_reduction}
