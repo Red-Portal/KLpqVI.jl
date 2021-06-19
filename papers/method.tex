@@ -1,20 +1,23 @@
 
+\vspace{-0.05in}
 \section{Inclusive Variational Inference with Independent Metropolis-Hastings}
+\vspace{-0.05in}
 \subsection{Markov-Chain Monte Carlo in Markovian Score Climbing}\label{section:msc_mcmc}
+\vspace{-0.05in}
 \paragraph{MCMC uses marginal estimates.}
 To explain the counterintuitive observation in~\cref{fig:motivating}, we first discuss a subtle difference between the usual MCMC setting and the MSC setting.
 In MCMC, what matters is the estimate provided by the average of \textit{all} the states.
 This \textit{marginal} estimate of \(f\) is 
 \begin{align}
-  \frac{1}{T} \sum^{T}_{t=1} f(\vz_t) = \E{f(\vz_t)} = \E{\Esub{K(\vz_{t-1},\,\vz_t)}{ f(\vz_t) \mid \vz_{t-1}}}
+  \frac{1}{T} \sum^{T}_{t=1} f(\vz_t) = \E{f(\vz_t)} = \E{\Esub{\vz_t \sim K(\vz_{t-1},\cdot)}{ f(\vz_t) \mid \vz_{t-1}}}
 \end{align}
-where \(\Esub{K(\vz_{t-1},\,\vz_{t})}{ f(\vz_t) \mid \vz_{t-1}}\) is the \textit{conditional estimate} of \(K(\vz_{t-1},\cdot)\) given the previous state \(\vz_{t-1}\).
+where \(\Esub{\vz_t \sim K(\vz_{t-1},\cdot)}{ f(\vz_t) \mid \vz_{t-1}}\) is the \textit{conditional estimate} of \(K(\vz_{t-1},\cdot)\) given the previous state \(\vz_{t-1}\).
 
 \paragraph{MSC uses conditional estimates.}
 On the other hand, in MSC, the stochastic gradient is estimated using a \textit{single} state of the Markov-chain denoted as \(\vz_t \sim K(\vz_{t-1}, \cdot)\).
 This means that one needs to estimate the gradients using the conditional estimate such as
 \begin{align}
-  \nabla_{\lambda} \DKL{p}{q_{\lambda}} \approx \Esub{K(\vz_{t-1},\,\vz_t)}{s\,(\vz_t;\, \vlambda) \mid \vz_{t-1}}.
+  \nabla_{\lambda} \DKL{p}{q_{\lambda}} \approx \Esub{\vz_t \sim K(\vz_{t-1},\cdot)}{s\,(\vz_t;\, \vlambda) \mid \vz_{t-1}}.
 \end{align}
 This seemingly subtle difference of using either the marginal or conditional estimate reveals the following facts about MSC:
 \begin{enumerate*}[label=(\roman*)]
