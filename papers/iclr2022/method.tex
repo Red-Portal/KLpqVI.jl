@@ -1,7 +1,55 @@
 
 %\vspace{-0.05in}
-\section{Inclusive Variational Inference with Independent Metropolis-Hastings}
+\section{Estimation Strategies for Markov-chain Monte Carlo Copuled Inclusive Variational Inference}
 %\vspace{-0.05in}
+\subsection{Stochastic Approximation with Markov-Chain Monte Carlo}\label{section:msc}
+%
+%\vspace{-0.1in}
+\paragraph{Markovian Score Climbing}
+Recently,~\citeauthor{NEURIPS2020_b2070693} and~\citeauthor{pmlr-v124-ou20a} proposed two similar but independent methods for performing inclusive variational inference.
+Both methods estimate the score gradient by operating a Markov-chain in parallel with the VI optimization sequence.
+For example, in their method named Markovian score climbing (MSC), \citeauthor{NEURIPS2020_b2070693} estimate the score gradient by performing an MCMC iteration and update the parameters such that
+\begin{align}
+  &\vz_t \sim K\left(\vz_{t-1}, \cdot \right) &g_{\mathrm{single}}(\vlambda) = s\,(\vz_t; \vlambda)
+\end{align}
+where \(K\left(\vz_{t-1}, \cdot\right)\) is a MCMC kernel leaving \(p\,(\vz\mid\vx)\) invariant and \(g_{\text{single}}\left(\vlambda\right)\) denotes the score estimator.
+We will later call this estimator the ``single mode'' estimator.
+
+\paragraph{Joint Stochastic Approximation}
+On the other hand, at each SGD iteration \(t\),~\citeauthor{pmlr-v124-ou20a} perform \(N\) sequential Markov-chain transitions and use the average of the intermediate states for estimation such that
+\begin{align}
+  &\vz_{T+i} \sim K^i\left(\vz_{T}, \cdot \right) &g_{\mathrm{seq.}}(\vlambda) = \frac{1}{N} \sum_{i=1}^N s\,(\vz_{T+i}; \vlambda)
+\end{align}
+where \(\vz_T\) is the last Markov-chain state of the previous SGD iteration.
+Although their setting is slightly different since their MCMC kernel leave \(p\left(\vz_j\mid\vx_j \right)\) invariant for a single datapoint \(\vx_j\), this is only possible when the datapoints are independently, identically distributed (\textit{iid}).
+To simplify our analysis, we interpret their method more generally and assume that we only have a kernel that can leave \(p\left(\vz\mid\vx \right)\) invariant.
+
+\citeauthor{NEURIPS2020_b2070693} proposed \textit{Markovian score climbing} (MSC) which operates a MCMC kernel leaving \(p\left(\vz \mid \vx \right)\) invariant.
+Also, for the MCMC kernel, they propose conditional importance sampling (CIS), which is inspired by the particle MCMC method by~\cite{andrieu_particle_2010}.
+
+On the other hand,~\cite{pmlr-v124-ou20a} propose \textit{joint stochastic approximation} (JSA) which operats a MCMC kernel leaving the likelihoods of the independent data points \(p\left(\vz_i \mid \vx_i \right)\) invariant.
+For the MCMC kernel, unlike~\citeauthor{NEURIPS2020_b2070693}, they use the independence Metropolis Hastings (IMH) sampler.
+Also, they operate multiple 
+
+
+They showed that MSC achieves better and more robust performance compared to methods such as SNIS and expectation propagation (EP, \citealt{10.5555/2074022.2074067}).
+MSC is described in~\cref{alg:msc}.
+It obtains stochastic gradients from a Markov-chain \(\{\,\vz_1, \vz_2, \ldots \vz_T\,\}\) generated from a \(\pi\)-invariant transition operator \(K(\vz, \cdot)\) running in parallel with the VI optimizer (represented by the sequence \(\{\,\vlambda_1, \vlambda_2, \ldots, \vlambda_T\,\}\)).
+\citeauthor{NEURIPS2020_b2070693} specifically proposed to use the \textit{conditional importance sampling} (CIS) kernel for MSC.
+
+%If \(K(\vz, \cdot)\) is a proper Markov-chain Monte Carlo (MCMC) kernel,~\citeauthor{NEURIPS2020_b2070693} note that the gradient estimates become asymptotically unbiased with \(t \rightarrow \infty\).
+
+%% \vspace{-0.1in}
+%% \paragraph{A Motivating Mystery}
+%% Even though~\citeauthor{NEURIPS2020_b2070693} suggested that \textit{any} good MCMC kernel would work, we present a counterexample showing that the CIS kernel may operate unusually when used for MSC.
+%% In fact, \textit{MSC makes the most progress when the CIS-generated Markov-chain is the least effective}.
+%% In~\cref{fig:motivating}, we show the trace plot of \(\vz_t\) (\textcolor{blue}{blue line}) and \(\DKL{p}{q_{\vlambda}}\) (\textcolor{red}{red line}).
+%% Notice that \(\vz_t\) barely moves until iteration 250, around which \(\DKL{p}{q_{\vlambda}}\) starts to converge.
+%% In a traditional accept-reject MCMC kernel view, this implies that most of the samples are rejected, making the kernel no longer statistically effective.
+%% However, our analysis will show that this is actually a \textit{positive feature} of the CIS kernel, contributing to the empirical success of MSC.
+
+
+
 \subsection{Overview of Markov-Chain Monte Carlo Schemes}\label{section:msc_mcmc}
 %\vspace{-0.05in}
 

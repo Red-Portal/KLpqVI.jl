@@ -1,6 +1,7 @@
 
-\section{Background and Motivation}
+\section{Background}
 \subsection{Inclusive Variational Inference Until Now}\label{section:ivi_previous}
+\paragraph{Different inclusive variational}
 A typical way to perform VI is to use stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951, bottou_online_1999}), which requires unbiased gradient estimates of the optimization target.
 In the case of inclusive variational inference, this corresponds to estimating
 %
@@ -8,16 +9,19 @@ In the case of inclusive variational inference, this corresponds to estimating
   \nabla_{\vlambda} \DKL{p}{q_{\lambda}}
   = \Esub{p(\vz\mid\vx)}{ - \nabla_{\vlambda} \log q_{\vlambda}(\vz) }
   = - \Esub{p(\vz\mid\vx)}{ s\,(\vz; \vlambda) }
+  \approx g(\vlambda)
 \end{align}
-where \(s\,(\vz; \vlambda) = \nabla_{\vlambda} \log q_{\vlambda}(\vz)\) is known as the \textit{score function}.
+with some estimator \(g(\vlambda)\) where \(s\,(\vz; \vlambda) = \nabla_{\vlambda} \log q_{\vlambda}(\vz)\) is known as the \textit{score function}.
 Evidently, estimating \(\nabla_{\vlambda} \DKL{p}{q_{\lambda}}\) requires integrating the score function over \(p(\vz\mid\vx)\), which is prohibitive.
+Different inclusive variational inference methods form a different estimator \(g\).
 
 \paragraph{Importance Sampling}
-When it is easy to sample from the variational approximation \(q_{\lambda}(\vz)\), one can use importance sampling (IS, \citealt{robert_monte_2004, mcbook}) since 
+When it is easy to sample from the variational approximation \(q_{\lambda}(\vz)\), one can use importance sampling (IS, \citealt{robert_monte_2004, mcbook}) for estimating \(g\) since 
 \begin{align}
   \Esub{p(\vz\mid\vx)}{ s\,(\vz; \vlambda) }
   \propto \Esub{q_{\vlambda}}{ w\,(\vz) \, s\,(\vz; \vlambda) }
   \approx \frac{1}{N} \sum^{N}_{i=1} w\,(\vz^{(i)}) \, s\,(\vz^{(i)}; \vlambda)
+  = g_{IS}(\vlambda)
 \end{align}
 where \(w\,(\vz) = p\,(\vz,\vx) / q_{\vlambda}(\vz)\) is known as the \textit{importance weight}, and \(\vz^{(1)},\, \ldots,\, \vz^{(N)}\) are \(N\) independent samples from \(q_{\vlambda}(\vz)\).
 This scheme is equivalent to adaptive IS methods~\citep{cappe_adaptive_2008, bugallo_adaptive_2017} since the IS proposal \(q_{\vlambda}(\vz)\) is iteratively optimized based on the current samples.
@@ -58,37 +62,6 @@ Unfortunately, SNIS still fails to converge even on moderate dimensional objecti
   %%   \vspace{-0.1in}
   %% \end{minipage}
 %
-\subsection{Stochastic Approximation with Markov-Chain Monte Carlo}\label{section:msc}
-%
-%\vspace{-0.1in}
-\paragraph{MSC and JSA}
-Recently,~\citeauthor{NEURIPS2020_b2070693} and~\citeauthor{pmlr-v124-ou20a} proposed two similar but independent methods for performing inclusive variational inference.
-Both methods operate a Markov-chain in parallel with the VI optimization sequence, but the formulation is slightly different.
-\citeauthor{NEURIPS2020_b2070693} proposed \textit{Markovian score climbing} (MSC) which operates a MCMC kernel leaving \(p\left(\vz \mid \vx \right)\) invariant.
-Also, for the MCMC kernel, they propose conditional importance sampling (CIS), which is inspired by the particle MCMC method by~\cite{andrieu_particle_2010}.
-
-On the other hand,~\cite{pmlr-v124-ou20a} propose \textit{joint stochastic approximation} (JSA) which operats a MCMC kernel leaving the likelihoods of the independent data points \(p\left(\vz_i \mid \vx_i \right)\) invariant.
-For the MCMC kernel, unlike~\citeauthor{NEURIPS2020_b2070693}, they use the independence Metropolis Hastings (IMH) sampler.
-Also, they operate multiple 
-
-
-They showed that MSC achieves better and more robust performance compared to methods such as SNIS and expectation propagation (EP, \citealt{10.5555/2074022.2074067}).
-MSC is described in~\cref{alg:msc}.
-It obtains stochastic gradients from a Markov-chain \(\{\,\vz_1, \vz_2, \ldots \vz_T\,\}\) generated from a \(\pi\)-invariant transition operator \(K(\vz, \cdot)\) running in parallel with the VI optimizer (represented by the sequence \(\{\,\vlambda_1, \vlambda_2, \ldots, \vlambda_T\,\}\)).
-\citeauthor{NEURIPS2020_b2070693} specifically proposed to use the \textit{conditional importance sampling} (CIS) kernel for MSC.
-
-%If \(K(\vz, \cdot)\) is a proper Markov-chain Monte Carlo (MCMC) kernel,~\citeauthor{NEURIPS2020_b2070693} note that the gradient estimates become asymptotically unbiased with \(t \rightarrow \infty\).
-
-%% \vspace{-0.1in}
-%% \paragraph{A Motivating Mystery}
-%% Even though~\citeauthor{NEURIPS2020_b2070693} suggested that \textit{any} good MCMC kernel would work, we present a counterexample showing that the CIS kernel may operate unusually when used for MSC.
-%% In fact, \textit{MSC makes the most progress when the CIS-generated Markov-chain is the least effective}.
-%% In~\cref{fig:motivating}, we show the trace plot of \(\vz_t\) (\textcolor{blue}{blue line}) and \(\DKL{p}{q_{\vlambda}}\) (\textcolor{red}{red line}).
-%% Notice that \(\vz_t\) barely moves until iteration 250, around which \(\DKL{p}{q_{\vlambda}}\) starts to converge.
-%% In a traditional accept-reject MCMC kernel view, this implies that most of the samples are rejected, making the kernel no longer statistically effective.
-%% However, our analysis will show that this is actually a \textit{positive feature} of the CIS kernel, contributing to the empirical success of MSC.
-
-
 %%% Local Variables:
 %%% TeX-master: "master"
 %%% End:
