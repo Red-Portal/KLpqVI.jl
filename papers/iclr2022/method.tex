@@ -1,14 +1,14 @@
 
 %\vspace{-0.05in}
-\section{Estimation Strategies for Markov-chain Monte Carlo Copuled Inclusive Variational Inference}
+\section{Chain Wielding Strategies for Markov-chain Monte Carlo Based Inclusive Variational Inference}
 %\vspace{-0.05in}
-\subsection{Stochastic Approximation with Markov-Chain Monte Carlo}\label{section:msc}
+\subsection{Overview of Prevoius Estimation Strategies}\label{section:msc}
 %
 %\vspace{-0.1in}
 \paragraph{Markovian Score Climbing}
 Recently,~\citeauthor{NEURIPS2020_b2070693} and~\citeauthor{pmlr-v124-ou20a} proposed two similar but independent methods for performing inclusive variational inference.
 Both methods estimate the score gradient by operating a Markov-chain in parallel with the VI optimization sequence.
-For example, in their method named Markovian score climbing (MSC), \citeauthor{NEURIPS2020_b2070693} estimate the score gradient by performing an MCMC iteration and update the parameters such that
+For example, in their method named Markovian score climbing (MSC), \citep{NEURIPS2020_b2070693} estimate the score gradient by performing an MCMC iteration and update the parameters such that
 \begin{align}
   &\vz_t \sim K\left(\vz_{t-1}, \cdot \right) &g_{\mathrm{single}}(\vlambda) = s\,(\vz_t; \vlambda)
 \end{align}
@@ -16,26 +16,21 @@ where \(K\left(\vz_{t-1}, \cdot\right)\) is a MCMC kernel leaving \(p\,(\vz\mid\
 We will later call this estimator the ``single mode'' estimator.
 
 \paragraph{Joint Stochastic Approximation}
-On the other hand, at each SGD iteration \(t\),~\citeauthor{pmlr-v124-ou20a} perform \(N\) sequential Markov-chain transitions and use the average of the intermediate states for estimation such that
+On the other hand, at each SGD iteration \(t\),~\citep{pmlr-v124-ou20a} perform \(N\) sequential Markov-chain transitions and use the average of the intermediate states for estimation such that
 \begin{align}
   &\vz_{T+i} \sim K^i\left(\vz_{T}, \cdot \right) &g_{\mathrm{seq.}}(\vlambda) = \frac{1}{N} \sum_{i=1}^N s\,(\vz_{T+i}; \vlambda)
 \end{align}
 where \(\vz_T\) is the last Markov-chain state of the previous SGD iteration.
+We will later call this estimator the ``sequential mode'' estimator, since the Markov-chain states used for estimation are formed sequentially.
+
+\paragraph{Additional  Notes on JSA}
 Although their setting is slightly different since their MCMC kernel leave \(p\left(\vz_j\mid\vx_j \right)\) invariant for a single datapoint \(\vx_j\), this is only possible when the datapoints are independently, identically distributed (\textit{iid}).
 To simplify our analysis, we interpret their method more generally and assume that we only have a kernel that can leave \(p\left(\vz\mid\vx \right)\) invariant.
 
-\citeauthor{NEURIPS2020_b2070693} proposed \textit{Markovian score climbing} (MSC) which operates a MCMC kernel leaving \(p\left(\vz \mid \vx \right)\) invariant.
-Also, for the MCMC kernel, they propose conditional importance sampling (CIS), which is inspired by the particle MCMC method by~\cite{andrieu_particle_2010}.
-
-On the other hand,~\cite{pmlr-v124-ou20a} propose \textit{joint stochastic approximation} (JSA) which operats a MCMC kernel leaving the likelihoods of the independent data points \(p\left(\vz_i \mid \vx_i \right)\) invariant.
-For the MCMC kernel, unlike~\citeauthor{NEURIPS2020_b2070693}, they use the independence Metropolis Hastings (IMH) sampler.
-Also, they operate multiple 
-
-
-They showed that MSC achieves better and more robust performance compared to methods such as SNIS and expectation propagation (EP, \citealt{10.5555/2074022.2074067}).
-MSC is described in~\cref{alg:msc}.
-It obtains stochastic gradients from a Markov-chain \(\{\,\vz_1, \vz_2, \ldots \vz_T\,\}\) generated from a \(\pi\)-invariant transition operator \(K(\vz, \cdot)\) running in parallel with the VI optimizer (represented by the sequence \(\{\,\vlambda_1, \vlambda_2, \ldots, \vlambda_T\,\}\)).
-\citeauthor{NEURIPS2020_b2070693} specifically proposed to use the \textit{conditional importance sampling} (CIS) kernel for MSC.
+\paragraph{MCMC Kernels of JSA and MSC}
+For the MCMC kernel, \citeauthor{NEURIPS2020_b2070693} specifically propose to use the conditional importance sampling (CIS) kernel.
+In contrast,~\citeauthor{pmlr-v124-ou20a} use the independent Metropolis-Hastings (IMH,~\citealt[Algorithm 25]{robert_monte_2004}).
+Interestingly, the computational cost of JSA is comparable to MSC because of the additional cost of the CIS kernel.
 
 %If \(K(\vz, \cdot)\) is a proper Markov-chain Monte Carlo (MCMC) kernel,~\citeauthor{NEURIPS2020_b2070693} note that the gradient estimates become asymptotically unbiased with \(t \rightarrow \infty\).
 
@@ -48,12 +43,10 @@ It obtains stochastic gradients from a Markov-chain \(\{\,\vz_1, \vz_2, \ldots \
 %% In a traditional accept-reject MCMC kernel view, this implies that most of the samples are rejected, making the kernel no longer statistically effective.
 %% However, our analysis will show that this is actually a \textit{positive feature} of the CIS kernel, contributing to the empirical success of MSC.
 
-
-
-\subsection{Overview of Markov-Chain Monte Carlo Schemes}\label{section:msc_mcmc}
-%\vspace{-0.05in}
+\subsection{Overview of Markov-Chain Monte Carlo Estimation Schemes}\label{section:msc_mcmc}
 
 \begin{figure*}
+  \vspace{-0.4in}
     \centering
     \begin{subfigure}[b]{0.25\textwidth}
         \centering
@@ -72,25 +65,35 @@ It obtains stochastic gradients from a Markov-chain \(\{\,\vz_1, \vz_2, \ldots \
     \end{subfigure}
     \caption{Visualization of different ways of combining MCMC with stochastic approximation variational inference.
     The index \(t\) denotes the stochastic approximation iteration.
-    The dark circles denote the MCMC samples used for estimating the score gradient for \(t=2\).
+    The dark circles denote the MCMC samples used for estimating the score gradient at \(t=2\).
     }\label{fig:overview}
 \end{figure*}
+
+\paragraph{Single Mode and Sequential Mode}
+The two different MCMC-based score estimation schemes of MSC and JSA represent two different ways of using an MCMC kernel.
+The former uses a computationally expensive, but hopefully statistically superior, MCMC kernel.
+The latter uses a cheaper MCMC kernel, but generates more samples for estimation.
+Since the scheme of MSC uses only a single sample for estimation, we call it the ``single mode'' estimator, \(g_{\mathrm{single}}\).
+Meanwhile, since the scheme of JSA uses multiple sequential Markov-chain states for estimation, we call it the ``sequential mode'' estimator, \(g_{\text{seq.}}\)
+
+\paragraph{Parallel Mode}
+While the sequential mode estimator is a 
+
+The ``parallel mode'' shown in~\cref{fig:par} is another possible scheme that has been underappreciated.
+Unlike both the single and sequential modes that operate only a single Markov-chain, the parallel mode operates \textit{multiple chains} in parallel.
+This scheme differs from the traditional way of running MCMC, but has multiple benefits for the specific purpose of VI.
+
 %
 \input{table_cost}
 %
+\paragraph{}
+
 First, the different modes of operating Markov-chains are illustrated in~\cref{fig:overview}.
 The three different methods all have a similar computational cost, but their statistical performances are very different.
 The computational costs of each scemes are organized in~\cref{table:cost}.
 %
 %\input{pseudocode}
 
-\input{bias_seq}
-\input{bias_par}
-\input{var_seq}
-
-\paragraph{Single Mode}
-First, the ``single mode'' (see \cref{fig:single}) used by \citet{NEURIPS2020_b2070693} performs a ``single'' Markov-chain transition at each stochastic approximation step, and estimates the score using the single state such as \(g\left(\vlambda\right) = \nabla \log q_{\vlambda}\left(\vz_t\right)\).
-The single state is generated by a computationally expensive MCMC kernel such as the CIS kernel proposed by~\citeauthor{NEURIPS2020_b2070693}.
 
 \paragraph{Sequential Mode}
 On the other hand, \citep{pmlr-v124-ou20a} perform \textit{multiple} ``sequental'' state transitions such that \(\{\vz_i, \vz_{i+1},\ldots, \vz_{i+K}\}\) at each stochastic approximation step.
@@ -98,36 +101,64 @@ The score is estimated by averaging the multiple intermediate states such that \
 When using the independent Metropolis Hastings (IMH) kernel, the computational cost is comparable to the single mode with the CIS kernel.
 We call this scheme the ``sequential mode'' in contrast with the parallel mode described below.
 
-\paragraph{Parallel Mode}
-The ``parallel mode'' shown in~\cref{fig:par} is another possible scheme that has been underappreciated.
-Unlike both the single and sequential modes that operate only a single Markov-chain, the parallel mode operates \textit{multiple chains} in parallel.
-This scheme differs from the traditional way of running MCMC, but has multiple benefits for the specific purpose of VI.
+\subsection{Theoretical Analysis}
 
+\textcolor{red}{
+  \paragraph{Boundedness Assumption}
+Since we derive our bounds on the bias from the total-variation distance, our results assume that the score function is bounded.
+That is, \(\norm{\nabla_{\vlambda} \log q_{\vlambda}(\vz)} < L\) for any \(\vlambda\).
+This boundedness assumption is reasonable since theoretical guarentees of SGD often assume Lipschitz-continuity of the gradients, from which boundedness follow as a consequence.
+}
 
-\paragraph{MCMC uses marginal estimates.}
-To explain the counterintuitive observation in~\cref{fig:motivating}, we first discuss a subtle difference between the usual MCMC setting and the MSC setting.
-In MCMC, what matters is the estimate provided by the average of \textit{all} the states.
-This \textit{marginal} estimate of \(f\) is 
-\begin{align}
-  \frac{1}{T} \sum^{T}_{t=1} f(\vz_t) %= \E{f(\vz_t)}
-  = \E{\Esub{\vz_t \sim K(\vz_{t-1},\cdot)}{ f(\vz_t) \mid \vz_{t-1}}}
-\end{align}
-where \(\Esub{\vz_t \sim K(\vz_{t-1},\cdot)}{ f(\vz_t) \mid \vz_{t-1}}\) is the \textit{conditional estimate} of \(K(\vz_{t-1},\cdot)\) given the previous state \(\vz_{t-1}\).
+\input{bias_seq}
+%
+For the sequential mode estimator, the bias depends on both \(t\) and \(N\).
+Thus, the bias decreases as the number iteration \(t\) and the number of samples \(N\) increase.
+However, the following proposition suggests that the \(w^*\) will be exponentially large when the KL divergence is large.
+%
+\begin{proposition}
+  \(w^* = \sup_{\vz} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda}\left(\vz\right)} \) is bounded below expoentially by the KL divergence such that
+  \(
+  \exp\left(\DKL{p\left(\cdot\mid\vx\right)}{ q_{\vlambda}\left(\cdot\right) }\right) \leq w^*.
+  \)
+  \begin{proof}
+    \(
+    \DKL{p\left(\cdot\mid\vx\right)}{ q_{\vlambda}\left(\cdot\right) }
+    = \int p\left(\vz\mid\vx\right) \log \frac{p\left(\vz\mid\vx\right)}{q_{\vlambda}\left(\vz\right)}\,d\vz
+    \leq \int p\left(\vz\mid\vx\right) \log M \, d\vz = \log w^*
+    \)
+  \end{proof}
+\end{proposition}
+%
+Therefore, in the initial iterations of VI when the KL divergence has yet been minimized, the constant \(C\) will be close to 1.
+On the other hand, when \(C\) is small, the bias will be small regardless of \(N\) and \(t\).
+Thus, increasing \(N\) wouldn't result in significant bias reduction.
 
+\input{bias_par}
+\input{var_seq}
 
+%% \paragraph{MCMC uses marginal estimates.}
+%% To explain the counterintuitive observation in~\cref{fig:motivating}, we first discuss a subtle difference between the usual MCMC setting and the MSC setting.
+%% In MCMC, what matters is the estimate provided by the average of \textit{all} the states.
+%% This \textit{marginal} estimate of \(f\) is 
+%% \begin{align}
+%%   \frac{1}{T} \sum^{T}_{t=1} f(\vz_t) %= \E{f(\vz_t)}
+%%   = \E{\Esub{\vz_t \sim K(\vz_{t-1},\cdot)}{ f(\vz_t) \mid \vz_{t-1}}}
+%% \end{align}
+%% where \(\Esub{\vz_t \sim K(\vz_{t-1},\cdot)}{ f(\vz_t) \mid \vz_{t-1}}\) is the \textit{conditional estimate} of \(K(\vz_{t-1},\cdot)\) given the previous state \(\vz_{t-1}\).
 
-\paragraph{MSC uses conditional estimates.}
-On the other hand, in MSC, the stochastic gradient is estimated using a \textit{single} state of the Markov-chain denoted as \(\vz_t \sim K(\vz_{t-1}, \cdot)\).
-This means that one needs to estimate the gradients using the conditional estimate such as
-\begin{align}
-  \nabla_{\lambda} \DKL{p}{q_{\lambda}} \approx \Esub{\vz_t \sim K(\vz_{t-1},\cdot)}{s\,(\vz_t;\, \vlambda) \mid \vz_{t-1}}.
-\end{align}
-This seemingly subtle difference of using either the marginal or conditional estimate reveals the following facts about MSC:
-\begin{enumerate*}[label=(\roman*)]
-\item The usual central limit theorem guarantees of MCMC do not apply to MSC.
-\item In addition, ergodicity guarantees work differently since \(q_{\vlambda}(\vz)\) is updated at each iteration.
-\end{enumerate*}
-The most important difference is, however, the way we analyze the variance of the estimates.
+%% \paragraph{MSC uses conditional estimates.}
+%% On the other hand, in MSC, the stochastic gradient is estimated using a \textit{single} state of the Markov-chain denoted as \(\vz_t \sim K(\vz_{t-1}, \cdot)\).
+%% This means that one needs to estimate the gradients using the conditional estimate such as
+%% \begin{align}
+%%   \nabla_{\lambda} \DKL{p}{q_{\lambda}} \approx \Esub{\vz_t \sim K(\vz_{t-1},\cdot)}{s\,(\vz_t;\, \vlambda) \mid \vz_{t-1}}.
+%% \end{align}
+%% This seemingly subtle difference of using either the marginal or conditional estimate reveals the following facts about MSC:
+%% \begin{enumerate*}[label=(\roman*)]
+%% \item The usual central limit theorem guarantees of MCMC do not apply to MSC.
+%% \item In addition, ergodicity guarantees work differently since \(q_{\vlambda}(\vz)\) is updated at each iteration.
+%% \end{enumerate*}
+%% The most important difference is, however, the way we analyze the variance of the estimates.
 
 \subsection{Interpreting Conditional Importance Sampling as Independent Metropolis-Hastings}\label{section:cis_imh}
 Many popular MCMC kernels are based on the Metropolis-Hastings test where a random proposal \(\vz^*\) is either accepted into the Markov-chain (\(\vz_{t} = \vz^*\)) or rejected (\(\vz_t = \vz_{t-1}\)).

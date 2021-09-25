@@ -1,26 +1,37 @@
 
 \begin{theoremEnd}{proposition}\label{thm:approx_var}
-  Assuming \(w\,(\vz_{t-1})\) is large enough to make \(r\,(\vz\mid\vz^{(1:N)})\) independent of \(\vz^{(1:N)}\), the variance can be approximated by
+  The variance $\mathbb{V}_{q_\lambda}[f|z_{t-1}]$ can be approximated by
   \begin{align}
-    \Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1}, \vz^{(1:N)} } } \approx {\big(1 - r\,(\vz_{t-1})\big)}^2\,\Vsub{q_{\vlambda}}{ f_{\text{IS}} \,\middle\vert\, \vz_{t-1} }.
+    \Vsub{q_{\vlambda}}{  f \mid \vz_{t-1}, \vz^{(1:N)} } \approx \frac{N^4 Z^4}{(w(\vz_{t-1}) + NZ)^4} \Vsub{q_{\vlambda}}{ f_{\text{IS}} \,\middle\vert\, \vz_{t-1} },
   \end{align}
+  where $Z=\mathbb{E}_{q_\lambda}[p(\vz,\vx)/q_{\lambda}(\vz)]=\int p(\vz,\vx)d\vz$ is the normalizing constant.
 \end{theoremEnd}
+
 \begin{proofEnd}
-  We evaluate the variance by approximating the rejection probability as an independent constant.
-  First,
+  Write
   \begin{align}
-    &\Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1}, \vz^{(1:N)} } }. \\
-    \intertext{
-      Applying~\eqref{eq:cis_kernel_inter},
-    }
-    &= \Vsub{q_{\vlambda}}{ \big(1 - r\,(\vz_{t-1}\mid\vz^{(1:N)})\big)\, f_{\mathrm{IS}}
-      + r\,(\vz_{t-1}\mid\vz^{(1:N)})\,f(\vz_{t-1}) \;\middle\vert\; \vz_{t-1}} \\
-    &\approx \Vsub{q_{\vlambda}}{ \big(1 - r\,(\vz_{t-1})\big)\, f_{\mathrm{IS}}
-      + r\,(\vz_{t-1})\,f(\vz_{t-1}) \;\middle\vert\; \vz_{t-1}} \\
-    &= \Vsub{q_{\vlambda}}{ \big(1 - r\,(\vz_{t-1})\big)\, f_{\mathrm{IS}} \;\middle\vert\; \vz_{t-1} } \label{eq:approx_var_constant} \\
-    &= {\big(1 - r\,(\vz_{t-1})\big)}^2 \, \Vsub{q_{\vlambda}}{ f_{\mathrm{IS}} \;\middle\vert\; \vz_{t-1} }. \label{eq:approx_var_linear} 
+  \mathbb{V}_{q_\lambda}[f|\vz_{t-1}] = \mathbb{V}_{q_\lambda}\left[\frac{\sum_{i=1}^N w(\vz^{(i)})}{\sum_{i=0}^N w(\vz^{(i)})} \frac{\sum_{i=1}^N w(\vz^{(i)})f(\vz^{(i)})}{\sum_{i=1}^N w(\vz^{(i)})} + \left.\frac{w(\vz_{t-1})}{\sum_{i=0}^N w(\vz^{(i)})} f(\vz_{t-1})  \right\vert \vz_{t-1} \right].
   \end{align}
-  The equality of~\eqref{eq:approx_var_constant} follows from the fact that \(r\,(\vz_{t-1})\,f(\vz_{t-1})\) is a constant.
+  Note that if $a>0$, then we can approximate the function $\sum_{i=1}^N x_i/(a+\sum_{i=1}^N x_i)$ using the first-order Taylor series expansion about $(Z,\dots,Z)$ by
+  $$
+  \frac{\sum_{i=1}^N x_i}{a+\sum_{i=1}^N x_i} \approx \frac{NZ}{a+NZ}+\sum_{i=1}^N \frac{a}{(a+NZ)^2} (x_i -Z).
+  $$
+  Hence, given $\vz_{t-1}$, we approximate $\sum_{i=1}^N w(\vz^{(i)})/\sum_{i=0}^N w(\vz^{(i)})$ by
+  \begin{align}
+  \frac{\sum_{i=1}^N w(\vz^{(i)})}{\sum_{i=0}^N w(\vz^{(i)})} &\approx \frac{NZ}{w(\vz_{t-1})+NZ} + \sum_{i=1}^N \frac{w(\vz_{t-1})}{(w(\vz_{t-1})+ NZ)^2} (w(\vz^{(i)})-Z) \\
+    & = \frac{N^2 Z^2 + w(\vz_{t-1}) \sum_{i=1}^N w(\vz^{(i)})}{(w(\vz_{t-1})+NZ)^2}
+  \end{align}
+  so that
+  \begin{align}
+  \mathbb{V}_{q_\lambda}[f|\vz_{t-1}] \approx \mathbb{V}_{q_\lambda} \left[\frac{N^2Z^2}{(w(\vz_{t-1})+NZ)^2} f_{IS} + \frac{w(\vz_{t-1})}{(w(\vz_{t-1})+NZ)^2}\sum_{i=1}^N w(\vz^{(i)})f(\vz^{(i)})\right. \\ \left.
+  + \left. \frac{w(\vz_{t-1})}{\sum_{i=0}^N w(\vz^{(i)})} f(\vz_{t-1}) \right\vert \vz_{t-1} \right].
+  \end{align}
+  Observe that $\sum_{i=1}^N w(\vz^{(i)}) f(\vz^{(i)}) = O(N)$ since $\{\vz^{(1)}, \dots, \vz^{(N)}\}$ are independent and identically distributed and that $w(\vz_{t-1})f(\vz_{t-1})/\sum_{i=0}^N w(\vz^{(i)})=o(N)$.
+  Combining these, we obtain
+  \begin{align}
+    \Vsub{q_{\vlambda}}{  f \mid \vz_{t-1}, \vz^{(1:N)} } \approx \frac{N^4 Z^4}{(w(\vz_{t-1}) + NZ)^4} \Vsub{q_{\vlambda}}{ f_{\text{IS}} \,\middle\vert\, \vz_{t-1} },
+  \end{align}
+  as was to be shown.
 \end{proofEnd}
 
 %%% Local Variables:

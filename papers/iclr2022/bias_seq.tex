@@ -1,9 +1,9 @@
 
 \begin{theoremEnd}{theorem}\label{thm:bias_seq}
-  Assuming \(w^* = \sup_{\vz} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda}\left(\vz\right)} < \infty\; \text{for} \; \forall \vlambda \), for a bounded functional \(f : \mathcal{Z} \rightarrow \left[ \text{-}\nicefrac{L}{2}, \nicefrac{L}{2} \right] \), the bias of the sequential mode estimator with an IMH kernel at iteration \(t\) is bounded as
+  Assuming \(w^* = \sup_{\vz} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda}\left(\vz\right)} < \infty\; \text{for} \; \forall \vlambda \) and the score function is bounded such that \(\left|\,s(\vz)\,\right| \leq \frac{L}{2}\), the bias of the sequential mode estimator with an IMH kernel at iteration \(t\) is bounded as
   {\small
   \[
-    \mathrm{Bias}\left[ g_{\mathrm{seq.,\, t}} \right] \leq L \, C^{N (t-1)} \frac{1}{N} \sum_{i=1}^N {C}^i
+    \mathrm{Bias}\left[ g_{\mathrm{seq.,\, t}} \right] \leq L \, C^{N t} 
   \]
   }
   where \(C = \left(1 - \nicefrac{1}{w^*}\right) < 1\).
@@ -11,14 +11,20 @@
 %
 \begin{proofEnd}
   We employ a similar proof strategy with the works of~\citet[Theorem 4]{jiang_mcmc_2021}.
-  We denote the empirical distribution of the Markov-chain states at iteration \(t\) as
+
+  Let us first denote the empirical distribution of the Markov-chain states at iteration \(t\) as
   \begin{align}
-    \eta_{seq.,\, t}(\vz) = \frac{1}{N} \sum_{i=1}^N K^{N (t-1) + i}(\vz_0, \vz)
+    \eta_{\mathrm{seq.},\, t}(\vz) = \frac{1}{N} \sum_{i=1}^N K^{N (t-1) + i}(\vz_0, \vz),
   \end{align}
+  and consequently,
+  \begin{align}
+      g_{\mathrm{seq}, t}(\vlambda) = \int s\left(\vz; \vlambda\right) \, \eta_{\mathrm{seq.},\, t}(\vz) \, d\vz.
+  \end{align}
+  Now,
   \begin{align}
     \DTV{ \eta_{seq.,\, t}(\cdot) }{p\left(\cdot\mid\vx\right)}
     &= \DTV{\frac{1}{N} \sum_{i=1}^N K^{N (t-1) + i}(\vz_0, \cdot)}{p\left(\cdot\mid\vx\right)} \\
-    &\leq \frac{1}{N} \sum_{i=1}^N  \DTV{K^{N (t-1) + i}(\vz_0, \cdot)}{p\left(\cdot\mid\vx\right)} &\text{(Triangle inequality)} \\
+    &\leq \frac{1}{N} \sum_{i=1}^N  \DTV{K^{N (t-1) + i}(\vz_0, \cdot)}{p\left(\cdot\mid\vx\right)} &\text{ (Triangle inequality)}
   \end{align}
  For an IMH kernel with \(w^* < \infty\), the geometric ergodicity of the IMH kernel \citep[Theorem 2.1]{10.2307/2242610} gives the bound
  \begin{align}
@@ -30,20 +36,21 @@
  \end{align}
  Thus, 
   \begin{align}
-    \DTV{ \eta_{seq.,\, t}(\cdot) }{p\left(\cdot\mid\vx\right)}
+    \DTV{ \eta_{\mathrm{seq.},\, t}(\cdot) }{p\left(\cdot\mid\vx\right)}
     &\leq  \prod_{\tau=1}^{t-1} {\left( 1 - \frac{1}{w^*(\vlambda_{\tau})} \right)}^N \frac{1}{N} \sum_{i=1}^N {\left( 1 - \frac{1}{w^*(\vlambda_{t})} \right)}^i \\
     &\leq  \prod_{\tau=1}^{t-1} {\left( 1 - \frac{1}{w^*} \right)}^N \frac{1}{N} \sum_{i=1}^N {\left( 1 - \frac{1}{w^*} \right)}^i \\
-    &\leq C^{N (t-1)} \frac{1}{N} \sum_{i=1}^N C^i %\\
-    %&= C_1^{N (t-1)} \frac{1}{N} \left(C_2^{N+1} + \frac{C_2}{1 - C_2} \right) \\
+    &\leq C^{N (t-1)} \frac{1}{N} \sum_{i=1}^N C^i \\
+    &\leq C^{N t}
   \end{align}
   where \(C = 1 - \frac{1}{w^*} \).
 
   Finally, by the definition of the total-variation distance, 
  \begin{align}
    \mathrm{bias}\left[ g_{\mathrm{seq., t}} \right]
-   &\leq L \DTV{\eta_{seq.,\, t}(\cdot)}{p(\cdot\mid\vx)} \\
-   &\leq L \sup_{h : \mathcal{Z} \rightarrow \left[ \text{-}\nicefrac{L}{2}, \nicefrac{L}{2} \right]} \left|\, \Esub{\eta_{seq.,\, t}(\cdot)}{h} - \Esub{p(\cdot\mid\vx)}{h} \,\right| \\
-   &\leq L \, C_1^{N (t-1)} \frac{1}{N} \sum_{i=1}^N C_2^i.
+   &\leq \DTV{\eta_{seq.,\, t}(\cdot)}{p(\cdot\mid\vx)} \\
+   &\leq \sup_{h : \mathcal{Z} \rightarrow \left[ \text{-}\nicefrac{L}{2}, \nicefrac{L}{2} \right]} \left|\, \Esub{\eta_{\mathrm{seq.},\, t}(\cdot)}{h} - \Esub{p(\cdot\mid\vx)}{h} \,\right| \\
+   &= L \DTV{ \eta_{\mathrm{seq.},\, t}(\cdot) }{p\left(\cdot\mid\vx\right)}  \\
+   &\leq L \, C_1^{N t}.
  \end{align}
 \end{proofEnd}
 
