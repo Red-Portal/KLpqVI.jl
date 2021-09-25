@@ -1,0 +1,70 @@
+
+\section{Pseudocodes of the Considered Schemes}
+\begin{minipage}[c]{\textwidth}%0.28\linewidth}
+  \small
+  \centering
+  \begin{algorithm2e}[H]
+    \DontPrintSemicolon
+    \SetAlgoLined
+    \KwIn{MCMC kernel \(K(\vz,\cdot)\),
+      initial sample \(\vz_0\),
+      initial parameter \(\vlambda_0\),
+      number of iterations \(T\),
+      stepsize schedule \(\gamma_t\)}
+    \For{\textcolor{black}{\(t = 1, 2, \ldots, T\)}}{
+      \( \vz_{t} \sim K(\vz_{t-1}, \cdot) \)\;
+      \( s(\vz; \vlambda) = \nabla_{\vlambda} \log q_{\vlambda}(\vz_t) \)\;
+      \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t\, s\,(\vz_t;\vlambda_{t-1}) \)\;
+    }
+    \caption{Single Mode}\label{alg:msc}
+  \end{algorithm2e}
+\end{minipage}
+%
+\begin{minipage}[c]{\textwidth}%0.35\textwidth}
+  \small
+  \begin{algorithm2e}[H]
+    \DontPrintSemicolon
+    \SetAlgoLined
+    \KwIn{initial sample \(\vz_0\),
+      initial parameter \(\vlambda_0\),
+      number of iterations \(T\),
+      stepsize schedule \(\gamma_t\)
+    }
+    \For{\(t = 1, 2, \ldots, T\)}{
+      \(j = N (t-1) \)\;
+      \For{\(i = 1, 2, \ldots, N\)}{
+          \(\vz_{t} \sim K(\vz_{j + i}, \cdot)\)\;
+      }
+      \( s(\vz^{(i)}_t; \vlambda) = \nabla_{\vlambda} \log q_{\vlambda}(\vz_t^{(i)}) \)\;
+      \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t\,
+      \frac{1}{N} \sum^{N}_{i=1} s\,(\vz_{j + i};\vlambda_{t-1}) \)\;
+    }
+    \caption{Sequential Mode}\label{alg:pimh}
+  \end{algorithm2e}
+\end{minipage}
+%
+\begin{minipage}[c]{\textwidth}%0.35\textwidth}
+  \small
+  \begin{algorithm2e}[H]
+    \DontPrintSemicolon
+    \SetAlgoLined
+    \KwIn{initial samples \(\vz_0^{(1)},\, \ldots,\, \vz_0^{(N)}\),
+      initial parameter \(\vlambda_0\),
+      number of iterations \(T\),
+      stepsize schedule \(\gamma_t\)
+    }
+    \For{\(t = 1, 2, \ldots, T\)}{
+        \For{\(i = 1, 2, \ldots, N\)}{
+          \(\vz^{(i)}_{t} \sim K(\vz^{(i)}_{t-1}, \cdot)\)\;
+      }
+      \( s(\vz^{(i)}_t; \vlambda) = \nabla_{\vlambda} \log q_{\vlambda}(\vz_t^{(i)}) \)\;
+      \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t\,
+      \frac{1}{N} \sum^{N}_{i=1} s\,(\vz_t^{(i)};\vlambda_{t-1}) \)\;
+    }
+    \caption{parallel Mode}\label{alg:pimh}
+  \end{algorithm2e}
+\end{minipage}
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:

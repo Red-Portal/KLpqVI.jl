@@ -1,0 +1,58 @@
+
+\begin{tikzpicture}
+  %\pgfplotsset{
+  %  table/search path={}
+  %}
+  %\pgfplotstableread[col sep=comma, ignore chars={"}]{MSC_PIMH/10/ll.csv}\pimh;
+  %\pgfplotstableread[col sep=comma, ignore chars={"}]{ll.csv}\cis;
+
+  %\begin{groupplot}[group style={group size= 2 by 1},]
+  \begin{axis}[
+      legend style={
+        draw=none,
+        fill=none,
+        legend pos=north west,
+      },
+      xlabel={\small \textit{Iteration} (\(t\))},
+      ylabel={\small \textit{Test Log-Likelihood}},
+      ylabel near ticks,
+      ylabel shift=-5pt,
+      tick pos=left,
+      tick align={outside},
+      axis line style={thick},
+      major tick length={1.5pt},
+      %xtick={1,8,16,32,64,128},
+      %ytick={1,8,16,32,64,128},
+      %
+      every tick/.style={black, thick},
+      tick label style={font=\scriptsize},
+      height={4.5cm},
+      width={6cm},
+      ymin=-1000,
+      ymax=-300,
+      %xmin=0,
+      %xmax=128,
+      %domain=0:128,
+      table/col sep=comma,
+    ]
+    \addplot gnuplot [raw gnuplot]{
+      set datafile separator ",";
+      plot for [i=4:104] "../data/exp_pro/pima/MSC_CIS/10/ll.csv" using 2:i with lines;
+    };
+
+    %% \foreach \i in {1, ..., 100}
+    %% {
+    %%     \addplot [red, opacity=0.1, line width=0.1pt] table [x=x,y=y\i] {\pimh};
+    %% }
+    %% \addplot [red] table [x=x,y=mean_y] {\pimh};
+    %% \addlegendentry{NUTS}
+    %% % 
+    %% \foreach \i in {1, ..., 100}
+    %% {
+    %%   \addplot [blue, opacity=0.1, line width=0.1pt] table [x=x,y=y\i] {\cis};
+    %% }
+    %% \addplot [blue] table [x=x,y=mean_y] {\cis};
+    %% \addlegendentry{MSC-CIS}
+    %
+  \end{axis}
+\end{tikzpicture}
