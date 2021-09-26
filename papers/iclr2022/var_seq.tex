@@ -1,17 +1,37 @@
 
-\begin{theoremEnd}{proposition}
+\begin{theoremEnd}{theorem}
+  The variance of the sequential state estimator is
   %Assuming the Markov-chain has achieved stationarity and \(w^* = \sup_{\vz} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda}\left(\vz\right)} < \infty \), for a bounded functional \(f : \mathcal{Z} \rightarrow [\text{-}\nicefrac{1}{2},\nicefrac{1}{2}]\), the bias of the parallel mode estimator at iteration \(t\) is bounded as
   %% \begin{align*}
   %%   \mathrm{Bias}\left[ g_{\mathrm{par.,\, t}} \right] \leq {\left(1 - \frac{1}{w^*}\right)}
   %% \end{align*}
-  variance of sequential estimator
 \end{theoremEnd}
 \begin{proofEnd}
+  For notational convenience, let us define \(g\left(\vz\right) = s\left(\vz; \vlambda\right)\).
   \begin{align}
-    \V{g_{\mathrm{seq., t}}}
-    &= \V{ \frac{1}{N} \sum_{i=1}^{N} f\left(\vz_{T + i}\right) } \\
-    &= \frac{1}{N^2} \sum_{i=1}^{N} \V{ f\left(\vz_{T+i}\right) }  + \frac{1}{N^2} \sum_{i=1,\, i \leq j}^{N} \Cov{ f\left(\vz_{T+i}\right), f\left(\vz_{T+j}\right) }  \\
-    &= \frac{1}{N} \V{ f\left(\vz\right) }  + \frac{1}{N^2} \sum_{i=1,\, i \leq j}^{N} \Cov{ f\left(\vz_{T+i}\right), f\left(\vz_{T+j}\right) }  &\text{(By stationarity)}  \\
+    &\V{g_{\mathrm{seq., t}}} \\
+    &\geq \E{ \V{g_{\mathrm{seq., t}} \mid \vz_{T}} } \\
+    &= \E{
+      \frac{1}{N^2} \sum^{N}_{i=1} \V{ g\left(\vz_{T+i}\right) \mid \vz_{T} }
+      + \frac{2}{N^2} \sum_{i<j} \Cov{g\left(\vz_{T+1}\right), g\left(\vz_{T+i}\right) \mid \vz_{T} }
+    } \\
+    &=
+      \frac{1}{N^2} \sum^{N}_{i=1} \E{ \V{ g\left(\vz_{T+i}\right) \mid \vz_{T} }
+      }\\
+      &\qquad\qquad + \frac{2}{N^2} \sum_{i<j} \E{ \Cov{g\left(\vz_{T+1}\right), g\left(\vz_{T+i}\right) \mid \vz_{T} }
+    } \\
+    &= 
+    \frac{1}{N} \sigma^2 +
+    \frac{2}{N^2} \sum_{i < j}
+    \Esub{p\left(\vz_T\mid\vx\right)}{
+      \Cov{ g\left(\vz_{T+i}\right), g\left(\vz_{T+j}\right) \mid \vz_T}
+    }  &\text{(Stationarity)} \\
+    &= 
+    \frac{1}{N} \sigma^2 +
+    \frac{2}{N^2} \sum_{i < j}
+    \Esub{p\left(\vz_T\mid\vx\right)}{
+      \Cov{ g\left(\vz_{T+i}\right), g\left(\vz_{T+j}\right) \mid \vz_T}
+    } 
   \end{align}
 \end{proofEnd}
 

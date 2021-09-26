@@ -2286,66 +2286,258 @@
            id="path1113" />
       </symbol>
     </g>
+    <g
+       id="g7918">
+      <symbol
+         overflow="visible"
+         id="symbol5541">
+        <path
+           style="stroke:none;"
+           d="M 2.390625 -1.265625 L 2.390625 -1.390625 C 2.390625 -2.203125 3.59375 -2.78125 3.59375 -3.890625 C 3.59375 -4.65625 2.9375 -5 2.203125 -5 C 1.453125 -5 0.9375 -4.578125 0.9375 -3.96875 C 0.9375 -3.609375 1.078125 -3.4375 1.328125 -3.4375 C 1.5 -3.4375 1.65625 -3.546875 1.65625 -3.765625 C 1.65625 -4.0625 1.5 -4.0625 1.5 -4.3125 C 1.5 -4.546875 1.703125 -4.71875 2.140625 -4.71875 C 2.625 -4.71875 2.921875 -4.453125 2.921875 -3.859375 C 2.921875 -2.71875 2.09375 -2.4375 2.09375 -1.46875 L 2.09375 -1.265625 Z M 2.671875 -0.359375 C 2.671875 -0.59375 2.515625 -0.796875 2.25 -0.796875 C 1.984375 -0.796875 1.8125 -0.59375 1.8125 -0.359375 C 1.8125 -0.109375 1.953125 0.0625 2.25 0.0625 C 2.515625 0.0625 2.671875 -0.125 2.671875 -0.359375 Z M 4.4375 1.265625 L 4.4375 -5.859375 L 0.078125 -5.859375 L 0.078125 1.265625 Z M 4.0625 0.859375 L 0.453125 0.859375 L 0.453125 -5.484375 L 4.0625 -5.484375 Z M 4.0625 0.859375 "
+           id="path9104" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol6823">
+        <path
+           style="stroke:none;"
+           d="M 3.1875 0 L 3.1875 -0.203125 C 2.5 -0.203125 2.21875 -0.34375 2.21875 -0.703125 L 2.21875 -4.765625 L 2 -4.765625 L 0.546875 -4.359375 L 0.546875 -4.109375 C 0.78125 -4.1875 1.171875 -4.234375 1.3125 -4.234375 C 1.5 -4.234375 1.5625 -4.125 1.5625 -3.875 L 1.5625 -0.703125 C 1.5625 -0.34375 1.296875 -0.203125 0.59375 -0.203125 L 0.59375 0 Z M 3.1875 0 "
+           id="path3794" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol6141">
+        <path
+           style="stroke:none;"
+           d="M 5.90625 -4.90625 L 4.140625 -4.90625 L 4.09375 -4.6875 C 4.40625 -4.6875 4.5625 -4.640625 4.640625 -4.5 C 4.71875 -4.375 4.71875 -4.171875 4.625 -3.71875 L 4.109375 -1.234375 L 4.078125 -1.234375 L 2.046875 -4.90625 L 0.875 -4.90625 L 0.84375 -4.6875 C 1.15625 -4.6875 1.28125 -4.609375 1.453125 -4.34375 L 0.796875 -1.109375 C 0.640625 -0.359375 0.53125 -0.21875 -0.046875 -0.21875 L -0.09375 0 L 1.625 0 L 1.671875 -0.21875 C 1.109375 -0.21875 1.015625 -0.359375 1.15625 -1.109375 L 1.734375 -3.953125 L 1.78125 -3.953125 L 3.96875 0.0625 L 4.21875 0.0625 L 4.984375 -3.6875 C 5.09375 -4.265625 5.21875 -4.40625 5.359375 -4.53125 C 5.46875 -4.625 5.59375 -4.6875 5.859375 -4.6875 Z M 5.90625 -4.90625 "
+           id="path8171" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol3553">
+        <path
+           style="stroke:none;"
+           d="M 1.8125 -4.5625 C 1.8125 -4.796875 1.65625 -4.96875 1.40625 -4.96875 C 1.171875 -4.96875 1.015625 -4.8125 1.015625 -4.5625 C 1.015625 -4.296875 1.171875 -4.15625 1.40625 -4.15625 C 1.65625 -4.15625 1.8125 -4.296875 1.8125 -4.5625 Z M 1.640625 -3.5625 L 1.46875 -3.5625 L 0.421875 -3.46875 L 0.421875 -3.265625 C 0.421875 -3.265625 0.546875 -3.28125 0.671875 -3.28125 C 0.875 -3.28125 0.921875 -3.171875 0.921875 -3.0625 C 0.921875 -2.9375 0.890625 -2.84375 0.890625 -2.84375 L 0.515625 -1.0625 C 0.421875 -0.625 0.390625 -0.453125 0.390625 -0.328125 C 0.390625 -0.0625 0.5625 0.0625 0.859375 0.0625 C 1.359375 0.0625 1.640625 -0.34375 1.90625 -0.71875 L 1.75 -0.828125 C 1.640625 -0.6875 1.4375 -0.4375 1.1875 -0.4375 C 1.09375 -0.4375 1.046875 -0.484375 1.046875 -0.578125 C 1.046875 -0.6875 1.078125 -0.890625 1.078125 -0.890625 Z M 1.640625 -3.5625 "
+           id="path589" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol8761">
+        <path
+           style="stroke:none;"
+           d="M 4.921875 -2.4375 L 4.921875 -2.953125 L 0.46875 -2.953125 L 0.46875 -2.4375 Z M 4.921875 -0.921875 L 4.921875 -1.421875 L 0.46875 -1.421875 L 0.46875 -0.921875 Z M 4.921875 -0.921875 "
+           id="path5571" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol157">
+        <path
+           style="stroke:none;"
+           d="M 0.328125 -2.046875 C 0.328125 -0.40625 1.109375 0.765625 2.3125 1.390625 L 2.421875 1.1875 C 1.34375 0.46875 0.9375 -0.546875 0.9375 -2.046875 C 0.9375 -3.53125 1.34375 -4.53125 2.421875 -5.265625 L 2.3125 -5.453125 C 1.109375 -4.84375 0.328125 -3.671875 0.328125 -2.046875 Z M 0.328125 -2.046875 "
+           id="path4462" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol6526">
+        <path
+           style="stroke:none;"
+           d="M 2.359375 -3.53125 L 1.625 -3.53125 L 1.828125 -4.421875 L 1.59375 -4.421875 C 1.21875 -3.78125 1.046875 -3.640625 0.5625 -3.390625 L 0.53125 -3.234375 L 0.96875 -3.234375 L 0.453125 -0.75 C 0.4375 -0.703125 0.390625 -0.453125 0.390625 -0.328125 C 0.390625 -0.09375 0.53125 0.0625 0.84375 0.0625 C 1.4375 0.0625 1.75 -0.484375 1.96875 -0.78125 L 1.828125 -0.890625 C 1.5625 -0.546875 1.40625 -0.4375 1.1875 -0.4375 C 1.078125 -0.4375 1.0625 -0.515625 1.0625 -0.59375 C 1.0625 -0.71875 1.109375 -0.96875 1.109375 -0.96875 L 1.5625 -3.234375 L 2.296875 -3.234375 Z M 2.359375 -3.53125 "
+           id="path4614" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol3210">
+        <path
+           style="stroke:none;"
+           d="M 4.921875 -1.6875 L 4.921875 -2.1875 L 0.46875 -2.1875 L 0.46875 -1.6875 Z M 4.921875 -1.6875 "
+           id="path9140" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol5394">
+        <path
+           style="stroke:none;"
+           d="M 2.34375 -2.046875 C 2.34375 -3.671875 1.546875 -4.84375 0.34375 -5.453125 L 0.234375 -5.265625 C 1.328125 -4.53125 1.71875 -3.53125 1.71875 -2.046875 C 1.71875 -0.546875 1.328125 0.46875 0.234375 1.1875 L 0.34375 1.390625 C 1.546875 0.765625 2.34375 -0.40625 2.34375 -2.046875 Z M 2.34375 -2.046875 "
+           id="path1817" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol1086">
+        <path
+           style="stroke:none;"
+           d="M 4.921875 -1.6875 L 4.921875 -2.1875 L 2.953125 -2.1875 L 2.953125 -4.171875 L 2.421875 -4.171875 L 2.421875 -2.1875 L 0.46875 -2.1875 L 0.46875 -1.6875 L 2.421875 -1.6875 L 2.421875 0.296875 L 2.953125 0.296875 L 2.953125 -1.6875 Z M 4.921875 -1.6875 "
+           id="path8985" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol5910">
+        <path
+           style="stroke:none;"
+           d="M 3.1875 -1.6875 L 3.1875 -1.859375 C 3.1875 -2.9375 4.796875 -3.71875 4.796875 -5.1875 C 4.796875 -6.21875 3.921875 -6.671875 2.953125 -6.671875 C 1.9375 -6.671875 1.25 -6.09375 1.25 -5.296875 C 1.25 -4.828125 1.453125 -4.59375 1.765625 -4.59375 C 2 -4.59375 2.21875 -4.71875 2.21875 -5.03125 C 2.21875 -5.40625 2 -5.421875 2 -5.75 C 2 -6.0625 2.265625 -6.296875 2.859375 -6.296875 C 3.5 -6.296875 3.890625 -5.9375 3.890625 -5.15625 C 3.890625 -3.625 2.796875 -3.25 2.796875 -1.953125 L 2.796875 -1.6875 Z M 3.5625 -0.484375 C 3.5625 -0.78125 3.359375 -1.0625 3.015625 -1.0625 C 2.640625 -1.0625 2.421875 -0.796875 2.421875 -0.484375 C 2.421875 -0.15625 2.609375 0.078125 3 0.078125 C 3.359375 0.078125 3.5625 -0.15625 3.5625 -0.484375 Z M 5.9375 1.6875 L 5.9375 -7.828125 L 0.09375 -7.828125 L 0.09375 1.6875 Z M 5.40625 1.15625 L 0.609375 1.15625 L 0.609375 -7.3125 L 5.40625 -7.3125 Z M 5.40625 1.15625 "
+           id="path3469" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol7559">
+        <path
+           style="stroke:none;"
+           d="M 8.578125 6.421875 L 8.1875 6.421875 C 7.78125 7.78125 7.4375 8.609375 6.1875 8.609375 L 1.953125 8.609375 L 1.953125 8.5625 L 5.4375 3.984375 L 5.4375 3.78125 L 2.359375 -0.109375 L 2.359375 -0.15625 L 5.640625 -0.15625 C 6.984375 -0.15625 7.640625 0.15625 7.859375 1.8125 L 8.25 1.8125 L 8.140625 -0.671875 L 0.6875 -0.671875 L 0.6875 -0.4375 L 4.46875 4.3125 L 0.625 9.34375 L 0.625 9.59375 L 7.96875 9.59375 Z M 8.578125 6.421875 "
+           id="path4509" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol3412">
+        <path
+           style="stroke:none;"
+           d="M 1.984375 -4.65625 L 1.9375 -4.25 L 2.765625 -4.25 L 2.078125 -0.53125 C 1.984375 0 1.71875 1.890625 1.140625 1.890625 C 0.765625 1.890625 1.109375 1 0.515625 1 C 0.25 1 0.09375 1.21875 0.09375 1.5 C 0.09375 1.859375 0.34375 2.21875 0.984375 2.21875 C 2.34375 2.21875 2.796875 -0.015625 2.96875 -0.875 L 3.59375 -4.25 L 4.515625 -4.25 L 4.578125 -4.65625 L 3.640625 -4.65625 L 3.765625 -5.359375 C 3.9375 -6.203125 4.25 -6.796875 4.78125 -6.796875 C 4.984375 -6.796875 4.96875 -6.53125 5 -6.296875 C 5.03125 -6.09375 5.140625 -5.921875 5.375 -5.921875 C 5.625 -5.921875 5.8125 -6.078125 5.8125 -6.375 C 5.8125 -6.796875 5.484375 -7.09375 4.921875 -7.09375 C 4.015625 -7.09375 3.609375 -6.625 3.34375 -6.15625 C 3.09375 -5.75 2.96875 -5.21875 2.84375 -4.65625 Z M 1.984375 -4.65625 "
+           id="path9154" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol4735">
+        <path
+           style="stroke:none;"
+           d="M 0.8125 5.078125 C 0.8125 7.84375 1.984375 9.828125 3.609375 10.859375 L 3.796875 10.59375 C 2.3125 9.375 1.640625 7.640625 1.640625 5.078125 C 1.640625 2.546875 2.3125 0.8125 3.796875 -0.40625 L 3.609375 -0.671875 C 1.984375 0.375 0.8125 2.328125 0.8125 5.078125 Z M 0.8125 5.078125 "
+           id="path2266" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol2487">
+        <path
+           style="stroke:none;"
+           d="M 4.515625 -1.6875 L 4.046875 -1.6875 C 3.890625 -0.703125 3.5 -0.484375 2.734375 -0.484375 L 1.890625 -0.484375 L 1.890625 -0.53125 L 4.484375 -4.25 L 4.484375 -4.71875 L 0.53125 -4.71875 L 0.484375 -3.125 L 0.921875 -3.125 C 1.015625 -3.71875 1.296875 -4.203125 1.984375 -4.203125 L 2.875 -4.203125 L 2.875 -4.171875 L 0.296875 -0.4375 L 0.296875 0 L 4.421875 0 Z M 4.515625 -1.6875 "
+           id="path4193" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol9657">
+        <path
+           style="stroke:none;"
+           d="M 3.375 5.078125 C 3.375 2.328125 2.21875 0.375 0.59375 -0.671875 L 0.40625 -0.40625 C 1.890625 0.8125 2.546875 2.546875 2.546875 5.078125 C 2.546875 7.640625 1.890625 9.375 0.40625 10.59375 L 0.59375 10.859375 C 2.21875 9.828125 3.375 7.84375 3.375 5.078125 Z M 3.375 5.078125 "
+           id="path1680" />
+      </symbol>
+    </g>
+    <g
+       id="g6805">
+      <symbol
+         overflow="visible"
+         id="symbol3120">
+        <path
+           style="stroke:none;"
+           d="M 2.390625 -1.265625 L 2.390625 -1.390625 C 2.390625 -2.203125 3.59375 -2.78125 3.59375 -3.890625 C 3.59375 -4.65625 2.9375 -5 2.203125 -5 C 1.453125 -5 0.9375 -4.578125 0.9375 -3.96875 C 0.9375 -3.609375 1.078125 -3.4375 1.328125 -3.4375 C 1.5 -3.4375 1.65625 -3.546875 1.65625 -3.765625 C 1.65625 -4.0625 1.5 -4.0625 1.5 -4.3125 C 1.5 -4.546875 1.703125 -4.71875 2.140625 -4.71875 C 2.625 -4.71875 2.921875 -4.453125 2.921875 -3.859375 C 2.921875 -2.71875 2.09375 -2.4375 2.09375 -1.46875 L 2.09375 -1.265625 Z M 2.671875 -0.359375 C 2.671875 -0.59375 2.515625 -0.796875 2.25 -0.796875 C 1.984375 -0.796875 1.8125 -0.59375 1.8125 -0.359375 C 1.8125 -0.109375 1.953125 0.0625 2.25 0.0625 C 2.515625 0.0625 2.671875 -0.125 2.671875 -0.359375 Z M 4.4375 1.265625 L 4.4375 -5.859375 L 0.078125 -5.859375 L 0.078125 1.265625 Z M 4.0625 0.859375 L 0.453125 0.859375 L 0.453125 -5.484375 L 4.0625 -5.484375 Z M 4.0625 0.859375 "
+           id="path3900" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol2959">
+        <path
+           style="stroke:none;"
+           d="M 3.1875 0 L 3.1875 -0.203125 C 2.5 -0.203125 2.21875 -0.34375 2.21875 -0.703125 L 2.21875 -4.765625 L 2 -4.765625 L 0.546875 -4.359375 L 0.546875 -4.109375 C 0.78125 -4.1875 1.171875 -4.234375 1.3125 -4.234375 C 1.5 -4.234375 1.5625 -4.125 1.5625 -3.875 L 1.5625 -0.703125 C 1.5625 -0.34375 1.296875 -0.203125 0.59375 -0.203125 L 0.59375 0 Z M 3.1875 0 "
+           id="path3774" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol5271">
+        <path
+           style="stroke:none;"
+           d="M 5.90625 -4.90625 L 4.140625 -4.90625 L 4.09375 -4.6875 C 4.40625 -4.6875 4.5625 -4.640625 4.640625 -4.5 C 4.71875 -4.375 4.71875 -4.171875 4.625 -3.71875 L 4.109375 -1.234375 L 4.078125 -1.234375 L 2.046875 -4.90625 L 0.875 -4.90625 L 0.84375 -4.6875 C 1.15625 -4.6875 1.28125 -4.609375 1.453125 -4.34375 L 0.796875 -1.109375 C 0.640625 -0.359375 0.53125 -0.21875 -0.046875 -0.21875 L -0.09375 0 L 1.625 0 L 1.671875 -0.21875 C 1.109375 -0.21875 1.015625 -0.359375 1.15625 -1.109375 L 1.734375 -3.953125 L 1.78125 -3.953125 L 3.96875 0.0625 L 4.21875 0.0625 L 4.984375 -3.6875 C 5.09375 -4.265625 5.21875 -4.40625 5.359375 -4.53125 C 5.46875 -4.625 5.59375 -4.6875 5.859375 -4.6875 Z M 5.90625 -4.90625 "
+           id="path2302" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol7553">
+        <path
+           style="stroke:none;"
+           d="M 1.8125 -4.5625 C 1.8125 -4.796875 1.65625 -4.96875 1.40625 -4.96875 C 1.171875 -4.96875 1.015625 -4.8125 1.015625 -4.5625 C 1.015625 -4.296875 1.171875 -4.15625 1.40625 -4.15625 C 1.65625 -4.15625 1.8125 -4.296875 1.8125 -4.5625 Z M 1.640625 -3.5625 L 1.46875 -3.5625 L 0.421875 -3.46875 L 0.421875 -3.265625 C 0.421875 -3.265625 0.546875 -3.28125 0.671875 -3.28125 C 0.875 -3.28125 0.921875 -3.171875 0.921875 -3.0625 C 0.921875 -2.9375 0.890625 -2.84375 0.890625 -2.84375 L 0.515625 -1.0625 C 0.421875 -0.625 0.390625 -0.453125 0.390625 -0.328125 C 0.390625 -0.0625 0.5625 0.0625 0.859375 0.0625 C 1.359375 0.0625 1.640625 -0.34375 1.90625 -0.71875 L 1.75 -0.828125 C 1.640625 -0.6875 1.4375 -0.4375 1.1875 -0.4375 C 1.09375 -0.4375 1.046875 -0.484375 1.046875 -0.578125 C 1.046875 -0.6875 1.078125 -0.890625 1.078125 -0.890625 Z M 1.640625 -3.5625 "
+           id="path6510" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol3677">
+        <path
+           style="stroke:none;"
+           d="M 4.921875 -2.4375 L 4.921875 -2.953125 L 0.46875 -2.953125 L 0.46875 -2.4375 Z M 4.921875 -0.921875 L 4.921875 -1.421875 L 0.46875 -1.421875 L 0.46875 -0.921875 Z M 4.921875 -0.921875 "
+           id="path704" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol4989">
+        <path
+           style="stroke:none;"
+           d="M 0.328125 -2.046875 C 0.328125 -0.40625 1.109375 0.765625 2.3125 1.390625 L 2.421875 1.1875 C 1.34375 0.46875 0.9375 -0.546875 0.9375 -2.046875 C 0.9375 -3.53125 1.34375 -4.53125 2.421875 -5.265625 L 2.3125 -5.453125 C 1.109375 -4.84375 0.328125 -3.671875 0.328125 -2.046875 Z M 0.328125 -2.046875 "
+           id="path3755" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol4116">
+        <path
+           style="stroke:none;"
+           d="M 2.34375 -2.046875 C 2.34375 -3.671875 1.546875 -4.84375 0.34375 -5.453125 L 0.234375 -5.265625 C 1.328125 -4.53125 1.71875 -3.53125 1.71875 -2.046875 C 1.71875 -0.546875 1.328125 0.46875 0.234375 1.1875 L 0.34375 1.390625 C 1.546875 0.765625 2.34375 -0.40625 2.34375 -2.046875 Z M 2.34375 -2.046875 "
+           id="path2857" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol8837">
+        <path
+           style="stroke:none;"
+           d="M 2.359375 -3.53125 L 1.625 -3.53125 L 1.828125 -4.421875 L 1.59375 -4.421875 C 1.21875 -3.78125 1.046875 -3.640625 0.5625 -3.390625 L 0.53125 -3.234375 L 0.96875 -3.234375 L 0.453125 -0.75 C 0.4375 -0.703125 0.390625 -0.453125 0.390625 -0.328125 C 0.390625 -0.09375 0.53125 0.0625 0.84375 0.0625 C 1.4375 0.0625 1.75 -0.484375 1.96875 -0.78125 L 1.828125 -0.890625 C 1.5625 -0.546875 1.40625 -0.4375 1.1875 -0.4375 C 1.078125 -0.4375 1.0625 -0.515625 1.0625 -0.59375 C 1.0625 -0.71875 1.109375 -0.96875 1.109375 -0.96875 L 1.5625 -3.234375 L 2.296875 -3.234375 Z M 2.359375 -3.53125 "
+           id="path8592" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol1719">
+        <path
+           style="stroke:none;"
+           d="M 3.1875 -1.6875 L 3.1875 -1.859375 C 3.1875 -2.9375 4.796875 -3.71875 4.796875 -5.1875 C 4.796875 -6.21875 3.921875 -6.671875 2.953125 -6.671875 C 1.9375 -6.671875 1.25 -6.09375 1.25 -5.296875 C 1.25 -4.828125 1.453125 -4.59375 1.765625 -4.59375 C 2 -4.59375 2.21875 -4.71875 2.21875 -5.03125 C 2.21875 -5.40625 2 -5.421875 2 -5.75 C 2 -6.0625 2.265625 -6.296875 2.859375 -6.296875 C 3.5 -6.296875 3.890625 -5.9375 3.890625 -5.15625 C 3.890625 -3.625 2.796875 -3.25 2.796875 -1.953125 L 2.796875 -1.6875 Z M 3.5625 -0.484375 C 3.5625 -0.78125 3.359375 -1.0625 3.015625 -1.0625 C 2.640625 -1.0625 2.421875 -0.796875 2.421875 -0.484375 C 2.421875 -0.15625 2.609375 0.078125 3 0.078125 C 3.359375 0.078125 3.5625 -0.15625 3.5625 -0.484375 Z M 5.9375 1.6875 L 5.9375 -7.828125 L 0.09375 -7.828125 L 0.09375 1.6875 Z M 5.40625 1.15625 L 0.609375 1.15625 L 0.609375 -7.3125 L 5.40625 -7.3125 Z M 5.40625 1.15625 "
+           id="path7760" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol8184">
+        <path
+           style="stroke:none;"
+           d="M 8.578125 6.421875 L 8.1875 6.421875 C 7.78125 7.78125 7.4375 8.609375 6.1875 8.609375 L 1.953125 8.609375 L 1.953125 8.5625 L 5.4375 3.984375 L 5.4375 3.78125 L 2.359375 -0.109375 L 2.359375 -0.15625 L 5.640625 -0.15625 C 6.984375 -0.15625 7.640625 0.15625 7.859375 1.8125 L 8.25 1.8125 L 8.140625 -0.671875 L 0.6875 -0.671875 L 0.6875 -0.4375 L 4.46875 4.3125 L 0.625 9.34375 L 0.625 9.59375 L 7.96875 9.59375 Z M 8.578125 6.421875 "
+           id="path4244" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol9532">
+        <path
+           style="stroke:none;"
+           d="M 1.984375 -4.65625 L 1.9375 -4.25 L 2.765625 -4.25 L 2.078125 -0.53125 C 1.984375 0 1.71875 1.890625 1.140625 1.890625 C 0.765625 1.890625 1.109375 1 0.515625 1 C 0.25 1 0.09375 1.21875 0.09375 1.5 C 0.09375 1.859375 0.34375 2.21875 0.984375 2.21875 C 2.34375 2.21875 2.796875 -0.015625 2.96875 -0.875 L 3.59375 -4.25 L 4.515625 -4.25 L 4.578125 -4.65625 L 3.640625 -4.65625 L 3.765625 -5.359375 C 3.9375 -6.203125 4.25 -6.796875 4.78125 -6.796875 C 4.984375 -6.796875 4.96875 -6.53125 5 -6.296875 C 5.03125 -6.09375 5.140625 -5.921875 5.375 -5.921875 C 5.625 -5.921875 5.8125 -6.078125 5.8125 -6.375 C 5.8125 -6.796875 5.484375 -7.09375 4.921875 -7.09375 C 4.015625 -7.09375 3.609375 -6.625 3.34375 -6.15625 C 3.09375 -5.75 2.96875 -5.21875 2.84375 -4.65625 Z M 1.984375 -4.65625 "
+           id="path1852" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol7392">
+        <path
+           style="stroke:none;"
+           d="M 0.84375 7.484375 C 0.84375 11.40625 2.28125 14.21875 3.9375 15.6875 L 4.171875 15.46875 C 2.65625 13.6875 1.75 11.15625 1.75 7.5 C 1.75 3.84375 2.65625 1.3125 4.171875 -0.453125 L 3.9375 -0.671875 C 2.28125 0.78125 0.84375 3.59375 0.84375 7.484375 Z M 0.84375 7.484375 "
+           id="path4124" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol3365">
+        <path
+           style="stroke:none;"
+           d="M 4.515625 -1.6875 L 4.046875 -1.6875 C 3.890625 -0.703125 3.5 -0.484375 2.734375 -0.484375 L 1.890625 -0.484375 L 1.890625 -0.53125 L 4.484375 -4.25 L 4.484375 -4.71875 L 0.53125 -4.71875 L 0.484375 -3.125 L 0.921875 -3.125 C 1.015625 -3.71875 1.296875 -4.203125 1.984375 -4.203125 L 2.875 -4.203125 L 2.875 -4.171875 L 0.296875 -0.4375 L 0.296875 0 L 4.421875 0 Z M 4.515625 -1.6875 "
+           id="path1265" />
+      </symbol>
+      <symbol
+         overflow="visible"
+         id="symbol476">
+        <path
+           style="stroke:none;"
+           d="M 3.734375 7.484375 C 3.734375 3.59375 2.296875 0.78125 0.640625 -0.671875 L 0.421875 -0.4375 C 1.9375 1.328125 2.828125 3.84375 2.828125 7.5 C 2.828125 11.15625 1.9375 13.671875 0.421875 15.4375 L 0.640625 15.6875 C 2.296875 14.21875 3.734375 11.40625 3.734375 7.484375 Z M 3.734375 7.484375 "
+           id="path9861" />
+      </symbol>
+    </g>
   </defs>
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
      id="layer1"
      style="display:inline">
-    <circle
-       style="display:inline;fill:#b6ffdc;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
-       id="path868-7-8-5-7-5-3-2"
-       cx="122.77986"
-       cy="-9.8896055"
-       r="7.1163011"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <circle
-       style="display:inline;fill:#36d4b6;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
-       id="path868-7-8-5-7-7"
-       cx="91.957291"
-       cy="-9.8896065"
-       r="7.1163011"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <circle
-       style="display:inline;fill:#b6ffdc;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
-       id="path868-02"
-       cx="61.13472"
-       cy="-9.8896065"
-       r="7.1163011"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <circle
-       style="fill:#fecfe0;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
-       id="path868-7"
-       cx="37.121853"
-       cy="69.959885"
-       r="7.1163011"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <circle
-       style="fill:#fecfe0;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
-       id="path868-7-8"
-       cx="51.698627"
-       cy="84.19249"
-       r="7.1163011"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <circle
-       style="fill:#da4a6f;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
-       id="path868-7-8-5"
-       cx="66.275398"
-       cy="69.959885"
-       r="7.1163011"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
     <text
        xml:space="preserve"
        style="font-size:7.40833px;line-height:1.25;font-family:'TeX Gyre Schola';-inkscape-font-specification:'TeX Gyre Schola, Normal';letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;stroke-width:0.264583"
@@ -2358,817 +2550,1259 @@
          x="41.044758"
          y="82.496872" /></text>
     <g
-       inkscape:label=""
-       transform="translate(-59.056961,-10.689739)"
-       id="g3563"
-       style="fill:#ffffff;fill-opacity:1"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300">
-      <g
-         id="g4990"
-         style="fill:#ffffff;fill-opacity:1">
-        <g
-           style="fill:#ffffff;fill-opacity:1"
-           id="g713">
-          <use
-             xlink:href="#symbol7144"
-             x="91.925003"
-             y="81.962997"
-             id="use7340"
-             width="100%"
-             height="100%"
-             style="fill:#ffffff;fill-opacity:1" />
-        </g>
-        <g
-           style="fill:#ffffff;fill-opacity:1"
-           id="g3302">
-          <use
-             xlink:href="#symbol7852"
-             x="96.667"
-             y="84.055"
-             id="use8958"
-             width="100%"
-             height="100%"
-             style="fill:#ffffff;fill-opacity:1" />
-        </g>
-      </g>
-    </g>
-    <g
-       inkscape:label=""
-       transform="translate(-44.402061,3.4959908)"
-       id="g3998"
-       style="fill:#ffffff;fill-opacity:1"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300">
-      <g
-         id="g6910"
-         style="fill:#ffffff;fill-opacity:1">
-        <g
-           style="fill:#ffffff;fill-opacity:1"
-           id="g549">
-          <use
-             xlink:href="#symbol103"
-             x="91.925003"
-             y="81.962997"
-             id="use8284"
-             width="100%"
-             height="100%"
-             style="fill:#ffffff;fill-opacity:1" />
-        </g>
-        <g
-           style="fill:#ffffff;fill-opacity:1"
-           id="g6346">
-          <use
-             xlink:href="#symbol6815"
-             x="96.667"
-             y="84.055"
-             id="use5220"
-             width="100%"
-             height="100%"
-             style="fill:#ffffff;fill-opacity:1" />
-        </g>
-      </g>
-    </g>
-    <g
-       inkscape:label=""
-       transform="translate(-29.965916,-10.689739)"
-       id="g4507"
-       style="fill:#ffffff;fill-opacity:1"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300">
-      <g
-         id="g1997"
-         style="fill:#ffffff;fill-opacity:1">
-        <g
-           style="fill:#ffffff;fill-opacity:1"
-           id="g908">
-          <use
-             xlink:href="#symbol7664"
-             x="91.925003"
-             y="81.962997"
-             id="use7360"
-             width="100%"
-             height="100%"
-             style="fill:#ffffff;fill-opacity:1" />
-        </g>
-        <g
-           style="fill:#ffffff;fill-opacity:1"
-           id="g3888">
-          <use
-             xlink:href="#symbol5913"
-             x="96.667"
-             y="84.055"
-             id="use4886"
-             width="100%"
-             height="100%"
-             style="fill:#ffffff;fill-opacity:1" />
-        </g>
-      </g>
-    </g>
-    <circle
-       style="fill:#da4a6f;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
-       id="path868-7-8-5-7"
-       cx="80.852173"
-       cy="84.19249"
-       r="7.1163011"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <circle
-       style="fill:#da4a6f;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
-       id="path868-7-8-5-7-5"
-       cx="95.428947"
-       cy="70.752602"
-       r="7.1163011"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <g
-       inkscape:label=""
-       transform="translate(-15.248516,3.4959908)"
-       id="g4694"
-       style="fill:#ffffff;fill-opacity:1"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300">
-      <g
-         id="g6595"
-         style="fill:#ffffff;fill-opacity:1">
-        <g
-           style="fill:#ffffff;fill-opacity:1"
-           id="g8993">
-          <use
-             xlink:href="#symbol9609"
-             x="91.925003"
-             y="81.962997"
-             id="use7523"
-             width="100%"
-             height="100%"
-             style="fill:#ffffff;fill-opacity:1" />
-        </g>
-        <g
-           style="fill:#ffffff;fill-opacity:1"
-           id="g4088">
-          <use
-             xlink:href="#symbol742"
-             x="96.667"
-             y="84.055"
-             id="use673"
-             width="100%"
-             height="100%"
-             style="fill:#ffffff;fill-opacity:1" />
-        </g>
-      </g>
-    </g>
-    <circle
-       style="fill:#fecfe0;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
-       id="path868-7-8-5-7-5-3"
-       cx="110.00571"
-       cy="84.985207"
-       r="7.1163011"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <circle
-       style="display:inline;fill:#fecfe0;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
-       id="path868-7-8-5-7-5-3-7"
-       cx="124.58247"
-       cy="70.752602"
-       r="7.1163011"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <circle
-       style="display:inline;fill:#fecfe0;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
-       id="path868-7-8-5-7-5-3-7-9"
-       cx="139.15926"
-       cy="84.985207"
-       r="7.1163011"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <circle
-       style="fill:#fecfe0;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
-       id="path868"
-       cx="22.545082"
-       cy="84.19249"
-       r="7.1163011"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <g
-       inkscape:label=""
-       transform="translate(-73.493107,3.5428658)"
-       id="g2982"
-       style="fill:#ffffff;fill-opacity:1"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300">
-      <g
-         id="g5149"
-         style="fill:#ffffff;fill-opacity:1">
-        <g
-           style="fill:#ffffff;fill-opacity:1"
-           id="g8791">
-          <use
-             xlink:href="#symbol8221"
-             x="91.925003"
-             y="81.962997"
-             id="use5015"
-             width="100%"
-             height="100%"
-             style="fill:#ffffff;fill-opacity:1" />
-        </g>
-        <g
-           style="fill:#ffffff;fill-opacity:1"
-           id="g2978">
-          <use
-             xlink:href="#symbol9497"
-             x="96.667"
-             y="84.055"
-             id="use6155"
-             width="100%"
-             height="100%"
-             style="fill:#ffffff;fill-opacity:1" />
-        </g>
-      </g>
-    </g>
-    <g
-       inkscape:label=""
-       transform="translate(-67.790758,-25.507442)"
-       id="g25440-8"
-       style="display:inline"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300">
-      <g
-         id="g5169-9">
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g8661-7">
-          <use
-             xlink:href="#symbol8815"
-             x="91.925003"
-             y="81.962997"
-             id="use7714-7"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g9334-6">
-          <use
-             xlink:href="#symbol1998"
-             x="98.359001"
-             y="81.962997"
-             id="use7159-4"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g8512-3">
-          <use
-             xlink:href="#symbol9361"
-             x="108.30167"
-             y="81.962997"
-             id="use2753-0"
-             width="100%"
-             height="100%" />
-        </g>
-      </g>
-    </g>
-    <g
-       inkscape:label=""
-       transform="translate(-21.53558,-25.460567)"
-       id="g26433-3"
-       style="display:inline"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300">
-      <g
-         id="g3630-0">
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g8687-9">
-          <use
-             xlink:href="#symbol8666"
-             x="91.925003"
-             y="81.962997"
-             id="use8825-2"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g5985-5">
-          <use
-             xlink:href="#symbol7799"
-             x="98.359001"
-             y="81.962997"
-             id="use5395-4"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g8806-0">
-          <use
-             xlink:href="#symbol9741"
-             x="108.30167"
-             y="81.962997"
-             id="use20-5"
-             width="100%"
-             height="100%" />
-        </g>
-      </g>
-    </g>
-    <g
-       inkscape:label=""
-       transform="translate(25.008664,-25.460567)"
-       id="g27460-9"
-       style="display:inline"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300">
-      <g
-         id="g7477-4">
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g8699-6">
-          <use
-             xlink:href="#symbol8222"
-             x="91.925003"
-             y="81.962997"
-             id="use4229-9"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g5712-2">
-          <use
-             xlink:href="#symbol9333"
-             x="98.359001"
-             y="81.962997"
-             id="use7552-2"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g2306-4">
-          <use
-             xlink:href="#symbol4308"
-             x="108.30167"
-             y="81.962997"
-             id="use7937-7"
-             width="100%"
-             height="100%" />
-        </g>
-      </g>
-    </g>
-    <g
-       inkscape:label=""
-       transform="translate(43.03513,4.2887077)"
-       id="g33562"
-       style="fill:#ffffff;fill-opacity:1"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300">
-      <g
-         id="g5761"
-         style="fill:#ffffff;fill-opacity:1">
-        <g
-           style="fill:#ffffff;fill-opacity:1"
-           id="g5026">
-          <use
-             xlink:href="#symbol9263"
-             x="91.925003"
-             y="81.962997"
-             id="use8393"
-             width="100%"
-             height="100%"
-             style="fill:#ffffff;fill-opacity:1" />
-        </g>
-        <g
-           style="fill:#ffffff;fill-opacity:1"
-           id="g6256">
-          <use
-             xlink:href="#symbol9562"
-             x="96.667"
-             y="84.055"
-             id="use3807"
-             width="100%"
-             height="100%"
-             style="fill:#ffffff;fill-opacity:1" />
-        </g>
-      </g>
-    </g>
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker35844)"
-       d="m 27.636807,79.220983 4.393321,-4.289592"
-       id="path35664"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0"
-       inkscape:connection-start="#path868"
-       inkscape:connection-end="#path868-7"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker18645)"
-       d="m 42.213579,74.931391 4.393323,4.289593"
-       id="path35666"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0"
-       inkscape:connection-start="#path868-7"
-       inkscape:connection-end="#path868-7-8"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
-       d="m 56.790353,79.220983 4.39332,-4.289592"
-       id="path35668"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0"
-       inkscape:connection-start="#path868-7-8"
-       inkscape:connection-end="#path868-7-8-5"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker18645)"
-       d="m 71.367124,74.931391 4.393323,4.289593"
-       id="path35670"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0"
-       inkscape:connection-start="#path868-7-8-5"
-       inkscape:connection-end="#path868-7-8-5-7"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
-       d="m 86.083961,79.368744 4.113198,-3.792397"
-       id="path35672"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0"
-       inkscape:connection-start="#path868-7-8-5-7"
-       inkscape:connection-end="#path868-7-8-5-7-5"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
-       d="m 100.52067,75.72411 4.39331,4.289588"
-       id="path35674"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0"
-       inkscape:connection-end="#path868-7-8-5-7-5-3"
-       inkscape:connection-start="#path868-7-8-5-7-5"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
-       d="m 115.09743,80.013699 4.39332,-4.28959"
-       id="path35676"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0"
-       inkscape:connection-start="#path868-7-8-5-7-5-3"
-       inkscape:connection-end="#path868-7-8-5-7-5-3-7"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
-       d="m 129.6742,75.724106 4.39333,4.289596"
-       id="path35678"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0"
-       inkscape:connection-start="#path868-7-8-5-7-5-3-7"
-       inkscape:connection-end="#path868-7-8-5-7-5-3-7-9"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <g
-       inkscape:label=""
-       transform="translate(-0.71861649,-9.9438972)"
-       id="g4911"
-       style="fill:#ffffff;fill-opacity:1"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300">
-      <g
-         id="g2883"
-         style="fill:#ffffff;fill-opacity:1">
-        <g
-           style="fill:#ffffff;fill-opacity:1"
-           id="g6950">
-          <use
-             xlink:href="#symbol4286"
-             x="91.925003"
-             y="81.962997"
-             id="use1749"
-             width="100%"
-             height="100%"
-             style="fill:#ffffff;fill-opacity:1" />
-        </g>
-        <g
-           style="fill:#ffffff;fill-opacity:1"
-           id="g6547">
-          <use
-             xlink:href="#symbol392"
-             x="96.667"
-             y="84.055"
-             id="use4484"
-             width="100%"
-             height="100%"
-             style="fill:#ffffff;fill-opacity:1" />
-        </g>
-      </g>
-    </g>
-    <g
-       inkscape:label=""
-       transform="translate(13.826893,4.3043327)"
-       id="g5356"
-       style="fill:#ffffff;fill-opacity:1"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300">
-      <g
-         id="g4931"
-         style="fill:#ffffff;fill-opacity:1">
-        <g
-           style="fill:#ffffff;fill-opacity:1"
-           id="g1896">
-          <use
-             xlink:href="#symbol9064"
-             x="91.925003"
-             y="81.962997"
-             id="use2783"
-             width="100%"
-             height="100%"
-             style="fill:#ffffff;fill-opacity:1" />
-        </g>
-        <g
-           style="fill:#ffffff;fill-opacity:1"
-           id="g1503">
-          <use
-             xlink:href="#symbol245"
-             x="96.667"
-             y="84.055"
-             id="use10"
-             width="100%"
-             height="100%"
-             style="fill:#ffffff;fill-opacity:1" />
-        </g>
-      </g>
-    </g>
-    <g
-       inkscape:label=""
-       transform="translate(28.46616,-9.9438972)"
-       id="g5809"
-       style="fill:#ffffff;fill-opacity:1"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300">
-      <g
-         id="g4017"
-         style="fill:#ffffff;fill-opacity:1">
-        <g
-           style="fill:#ffffff;fill-opacity:1"
-           id="g2740">
-          <use
-             xlink:href="#symbol2607"
-             x="91.925003"
-             y="81.962997"
-             id="use3482"
-             width="100%"
-             height="100%"
-             style="fill:#ffffff;fill-opacity:1" />
-        </g>
-        <g
-           style="fill:#ffffff;fill-opacity:1"
-           id="g8840">
-          <use
-             xlink:href="#symbol6833"
-             x="96.667"
-             y="84.055"
-             id="use1473"
-             width="100%"
-             height="100%"
-             style="fill:#ffffff;fill-opacity:1" />
-        </g>
-      </g>
-    </g>
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:0.5, 2;stroke-dashoffset:0;marker-end:url(#Arrow1Mend)"
-       d="M 66.275394,77.076183 V 104.6045"
-       id="path48954"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:0.5,1.5;stroke-dashoffset:0;marker-end:url(#marker18645)"
-       d="M 80.719881,91.308791 V 104.6045"
-       id="path48956"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <path
-       style="fill:none;stroke:#000000;stroke-width:0.50000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:0.50000001, 2.00000006;stroke-dashoffset:0;marker-end:url(#marker18645)"
-       d="m 95.428947,77.868901 c 0,26.735599 0,26.735599 0,26.735599"
-       id="path49175"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <g
-       inkscape:label=""
-       transform="translate(-34.903474,-90.539228)"
-       id="g2982-7"
-       style="display:inline;fill:#ffffff;fill-opacity:1"
+       id="g7528"
        inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
        inkscape:export-xdpi="300"
        inkscape:export-ydpi="300">
+      <circle
+         style="display:inline;fill:#b6ffdc;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
+         id="path868-7-8-5-7-5-3-2"
+         cx="122.77986"
+         cy="-9.8896055"
+         r="7.1163011"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <circle
+         style="display:inline;fill:#36d4b6;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
+         id="path868-7-8-5-7-7"
+         cx="91.957291"
+         cy="-9.8896065"
+         r="7.1163011"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <circle
+         style="display:inline;fill:#b6ffdc;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
+         id="path868-02"
+         cx="61.13472"
+         cy="-9.8896065"
+         r="7.1163011"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
       <g
-         id="g5149-6"
-         style="fill:#ffffff;fill-opacity:1">
+         inkscape:label=""
+         transform="translate(-34.903474,-90.539228)"
+         id="g2982-7"
+         style="display:inline;fill:#ffffff;fill-opacity:1"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300">
         <g
-           style="fill:#ffffff;fill-opacity:1"
-           id="g8791-1">
-          <use
-             xlink:href="#symbol8221"
-             x="91.925003"
-             y="81.962997"
-             id="use5015-3"
-             width="100%"
-             height="100%"
-             style="fill:#ffffff;fill-opacity:1" />
-        </g>
-        <g
-           style="fill:#ffffff;fill-opacity:1"
-           id="g2978-2">
-          <use
-             xlink:href="#symbol9497"
-             x="96.667"
-             y="84.055"
-             id="use6155-1"
-             width="100%"
-             height="100%"
-             style="fill:#ffffff;fill-opacity:1" />
+           id="g5149-6"
+           style="fill:#ffffff;fill-opacity:1">
+          <g
+             style="fill:#ffffff;fill-opacity:1"
+             id="g8791-1">
+            <use
+               xlink:href="#symbol8221"
+               x="91.925003"
+               y="81.962997"
+               id="use5015-3"
+               width="100%"
+               height="100%"
+               style="fill:#ffffff;fill-opacity:1" />
+          </g>
+          <g
+             style="fill:#ffffff;fill-opacity:1"
+             id="g2978-2">
+            <use
+               xlink:href="#symbol9497"
+               x="96.667"
+               y="84.055"
+               id="use6155-1"
+               width="100%"
+               height="100%"
+               style="fill:#ffffff;fill-opacity:1" />
+          </g>
         </g>
       </g>
+      <g
+         inkscape:label=""
+         transform="translate(-41.369238,-106.10265)"
+         id="g25440-8-5"
+         style="display:inline"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300">
+        <g
+           id="g5169-9-9">
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g8661-7-9">
+            <use
+               xlink:href="#symbol8815"
+               x="91.925003"
+               y="81.962997"
+               id="use7714-7-1"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g9334-6-4">
+            <use
+               xlink:href="#symbol1998"
+               x="98.359001"
+               y="81.962997"
+               id="use7159-4-9"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g8512-3-1">
+            <use
+               xlink:href="#symbol9361"
+               x="108.30167"
+               y="81.962997"
+               id="use2753-0-0"
+               width="100%"
+               height="100%" />
+          </g>
+        </g>
+      </g>
+      <g
+         inkscape:label=""
+         transform="translate(-10.827081,-106.05577)"
+         id="g26433-3-7"
+         style="display:inline"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300">
+        <g
+           id="g3630-0-5">
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g8687-9-8">
+            <use
+               xlink:href="#symbol8666"
+               x="91.925003"
+               y="81.962997"
+               id="use8825-2-7"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g5985-5-0">
+            <use
+               xlink:href="#symbol7799"
+               x="98.359001"
+               y="81.962997"
+               id="use5395-4-4"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g8806-0-8">
+            <use
+               xlink:href="#symbol9741"
+               x="108.30167"
+               y="81.962997"
+               id="use20-5-0"
+               width="100%"
+               height="100%" />
+          </g>
+        </g>
+      </g>
+      <g
+         inkscape:label=""
+         transform="translate(20.00414,-106.05577)"
+         id="g27460-9-4"
+         style="display:inline"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300">
+        <g
+           id="g7477-4-2">
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g8699-6-9">
+            <use
+               xlink:href="#symbol8222"
+               x="91.925003"
+               y="81.962997"
+               id="use4229-9-6"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g5712-2-1">
+            <use
+               xlink:href="#symbol9333"
+               x="98.359001"
+               y="81.962997"
+               id="use7552-2-0"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g2306-4-4">
+            <use
+               xlink:href="#symbol4308"
+               x="108.30167"
+               y="81.962997"
+               id="use7937-7-2"
+               width="100%"
+               height="100%" />
+          </g>
+        </g>
+      </g>
+      <path
+         style="display:inline;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.5, 1.5;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker18645-1)"
+         d="M 91.957292,-2.7733054 V 10.522405"
+         id="path48956-8"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <g
+         inkscape:label=""
+         transform="translate(-11.284083,-60.1865)"
+         id="g56963"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300">
+        <g
+           id="g7954">
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g5349">
+            <use
+               xlink:href="#symbol5940"
+               x="91.925003"
+               y="81.962997"
+               id="use1413"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g3245">
+            <use
+               xlink:href="#symbol4160"
+               x="99.802002"
+               y="82.198997"
+               id="use8963"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g5194">
+            <use
+               xlink:href="#symbol8549"
+               x="103.349"
+               y="81.962997"
+               id="use5096"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g6550">
+            <use
+               xlink:href="#symbol9572"
+               x="108.091"
+               y="84.055"
+               id="use3613"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g7676">
+            <use
+               xlink:href="#symbol6867"
+               x="111.339"
+               y="82.198997"
+               id="use1874"
+               width="100%"
+               height="100%" />
+          </g>
+        </g>
+      </g>
+      <g
+         inkscape:label=""
+         transform="translate(-4.221522,-90.53923)"
+         id="g3563-1"
+         style="display:inline;fill:#fffff6;fill-opacity:1"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300">
+        <g
+           id="g4990-9"
+           style="fill:#fffff6;fill-opacity:1">
+          <g
+             style="fill:#fffff6;fill-opacity:1"
+             id="g713-6">
+            <use
+               xlink:href="#symbol7144"
+               x="91.925003"
+               y="81.962997"
+               id="use7340-9"
+               width="100%"
+               height="100%"
+               style="fill:#fffff6;fill-opacity:1" />
+          </g>
+          <g
+             style="fill:#fffff6;fill-opacity:1"
+             id="g3302-3">
+            <use
+               xlink:href="#symbol7852"
+               x="96.667"
+               y="84.055"
+               id="use8958-3"
+               width="100%"
+               height="100%"
+               style="fill:#fffff6;fill-opacity:1" />
+          </g>
+        </g>
+      </g>
+      <g
+         inkscape:label=""
+         transform="translate(26.679171,-90.586104)"
+         id="g3998-8"
+         style="display:inline;fill:#fffff6;fill-opacity:1"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300">
+        <g
+           id="g6910-0"
+           style="fill:#fffff6;fill-opacity:1">
+          <g
+             style="fill:#fffff6;fill-opacity:1"
+             id="g549-5">
+            <use
+               xlink:href="#symbol103"
+               x="91.925003"
+               y="81.962997"
+               id="use8284-6"
+               width="100%"
+               height="100%"
+               style="fill:#fffff6;fill-opacity:1" />
+          </g>
+          <g
+             style="fill:#fffff6;fill-opacity:1"
+             id="g6346-6">
+            <use
+               xlink:href="#symbol6815"
+               x="96.667"
+               y="84.055"
+               id="use5220-4"
+               width="100%"
+               height="100%"
+               style="fill:#fffff6;fill-opacity:1" />
+          </g>
+        </g>
+      </g>
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker18645)"
+         d="M 68.251021,-9.8896065 H 84.84099"
+         id="path64525"
+         inkscape:connector-type="polyline"
+         inkscape:connector-curvature="0"
+         inkscape:connection-start="#path868-02"
+         inkscape:connection-end="#path868-7-8-5-7-7"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker18645)"
+         d="m 99.073592,-9.8896063 16.589968,6e-7"
+         id="path64527"
+         inkscape:connector-type="polyline"
+         inkscape:connector-curvature="0"
+         inkscape:connection-start="#path868-7-8-5-7-7"
+         inkscape:connection-end="#path868-7-8-5-7-5-3-2"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
     </g>
     <g
-       inkscape:label=""
-       transform="translate(-41.369238,-106.10265)"
-       id="g25440-8-5"
-       style="display:inline"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
+       id="g7466"
+       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
        inkscape:export-xdpi="300"
        inkscape:export-ydpi="300">
+      <circle
+         style="fill:#fecfe0;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
+         id="path868-7"
+         cx="37.121853"
+         cy="69.959885"
+         r="7.1163011"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <circle
+         style="fill:#fecfe0;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
+         id="path868-7-8"
+         cx="51.698627"
+         cy="84.19249"
+         r="7.1163011"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <circle
+         style="fill:#da4a6f;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
+         id="path868-7-8-5"
+         cx="66.275398"
+         cy="69.959885"
+         r="7.1163011"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
       <g
-         id="g5169-9-9">
+         inkscape:label=""
+         transform="translate(-59.056961,-10.689739)"
+         id="g3563"
+         style="fill:#ffffff;fill-opacity:1"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300">
         <g
-           style="fill:#000000;fill-opacity:1"
-           id="g8661-7-9">
-          <use
-             xlink:href="#symbol8815"
-             x="91.925003"
-             y="81.962997"
-             id="use7714-7-1"
-             width="100%"
-             height="100%" />
+           id="g4990"
+           style="fill:#ffffff;fill-opacity:1">
+          <g
+             style="fill:#ffffff;fill-opacity:1"
+             id="g713">
+            <use
+               xlink:href="#symbol7144"
+               x="91.925003"
+               y="81.962997"
+               id="use7340"
+               width="100%"
+               height="100%"
+               style="fill:#ffffff;fill-opacity:1" />
+          </g>
+          <g
+             style="fill:#ffffff;fill-opacity:1"
+             id="g3302">
+            <use
+               xlink:href="#symbol7852"
+               x="96.667"
+               y="84.055"
+               id="use8958"
+               width="100%"
+               height="100%"
+               style="fill:#ffffff;fill-opacity:1" />
+          </g>
         </g>
+      </g>
+      <g
+         inkscape:label=""
+         transform="translate(-44.402061,3.4959908)"
+         id="g3998"
+         style="fill:#ffffff;fill-opacity:1"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300">
         <g
-           style="fill:#000000;fill-opacity:1"
-           id="g9334-6-4">
-          <use
-             xlink:href="#symbol1998"
-             x="98.359001"
-             y="81.962997"
-             id="use7159-4-9"
-             width="100%"
-             height="100%" />
+           id="g6910"
+           style="fill:#ffffff;fill-opacity:1">
+          <g
+             style="fill:#ffffff;fill-opacity:1"
+             id="g549">
+            <use
+               xlink:href="#symbol103"
+               x="91.925003"
+               y="81.962997"
+               id="use8284"
+               width="100%"
+               height="100%"
+               style="fill:#ffffff;fill-opacity:1" />
+          </g>
+          <g
+             style="fill:#ffffff;fill-opacity:1"
+             id="g6346">
+            <use
+               xlink:href="#symbol6815"
+               x="96.667"
+               y="84.055"
+               id="use5220"
+               width="100%"
+               height="100%"
+               style="fill:#ffffff;fill-opacity:1" />
+          </g>
         </g>
+      </g>
+      <g
+         inkscape:label=""
+         transform="translate(-29.965916,-10.689739)"
+         id="g4507"
+         style="fill:#ffffff;fill-opacity:1"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300">
         <g
-           style="fill:#000000;fill-opacity:1"
-           id="g8512-3-1">
-          <use
-             xlink:href="#symbol9361"
-             x="108.30167"
-             y="81.962997"
-             id="use2753-0-0"
-             width="100%"
-             height="100%" />
+           id="g1997"
+           style="fill:#ffffff;fill-opacity:1">
+          <g
+             style="fill:#ffffff;fill-opacity:1"
+             id="g908">
+            <use
+               xlink:href="#symbol7664"
+               x="91.925003"
+               y="81.962997"
+               id="use7360"
+               width="100%"
+               height="100%"
+               style="fill:#ffffff;fill-opacity:1" />
+          </g>
+          <g
+             style="fill:#ffffff;fill-opacity:1"
+             id="g3888">
+            <use
+               xlink:href="#symbol5913"
+               x="96.667"
+               y="84.055"
+               id="use4886"
+               width="100%"
+               height="100%"
+               style="fill:#ffffff;fill-opacity:1" />
+          </g>
+        </g>
+      </g>
+      <circle
+         style="fill:#da4a6f;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
+         id="path868-7-8-5-7"
+         cx="80.852173"
+         cy="84.19249"
+         r="7.1163011"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <circle
+         style="fill:#da4a6f;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
+         id="path868-7-8-5-7-5"
+         cx="95.428947"
+         cy="70.752602"
+         r="7.1163011"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <g
+         inkscape:label=""
+         transform="translate(-15.248516,3.4959908)"
+         id="g4694"
+         style="fill:#ffffff;fill-opacity:1"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300">
+        <g
+           id="g6595"
+           style="fill:#ffffff;fill-opacity:1">
+          <g
+             style="fill:#ffffff;fill-opacity:1"
+             id="g8993">
+            <use
+               xlink:href="#symbol9609"
+               x="91.925003"
+               y="81.962997"
+               id="use7523"
+               width="100%"
+               height="100%"
+               style="fill:#ffffff;fill-opacity:1" />
+          </g>
+          <g
+             style="fill:#ffffff;fill-opacity:1"
+             id="g4088">
+            <use
+               xlink:href="#symbol742"
+               x="96.667"
+               y="84.055"
+               id="use673"
+               width="100%"
+               height="100%"
+               style="fill:#ffffff;fill-opacity:1" />
+          </g>
+        </g>
+      </g>
+      <circle
+         style="fill:#fecfe0;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
+         id="path868-7-8-5-7-5-3"
+         cx="110.00571"
+         cy="84.985207"
+         r="7.1163011"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <circle
+         style="display:inline;fill:#fecfe0;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
+         id="path868-7-8-5-7-5-3-7"
+         cx="124.58247"
+         cy="70.752602"
+         r="7.1163011"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <circle
+         style="display:inline;fill:#fecfe0;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
+         id="path868-7-8-5-7-5-3-7-9"
+         cx="139.15926"
+         cy="84.985207"
+         r="7.1163011"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <circle
+         style="fill:#fecfe0;fill-opacity:1;stroke-width:0.7;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4.1;stroke-dasharray:0.7, 0.7"
+         id="path868"
+         cx="22.545082"
+         cy="84.19249"
+         r="7.1163011"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <g
+         inkscape:label=""
+         transform="translate(-73.493107,3.5428658)"
+         id="g2982"
+         style="fill:#ffffff;fill-opacity:1"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300">
+        <g
+           id="g5149"
+           style="fill:#ffffff;fill-opacity:1">
+          <g
+             style="fill:#ffffff;fill-opacity:1"
+             id="g8791">
+            <use
+               xlink:href="#symbol8221"
+               x="91.925003"
+               y="81.962997"
+               id="use5015"
+               width="100%"
+               height="100%"
+               style="fill:#ffffff;fill-opacity:1" />
+          </g>
+          <g
+             style="fill:#ffffff;fill-opacity:1"
+             id="g2978">
+            <use
+               xlink:href="#symbol9497"
+               x="96.667"
+               y="84.055"
+               id="use6155"
+               width="100%"
+               height="100%"
+               style="fill:#ffffff;fill-opacity:1" />
+          </g>
+        </g>
+      </g>
+      <g
+         inkscape:label=""
+         transform="translate(-67.790758,-25.507442)"
+         id="g25440-8"
+         style="display:inline"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300">
+        <g
+           id="g5169-9">
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g8661-7">
+            <use
+               xlink:href="#symbol8815"
+               x="91.925003"
+               y="81.962997"
+               id="use7714-7"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g9334-6">
+            <use
+               xlink:href="#symbol1998"
+               x="98.359001"
+               y="81.962997"
+               id="use7159-4"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g8512-3">
+            <use
+               xlink:href="#symbol9361"
+               x="108.30167"
+               y="81.962997"
+               id="use2753-0"
+               width="100%"
+               height="100%" />
+          </g>
+        </g>
+      </g>
+      <g
+         inkscape:label=""
+         transform="translate(-21.53558,-25.460567)"
+         id="g26433-3"
+         style="display:inline"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300">
+        <g
+           id="g3630-0">
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g8687-9">
+            <use
+               xlink:href="#symbol8666"
+               x="91.925003"
+               y="81.962997"
+               id="use8825-2"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g5985-5">
+            <use
+               xlink:href="#symbol7799"
+               x="98.359001"
+               y="81.962997"
+               id="use5395-4"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g8806-0">
+            <use
+               xlink:href="#symbol9741"
+               x="108.30167"
+               y="81.962997"
+               id="use20-5"
+               width="100%"
+               height="100%" />
+          </g>
+        </g>
+      </g>
+      <g
+         inkscape:label=""
+         transform="translate(25.008664,-25.460567)"
+         id="g27460-9"
+         style="display:inline"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300">
+        <g
+           id="g7477-4">
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g8699-6">
+            <use
+               xlink:href="#symbol8222"
+               x="91.925003"
+               y="81.962997"
+               id="use4229-9"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g5712-2">
+            <use
+               xlink:href="#symbol9333"
+               x="98.359001"
+               y="81.962997"
+               id="use7552-2"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g2306-4">
+            <use
+               xlink:href="#symbol4308"
+               x="108.30167"
+               y="81.962997"
+               id="use7937-7"
+               width="100%"
+               height="100%" />
+          </g>
+        </g>
+      </g>
+      <g
+         inkscape:label=""
+         transform="translate(43.03513,4.2887077)"
+         id="g33562"
+         style="fill:#ffffff;fill-opacity:1"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300">
+        <g
+           id="g5761"
+           style="fill:#ffffff;fill-opacity:1">
+          <g
+             style="fill:#ffffff;fill-opacity:1"
+             id="g5026">
+            <use
+               xlink:href="#symbol9263"
+               x="91.925003"
+               y="81.962997"
+               id="use8393"
+               width="100%"
+               height="100%"
+               style="fill:#ffffff;fill-opacity:1" />
+          </g>
+          <g
+             style="fill:#ffffff;fill-opacity:1"
+             id="g6256">
+            <use
+               xlink:href="#symbol9562"
+               x="96.667"
+               y="84.055"
+               id="use3807"
+               width="100%"
+               height="100%"
+               style="fill:#ffffff;fill-opacity:1" />
+          </g>
+        </g>
+      </g>
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker35844)"
+         d="m 27.636807,79.220983 4.393321,-4.289592"
+         id="path35664"
+         inkscape:connector-type="polyline"
+         inkscape:connector-curvature="0"
+         inkscape:connection-start="#path868"
+         inkscape:connection-end="#path868-7"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker18645)"
+         d="m 42.213579,74.931391 4.393323,4.289593"
+         id="path35666"
+         inkscape:connector-type="polyline"
+         inkscape:connector-curvature="0"
+         inkscape:connection-start="#path868-7"
+         inkscape:connection-end="#path868-7-8"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+         d="m 56.790353,79.220983 4.39332,-4.289592"
+         id="path35668"
+         inkscape:connector-type="polyline"
+         inkscape:connector-curvature="0"
+         inkscape:connection-start="#path868-7-8"
+         inkscape:connection-end="#path868-7-8-5"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker18645)"
+         d="m 71.367124,74.931391 4.393323,4.289593"
+         id="path35670"
+         inkscape:connector-type="polyline"
+         inkscape:connector-curvature="0"
+         inkscape:connection-start="#path868-7-8-5"
+         inkscape:connection-end="#path868-7-8-5-7"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+         d="m 86.083961,79.368744 4.113198,-3.792397"
+         id="path35672"
+         inkscape:connector-type="polyline"
+         inkscape:connector-curvature="0"
+         inkscape:connection-start="#path868-7-8-5-7"
+         inkscape:connection-end="#path868-7-8-5-7-5"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+         d="m 100.52067,75.72411 4.39331,4.289588"
+         id="path35674"
+         inkscape:connector-type="polyline"
+         inkscape:connector-curvature="0"
+         inkscape:connection-end="#path868-7-8-5-7-5-3"
+         inkscape:connection-start="#path868-7-8-5-7-5"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+         d="m 115.09743,80.013699 4.39332,-4.28959"
+         id="path35676"
+         inkscape:connector-type="polyline"
+         inkscape:connector-curvature="0"
+         inkscape:connection-start="#path868-7-8-5-7-5-3"
+         inkscape:connection-end="#path868-7-8-5-7-5-3-7"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <path
+         style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+         d="m 129.6742,75.724106 4.39333,4.289596"
+         id="path35678"
+         inkscape:connector-type="polyline"
+         inkscape:connector-curvature="0"
+         inkscape:connection-start="#path868-7-8-5-7-5-3-7"
+         inkscape:connection-end="#path868-7-8-5-7-5-3-7-9"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <g
+         inkscape:label=""
+         transform="translate(-0.71861649,-9.9438972)"
+         id="g4911"
+         style="fill:#ffffff;fill-opacity:1"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300">
+        <g
+           id="g2883"
+           style="fill:#ffffff;fill-opacity:1">
+          <g
+             style="fill:#ffffff;fill-opacity:1"
+             id="g6950">
+            <use
+               xlink:href="#symbol4286"
+               x="91.925003"
+               y="81.962997"
+               id="use1749"
+               width="100%"
+               height="100%"
+               style="fill:#ffffff;fill-opacity:1" />
+          </g>
+          <g
+             style="fill:#ffffff;fill-opacity:1"
+             id="g6547">
+            <use
+               xlink:href="#symbol392"
+               x="96.667"
+               y="84.055"
+               id="use4484"
+               width="100%"
+               height="100%"
+               style="fill:#ffffff;fill-opacity:1" />
+          </g>
+        </g>
+      </g>
+      <g
+         inkscape:label=""
+         transform="translate(13.826893,4.3043327)"
+         id="g5356"
+         style="fill:#ffffff;fill-opacity:1"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300">
+        <g
+           id="g4931"
+           style="fill:#ffffff;fill-opacity:1">
+          <g
+             style="fill:#ffffff;fill-opacity:1"
+             id="g1896">
+            <use
+               xlink:href="#symbol9064"
+               x="91.925003"
+               y="81.962997"
+               id="use2783"
+               width="100%"
+               height="100%"
+               style="fill:#ffffff;fill-opacity:1" />
+          </g>
+          <g
+             style="fill:#ffffff;fill-opacity:1"
+             id="g1503">
+            <use
+               xlink:href="#symbol245"
+               x="96.667"
+               y="84.055"
+               id="use10"
+               width="100%"
+               height="100%"
+               style="fill:#ffffff;fill-opacity:1" />
+          </g>
+        </g>
+      </g>
+      <g
+         inkscape:label=""
+         transform="translate(28.46616,-9.9438972)"
+         id="g5809"
+         style="fill:#ffffff;fill-opacity:1"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300">
+        <g
+           id="g4017"
+           style="fill:#ffffff;fill-opacity:1">
+          <g
+             style="fill:#ffffff;fill-opacity:1"
+             id="g2740">
+            <use
+               xlink:href="#symbol2607"
+               x="91.925003"
+               y="81.962997"
+               id="use3482"
+               width="100%"
+               height="100%"
+               style="fill:#ffffff;fill-opacity:1" />
+          </g>
+          <g
+             style="fill:#ffffff;fill-opacity:1"
+             id="g8840">
+            <use
+               xlink:href="#symbol6833"
+               x="96.667"
+               y="84.055"
+               id="use1473"
+               width="100%"
+               height="100%"
+               style="fill:#ffffff;fill-opacity:1" />
+          </g>
+        </g>
+      </g>
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.5, 2;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#Arrow1Mend)"
+         d="M 60.08449,77.051962 V 104.58028"
+         id="path48954"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:0.5,1.5;stroke-dashoffset:0;marker-end:url(#marker18645)"
+         d="M 80.719881,91.308791 V 104.6045"
+         id="path48956"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <path
+         style="fill:none;stroke:#000000;stroke-width:0.50000001;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:0.50000001, 2.00000006;stroke-dashoffset:0;marker-end:url(#marker18645)"
+         d="m 95.428947,77.868901 c 0,26.735599 0,26.735599 0,26.735599"
+         id="path49175"
+         inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
+         inkscape:export-xdpi="300"
+         inkscape:export-ydpi="300" />
+      <g
+         inkscape:label=""
+         transform="translate(-54.076246,34.716427)"
+         id="g4642">
+        <g
+           id="g5024">
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g1624">
+            <use
+               xlink:href="#symbol6823"
+               x="94.32"
+               y="77.059998"
+               id="use3132"
+               width="100%"
+               height="100%" />
+          </g>
+          <path
+             style="fill:none;stroke:#000000;stroke-width:0.677;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1"
+             d="M 9.375e-5,0.00159375 H 6.09775"
+             transform="matrix(1,0,0,-1,93.121,80.318)"
+             id="path4737" />
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g954">
+            <use
+               xlink:href="#symbol6141"
+               x="93.121002"
+               y="88.716003"
+               id="use4018"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g8162">
+            <use
+               xlink:href="#symbol7559"
+               x="102.074"
+               y="75.796997"
+               id="use5328"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g249">
+            <use
+               xlink:href="#symbol6141"
+               x="111.399"
+               y="76.837997"
+               id="use2899"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g6863">
+            <use
+               xlink:href="#symbol3553"
+               x="111.399"
+               y="86.710999"
+               id="use1079"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g2524">
+            <use
+               xlink:href="#symbol8761"
+               x="113.708"
+               y="86.710999"
+               id="use4795"
+               width="100%"
+               height="100%" />
+            <use
+               xlink:href="#symbol6823"
+               x="119.08784"
+               y="86.710999"
+               id="use4882"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g1291">
+            <use
+               xlink:href="#symbol3412"
+               x="124.945"
+               y="82.888"
+               id="use3435"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g3218">
+            <use
+               xlink:href="#symbol4735"
+               x="132.82201"
+               y="74.983002"
+               id="use3681"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g3221">
+            <use
+               xlink:href="#symbol2487"
+               x="137.01601"
+               y="82.888"
+               id="use4919"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g6177">
+            <use
+               xlink:href="#symbol6141"
+               x="141.758"
+               y="84.980003"
+               id="use3933"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g1074">
+            <use
+               xlink:href="#symbol157"
+               x="147.855"
+               y="85.157997"
+               id="use2949"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g923">
+            <use
+               xlink:href="#symbol6526"
+               x="150.515"
+               y="84.980003"
+               id="use2712"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g3431">
+            <use
+               xlink:href="#symbol3210"
+               x="153.265"
+               y="84.980003"
+               id="use3774"
+               width="100%"
+               height="100%" />
+            <use
+               xlink:href="#symbol6823"
+               x="158.64484"
+               y="84.980003"
+               id="use1362"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g3223">
+            <use
+               xlink:href="#symbol5394"
+               x="162.343"
+               y="85.157997"
+               id="use8860"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g9738">
+            <use
+               xlink:href="#symbol1086"
+               x="165.00301"
+               y="84.980003"
+               id="use7744"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g1019">
+            <use
+               xlink:href="#symbol3553"
+               x="170.383"
+               y="84.980003"
+               id="use5610"
+               width="100%"
+               height="100%" />
+          </g>
+          <g
+             style="fill:#000000;fill-opacity:1"
+             id="g9577">
+            <use
+               xlink:href="#symbol9657"
+               x="173.19"
+               y="74.983002"
+               id="use1859"
+               width="100%"
+               height="100%" />
+          </g>
         </g>
       </g>
     </g>
     <g
-       inkscape:label=""
-       transform="translate(-10.827081,-106.05577)"
-       id="g26433-3-7"
-       style="display:inline"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300">
-      <g
-         id="g3630-0-5">
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g8687-9-8">
-          <use
-             xlink:href="#symbol8666"
-             x="91.925003"
-             y="81.962997"
-             id="use8825-2-7"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g5985-5-0">
-          <use
-             xlink:href="#symbol7799"
-             x="98.359001"
-             y="81.962997"
-             id="use5395-4-4"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g8806-0-8">
-          <use
-             xlink:href="#symbol9741"
-             x="108.30167"
-             y="81.962997"
-             id="use20-5-0"
-             width="100%"
-             height="100%" />
-        </g>
-      </g>
-    </g>
-    <g
-       inkscape:label=""
-       transform="translate(20.00414,-106.05577)"
-       id="g27460-9-4"
-       style="display:inline"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300">
-      <g
-         id="g7477-4-2">
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g8699-6-9">
-          <use
-             xlink:href="#symbol8222"
-             x="91.925003"
-             y="81.962997"
-             id="use4229-9-6"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g5712-2-1">
-          <use
-             xlink:href="#symbol9333"
-             x="98.359001"
-             y="81.962997"
-             id="use7552-2-0"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g2306-4-4">
-          <use
-             xlink:href="#symbol4308"
-             x="108.30167"
-             y="81.962997"
-             id="use7937-7-2"
-             width="100%"
-             height="100%" />
-        </g>
-      </g>
-    </g>
-    <path
-       style="display:inline;fill:none;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.5, 1.5;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker18645-1)"
-       d="M 91.957292,-2.7733054 V 10.522405"
-       id="path48956-8"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <g
-       id="g59656"
+       id="g7327"
        inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_3.png"
        inkscape:export-xdpi="300"
        inkscape:export-ydpi="300">
@@ -3672,8 +4306,8 @@
          id="path14744"
          inkscape:connector-type="polyline"
          inkscape:connector-curvature="0"
-         inkscape:connection-start="#path868-7-8-4"
-         inkscape:connection-end="#path868-7-8-5-7-5-3-6" />
+         inkscape:connection-end="#path868-7-8-5-7-5-3-6"
+         inkscape:connection-start="#path868-7-8-4" />
       <path
          style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.5;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker18645)"
          d="m 124.77581,191.79464 h 19.06913"
@@ -3700,8 +4334,8 @@
          id="path14752"
          inkscape:connector-type="polyline"
          inkscape:connector-curvature="0"
-         inkscape:connection-start="#path868-7-8-5-7-3"
-         inkscape:connection-end="#path868-7-8-5-7-5-3-6-8" />
+         inkscape:connection-end="#path868-7-8-5-7-5-3-6-8"
+         inkscape:connection-start="#path868-7-8-5-7-3" />
       <path
          style="fill:none;stroke:#000000;stroke-width:0.529167;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:0.529167, 2.11667;stroke-dashoffset:0;stroke-opacity:1;marker-end:url(#marker18645)"
          d="m 142.92575,228.28703 c 0,10.83596 0,10.83596 0,10.83596"
@@ -3963,549 +4597,178 @@
       </g>
       <g
          inkscape:label=""
-         transform="translate(29.403609,170.35074)"
-         id="g52784">
+         transform="translate(31.024604,170.35074)"
+         id="g6756">
         <g
-           id="g2754">
+           id="g3304">
           <g
              style="fill:#000000;fill-opacity:1"
-             id="g6189">
+             id="g46">
             <use
-               xlink:href="#symbol5142"
-               x="94.043999"
+               xlink:href="#symbol2959"
+               x="94.32"
                y="77.059998"
-               id="use6608"
+               id="use3249"
                width="100%"
                height="100%" />
           </g>
           <path
              style="fill:none;stroke:#000000;stroke-width:0.677;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1"
-             d="M 9.375e-5,0.00159375 H 5.543063"
+             d="M 9.375e-5,0.00159375 H 6.09775"
              transform="matrix(1,0,0,-1,93.121,80.318)"
-             id="path4146" />
+             id="path3542" />
           <g
              style="fill:#000000;fill-opacity:1"
-             id="g6615">
+             id="g1461">
             <use
-               xlink:href="#symbol1906"
+               xlink:href="#symbol5271"
                x="93.121002"
                y="88.716003"
-               id="use4073"
+               id="use9372"
                width="100%"
                height="100%" />
           </g>
           <g
              style="fill:#000000;fill-opacity:1"
-             id="g4577">
+             id="g5620">
             <use
-               xlink:href="#symbol5426"
-               x="101.521"
+               xlink:href="#symbol8184"
+               x="102.074"
                y="75.796997"
-               id="use7578"
+               id="use3879"
                width="100%"
                height="100%" />
           </g>
           <g
              style="fill:#000000;fill-opacity:1"
-             id="g550">
+             id="g9407">
             <use
-               xlink:href="#symbol1906"
-               x="110.846"
+               xlink:href="#symbol5271"
+               x="111.399"
                y="76.837997"
-               id="use2012"
+               id="use4241"
                width="100%"
                height="100%" />
           </g>
           <g
              style="fill:#000000;fill-opacity:1"
-             id="g314">
+             id="g3080">
             <use
-               xlink:href="#symbol7936"
-               x="110.846"
+               xlink:href="#symbol7553"
+               x="111.399"
                y="86.710999"
-               id="use9192"
+               id="use9492"
                width="100%"
                height="100%" />
           </g>
           <g
              style="fill:#000000;fill-opacity:1"
-             id="g2557">
+             id="g3082">
             <use
-               xlink:href="#symbol529"
-               x="115.053"
+               xlink:href="#symbol3677"
+               x="113.708"
                y="86.710999"
-               id="use2111"
+               id="use2229"
                width="100%"
                height="100%" />
             <use
-               xlink:href="#symbol5142"
-               x="120.43284"
+               xlink:href="#symbol2959"
+               x="119.08784"
                y="86.710999"
-               id="use8126"
+               id="use9973"
                width="100%"
                height="100%" />
           </g>
           <g
              style="fill:#000000;fill-opacity:1"
-             id="g4227">
+             id="g6731">
             <use
-               xlink:href="#symbol6978"
-               x="126.29"
+               xlink:href="#symbol9532"
+               x="124.945"
                y="82.888"
-               id="use1022"
+               id="use2858"
                width="100%"
                height="100%" />
           </g>
           <g
              style="fill:#000000;fill-opacity:1"
-             id="g3854">
+             id="g3936">
             <use
-               xlink:href="#symbol6455"
-               x="134.16701"
+               xlink:href="#symbol7392"
+               x="132.82201"
                y="72.813004"
-               id="use3399"
+               id="use8065"
                width="100%"
                height="100%" />
           </g>
           <g
              style="fill:#000000;fill-opacity:1"
-             id="g6878">
+             id="g8756">
             <use
-               xlink:href="#symbol7477"
-               x="138.799"
+               xlink:href="#symbol3365"
+               x="137.45399"
                y="82.888"
-               id="use2237"
+               id="use7482"
                width="100%"
                height="100%" />
           </g>
           <g
              style="fill:#000000;fill-opacity:1"
-             id="g8425">
+             id="g9177">
             <use
-               xlink:href="#symbol3988"
-               x="143.54201"
+               xlink:href="#symbol4989"
+               x="142.19701"
                y="77.721001"
-               id="use4518"
+               id="use1741"
                width="100%"
                height="100%" />
           </g>
           <g
              style="fill:#000000;fill-opacity:1"
-             id="g8768">
+             id="g2867">
             <use
-               xlink:href="#symbol7936"
-               x="146.202"
+               xlink:href="#symbol7553"
+               x="144.85699"
                y="77.721001"
-               id="use4177"
+               id="use2409"
                width="100%"
                height="100%" />
           </g>
           <g
              style="fill:#000000;fill-opacity:1"
-             id="g8337">
+             id="g7243">
             <use
-               xlink:href="#symbol5278"
-               x="150.408"
+               xlink:href="#symbol4116"
+               x="147.16499"
                y="77.721001"
-               id="use2625"
+               id="use9693"
                width="100%"
                height="100%" />
           </g>
           <g
              style="fill:#000000;fill-opacity:1"
-             id="g6957">
+             id="g1235">
             <use
-               xlink:href="#symbol2094"
-               x="143.54201"
+               xlink:href="#symbol8837"
+               x="142.19701"
                y="86.198997"
-               id="use8200"
+               id="use8515"
                width="100%"
                height="100%" />
           </g>
           <g
              style="fill:#000000;fill-opacity:1"
-             id="g8617">
+             id="g9827">
             <use
-               xlink:href="#symbol2012"
-               x="153.56599"
+               xlink:href="#symbol476"
+               x="150.32401"
                y="72.813004"
-               id="use4183"
+               id="use308"
                width="100%"
                height="100%" />
           </g>
         </g>
       </g>
     </g>
-    <g
-       inkscape:label=""
-       transform="translate(-55.421248,34.716427)"
-       id="g54820"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_2.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300">
-      <g
-         id="g7868">
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g4305">
-          <use
-             xlink:href="#symbol724"
-             x="94.043999"
-             y="77.059998"
-             id="use9716"
-             width="100%"
-             height="100%" />
-        </g>
-        <path
-           style="fill:none;stroke:#000000;stroke-width:0.677;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:10;stroke-opacity:1"
-           d="M 9.375e-5,0.00159375 H 5.543063"
-           transform="matrix(1,0,0,-1,93.121,80.318)"
-           id="path6315" />
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g5261">
-          <use
-             xlink:href="#symbol5625"
-             x="93.121002"
-             y="88.716003"
-             id="use8904"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g9920">
-          <use
-             xlink:href="#symbol2098"
-             x="101.521"
-             y="75.796997"
-             id="use2621"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g8689">
-          <use
-             xlink:href="#symbol5625"
-             x="110.846"
-             y="76.837997"
-             id="use8853"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g3135">
-          <use
-             xlink:href="#symbol8476"
-             x="110.846"
-             y="86.710999"
-             id="use9258"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g4541">
-          <use
-             xlink:href="#symbol6508"
-             x="115.053"
-             y="86.710999"
-             id="use5086"
-             width="100%"
-             height="100%" />
-          <use
-             xlink:href="#symbol724"
-             x="120.43284"
-             y="86.710999"
-             id="use8620"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g7908">
-          <use
-             xlink:href="#symbol6150"
-             x="126.29"
-             y="82.888"
-             id="use690"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g8683">
-          <use
-             xlink:href="#symbol5540"
-             x="134.16701"
-             y="74.983002"
-             id="use6465"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g9500">
-          <use
-             xlink:href="#symbol2599"
-             x="138.36099"
-             y="82.888"
-             id="use1388"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g3174">
-          <use
-             xlink:href="#symbol5625"
-             x="143.103"
-             y="84.980003"
-             id="use8582"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g7239">
-          <use
-             xlink:href="#symbol3204"
-             x="148.647"
-             y="84.980003"
-             id="use542"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g9559">
-          <use
-             xlink:href="#symbol152"
-             x="151.30701"
-             y="84.980003"
-             id="use8946"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g3471">
-          <use
-             xlink:href="#symbol1570"
-             x="154.05701"
-             y="84.980003"
-             id="use4999"
-             width="100%"
-             height="100%" />
-          <use
-             xlink:href="#symbol724"
-             x="159.43684"
-             y="84.980003"
-             id="use8548"
-             width="100%"
-             height="100%" />
-          <use
-             xlink:href="#symbol4107"
-             x="163.13548"
-             y="84.980003"
-             id="use3931"
-             width="100%"
-             height="100%" />
-          <use
-             xlink:href="#symbol6520"
-             x="165.79552"
-             y="84.980003"
-             id="use5235"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g2108">
-          <use
-             xlink:href="#symbol8476"
-             x="171.175"
-             y="84.980003"
-             id="use5079"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g5416">
-          <use
-             xlink:href="#symbol7566"
-             x="175.88"
-             y="74.983002"
-             id="use117"
-             width="100%"
-             height="100%" />
-        </g>
-      </g>
-    </g>
-    <g
-       inkscape:label=""
-       transform="translate(-11.284083,-61.244834)"
-       id="g56963"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300">
-      <g
-         id="g7954">
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g5349">
-          <use
-             xlink:href="#symbol5940"
-             x="91.925003"
-             y="81.962997"
-             id="use1413"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g3245">
-          <use
-             xlink:href="#symbol4160"
-             x="99.802002"
-             y="82.198997"
-             id="use8963"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g5194">
-          <use
-             xlink:href="#symbol8549"
-             x="103.349"
-             y="81.962997"
-             id="use5096"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g6550">
-          <use
-             xlink:href="#symbol9572"
-             x="108.091"
-             y="84.055"
-             id="use3613"
-             width="100%"
-             height="100%" />
-        </g>
-        <g
-           style="fill:#000000;fill-opacity:1"
-           id="g7676">
-          <use
-             xlink:href="#symbol6867"
-             x="111.339"
-             y="82.198997"
-             id="use1874"
-             width="100%"
-             height="100%" />
-        </g>
-      </g>
-    </g>
-    <g
-       inkscape:label=""
-       transform="translate(-4.221522,-90.53923)"
-       id="g3563-1"
-       style="display:inline;fill:#fffff6;fill-opacity:1"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300">
-      <g
-         id="g4990-9"
-         style="fill:#fffff6;fill-opacity:1">
-        <g
-           style="fill:#fffff6;fill-opacity:1"
-           id="g713-6">
-          <use
-             xlink:href="#symbol7144"
-             x="91.925003"
-             y="81.962997"
-             id="use7340-9"
-             width="100%"
-             height="100%"
-             style="fill:#fffff6;fill-opacity:1" />
-        </g>
-        <g
-           style="fill:#fffff6;fill-opacity:1"
-           id="g3302-3">
-          <use
-             xlink:href="#symbol7852"
-             x="96.667"
-             y="84.055"
-             id="use8958-3"
-             width="100%"
-             height="100%"
-             style="fill:#fffff6;fill-opacity:1" />
-        </g>
-      </g>
-    </g>
-    <g
-       inkscape:label=""
-       transform="translate(26.679171,-90.586104)"
-       id="g3998-8"
-       style="display:inline;fill:#fffff6;fill-opacity:1"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300">
-      <g
-         id="g6910-0"
-         style="fill:#fffff6;fill-opacity:1">
-        <g
-           style="fill:#fffff6;fill-opacity:1"
-           id="g549-5">
-          <use
-             xlink:href="#symbol103"
-             x="91.925003"
-             y="81.962997"
-             id="use8284-6"
-             width="100%"
-             height="100%"
-             style="fill:#fffff6;fill-opacity:1" />
-        </g>
-        <g
-           style="fill:#fffff6;fill-opacity:1"
-           id="g6346-6">
-          <use
-             xlink:href="#symbol6815"
-             x="96.667"
-             y="84.055"
-             id="use5220-4"
-             width="100%"
-             height="100%"
-             style="fill:#fffff6;fill-opacity:1" />
-        </g>
-      </g>
-    </g>
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;marker-end:url(#marker18645)"
-       d="M 68.251021,-9.8896065 H 84.84099"
-       id="path64525"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0"
-       inkscape:connection-start="#path868-02"
-       inkscape:connection-end="#path868-7-8-5-7-7"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
-    <path
-       style="fill:none;fill-rule:evenodd;stroke:#000000;stroke-width:0.265;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;marker-end:url(#marker18645)"
-       d="m 99.073592,-9.8896063 16.589968,6e-7"
-       id="path64527"
-       inkscape:connector-type="polyline"
-       inkscape:connector-curvature="0"
-       inkscape:connection-start="#path868-7-8-5-7-7"
-       inkscape:connection-end="#path868-7-8-5-7-5-3-2"
-       inkscape:export-filename="/home/msca8h/Projects/KLpqVI.jl/papers/iclr2022/figures/diagram_1.png"
-       inkscape:export-xdpi="300"
-       inkscape:export-ydpi="300" />
   </g>
 </svg>

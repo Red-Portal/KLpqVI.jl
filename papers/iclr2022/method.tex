@@ -1,49 +1,51 @@
 
 %\vspace{-0.05in}
-\section{Chain Wielding Strategies for Markov-chain Monte Carlo Based Inclusive Variational Inference}
-%\vspace{-0.05in}
-\subsection{Overview of Prevoius Estimation Strategies}\label{section:msc}
+\section{Chain Wielding Strategies for Markov-chain Monte Carlo Estimators in Inclusive Variational Inference}
+\vspace{-0.05in}
+\subsection{Overview of Prevoius Estimation Strategies}\label{section:jsa_msc}
 %
-%\vspace{-0.1in}
-\paragraph{Markovian Score Climbing}
+\vspace{-0.05in}
+
+\paragraph{Overview}
 Recently,~\citeauthor{NEURIPS2020_b2070693} and~\citeauthor{pmlr-v124-ou20a} proposed two similar but independent methods for performing inclusive variational inference.
 Both methods estimate the score gradient by operating a Markov-chain in parallel with the VI optimization sequence.
-For example, in their method named Markovian score climbing (MSC), \citep{NEURIPS2020_b2070693} estimate the score gradient by performing an MCMC iteration and update the parameters such that
+Also, they both use MCMC kernels that can effectively used the variational approximation \(q_{\vlambda_t}(\vz)\).
+Because of this, compared to previous VI approaches~\citep{pmlr-v97-ruiz19a, pmlr-v70-hoffman17a} that use expensive MCMC kernels such as Hamiltonian Monte Carlo, both methods are computationally efficient. 
+
+\vspace{-0.05in}
+\paragraph{Markovian Score Climbing and the Single State Estimator}
+In Markovian score climbing (MSC), \citep{NEURIPS2020_b2070693} estimate the score gradient by performing an MCMC iteration and update the parameters such that
+\vspace{-0.05in}
 \begin{align}
-  &\vz_t \sim K\left(\vz_{t-1}, \cdot \right) &g_{\mathrm{single}}(\vlambda) = s\,(\vz_t; \vlambda)
+  &\vz_t \sim K\left(\vz_{t-1}, \cdot \right) &g_{\text{single-CIS}}(\vlambda) = s\,(\vz_t; \vlambda)
 \end{align}
 where \(K\left(\vz_{t-1}, \cdot\right)\) is a MCMC kernel leaving \(p\,(\vz\mid\vx)\) invariant and \(g_{\text{single}}\left(\vlambda\right)\) denotes the score estimator.
-We will later call this estimator the ``single mode'' estimator.
+For \(K\left(\vz_{t-1}, \cdot\right)\), they propose a new type of kernel inspired by particle MCMC~\cite{andrieu_particle_2010}, the conditional importance sampling (CIS) kernel.
+Since the estimator uses \textit{a single state} created by the CIS kernel, we call it the single state estimator with the CIS kernel (single-CIS).
+The CIS kernel internally uses \(N\) samples from the \(q_{\vlambda}(\vz)\).
+Thus, when compared to MCMC kernels that only use a single sample from \(q_{\vlambda}(\vz)\), it is \(N\) times more expensive, but hopefully, statistically superior.
+Unfortunately, we will show that this is not the case.
 
-\paragraph{Joint Stochastic Approximation}
-On the other hand, at each SGD iteration \(t\),~\citep{pmlr-v124-ou20a} perform \(N\) sequential Markov-chain transitions and use the average of the intermediate states for estimation such that
+\vspace{-0.05in}
+\paragraph{Joint Stochastic Approximation and the Sequential State Estimator}
+On the other hand, at each SGD iteration \(t\),~\citep{pmlr-v124-ou20a} perform \(N\) sequential Markov-chain transitions and use the average of the intermediate states for estimation.
+That is, for the index \(i \in \{1, \ldots, N\}\),
+\vspace{-0.05in}
 \begin{align}
-  &\vz_{T+i} \sim K^i\left(\vz_{T}, \cdot \right) &g_{\mathrm{seq.}}(\vlambda) = \frac{1}{N} \sum_{i=1}^N s\,(\vz_{T+i}; \vlambda)
+  &\vz_{T+i} \sim K^i\left(\vz_{T}, \cdot \right) &g_{\text{seq.-IMH}}(\vlambda) = \frac{1}{N} \sum_{i=1}^N s\,(\vz_{T+i}; \vlambda)
 \end{align}
 where \(\vz_T\) is the last Markov-chain state of the previous SGD iteration.
-We will later call this estimator the ``sequential mode'' estimator, since the Markov-chain states used for estimation are formed sequentially.
+For the MCMC kernel, they use the classic independent Metropolis-Hastings (IMH,~\citealt[Algorithm 25]{robert_monte_2004}~\citealt{hastings_monte_1970}) algorithm, which uses only a single sample from \(q_{\vlambda}(\vz)\).
+Therefore, the cost of \(N\) state transitions with IMH is similar to the cost of a single transition with CIS.
+Since the estimator uses sequential states, we call it the sequential state esimator with the IMH kernel (seq.-IMH)
 
+\vspace{-0.05in}
 \paragraph{Additional  Notes on JSA}
-Although their setting is slightly different since their MCMC kernel leave \(p\left(\vz_j\mid\vx_j \right)\) invariant for a single datapoint \(\vx_j\), this is only possible when the datapoints are independently, identically distributed (\textit{iid}).
-To simplify our analysis, we interpret their method more generally and assume that we only have a kernel that can leave \(p\left(\vz\mid\vx \right)\) invariant.
+Before preoceeding, we acknowledge that the setup of~\citet{pmlr-v124-ou20a} is slightly different than what we described.
+Their MCMC kernel leave \(p\left(\vz_j\mid\vx_j \right)\) invariant for a single datapoint \(\vx_j\), which is only possible when the datapoints are independently, identically distributed (\textit{iid}) under the probabilistic model.
+We interpret their method more generally and assume that we only have a kernel that can leave \(p\left(\vz\mid\vx \right)\) invariant.
 
-\paragraph{MCMC Kernels of JSA and MSC}
-For the MCMC kernel, \citeauthor{NEURIPS2020_b2070693} specifically propose to use the conditional importance sampling (CIS) kernel.
-In contrast,~\citeauthor{pmlr-v124-ou20a} use the independent Metropolis-Hastings (IMH,~\citealt[Algorithm 25]{robert_monte_2004}).
-Interestingly, the computational cost of JSA is comparable to MSC because of the additional cost of the CIS kernel.
-
-%If \(K(\vz, \cdot)\) is a proper Markov-chain Monte Carlo (MCMC) kernel,~\citeauthor{NEURIPS2020_b2070693} note that the gradient estimates become asymptotically unbiased with \(t \rightarrow \infty\).
-
-%% \vspace{-0.1in}
-%% \paragraph{A Motivating Mystery}
-%% Even though~\citeauthor{NEURIPS2020_b2070693} suggested that \textit{any} good MCMC kernel would work, we present a counterexample showing that the CIS kernel may operate unusually when used for MSC.
-%% In fact, \textit{MSC makes the most progress when the CIS-generated Markov-chain is the least effective}.
-%% In~\cref{fig:motivating}, we show the trace plot of \(\vz_t\) (\textcolor{blue}{blue line}) and \(\DKL{p}{q_{\vlambda}}\) (\textcolor{red}{red line}).
-%% Notice that \(\vz_t\) barely moves until iteration 250, around which \(\DKL{p}{q_{\vlambda}}\) starts to converge.
-%% In a traditional accept-reject MCMC kernel view, this implies that most of the samples are rejected, making the kernel no longer statistically effective.
-%% However, our analysis will show that this is actually a \textit{positive feature} of the CIS kernel, contributing to the empirical success of MSC.
-
-\subsection{Overview of Markov-Chain Monte Carlo Estimation Schemes}\label{section:msc_mcmc}
+\subsection{Overview of Markov-Chain Monte Carlo Score Estimation Strategies}\label{section:overview}
 
 \begin{figure*}
   \vspace{-0.4in}
@@ -51,17 +53,17 @@ Interestingly, the computational cost of JSA is comparable to MSC because of the
     \begin{subfigure}[b]{0.25\textwidth}
         \centering
         \includegraphics[scale=0.25]{figures/diagram_1.png}
-        \caption{Single mode}\label{fig:single}
+        \caption{Single state estimator}\label{fig:single}
     \end{subfigure}
     \begin{subfigure}[b]{0.35\textwidth}
         \centering
         \includegraphics[scale=0.25]{figures/diagram_2.png}
-        \caption{Sequential mode}\label{fig:seq}
+        \caption{Sequential state estimator}\label{fig:seq}
     \end{subfigure}
     \begin{subfigure}[b]{0.3\textwidth}
         \centering
         \includegraphics[scale=0.25]{figures/diagram_3.png}
-        \caption{Parallel mode (proposed)}\label{fig:par}
+        \caption{Parallel state estimator}\label{fig:par}
     \end{subfigure}
     \caption{Visualization of different ways of combining MCMC with stochastic approximation variational inference.
     The index \(t\) denotes the stochastic approximation iteration.
@@ -69,37 +71,39 @@ Interestingly, the computational cost of JSA is comparable to MSC because of the
     }\label{fig:overview}
 \end{figure*}
 
-\paragraph{Single Mode and Sequential Mode}
-The two different MCMC-based score estimation schemes of MSC and JSA represent two different ways of using an MCMC kernel.
-The former uses a computationally expensive, but hopefully statistically superior, MCMC kernel.
-The latter uses a cheaper MCMC kernel, but generates more samples for estimation.
-Since the scheme of MSC uses only a single sample for estimation, we call it the ``single mode'' estimator, \(g_{\mathrm{single}}\).
-Meanwhile, since the scheme of JSA uses multiple sequential Markov-chain states for estimation, we call it the ``sequential mode'' estimator, \(g_{\text{seq.}}\)
+\vspace{-0.05in}
+\paragraph{Single State and Sequential State Estimators}
+The two different MCMC estimators used in MSC and JSA represent two different ways of using a fixed computational budget.
+The former uses a computationally expensive, but hopefully statistically superior, MCMC kernel with less samples, while the latter uses a cheaper MCMC kernel with more samples.
+Illustrations of the two schemes are shown in~\cref{fig:single,fig:seq}.
+Detailed pseudocodes of the considered schemes are provided in the \textit{supplementary material}.
 
-\paragraph{Parallel Mode}
-While the sequential mode estimator is a 
-
-The ``parallel mode'' shown in~\cref{fig:par} is another possible scheme that has been underappreciated.
-Unlike both the single and sequential modes that operate only a single Markov-chain, the parallel mode operates \textit{multiple chains} in parallel.
-This scheme differs from the traditional way of running MCMC, but has multiple benefits for the specific purpose of VI.
+\vspace{-0.05in}
+\paragraph{Parallel State Estimator}
+In this work, we will add a new scheme into the mix: the parallel state estimator.
+Similarly with the sequential state estimator, we use the cheaper IMH kernel, but instead of applying the MCMC kernel \(N\) times to a single chain, we apply the MCMC kernel a single time to \(N\) \textit{parallel Markov-chains}.
+That is, for each Markov-chain \(i \in \{1, \ldots, N\}\),
+%
+\vspace{-0.05in}
+\begin{align}
+  &\vz_{t}^{(i)} \sim K\big(\vz_{t-1}^{(i)}, \cdot \big) &g_{\text{par.-IMH}}(\vlambda) = \frac{1}{N} \sum_{i=1}^N s\,(\vz_{t}^{(i)}; \vlambda)
+\end{align}
+%
+where \(\vz_{t-1}^{(i)}\) is the state of the \(i\)th chain at the previous SGD step.
+Computationally speaking, we are still applying \(K\big(\vz_{t-1}^{(i)}\big)\) \(N\) times in total, so the cost is similar to the sequential state estimator.
+However, the Markov-chain are \(N\) times shorter, which, in a traditional MCMC view, might seem to result in worse statistical performance.
+An illustration of the parallel state estimator is shown in~\cref{fig:par}
 
 %
 \input{table_cost}
 %
-\paragraph{}
-
-First, the different modes of operating Markov-chains are illustrated in~\cref{fig:overview}.
-The three different methods all have a similar computational cost, but their statistical performances are very different.
+\paragraph{Computational Cost}
+The three scheme using the CIS kernel and the IMH kernel can have different computational cost depending on the parameter \(N\).
 The computational costs of each scemes are organized in~\cref{table:cost}.
-%
-%\input{pseudocode}
-
-
-\paragraph{Sequential Mode}
-On the other hand, \citep{pmlr-v124-ou20a} perform \textit{multiple} ``sequental'' state transitions such that \(\{\vz_i, \vz_{i+1},\ldots, \vz_{i+K}\}\) at each stochastic approximation step.
-The score is estimated by averaging the multiple intermediate states such that \(\frac{1}{K} \sum_{k=1}^K \nabla \log q_{\vlambda}\left(\vz_{t+k}\right)\).
-When using the independent Metropolis Hastings (IMH) kernel, the computational cost is comparable to the single mode with the CIS kernel.
-We call this scheme the ``sequential mode'' in contrast with the parallel mode described below.
+In the CIS kernel, \(N\) controls the number of internal proposals sampled from \(q_{\vlambda}(\vz)\).
+In the sequential and parallel state estimators, the IMH kernel only uses a single sample from \(q_{\vlambda}(\vz)\), but applies the kernel \(N\) times.
+When estimating the score, the single state estimator computes \(\nabla_{\vlambda} q_{\vlambda}(\vz)\) only once, while for the sequential and parallel state estimators compute it \(N\) times.
+However,~\cite{NEURIPS2020_b2070693} also discuss a Rao-Blackwellized version of the CIS kernel, which also computes the gradient \(N\) times.
 
 \subsection{Theoretical Analysis}
 
@@ -137,29 +141,6 @@ Thus, increasing \(N\) wouldn't result in significant bias reduction.
 \input{bias_par}
 \input{var_seq}
 
-%% \paragraph{MCMC uses marginal estimates.}
-%% To explain the counterintuitive observation in~\cref{fig:motivating}, we first discuss a subtle difference between the usual MCMC setting and the MSC setting.
-%% In MCMC, what matters is the estimate provided by the average of \textit{all} the states.
-%% This \textit{marginal} estimate of \(f\) is 
-%% \begin{align}
-%%   \frac{1}{T} \sum^{T}_{t=1} f(\vz_t) %= \E{f(\vz_t)}
-%%   = \E{\Esub{\vz_t \sim K(\vz_{t-1},\cdot)}{ f(\vz_t) \mid \vz_{t-1}}}
-%% \end{align}
-%% where \(\Esub{\vz_t \sim K(\vz_{t-1},\cdot)}{ f(\vz_t) \mid \vz_{t-1}}\) is the \textit{conditional estimate} of \(K(\vz_{t-1},\cdot)\) given the previous state \(\vz_{t-1}\).
-
-%% \paragraph{MSC uses conditional estimates.}
-%% On the other hand, in MSC, the stochastic gradient is estimated using a \textit{single} state of the Markov-chain denoted as \(\vz_t \sim K(\vz_{t-1}, \cdot)\).
-%% This means that one needs to estimate the gradients using the conditional estimate such as
-%% \begin{align}
-%%   \nabla_{\lambda} \DKL{p}{q_{\lambda}} \approx \Esub{\vz_t \sim K(\vz_{t-1},\cdot)}{s\,(\vz_t;\, \vlambda) \mid \vz_{t-1}}.
-%% \end{align}
-%% This seemingly subtle difference of using either the marginal or conditional estimate reveals the following facts about MSC:
-%% \begin{enumerate*}[label=(\roman*)]
-%% \item The usual central limit theorem guarantees of MCMC do not apply to MSC.
-%% \item In addition, ergodicity guarantees work differently since \(q_{\vlambda}(\vz)\) is updated at each iteration.
-%% \end{enumerate*}
-%% The most important difference is, however, the way we analyze the variance of the estimates.
-
 \subsection{Interpreting Conditional Importance Sampling as Independent Metropolis-Hastings}\label{section:cis_imh}
 Many popular MCMC kernels are based on the Metropolis-Hastings test where a random proposal \(\vz^*\) is either accepted into the Markov-chain (\(\vz_{t} = \vz^*\)) or rejected (\(\vz_t = \vz_{t-1}\)).
 Among these, independent Metropolis-Hastings (IMH) kernels generate proposals independently of \(\vz_{t-1}\) such as \(\vz^* \sim q\,(\vz)\) instead of \(\vz^* \sim q\,(\vz\mid\vz_{t-1})\).% for \textit{state-dependent}.
@@ -167,26 +148,6 @@ Among these, independent Metropolis-Hastings (IMH) kernels generate proposals in
 We show that the CIS kernel proposed by~\citet{NEURIPS2020_b2070693} turns out to be a type of IMH kernel that uses Barker's acceptance ratio~\citep{barker_monte_1965} for the Metropolis-Hastings test.
 This interpretation enables the analysis of the \textit{rejection rate} of the CIS kernel.
 
-\begin{figure}[H]
-  \vspace{-0.1in}
-  \small
-  \begin{algorithm2e}[H]
-    \DontPrintSemicolon
-    \SetAlgoLined
-    \KwIn{previous sample \(\vz_{t-1}\),
-      previous parameter \(\vlambda_{t-1}\),
-      number of proposals \(N\)
-    }
-    \(\vz^{(0)} = \vz_{t-1}\) \;
-    \textit{Propose} \(\;\vz^{(i)} \sim q_{\vlambda_{t-1}}(\vz)\) for \(i = 1, 2,\ldots, N\) \;
-    \textit{Weight} \(\;w(\vz^{(i)}) = p(\vz^{(i)},\vx) \,/\, q_{\vlambda_{t-1}}(\vz^{(i)}) \) for \(i = 0, 1,\ldots, N\)\;
-    \textit{Normalize} \(\;\widetilde{w}^{(i)} = \nicefrac{w(\vz^{(i)})}{ \sum^{N}_{i=0} w(\vz^{(i)}) }\) for \(i = 0, 1,\ldots, N\)\;
-    \(\vz_{t} \sim \mathrm{Multinomial}(\widetilde{w}^{(0)}, \widetilde{w}^{(1)}, \ldots, \widetilde{w}^{(N)}) \)\;
-    \caption{Conditional Importance Sampling}\label{alg:cis}
-  \end{algorithm2e}
-  \vspace{-0.2in}
-\end{figure}
-%
 \vspace{-0.1in}
 \paragraph{Conditional Importance Sampling}
 A pseudocode of the CIS kernel is shown in~\cref{alg:cis}.
@@ -330,62 +291,62 @@ Lastly, we note that the automatic tradeoff mechanism is a unique property of IM
 %% This is not only 
 %As shown by~\citet{10.1214/17-STS611, chatterjee_sample_2018}, the number of particles for acheiving bounded error reduces exponentially with the KL divergence.
 
-\subsection{Reducing Variance with Parallel Independent Metropolis-Hastings Markov-Chains}\label{section:cis_bias}
-Recall that the CIS kernel uses \(N\) multiple-try type proposals.
-Thus, it is natural to expect the variance to decrease as the (per-transition) computational budget \(N\) increases.
-However, under specific conditions, we find that the variance actually \textit{increases} with \(N\).
+%% \subsection{Reducing Variance with Parallel Independent Metropolis-Hastings Markov-Chains}\label{section:cis_bias}
+%% Recall that the CIS kernel uses \(N\) multiple-try type proposals.
+%% Thus, it is natural to expect the variance to decrease as the (per-transition) computational budget \(N\) increases.
+%% However, under specific conditions, we find that the variance actually \textit{increases} with \(N\).
 
-\vspace{-0.1in}
-\paragraph{The variance of CIS can increase with \(N\).}
-The bound in~\cref{thm:cis_bound} can be reinterpreted as a bound on the acceptance rate 
-\begin{align}
-  1 - r\,(\vz_{t-1}) \leq \frac{N\,Z}{ w\,(\vz_{t-1}) + N\,Z}\;,
-\end{align}
-which is, in general, very tight.
-More importantly, when \(w\,(\vz_{t-1}) \gg N\,Z\), the acceptance rate grows like \(\mathcal{O}(N)\).
-On the other hand, the variance of an SNIS estimator is known to decrease approximately at a rate of \(\mathcal{O}(1/N)\)~\citep{kong_sequential_1994, robert_monte_2004, elvira_rethinking_2018}.
-That is, 
-\begin{align}
-  \Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1},\,\vz^{(1:N)} } } \approx \underbrace{{\big(1 - r\,(\vz_{t-1})\big)}^2}_{\text{approx.}\;\;\mathcal{O}(N^2)} \,
-  \underbrace{\Vsub{q_{\vlambda}}{ f_{\text{IS}} }}_{\text{approx.}\;\;\mathcal{O}(1/N)}.\label{eq:cis_variance_incr}
-\end{align}
-Thus, when \(w\,(\vz_{t-1})\gg N\,Z\), the conditional variance of CIS approximately grows as \(\mathcal{O}(N)\).
-We provide numerical simulations that support our analysis in the \textit{supplementary material}.
+%% \vspace{-0.1in}
+%% \paragraph{The variance of CIS can increase with \(N\).}
+%% The bound in~\cref{thm:cis_bound} can be reinterpreted as a bound on the acceptance rate 
+%% \begin{align}
+%%   1 - r\,(\vz_{t-1}) \leq \frac{N\,Z}{ w\,(\vz_{t-1}) + N\,Z}\;,
+%% \end{align}
+%% which is, in general, very tight.
+%% More importantly, when \(w\,(\vz_{t-1}) \gg N\,Z\), the acceptance rate grows like \(\mathcal{O}(N)\).
+%% On the other hand, the variance of an SNIS estimator is known to decrease approximately at a rate of \(\mathcal{O}(1/N)\)~\citep{kong_sequential_1994, robert_monte_2004, elvira_rethinking_2018}.
+%% That is, 
+%% \begin{align}
+%%   \Vsub{q_{\vlambda}}{ \E{ f \mid \vz_{t-1},\,\vz^{(1:N)} } } \approx \underbrace{{\big(1 - r\,(\vz_{t-1})\big)}^2}_{\text{approx.}\;\;\mathcal{O}(N^2)} \,
+%%   \underbrace{\Vsub{q_{\vlambda}}{ f_{\text{IS}} }}_{\text{approx.}\;\;\mathcal{O}(1/N)}.\label{eq:cis_variance_incr}
+%% \end{align}
+%% Thus, when \(w\,(\vz_{t-1})\gg N\,Z\), the conditional variance of CIS approximately grows as \(\mathcal{O}(N)\).
+%% We provide numerical simulations that support our analysis in the \textit{supplementary material}.
 
-\vspace{-0.02in}
-\input{pimh_algorithm}
+%% \vspace{-0.02in}
+%% \input{pimh_algorithm}
 
-\vspace{-0.1in}
-\paragraph{Variance Reduction with Paralel IMH Chains}
-To resolve the aforementioned limitation of the CIS kernel, we propose a simple but effective remedy: running \(N\) parallel IMH (PIMH) Markov-chains \( \big\{\,\vz_t^{(1)}\big\}, \big\{\,\vz_t^{(2)}\big\}, \ldots, \big\{\,\vz_t^{(N)}\big\}\) where each of the chains performs a Metropolis-Hastings test with only a \textit{single} proposal each.
-The modified MSC algorithm incorporating parallel chains is shown in~\cref{alg:pimh} (the modified parts are highlighted in \textcolor{blue}{blue} and \textcolor{purple}{purple}), while the IMH kernel is described in~\cref{alg:imh}.
-Since the parallel chains generate an \textit{independent} conditional estimate each, the gradient estimate \(\nicefrac{1}{N} \sum^{N}_{i=1} s\,(\vz_t^{(i)}; \vlambda)\) is an average of \(N\) independent and identical estimators.
-This obviously reduces the variance of a single conditional estimate as \(\mathcal{O}(1/N)\).
-In the best case, relative to CIS, PIMH will have a variance reduction close to \(\mathcal{O}(1/N^2)\).
-%Also, the estimates are now proper marginal esimates, which enjoy a tighter bound on the TV distance (and hence the bias).
-%
-%\input{bias_reduction}
+%% \vspace{-0.1in}
+%% \paragraph{Variance Reduction with Paralel IMH Chains}
+%% To resolve the aforementioned limitation of the CIS kernel, we propose a simple but effective remedy: running \(N\) parallel IMH (PIMH) Markov-chains \( \big\{\,\vz_t^{(1)}\big\}, \big\{\,\vz_t^{(2)}\big\}, \ldots, \big\{\,\vz_t^{(N)}\big\}\) where each of the chains performs a Metropolis-Hastings test with only a \textit{single} proposal each.
+%% The modified MSC algorithm incorporating parallel chains is shown in~\cref{alg:pimh} (the modified parts are highlighted in \textcolor{blue}{blue} and \textcolor{purple}{purple}), while the IMH kernel is described in~\cref{alg:imh}.
+%% Since the parallel chains generate an \textit{independent} conditional estimate each, the gradient estimate \(\nicefrac{1}{N} \sum^{N}_{i=1} s\,(\vz_t^{(i)}; \vlambda)\) is an average of \(N\) independent and identical estimators.
+%% This obviously reduces the variance of a single conditional estimate as \(\mathcal{O}(1/N)\).
+%% In the best case, relative to CIS, PIMH will have a variance reduction close to \(\mathcal{O}(1/N^2)\).
+%% %Also, the estimates are now proper marginal esimates, which enjoy a tighter bound on the TV distance (and hence the bias).
+%% %
+%% %\input{bias_reduction}
 
-\vspace{-0.1in}
-\paragraph{Lower bound of rejection rate in IMH}
-IMH also enjoys variance control properties similar to the CIS kernel.
-That is, a lower bound similar to~\cref{thm:cis_bound} can be shown.
-%
-\input{imh_bound}
-%
-Unlike CIS, we can see that the bound does not depend on \(N\).
-This means the rejection rate will \textit{not} prematurely increase.
-We thus obtain all the benefits of CIS except its limitations.
-%Using~\cref{thm:imh_bound}, a similar result to~\cref{thm:cis_bound_kl} can be obtained.
+%% \vspace{-0.1in}
+%% \paragraph{Lower bound of rejection rate in IMH}
+%% IMH also enjoys variance control properties similar to the CIS kernel.
+%% That is, a lower bound similar to~\cref{thm:cis_bound} can be shown.
+%% %
+%% \input{imh_bound}
+%% %
+%% Unlike CIS, we can see that the bound does not depend on \(N\).
+%% This means the rejection rate will \textit{not} prematurely increase.
+%% We thus obtain all the benefits of CIS except its limitations.
+%% %Using~\cref{thm:imh_bound}, a similar result to~\cref{thm:cis_bound_kl} can be obtained.
 
-\vspace{-0.1in}
-\paragraph{Costs and Limitation of PIMH}
-The computational cost of sampling \(\vz^{(i)}_{t}\) (\textcolor{blue}{blue} region in \cref{alg:pimh}) for \(N\) chains is equal to a CIS kernel with \(N\) proposals.
-On the other hand, the cost of estimating the stochastic gradient (\textcolor{purple}{purple} region in \cref{alg:pimh}) is now \(\mathcal{O}(N)\) instead of \(\mathcal{O}(1)\) of the CIS kernel.
-This cost is, however, also imposed on the CIS kernel if we use Rao-Blackwellization.
-Thus, the overall computational cost of PIMH is more or less equal to that of the CIS kernel.
-The only downside of PIMH is that the Metropolis-Hastings acceptance ratio that we use has a slightly larger acceptance rate than Barker's~\citep{peskun_optimum_1973, minh_understanding_2015}.
-In the small \(N\) regime, PIMH has a slightly larger conditional variance, but it can be easily fixed by using Barker's ratio.
+%% \vspace{-0.1in}
+%% \paragraph{Costs and Limitation of PIMH}
+%% The computational cost of sampling \(\vz^{(i)}_{t}\) (\textcolor{blue}{blue} region in \cref{alg:pimh}) for \(N\) chains is equal to a CIS kernel with \(N\) proposals.
+%% On the other hand, the cost of estimating the stochastic gradient (\textcolor{purple}{purple} region in \cref{alg:pimh}) is now \(\mathcal{O}(N)\) instead of \(\mathcal{O}(1)\) of the CIS kernel.
+%% This cost is, however, also imposed on the CIS kernel if we use Rao-Blackwellization.
+%% Thus, the overall computational cost of PIMH is more or less equal to that of the CIS kernel.
+%% The only downside of PIMH is that the Metropolis-Hastings acceptance ratio that we use has a slightly larger acceptance rate than Barker's~\citep{peskun_optimum_1973, minh_understanding_2015}.
+%% In the small \(N\) regime, PIMH has a slightly larger conditional variance, but it can be easily fixed by using Barker's ratio.
 
 %%% Local Variables:
 %%% TeX-master: "master"
