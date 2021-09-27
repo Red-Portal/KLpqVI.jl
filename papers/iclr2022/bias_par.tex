@@ -1,12 +1,11 @@
 
 \begin{theoremEnd}{theorem}
-  Assuming \(w^* = \sup_{\vz} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda_{\tau}}\left(\vz\right)} < \infty \; \text{for}\;\forall \vlambda \) and that the score function is bounded as \(\left|\, s\left(\vz; \vlambda\right) \,\right| \leq \frac{L}{2}\), the bias of the parallel mode estimator with an IMH kernel at iteration \(t\) is bounded as
+  Assuming \(w^* = \sup_{\vz} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda_{\tau}}\left(\vz\right)} < \infty \; \text{for}\;\forall \vlambda \) and that the score function is bounded as \(\left|\, s\left(\vz; \vlambda\right) \,\right| \leq \frac{L}{2}\), the bias of the parallel state estimator with an IMH kernel at iteration \(t\) is bounded as
   {\small
 \[
-    \mathrm{Bias}\left[ g_{\mathrm{par.,\, t}} \right] \leq L\,C^t.
+    \mathrm{Bias}\left[ g_{\mathrm{par.,\, t}} \right] \leq L\,C^t \quad\text{where}\quad C = 1 - \frac{1}{w^*} < 1.
 \]
   }
-  where \(C = 1 - \nicefrac{1}{w^*}\).
 \end{theoremEnd}
 \begin{proofEnd}
   We denote the empirical distribution of the Markov-chain states at iteration \(t\) as
