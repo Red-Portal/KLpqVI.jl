@@ -1,0 +1,141 @@
+
+%% \begin{theoremEnd}{lemma}\label{thm:lemma_cis}
+%%   The CIS kernel can be represented as an accpet-reject kernel with Barker's acceptance function \(\alpha\left(x,y\right)\) of the form, 
+%%   \[
+%%   K_{\mathrm{CIS}}\left(\vz_{t-1}, \vz\right) = \alpha\left(\vz_{t-1}, \vz^{(1:N)} \right) L\left(\vz^{(1:N)}, \vz\right) q_{\vlambda}\left(\vz^{(i:N)}\right) + r\left(\vz_{t-1}\right) \delta_{\vz_{t-1}}\left(\vz\right)
+%%   \]
+%%   where \;\(\vz^{(1:N)}\) represents the joint proposal of \;\(N\) samples \;\(\vz^{(i)} \sim q_{\vlambda}\left(\cdot\right)\) such that \(\vz^{(i:N)} \sim \prod_{i=1}^N q_{\vlambda}\left(\vz^{(i)}\right)\),
+%%   \; \(\alpha\left(\vz_{t-1}, \vz^{(1:N)}\right)\) is the probability of accepting the joint proposal \;\(\vz^{(i)}\),
+%%   \(L\left(\vz^{(1:N)}, \vz\right)\) is the resampling kernel that chooses one sample among the \,\(N\) proposals, and \(\delta_{\vz_{t-1}}\left(\vz\right)\) is Dirac's delta function.
+%% \end{theoremEnd}
+%% %
+%% \begin{proofEnd}
+%%   First, by denoting \(\vz_{t-1} = \vz^{(0)}\), the CIS kernel in its raw form can be represented as
+%%   \begin{align}
+%%     &K_{\mathrm{CIS}}\left(\vz_{t-1}, \vz\right) \\
+%%     &= \sum_{i=0}^N \frac{w\left(\vz^{(i)}\right)}{ \sum^{N}_{j=0} w\left(\vz^{(j)}\right) } \delta_{\vz^{(i)}}\left( \vz \right) q_{\vlambda}\left(\vz^{(1:N)}\right)  \\
+%%     &= \left( \sum_{i=1}^N  \frac{w\left(\vz^{(i)}\right)}{ \sum^{N}_{j=1} w\left(\vz^{(j)}\right) + w\left(\vz^{(0)}\right)} \delta_{\vz^{(i)}}\left( \vz \right) + \frac{w\left(\vz^{(0)}\right)}{ \sum^{N}_{j=1} w\left(\vz^{(j)}\right) + w\left(\vz^{(0)}\right)}  \delta_{\vz^{(0)}}\left( \vz \right) \right) q_{\vlambda}\left(\vz^{(1:N)}\right) \\
+%%   \end{align}
+%%   where \(w\left(\vz\right) = \frac{p\left(\vz, \vx\right)}{q_{\vlambda}\left(\vz\right)}\) is the unnormalized importance weight.
+
+%%   By swapping \(\vz^{(0)}\) back to \(\vz_{t-1}\),
+%%   \begin{align}
+%%     &K_{\mathrm{CIS}}\left(\vz_{t-1}, \vz\right) \\
+%%     &= \Bigg( \sum_{i=1}^N  \frac{w\left(\vz^{(i)}\right)}{ \sum^{N}_{j=1} w\left(\vz^{(j)}\right) + w\left(\vz_{t-1}\right)} \delta_{\vz^{(i)}}\left( \vz \right)
+%%     + \frac{w\left(\vz_{t-1}\right)}{ \sum^{N}_{j=1} w\left(\vz^{(j)}\right)
+%%       + w\left(\vz_{t-1}\right)
+%%     }
+%%     \delta_{\vz_{t-1}} \left( \vz \right) \Bigg)\, q_{\vlambda}\left(\vz^{(1:N)}\right) \\
+%%     &= \Bigg( \underbrace{\frac{\sum^{N}_{j=1} w\left(\vz^{(j)}\right)}{ \sum^{N}_{j=1} w\left(\vz^{(j)}\right) + w\left(\vz_{t-1}\right)}}_{\text{acceptance ratio}\; \alpha\left(\vz_{t-1}, \vz^{(1:N)} \right)} \quad \underbrace{\sum_{i=1}^N \frac{w\left(\vz^{(i)}\right)}{\sum^{N}_{j=1} w\left(\vz^{(j)}\right) }   \delta_{\vz^{(i)}}\left( \vz \right)}_{\text{resampling kernel}\; L\left(\vz^{(1:N)}, \vz\right)}  \\
+%%     &\quad\quad + \frac{w\left(\vz_{t-1}\right)}{ \sum^{N}_{j=1} w\left(\vz^{(j)}\right) + w\left(\vz_{t-1}\right)} \delta_{\vz_{t-1}}\left( \vz \right) \Bigg)\; q_{\vlambda}\left(\vz^{(1:N)}\right) \\
+%%     &= \Bigg( \alpha\left(\vz_{t-1}, \vz^{(1:N)}\right) \, L\left(\vz^{(1:N)}, \vz\right)
+%%     + \frac{w\left(\vz_{t-1}\right)}{ \sum^{N}_{j=1} w\left(\vz^{(j)}\right)
+%%       + w\left(\vz_{t-1}\right)
+%%     }
+%%     \delta_{\vz_{t-1}} \left( \vz \right) \Bigg) \; q_{\vlambda}\left(\vz^{(1:N)}\right) \\
+%%   \end{align}
+%%   Now, we obtain our accept-reject kernel by swapping the coefficient of \(\delta_{\vz_{t-1}}\left(\cdot\right)\) with the rejection rate \(r\left( \vz_{t-1} \right) = 1 - \int \alpha\left(\vz_{t-1}, \vz^{(1:N)}\right) \, q\left(\vz^{(1:N)}\right) \, d\vz^{(1:N)}\).
+%%   It is easy to check that this manipulation (which is natural when deriving MCMC kernels) results in the same representation by integrating an arbitrary function over \(K_{\text{CIS}}\).
+
+%%   Finally, 
+%%   \begin{align}
+%%     &K_{\mathrm{CIS}}\left(\vz_{t-1}, \vz\right) = \alpha\left(\vz_{t-1}, \vz^{(1:N)}\right) \, L\left(\vz^{(1:N)}, \vz\right)\, q_{\vlambda}\left(\vz^{(1:N)}\right) + r\left(\vz_{t-1}\right)\,\delta_{\vz_{t-1}}\left(\vz\right).
+%%   \end{align}
+%% \end{proofEnd}
+
+%% \begin{theoremEnd}{lemma}
+%%   A Metropolis-Hastings chain with Barker's acceptance function is aperiodic and every compact set with \(\mu\left(C\right) > 0\) for the measure \(\mu\) is small if the invariant measure \(\pi\left(x\right)\) and proposal distribution \(q\left(x, y\right)\) are positive and continuous for all \(x, y\).
+%% \end{theoremEnd}
+%% %
+%% \begin{proofEnd}
+%%   Our proof strategy is a direct adaptation of~\citet[Lemma 1.2]{10.2307/2242610}.
+%%   Let us define a set \(C\) is compact and nonempty.
+%%   By assumption we have \(d = \sup_{x \in C} \pi\left(x\right) < \infty\) and \(\epsilon = \inf_{x,y \in C} q\left(x, y\right) > 0\).
+%%   Then for a set \(A\),
+%%   \begin{align}
+%%     p\left(x, A\right)
+%%     &= \int_A q\left(x, y\right) \alpha\left(x, y\right) \, \mu\left(dy\right) \\
+%%     &= \int_A q\left(x, y\right) \frac{\pi\left( y \right) \, q\left(y, x\right)}{\pi\left( y \right) \, q\left(y, x\right) + \pi\left( x \right) \, q\left(x, y\right) } \, \mu\left(dy\right) \\
+%%     &= \int_A \frac{\pi\left( y \right) }{ \frac{ \pi\left( y \right) }{ q\left(y, x\right) } + \frac{\pi\left( x \right)}{q\left(x, y\right)} } \, \mu\left(dy\right) \\
+%%     &\geq \int_A \frac{\pi\left( y \right) }{ \frac{ d }{ \epsilon } + \frac{d}{ \epsilon } } \, \mu\left(dy\right) &\text{(Monotonicity)}\\
+%%     &= \frac{\epsilon}{2\,d} \int_A \pi\left( y \right) \, \mu\left(dy\right) \\
+%%     &\geq \frac{\epsilon}{2\,d} \, \pi\left(A\right).
+%%   \end{align}
+%%     Thus, \(C\) is a small set, and consequently, as discussed by~\citet{10.2307/2242610}, the chain is aperiodic.
+%% \end{proofEnd}
+
+%% \begin{theoremEnd}{lemma}
+%%   A Metropolis-Hastings chain with Barker's acceptance function is aperiodic and every compact set with \(\mu\left(C\right) > 0\) for the measure \(\mu\) is small if the invariant measure \(\pi\left(x\right)\) and proposal distribution \(q\left(x, y\right)\) are positive and continuous for all \(x, y\).
+%% \end{theoremEnd}
+%% %
+%% \begin{proofEnd}
+%%   \begin{align}
+%%     K\left(\vz_0, A\right)
+%%     &= \int_A \int q\left(\vz^{(1:N)}\right)  \sum_{i=0}^N  \frac{w\left(\vz^{(i)}\right)}{ \sum^{N}_{j=0} w\left(\vz^{(j)}\right)} \delta_{\vz^{(i)}}\left(\vz\right) d\vz^{(1:N)} \, \mu\left(d\vz\right) \\
+%%     &= \int_A \int q\left(\vz^{(1:N)}\right)  \sum_{i=1}^N
+%%     \frac{
+%%       \frac{\pi\left(\vz^{(i)}\right)}{q\left(\vz^{(i)}\right)}
+%%     }{
+%%       \sum^{N}_{j=0} \frac{\pi\left(\vz^{(j)}\right)}{q\left(\vz^{(j)}\right)}
+%%     }
+%%     \delta_{\vz^{(i)}}\left(\vz\right) d\vz^{(1:N)} \, \mu\left(d\vz\right) \\
+%%     &= \int_A \int q\left(\vz^{(1:N)}\right)  \sum_{i=1}^N
+%%     \frac{
+%%       \pi\left(\vz^{(i)}\right)
+%%     }{
+%%       \pi\left(\vz_i\right) + q\left(\vz^{(i)}\right) \sum^{N}_{j=1, j \neq i} \frac{\pi\left(\vz^{(j)}\right)}{q\left(\vz^{(j)}\right)}
+%%     }
+%%     \delta_{\vz^{(i)}}\left(\vz\right) d\vz^{(1:N)} \, \mu\left(d\vz\right) \\
+%%     &\geq \int_A \int q\left(\vz^{(1:N)}\right)  \sum_{i=0}^N
+%%     \frac{
+%%       \frac{\pi\left(\vz^{(i)}\right)}{\epsilon}
+%%     }{
+%%       \sum^{N}_{j=0} \frac{d}{\epsilon}
+%%     }\,
+%%     \delta_{\vz^{(i)}}\left(\vz\right) d\vz^{(1:N)} \, \mu\left(d\vz\right) \\
+%%     %&= \int_A q_{\vlambda}\left(\vz^{(1:N)}\right) \alpha\left(\vz_{t-1}, \vz^{(1:N)}\right) \, \mu\left(d\vz^{(1:N)}\right) \\
+%%   \end{align}
+%% \end{proofEnd}
+
+\begin{theoremEnd}{theorem}
+  For a CIS kernel with \(N\) internal proposals,
+  assuming \(w^* = \sup_{\vz} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda}\left(\vz\right)} < \infty\; \text{for} \; \forall \vlambda \), \(N > 2\), and that the score function is bounded such that \(\left|\,s\left(\vz; \vlambda\right)\,\right| \leq \frac{L}{2}\), the bias of the single state estimator at iteration \(t\) is bounded as
+  {\small
+  \[
+    \mathrm{Bias}\left[ g_{\mathrm{cis.,\, t}} \right] \leq L \, C^t
+    \quad\text{where}\quad C = \left(1 - \frac{N}{w^*}\right) < 1.
+  \]
+  }
+\end{theoremEnd}
+%
+\begin{proofEnd}
+  Let us first denote the empirical distribution of the Markov-chain states at iteration \(t\) as
+  \begin{align}
+    \eta_{\mathrm{cis.},\, t}(\vz) = K^{t}\left(\vz_0, \vz\right),
+  \end{align}
+  and consequently,
+  \begin{align}
+      g_{\mathrm{cis}, t}(\vlambda) = \int s\left(\vz; \vlambda\right) \, \eta_{\mathrm{cis.},\, t}(\vz) \, d\vz.
+  \end{align}
+
+  The CIS sampler is identical to the iterated sampling importance resampling (i-SIR) algorithm described by~\citet{andrieu_uniform_2018}.
+  They showed that the i-SIR kernel achieves a geometric convergence rate such that
+  \begin{align}
+    \DTV{K^{t}\left(\vz_{t-1},\cdot\right)}{p\left(\cdot\mid\vx\right)}
+    &\leq {\left(1 - \frac{N - 1}{2\,w^* + N - 2}\right)}^t.
+  \end{align}
+  From this, the bound can be shown as
+  \begin{align}
+    \mathrm{bias}\left[ g_{\mathrm{cis., t}} \right]
+    &\leq \DTV{\eta_{cis.,\, t}(\cdot)}{p(\cdot\mid\vx)} \\
+    &\leq \sup_{h : \mathcal{Z} \rightarrow \left[ \text{-}\nicefrac{L}{2}, \nicefrac{L}{2} \right]} \left|\, \Esub{\eta_{\mathrm{cis.},\, t}(\cdot)}{h} - \Esub{p(\cdot\mid\vx)}{h} \,\right| \\
+    &= L \, \DTV{ \eta_{\mathrm{cis.},\, t}(\cdot) }{p\left(\cdot\mid\vx\right)}  \\
+    &\leq L \, {\left(1 - \frac{N - 1}{2\,w^* + N - 2}\right)}^t \\
+    &\leq L \, {\left(1 - \frac{N}{w^*}\right)}^t \\
+  \end{align}
+  given that \(N > 2\).
+\end{proofEnd}
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:
