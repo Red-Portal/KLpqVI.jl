@@ -10,7 +10,105 @@
 \begin{proofEnd}
   By the law of total variance,
   \begin{align}
-    \Vsub{q_{\vlambda}}{g_{\mathrm{single}}} \geq \Vsub{q_{\vlambda}}{g_{\mathrm{single}} \mid \vz_{t-1}}.
+    \Vsub{q_{\vlambda}}{g_{\mathrm{single}}}
+    &= \V{ \Esub{q_{\vlambda}}{ g \mid \vz_{t-1} }} + \E{\Vsub{q_{\vlambda}}{ g \mid \vz_{t-1}}} \\
+    &= \V{
+      \Esub{q_{\vlambda}}{
+        \E{
+          g \mid \vz_{t-1}, \vz^{(1:N)} }
+      }
+    }\nonumber \\
+    &\quad + 
+    \E{
+      \Vsub{q_{\vlambda}}{
+        \E{
+          g \mid \vz_{t-1}, \vz^{(1:N)}}
+      }
+      +
+      \Esub{q_{\vlambda}}{
+        \V{
+          g \mid \vz_{t-1}, \vz^{(1:N)}}
+      }
+    } \\
+    %
+    &= \V{
+      \Esub{q_{\vlambda}}{
+        g_{\mathrm{IS}} \mid \vz_{t-1}
+      }
+    } 
+    +
+    \E{
+      \Vsub{q_{\vlambda}}{
+        g_{\mathrm{IS}} \mid \vz_{t-1}
+      }
+    }\nonumber \\
+    &\quad  +
+    \E{
+      \Esub{q_{\vlambda}}{
+        \V{
+          g \mid \vz_{t-1}, \vz^{(1:N)}}
+      }
+    } \\
+    &= \V{
+      \Esub{q_{\vlambda}}{
+        g_{\mathrm{IS}} \mid \vz_{t-1}
+      }
+    } 
+    +
+    \E{
+      \Vsub{q_{\vlambda}}{
+        g_{\mathrm{IS}} \mid \vz_{t-1}
+      }
+    }\nonumber \\
+    &\quad  +
+    \E{
+      \Esub{q_{\vlambda}}{
+        \E{
+          g^2_{\mathrm{IS}} \mid \vz_{t-1}, \vz^{(1:N)}
+        }
+      }
+      +
+      {\left(\,
+        \E{
+          g_{\mathrm{IS}} \mid \vz_{t-1}, \vz^{(1:N)}
+        }
+      \,\right)}^2
+    }
+  \end{align}
+  where \(g_{\mathrm{IS}}\) denotes the importance sampling estimator given \(\vz^{(1:N)}\) and \(\vz^{(0)} = \vz_{t-1}\) defined as \(g_{\mathrm{IS}} = \sum_{i=0}^N \frac{w\left(\vz^{(i)}\right)}{\sum_{i=0}^N w\left(\vz^{(i)}\right)} s\left(\vz^{(i)}\right) \).
+
+
+  If we use Rao-Blackwellization, the last variance term vanishes, and we are left with
+  \begin{align}
+    \Vsub{q_{\vlambda}}{g_{\mathrm{single}}}
+    = \V{
+      \Esub{q_{\vlambda}}{
+        g_{\mathrm{IS}} \mid \vz_{t-1}
+      }
+    } 
+    +
+    \E{
+      \Vsub{q_{\vlambda}}{
+        g_{\mathrm{IS}} \mid \vz_{t-1}
+      }
+    }.
+  \end{align}
+
+
+  Therefore, in expectation, 
+
+  Now, 
+  \begin{align}
+    &\Esub{q_{\vlambda}}{ g_{\mathrm{IS}} \mid \vz_{t-1}} \\
+    &= \Esub{q_{\vlambda}}{ \frac{\sum_{i=0}^N w\left(\vz^{(i)}\right) s\left(\vz^{(i)}\right)}{\sum_{i=0}^N w\left(\vz^{(i)}\right)}  \,\middle\vert\, \vz_{t-1} } \\
+    &= \Esub{q_{\vlambda}}{ \frac{\sum_{i=1}^N w\left(\vz^{(i)}\right) s\left(\vz^{(i)}\right)}{\sum_{i=1}^N w\left(\vz^{(i)}\right) + w\left(\vz_{t-1}\right)}  
+    + \frac{w\left(\vz_{t-1}\right)}{\sum_{i=1}^N w\left(\vz^{(i)}\right) + w\left(\vz_{t-1}\right)} s\left(\vz_{t-1}\right) \,\middle\vert\, \vz_{t-1}} \\
+    &= \Esub{q_{\vlambda}}{ \frac{ \sum_{i=1}^N  w\left(\vz^{(i)}\right) s\left(\vz^{(i)}\right)}{\sum_{i=1}^N w\left(\vz^{(i)}\right) + w\left(\vz_{t-1}\right)}  \,\middle\vert\, \vz_{t-1}} \\
+    &\qquad\qquad + \Esub{q_{\vlambda}}{ \frac{w\left(\vz_{t-1}\right)}{\sum_{i=1}^N w\left(\vz^{(i)}\right) + w\left(\vz_{t-1}\right)} \,\middle\vert\, \vz_{t-1}} s\left(\vz_{t-1}\right) \\
+    &= \Esub{q_{\vlambda}}{ \frac{\sum_{i=1}^N  w\left(\vz^{(i)}\right) s\left(\vz^{(i)}\right)}{\sum_{i=1}^N w\left(\vz^{(i)}\right) + w\left(\vz_{t-1}\right)}  \,\middle\vert\, \vz_{t-1}}
+    + r\left(\vz_{t-1}\right) s\left(\vz_{t-1}\right) \\
+    &= \Esub{q_{\vlambda}}{ \frac{\sum_{i=1}^N w\left(\vz^{(i)}\right)}{\sum_{i=1}^N w\left(\vz^{(i)}\right) + w\left(\vz_{t-1}\right)} \frac{\sum_{i=1}^N  w\left(\vz^{(i)}\right) s\left(\vz^{(i)}\right)}{\sum_{i=1}^N w\left(\vz^{(i)}\right)}  \,\middle\vert\, \vz_{t-1}}
+    + r\left(\vz_{t-1}\right) s\left(\vz_{t-1}\right)
   \end{align}
 
   Write

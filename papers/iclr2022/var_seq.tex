@@ -8,9 +8,13 @@
 \end{theoremEnd}
 \begin{proofEnd}
   For notational convenience, let us define \(g\left(\vz\right) = s\left(\vz; \vlambda\right)\).
+
   \begin{align}
-    &\V{g_{\mathrm{seq., t}}} \\
-    &\geq \E{ \V{g_{\mathrm{seq., t}} \mid \vz_{T}} } \\
+    \V{g_{\mathrm{seq., t}}} = \E{ \V{g \mid \vz_{T}} } + \V{ \E{g \mid \vz_{T}} }
+  \end{align}
+
+  \begin{align}
+    &\E{ \V{g \mid \vz_{T}} } \\
     &= \E{
       \frac{1}{N^2} \sum^{N}_{i=1} \V{ g\left(\vz_{T+i}\right) \mid \vz_{T} }
       + \frac{2}{N^2} \sum_{i<j} \Cov{g\left(\vz_{T+1}\right), g\left(\vz_{T+i}\right) \mid \vz_{T} }

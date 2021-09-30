@@ -3,14 +3,14 @@
   Assuming \(w^* = \sup_{\vz} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda_{\tau}}\left(\vz\right)} < \infty \; \text{for}\;\forall \vlambda \) and that the score function is bounded as \(\left|\, s\left(\vz; \vlambda\right) \,\right| \leq \frac{L}{2}\), the bias of the parallel state estimator with an IMH kernel at iteration \(t\) is bounded as
   {\small
 \[
-    \mathrm{Bias}\left[ g_{\mathrm{par.,\, t}} \right] \leq L\,C^t \quad\text{where}\quad C = 1 - \frac{1}{w^*} < 1.
+    \mathrm{Bias}\left[ g_{\mathrm{par.,\, t}} \right] \leq L\, \left(1 - \frac{1}{w^*}\right).
 \]
   }
 \end{theoremEnd}
 \begin{proofEnd}
   We denote the empirical distribution of the Markov-chain states at iteration \(t\) as
   \begin{align}
-    \eta_{\mathrm{par.},\, t}(\vz) = \frac{1}{N} \sum_{i=1}^N K^{t}\left(\vz_0^{(i)}, \vz\right).
+    \eta_{\mathrm{par.},\, t}(\vz) = \frac{1}{N} \sum_{i=1}^N K\left(\vz_{t-1}^{(i)}, \vz\right).
   \end{align}
   and consequently,
   \begin{align}
@@ -19,21 +19,18 @@
   Similarly with~\cref{thm:bias_seq}, 
   \begin{align}
     \DTV{ \eta_{\mathrm{par.},\, t}(\vz) }{p\left(\cdot\mid\vx\right)}
-    &= \DTV{\frac{1}{N} \sum_{i=1}^N K^{t}\left(\vz_0^{(i)}, \vz\right)}{p\left(\cdot\mid\vx\right)} \\
-    &\leq \frac{1}{N} \sum_{i=1}^N  \DTV{K^t(\vz_0^{(i)}, \cdot)}{p\left(\cdot\mid\vx\right)} &\text{(Triangle inequality)} \\
-    &=    \DTV{K^t(\vz_0, \cdot)}{p\left(\cdot\mid\vx\right)} &\text{(Independence)} \\
-    &\leq \prod_{\tau=1}^t {\left(1 - \frac{1}{w^*(\vlambda_{\tau})}\right)} \\
-    &\leq \prod_{\tau=1}^t {\left(1 - \frac{1}{w^*}\right)} \\
-    &\leq C^t
+    &= \DTV{\frac{1}{N} \sum_{i=1}^N K\left(\vz_{t-1}^{(i)}, \vz\right)}{p\left(\cdot\mid\vx\right)} \\
+    &\leq \frac{1}{N} \sum_{i=1}^N  \DTV{K\left(\vz_{t-1}^{(i)}, \cdot\right)}{p\left(\cdot\mid\vx\right)} &\text{(Triangle inequality)} \\
+    &=    \DTV{K(\vz_t, \cdot)}{p\left(\cdot\mid\vx\right)} &\text{(Uniform ergodicity)} \\
+    &\leq 1 - \frac{1}{w^*}.
   \end{align}
-  where \(w^*(\vlambda_{\tau}) = \sup_{\vz} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda_{\tau}}\left(\vz\right)} \) and \(C = 1 - \nicefrac{1}{w^*}\).
   And, finally the bias is given as
  \begin{align}
    \mathrm{bias}\left[ g_{\mathrm{par., t}} \right]
    &\leq L \DTV{\eta_{\mathrm{par.},\, t}(\cdot)}{p(\cdot\mid\vx)} \\
    &\leq L \sup_{h : \mathcal{Z} \rightarrow \left[ \text{-}\nicefrac{L}{2}, \nicefrac{L}{2} \right]} \left|\, \Esub{\eta_{\mathrm{par.},\, t}(\cdot)}{h} - \Esub{p(\cdot\mid\vx)}{h} \,\right| \\
    &= L\, \DTV{ \eta_{\mathrm{par.},\, t}(\cdot) }{p\left(\cdot\mid\vx\right)}  \\
-   &\leq L \, C^t.
+   &\leq L \, \left(1 - \frac{1}{w^*}\right)
  \end{align}
 \end{proofEnd}
 
