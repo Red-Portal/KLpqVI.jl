@@ -26,6 +26,10 @@ using Statistics
 using Plots
 using Zygote
 using LinearAlgebra
+using JLD2
+using FileIO
+using Base.GC
+using StatsFuns
 
 using KernelAbstractions
 using CUDAKernels
@@ -53,90 +57,85 @@ function get_data(batch_size)
     DataLoader((xtest,  ytest),  batchsize=1, shuffle=false)
 end
 
-struct Encoder
-    linear
-    μ
-    logσ
-end
-@functor Encoder
-    
-Encoder(input_dim::Int, latent_dim::Int, hidden_dim::Int) = Encoder(
+Encoder(input_dim::Int, latent_dim::Int, hidden_dim::Int) = 
     Chain(
-        Dense(input_dim, hidden_dim,  tanh), # linear
-        Dense(hidden_dim, hidden_dim, tanh), # linear
-    ),
-    Dense(hidden_dim, latent_dim), # μ
-    Dense(hidden_dim, latent_dim), # logσ
-)
+        Dense(input_dim,  hidden_dim, NNlib.leakyrelu, init=Flux.kaiming_uniform), # linear
+        Dense(hidden_dim, hidden_dim, NNlib.leakyrelu, init=Flux.kaiming_uniform), # linear
+        Dense(hidden_dim, latent_dim, init=Flux.kaiming_uniform)
+    )
 
-function (encoder::Encoder)(x)
-    h = encoder.linear(x)
-    encoder.μ(h), encoder.logσ(h)
+Decoder(input_dim::Int, latent_dim::Int, hidden_dim::Int) = 
+    Chain(
+        Dense(latent_dim, hidden_dim, NNlib.leakyrelu, init=Flux.kaiming_uniform),
+        Dense(hidden_dim, hidden_dim, NNlib.leakyrelu, init=Flux.kaiming_uniform),
+        Dense(hidden_dim, input_dim, init=Flux.kaiming_uniform)
+    )
+
+function sample_z(encoder, x, device)
+    logit = encoder(x)
+    p     = sigmoid.(logit)
+    u     = rand(Float32, size(logit)) |> device
+    z     = Float32.(p .> u)
+    z, logit
 end
 
-Decoder(input_dim::Int, latent_dim::Int, hidden_dim::Int) = Chain(
-    Chain(
-        Dense(latent_dim, hidden_dim, tanh),
-        Dense(hidden_dim, hidden_dim, tanh),
-    ),
-    Dense(hidden_dim, hidden_dim, tanh), # linear
-    Dense(hidden_dim, input_dim)
-)
+function sample_z(encoder, x, u, device)
+    logit = encoder(x)
+    p     = sigmoid.(logit) 
+    z     = Float32.(p .> u)
+    z, logit
+end
+
+function sample_z(logit, device)
+    p = sigmoid.(logit)
+    u = rand(Float32, size(logit)) |> device
+    z = Float32.(p .> u)
+    z
+end
 
 function reconstuct(encoder, decoder, x, device)
-    μ, logσ = encoder(x)
-    z = μ + device(randn(Float32, size(logσ))) .* exp.(logσ)
-    μ, logσ, decoder(z)
+    z, logit = sample_z(encoder, x, device)
+    logit, decoder(z)
 end
 
-function elbo_loss(encoder, decoder, x, device, state)
-    μ, logσ, decoder_z = reconstuct(encoder, decoder, x, device)
-    len      = size(x)[end]
-    kl_q_p   = 0.5f0 * sum(@. (exp(2f0 * logσ) + μ^2 -1f0 - 2f0 * logσ)) / len
-    logp_x_z = -logitbinarycrossentropy(decoder_z, x, agg=sum) / len
-    -logp_x_z + kl_q_p
+function joint_density(z, x, x_recon, device)
+    logit0   = fill(0f0, size(z)) |> device
+    logp_z   = -logitbinarycrossentropy(logit0,  z, agg=xᵢ->sum(xᵢ, dims=1))[1,:]
+    logp_x_z = -logitbinarycrossentropy(x_recon, x, agg=xᵢ->sum(xᵢ, dims=1))[1,:]
+    logp_x_z + logp_z
 end
 
-function joint_density(z, x, x_recon)
-    logp_z   = sum(z.^2/-2 .+ Float32(log(2*π)/-2), dims=1)[1,:]
-    logp_x_z = -logitbinarycrossentropy(x_recon, x, agg=xᵢ->sum(xᵢ, dims=1))[1,:] + logp_z
+function variational_density(z, logit)
+    -logitbinarycrossentropy(logit, z, agg=xᵢ->sum(xᵢ, dims=1))[1,:]
 end
 
-function variational_density(z, μ, logσ)
-    σ²     = max.(exp.(2*logσ), 1f-7)
-    logq_z = sum((z .- μ).^(2)./σ²/-2 .+ Float32(log(2*π)/-2) .+ -logσ, dims=1)[1,:]
-end
-
-function variational_density(ϵ, logσ)
-    logq_z = sum(ϵ.^2/-2 .+ Float32(log(2*π)/-2) .+ -logσ, dims=1)[1,:]
-end
-
-function compute_log_weight(encoder, decoder, ϵ, x)
-    μ, logσ  = encoder(x)
-    z        = μ .+ ϵ .* exp.(logσ)
+function compute_log_weight(encoder, decoder, x, device)
+    z, logit = sample_z(encoder, x, device)
     x_recon  = decoder(z)
-    logp_x_z = joint_density(z, x, x_recon)
-    logq_z   = variational_density(ϵ, logσ)
+    logp_x_z = joint_density(z, x, x_recon, device)  |> cpu
+    logq_z   = variational_density(z, logit) |> cpu
     logp_x_z - logq_z
 end
 
-function rws_wake_loss(encoder, decoder, x, w, ϵ, n_batch, device, state)
-    μ, logσ  = encoder(x)
-    z        = μ .+ ϵ.*exp.(logσ)
+function compute_log_weight(decoder, x, z, logit, device)
+    x_recon  = decoder(z)
+    logp_x_z = joint_density(z, x, x_recon, device)  |> cpu
+    logq_z   = variational_density(z, logit)         |> cpu
+    logp_x_z - logq_z
+end
+
+function rws_wake_loss(encoder, decoder, x, w, z, n_batch, device)
+    logit    = encoder(x)
     z_stop   = Zygote.dropgrad(z)
     x_recon  = decoder(z_stop)
-
-    logp_x_z = joint_density(z_stop, x, x_recon)
-    logq_z   = variational_density(z_stop, μ, logσ)
+    logp_x_z = joint_density(z_stop, x, x_recon, device)
+    logq_z   = variational_density(z_stop, logit)
     -dot(logp_x_z + logq_z, w) / n_batch
 end
 
-function rws_sleep_loss(encoder, decoder, x, device, n_latent, state)
-    ϵ       = randn(Float32, n_latent) |> device
-    μ, logσ = encoder(x)
-    z       = μ .+ ϵ.*exp.(logσ)
-    z_stop  = Zygote.dropgrad(z)
-    logq_z   = variational_density(z_stop, μ, logσ)
+function rws_sleep_loss(encoder, x, z)
+    logit  = encoder(x)
+    logq_z = variational_density(z, logit)
     -mean(logq_z)
 end
 
@@ -164,6 +163,14 @@ function init_state!(::Val{:JSA}, encoder, decoder, train_loader, device, settin
     state
 end
 
+function init_state!(::Val{:JSA_MC}, encoder, decoder, train_loader, device, settings)
+    state            = Dict{Symbol, Any}()
+    state[:opt]      = ADAM(settings[:η])
+    state[:samples]  = [randn(Float32, settings[:latent_dim]) for i = 1:train_loader.nobs]
+    state[:logjoint] = [Inf                                   for i = 1:train_loader.nobs]
+    state
+end
+
 function init_state!(::Val{:PIMH}, encoder, decoder, train_loader, device, settings)
     state           = Dict{Symbol, Any}()
     state[:opt]     = ADAM(settings[:η])
@@ -172,11 +179,20 @@ function init_state!(::Val{:PIMH}, encoder, decoder, train_loader, device, setti
     state
 end
 
+function init_state!(::Val{:PIMH_MC}, encoder, decoder, train_loader, device, settings)
+    state           = Dict{Symbol, Any}()
+    state[:opt]     = ADAM(settings[:η])
+    state[:samples] = [randn(Float32, settings[:latent_dim], settings[:n_samples])
+                       for i = 1:train_loader.nobs]
+    state[:logjoint] = [fill(Inf, settings[:n_samples]) for i = 1:train_loader.nobs]
+    state
+end
+
 function jsa_loss(encoder, decoder, x, z, device)
-    μ, logσ  = encoder(x)
+    logit    = encoder(x)
     x_recon  = decoder(z)
-    logp_x_z = joint_density(z, x, x_recon)
-    logq_z   = variational_density(z, μ, logσ)
+    logp_x_z = joint_density(z, x, x_recon, device)
+    logq_z   = variational_density(z, logit)
     -mean(logp_x_z + logq_z)
 end
 
@@ -201,19 +217,14 @@ function repeat_inner(a::TV, inner) where {TV<:AbstractArray}
     return out
 end
 
-function adaptive_restart(::Val{:JSA}, idx, decoder, x_dev, μ, logσ, z_prop, logw_prop, device, state, settings)
-    γ            = 0.05
-    z_prev       = hcat(state[:samples][idx]...)
-    z_prev_dev   = z_prev |> device
-    x_recon_prev = decoder(z_prev_dev)
-
-    logp_x_z_prev = joint_density(z_prev_dev, x_dev, x_recon_prev) |> cpu
-    logq_z_prev   = variational_density(z_prev_dev, μ, logσ) |> cpu
-    logw_prev     = logp_x_z_prev - logq_z_prev
+function adaptive_restart(::Val{:JSA}, idx, decoder, x_dev, logit, z_prop, logw_prop, device, state, settings)
+    γ          = settings[:gamma]
+    z_prev     = hcat(state[:samples][idx]...)
+    z_prev_dev = z_prev |> device
+    logw_prev  = compute_log_weight(decoder, x_dev, z_prev_dev, logit, device)
 
     R = mean(min.(0, logw_prop - logw_prev))
     p = tanh(-γ*R)
-    #println(mean(min.(1, exp.(logw_prop - logw_prev))))
     if (rand(Bernoulli(p)))
         z_prop, logw_prop
     else
@@ -221,31 +232,61 @@ function adaptive_restart(::Val{:JSA}, idx, decoder, x_dev, μ, logσ, z_prop, l
     end
 end
 
-function step!(::Val{:JSA}, idx, epoch, encoder, decoder, params, x, x_idx, device, state, settings)
+function adaptive_restart(::Val{:JSA_MC}, idx, decoder, x_dev, logit, z_prop, logw_prop, device, state, settings)
+    z_prev  = hcat(state[:samples ][idx]...)
+    logprop_prev = vcat(state[:logjoint][idx]...)
+    n_dims  = size(z_prev, 1)
+
+    z_prev_dev   = z_prev |> device
+    x_prev_recon = decoder(z_prev_dev)
+    logp_prev    = joint_density(z_prev_dev, x_dev, x_prev_recon, device) |> cpu
+    logq_prev    = variational_density(z_prev_dev, logit) |> cpu
+    logw_prev    = logp_prev - logq_prev
+    logr_prev    = logp_prev - (logaddexp.(logq_prev, logprop_prev) .- log(2))
+
+    logα     = logw_prop .- logaddexp.(logr_prev, logw_prop)
+    logu     = log.(rand(size(x_dev, 2)))
+    acc_flag = logu .< logα
+    rej_flag = .!acc_flag
+
+    z_prop[:,rej_flag]  = z_prev[:,rej_flag]
+    logw_prop[rej_flag] = logw_prev[rej_flag]
+    z_prop, logw_prop
+end
+
+function cache_samples!(::Val{:JSA}, encoder, x_idx, x_dev, z, device, state)
+    state[:samples][x_idx] = [z[:,i] for i = 1:size(z, 2)]
+end
+
+function cache_samples!(::Val{:JSA_MC}, encoder, x_idx, x_dev, z, device, state)
+    state[:samples][x_idx]  = [z[:,i]  for i = 1:size(z, 2)]
+
+    logit = encoder(x_dev)
+    logq  = variational_density(z |> device, logit) |> cpu
+    state[:logjoint][x_idx] = [logq[i] for i = 1:size(z, 2)]
+end
+
+function step!(type::Union{Val{:JSA}, Val{:JSA_MC}},
+               idx, epoch, encoder, decoder, params, x, x_idx, device, state, settings)
     n_batch   = size(x, 2)
     n_samples = settings[:n_samples]
     n_total   = (n_samples + 1)*n_batch
 
     x_dev     = x |> device
-    μ, logσ   = encoder(x_dev)
-    μ_rep     = repeat_inner(μ,    (1, n_samples + 1)) 
-    logσ_rep  = repeat_inner(logσ, (1, n_samples + 1)) 
-
-    ϵ         = randn(Float32, (settings[:latent_dim], size(μ_rep, 2))) |> device
-    z_dev     = μ_rep .+ ϵ.*exp.(logσ_rep)
-    x_recon   = decoder(z_dev)
+    logit     = encoder(x_dev)
+    logit_rep = repeat_inner(logit, (1, n_samples + 1))
+    z_dev     = sample_z(logit_rep, device)
     x_rep_dev = repeat_inner(x_dev, (1, n_samples + 1)) 
+    logw      = compute_log_weight(decoder, x_rep_dev, z_dev, logit_rep, device)
+    z         = z_dev |> cpu
 
-    logp_x_z = joint_density(z_dev, x_rep_dev, x_recon)    |> cpu
-    logq_z   = variational_density(z_dev, μ_rep, logσ_rep) |> cpu
-    logw     = logp_x_z - logq_z
-    z        = z_dev |> cpu
-
-    z_prop            = view(z,    :, 1:n_samples+1:n_total)
-    logw_prop         = view(logw,    1:n_samples+1:n_total)
-    z_init, logw_init = adaptive_restart(Val(:JSA), x_idx, decoder, x_dev, μ, logσ, z_prop, logw_prop, device, state, settings)
-    z[:, 1:n_samples+1:n_total]  = z_init
-    logw[ 1:n_samples+1:n_total] = logw_init
+    if epoch > 1
+        z_prop            = view(z,    :, 1:n_samples+1:n_total)
+        logw_prop         = view(logw,    1:n_samples+1:n_total)
+        z_init, logw_init = adaptive_restart(type, x_idx, decoder, x_dev, logit, z_prop, logw_prop, device, state, settings)
+        z[:, 1:n_samples+1:n_total]  = z_init
+        logw[ 1:n_samples+1:n_total] = logw_init
+    end
 
     u       = rand(Float32, n_total)
     logu    = log.(u)
@@ -268,34 +309,23 @@ function step!(::Val{:JSA}, idx, epoch, encoder, decoder, params, x, x_idx, devi
     loss, back = Flux.pullback(params) do
         jsa_loss(encoder, decoder, x_rep_dev, z |> device, device)
     end
-    z_last    = view(z, :, n_samples:n_samples:n_samples*n_batch)
-    state[:samples][x_idx] = [z_last[:,i] for i = 1:size(z_last, 2)]
+    z_last    = view(z,    :, n_samples:n_samples:n_samples*n_batch)
+    cache_samples!(type, encoder, x_idx, x_dev, z_last, device, state)
 
     grad = back(1f0)
     Flux.Optimise.update!(state[:opt], params, grad)
     loss, acc_avg
 end
 
-function adaptive_restart(::Val{:PIMH}, idx, decoder, x_dev, μ, logσ, z_prop, logw_prop, device, state, settings)
-    γ            = 0.05
-    #γ            = 0.1
-
+function adaptive_restart(::Val{:PIMH}, idx, decoder, x_dev, logit, z_prop, logw_prop, device, state, settings)
+    γ         = settings[:gamma]
     n_samples = settings[:n_samples]
-    μ_rep     = repeat_inner(μ,     (1, n_samples))
-    logσ_rep  = repeat_inner(logσ,  (1, n_samples))
-    x_dev_rep = repeat_inner(x_dev, (1, n_samples))
+    logit_rep = repeat_inner(logit, (1, n_samples))
+    x_rep_dev = repeat_inner(x_dev, (1, n_samples))
     
-    #ϵ′            = randn(Float32, (settings[:latent_dim], size(μ_rep, 2))) |> device
-    #z_prev′       = μ_rep + ϵ′.*exp.(logσ_rep) |> cpu
-    #state[:samples][idx] = [z_prev′[:,(i-1)*n_samples+1:i*n_samples] for i = 1:size(x_dev, 2)]
-
-    z_prev       = hcat(state[:samples][idx]...)
-    z_prev_dev   = z_prev |> device
-    x_recon_prev = decoder(z_prev_dev)
-    
-    logp_x_z_prev = joint_density(z_prev_dev, x_dev_rep, x_recon_prev) |> cpu
-    logq_z_prev   = variational_density(z_prev_dev, μ_rep, logσ_rep)   |> cpu
-    logw_prev     = logp_x_z_prev - logq_z_prev
+    z_prev     = hcat(state[:samples][idx]...)
+    z_prev_dev = z_prev |> device
+    logw_prev  = compute_log_weight(decoder, x_rep_dev, z_prev_dev, logit_rep, device)
 
     R = mean(min.(0, logw_prop - logw_prev))
     p = tanh(-γ*R)
@@ -307,34 +337,82 @@ function adaptive_restart(::Val{:PIMH}, idx, decoder, x_dev, μ, logσ, z_prop, 
     end
 end
 
-function step!(::Val{:PIMH}, idx, epoch, encoder, decoder, params, x, x_idx, device, state, settings)
+function adaptive_restart(::Val{:PIMH_MC}, idx, decoder, x_dev, logit, z_prop, logw_prop, device, state, settings)
+    n_samples = settings[:n_samples]
+    logit_rep = repeat_inner(logit, (1, n_samples))
+    x_rep_dev = repeat_inner(x_dev, (1, n_samples))
+
+    # z_prev_dev   = z_prev |> device
+    # x_prev_recon = decoder(z_prev_dev)
+    # logp_prev    = joint_density(z_prev_dev, x_dev, x_prev_recon, device) |> cpu
+    # logq_prev    = variational_density(z_prev_dev, logit) |> cpu
+    # logw_prev    = logp_prev - logq_prev
+    # logr_prev    = logp_prev - (logaddexp.(logq_prev, logprop_prev) .- log(2))
+
+    # logα     = logw_prop .- logaddexp.(logr_prev, logw_prop)
+    # logu     = log.(rand(size(x_dev, 2)))
+    # acc_flag = logu .< logα
+    # rej_flag = .!acc_flag
+    
+    z_prev       = hcat(state[:samples][ idx]...)
+    logprop_prev = vcat(state[:logjoint][idx]...)
+    z_prev_dev   = z_prev |> device
+    x_recon      = decoder(z_prev_dev)
+    logp_prev    = joint_density(z_prev_dev, x_rep_dev, x_recon, device)  |> cpu
+    logq_prev    = variational_density(z_prev_dev, logit_rep) |> cpu
+    logr_prev    = logp_prev - (logaddexp.(logq_prev, logprop_prev) .- log(2))
+    logw_prev    = logp_prev - logq_prev
+
+    logα     = logw_prop .- logaddexp.(logr_prev, logw_prop)
+    logu     = log.(rand(size(x_rep_dev, 2)))
+    acc_flag = logu .< logα
+    rej_flag = .!acc_flag
+
+    z_prop[:,rej_flag]  = z_prev[:,rej_flag]
+    logw_prop[rej_flag] = logw_prev[rej_flag]
+    z_prop, logw_prop
+end
+
+function cache_samples!(::Val{:PIMH}, encoder, x_idx, x, z, state, settings)
+    n_samples              = settings[:n_samples]
+    n_batch                = length(x_idx)
+    state[:samples][x_idx] = [z[:,(i-1)*(n_samples)+1:i*(n_samples)] for i = 1:n_batch]
+end
+
+function cache_samples!(::Val{:PIMH_MC}, encoder, x_idx, x, z, state, settings)
+    n_samples               = settings[:n_samples]
+    n_batch                 = length(x_idx)
+    state[:samples][x_idx]  = [z[   :,(i-1)*(n_samples)+1:i*(n_samples)] for i = 1:n_batch]
+
+    logit = encoder(x)
+    logq  = variational_density(z, logit)
+    state[:logjoint][x_idx] = [logq[  (i-1)*(n_samples)+1:i*(n_samples)] for i = 1:n_batch]
+end
+
+function step!(type::Union{Val{:PIMH}, Val{:PIMH_MC}},
+               idx, epoch, encoder, decoder, params, x, x_idx, device, state, settings)
     n_batch   = size(x, 2)
     n_samples = settings[:n_samples]
     n_total   = (n_samples*2)*n_batch
 
     x_dev     = x |> device
-    μ, logσ   = encoder(x_dev)
-    μ_rep     = repeat_inner(μ,    (1, n_samples*2)) 
-    logσ_rep  = repeat_inner(logσ, (1, n_samples*2)) 
-
-    ϵ         = randn(Float32, (settings[:latent_dim], size(μ_rep, 2))) |> device
-    z_dev     = μ_rep .+ ϵ.*exp.(logσ_rep)
-    x_recon   = decoder(z_dev)
+    logit     = encoder(x_dev)
+    logit_rep = repeat_inner(logit, (1, n_samples*2))
+    z_dev     = sample_z(logit_rep, device)
     x_rep_dev = repeat_inner(x_dev, (1, n_samples*2)) 
-
-    logp_x_z = joint_density(z_dev, x_rep_dev, x_recon)    |> cpu
-    logq_z   = variational_density(z_dev, μ_rep, logσ_rep) |> cpu
-    logw     = logp_x_z - logq_z
-    z        = z_dev |> cpu
+    logw      = compute_log_weight(decoder, x_rep_dev, z_dev, logit_rep, device)
+    z         = z_dev |> cpu
 
     prev_idx  = 1:2:n_total
     state_idx = 2:2:n_total
 
-    z_prop    = view(z,    :, prev_idx)
-    logw_prop = view(logw,    prev_idx)
-    z_init, logw_init = adaptive_restart(Val(:PIMH), x_idx, decoder, x_dev, μ, logσ, z_prop, logw_prop, device, state, settings)
-    z[:, prev_idx] = z_init
-    logw[prev_idx] = logw_init
+    if epoch > 1
+        z_prop    = view(z,    :, prev_idx)
+        logw_prop = view(logw,    prev_idx)
+        z_init, logw_init = adaptive_restart(type, x_idx, decoder, x_dev, logit, z_prop, logw_prop, device, state, settings)
+        z[:, prev_idx] = z_init
+        logw[prev_idx] = logw_init
+    end
 
     u       = rand(Float32, Int(n_total/2))
     logu    = log.(u)
@@ -346,62 +424,19 @@ function step!(::Val{:PIMH}, idx, epoch, encoder, decoder, params, x, x_idx, dev
     rej_flag  = .!acc_flag
     acc_avg   = acc_sum / (n_samples*n_batch)
 
-
     z[:, state_idx[rej_flag]] = z[:, prev_idx[rej_flag]]
 
     x_rep_dev = repeat_inner(x_dev, (1, n_samples)) 
     z         = z[:,state_idx]
+    z_dev     = z |> device
     loss, back = Flux.pullback(params) do
-        jsa_loss(encoder, decoder, x_rep_dev, z |> device, device)
+        jsa_loss(encoder, decoder, x_rep_dev, z_dev, device)
     end
-
-    state[:samples][x_idx] = [z[:,(i-1)*(n_samples)+1:i*(n_samples)] for i = 1:n_batch]
-
-    #
-    # μ_rep     = (μ_rep     |> cpu)[:, 1:2:n_total] |> device
-    # logσ_rep  = (logσ_rep  |> cpu)[:, 1:2:n_total] |> device #repeat_inner(logσ,  (1, n_samples))
-    # x_dev_rep = x_rep_dev #repeat_inner(x_dev, (1, n_samples))
-    # z_prev       = hcat(state[:samples][x_idx]...)
-    # z_prev_dev   = z_prev |> device
-    # x_recon_prev = decoder(z_prev_dev)
-    # logp_x_z_prev = joint_density(z_prev_dev, x_dev_rep, x_recon_prev) |> cpu
-    # logq_z_prev   = variational_density(z_prev_dev, μ_rep, logσ_rep)   |> cpu
-    # logw_prev     = logp_x_z_prev - logq_z_prev
-    # R = mean(logw_prev)
-
-    #state[:samples][x_idx] = [z[:,(i-1)*n_samples+1:i*n_samples] for i = 1:n_batch]
-
-    #μ_rep     = repeat_inner(μ,     (1, n_samples))
-    #logσ_rep  = repeat_inner(logσ,  (1, n_samples))
-    #x_dev_rep = repeat_inner(x_dev, (1, n_samples))
-    #μ_rep     = (μ     |> cpu)[:, 1:2:n_total] |> device
-    #logσ_rep  = (logσ  |> cpu)[:, 1:2:n_total] |> device #repeat_inner(logσ,  (1, n_samples))
-    #x_dev_rep = (x_dev |> cpu)[:, 1:2:n_total] |> device #repeat_inner(x_dev, (1, n_samples))
-    # z_prev       = z
-    # z_prev_dev   = z_prev |> device
-    # x_recon_prev = decoder(z_prev_dev)
-    # logp_x_z_prev = joint_density(z_prev_dev, x_dev_rep, x_recon_prev) |> cpu
-    # logq_z_prev   = variational_density(z_prev_dev, μ_rep, logσ_rep)   |> cpu
-    # logw_prev     = logp_x_z_prev - logq_z_prev
-    #
+    cache_samples!(type, encoder, x_idx, x_rep_dev, z_dev, state, settings)
     
-    #R_now = mean(logw_prev)
-    #println("$(R) $(R_now)")
-
     grad = back(1f0)
     Flux.Optimise.update!(state[:opt], params, grad)
     loss, acc_avg
-end
-
-function sample_z(encoder, decoder, x, n_latent, device)
-    μ, logσ  = encoder(x)
-    ϵ        = randn(Float32, (n_latent, size(x,2))) |> device
-    z        = μ + ϵ.*exp.(logσ)
-    x_recon  = decoder(z)
-    logp_x_z = joint_density(z, x, x_recon)
-    logq_z   = variational_density(z, μ, logσ)
-    logw     = logp_x_z - logq_z
-    z, μ, logσ, logw
 end
 
 function step!(::Val{:RWS}, idx, epoch, encoder, decoder, params, x, x_idx, device, state, settings)
@@ -410,8 +445,10 @@ function step!(::Val{:RWS}, idx, epoch, encoder, decoder, params, x, x_idx, devi
     n_samples = settings[:n_samples]
     n_batch   = size(x, 2)
 
-    ϵ    = randn(Float32, (n_latent, size(x_repeat,2)))
-    logw = compute_log_weight(encoder, decoder, ϵ |> device, x_repeat |> device) |> cpu
+    x_rep_dev = x_repeat |> device
+    u         = rand(Float32, (n_latent, size(x_repeat,2)))
+    z, logit  = sample_z(encoder, x_rep_dev, u |> device, device)
+    logw      = compute_log_weight(decoder, x_rep_dev, z, logit, device) |> cpu
     for i = 1:n_batch
         idx_start = (i - 1)*n_samples + 1
         idx_stop  = i*n_samples
@@ -425,22 +462,18 @@ function step!(::Val{:RWS}, idx, epoch, encoder, decoder, params, x, x_idx, devi
                       decoder,
                       x_repeat |> device,
                       w        |> device,
-                      ϵ        |> device,
+                      z        |> device,
                       n_batch,
-                      device,
-                      state)
+                      device)
     end
     grad = back(1f0)
     Flux.Optimise.update!(state[:opt_wake], params, grad)
 
     if mod(idx, 5) == 0
+        x_dev = x |> device
+        z, _  = sample_z(encoder, x_dev, device)
         loss, back = Flux.pullback(params) do
-            rws_sleep_loss(encoder,
-                           decoder,
-                           x |> device,
-                           device,
-                           settings[:latent_dim],
-                           state)
+            rws_sleep_loss(encoder, x_dev, z)
         end
         grad = back(1f0)
         Flux.Optimise.update!(state[:opt_sleep], params, grad)
@@ -478,7 +511,7 @@ function train(type::Val, settings)
     decoder = Decoder(settings[:input_dim], settings[:latent_dim], settings[:hidden_dim]) |> device
 
     # initialize encoder and decode    # parameters
-    params = Flux.params(encoder.linear, encoder.μ, encoder.logσ, decoder)
+    params = Flux.params(encoder, decoder)
     state  = init_state!(type, encoder, decoder, train_loader, device, settings)
 
     !ispath(settings[:save_path]) && mkpath(settings[:save_path])
@@ -490,7 +523,7 @@ function train(type::Val, settings)
     image_path = joinpath(settings[:save_path], "original.png")
     save(image_path, image)
 
-    valid_hist = Float64[]
+    valid_hist = []
 
     # training
     train_steps = 0
@@ -509,25 +542,33 @@ function train(type::Val, settings)
         end
 
         # save image
-        _, _, rec_original = reconstuct(encoder, decoder, original, device)
-        rec_original = sigmoid.(rec_original)
-        image = convert_to_image(rec_original, 10)
-        image_path = joinpath(settings[:save_path], "epoch_$(epoch).png")
-        save(image_path, image)
-        @info "Image saved: $(image_path)"
+        # _, rec_original = reconstuct(encoder, decoder, original, device)
+        # rec_original = sigmoid.(rec_original)
+        # image = convert_to_image(rec_original, 10)
+        # image_path = joinpath(settings[:save_path], "epoch_$(epoch).png")
+        # save(image_path, image)
+        # @info "Image saved: $(image_path)"
 
-        #if mod(epoch, 5) == 0
-        valid_mll = mapreduce(+, valid_loader) do (x, _)
-            ϵ    = randn(Float32, (settings[:latent_dim], settings[:n_batch]))
-            logw = compute_log_weight(encoder, decoder, ϵ |> device, x |> device)
-            logsumexp(logw) - log(length(logw))
-        end / length(valid_loader)
+        valid_period = settings[:valid_period]
+        if mod(epoch, valid_period) == 0
+            valid_mll = mapreduce(+, test_loader) do (x, _)
+                x_dev = x |> device
+                logit = encoder(x_dev)
+                p     = sigmoid.(logit)
+                u     = rand(Float32, (settings[:latent_dim], 256))  |> device
+                z_dev = Float32.(p .> u)
+                logw  = compute_log_weight(decoder, x_dev, z_dev, logit, device) |> cpu
+                StatsFuns.logsumexp(logw) - log(length(logw))
+            end / length(valid_loader)
 
-        push!(valid_hist, valid_mll)
-        @info "Validation" mll=valid_mll
+            push!(valid_hist, valid_mll)
+            @info "Validation" mll=valid_mll
 
-        display(Plots.plot(valid_hist))
-        #end
+            t = 1:valid_period:valid_period*length(valid_hist)
+            y = valid_hist
+            display(Plots.plot(t, y))
+        end
+        GC.gc()
     end
 
     # save model
@@ -536,22 +577,52 @@ function train(type::Val, settings)
         BSON.@save model_path encoder decoder
         @info "Model saved: $(model_path)"
     end
+    valid_hist
 end
 
 function main()
     CUDA.allowscalar(false)
 
     settings = Dict{Symbol, Any}()
-    settings[:η]          = 3e-4
-    settings[:n_batch]    = 64
-    settings[:n_samples]  = 4
-    settings[:n_epochs]   = 10
-    settings[:seed]       = 1
-    settings[:input_dim]  = 28^2
-    settings[:latent_dim] = 10
-    settings[:hidden_dim] = 600
-    settings[:save_path]  = "output"
+    settings[:η]            = 3e-4
+    settings[:n_batch]      = 50
+    settings[:n_epochs]     = 1000
+    settings[:valid_period] = 10
+    settings[:input_dim]    = 28^2
+    settings[:latent_dim]   = 200
+    settings[:hidden_dim]   = 200
+    settings[:save_path]    = "output"
 
-    #train(Val(:PIMH), settings)
-    train(Val(:PIMH), settings)
+    settings[:n_epochs]  = 100
+    settings[:n_samples] = 2
+    settings[:seed]      = 1
+    settings[:gamma]     = 0.05
+    #train(Val(:JSA), settings)
+    train(Val(:JSA_MC), settings)
+    train(Val(:PIMH_MC), settings)
+
+    # for i = 1:5
+    #     for γ ∈ [0.05]
+    #         for n_samples ∈ [2, 4]
+    #             for method ∈ ["JSA", "PIMH"]
+    #                 fname = "VAE_$(method)_gamma=$(γ)_samples=$(n_samples).jld2"
+    #                 data  = if isfile(fname)
+    #                     FileIO.load(fname)
+    #                 else
+    #                     Dict{String, Any}()
+    #                 end
+    #                 if string(i) ∈ keys(data)
+    #                     @info "skipping seed $(i)"
+    #                     continue
+    #                 end
+    #                 settings[:seed]      = i
+    #                 settings[:gamma]     = γ
+    #                 settings[:n_samples] = n_samples
+    #                 valid_hist           = train(Val(Symbol(method)), settings)
+    #                 data[string(i)]      = valid_hist
+    #                 FileIO.save(fname, data)
+    #             end
+    #         end
+    #     end
+    # end
 end
