@@ -1,0 +1,73 @@
+
+% Second version of table, with booktabs.
+\begin{table*}
+  \vspace{-0.4in}
+\centering
+\caption{Computational Cost of Markov-chain Schemes}\label{table:cost}
+\setlength{\tabcolsep}{2pt}
+  \begin{threeparttable}
+\begin{tabular}{lccccc}\toprule
+& \multicolumn{3}{c}{\footnotesize Estimation} & \multicolumn{2}{c}{\footnotesize Stochastic gradient} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-6}
+  & \(\footnotesize p\left( \vz, \vx \right)\)
+  & \(\footnotesize q_{\vlambda}(\vz)\)
+  & \(\footnotesize q_{\vlambda}(\vz)\)
+  & \(\footnotesize p\left( \vz, \vx \right)\)
+  & \(\footnotesize q_{\vlambda}(\vz)\)
+  \\
+  & {\footnotesize\# Eval.  }
+  & {\footnotesize\# Eval.  }
+  & {\footnotesize\# Samples}
+  & {\footnotesize\# Grad.  }
+  & {\footnotesize\# Grad.  }
+%
+\\\midrule
+%
+{\footnotesize
+ADVI
+}
+& \(0\)
+& \(0\)
+& \(N\)
+& \(N\)
+& \(0\)
+\\\arrayrulecolor{black!30}\midrule
+%
+{\footnotesize
+Single state estimator with CIS
+}
+& \(N-1\)
+& \(N\)
+& \(N-1\)
+& \(0\)
+& \(1\)\tnote{1}\;\;{\footnotesize or}\;\(N\)\tnote{2}
+\\
+%
+{\footnotesize
+Sequential state estimator with IMH
+}
+& \(N\)
+& \(N\)
+& \(N\)
+& \(0\)
+& \(N\)
+\\
+%
+{\footnotesize
+Parallel state estimator with IMH
+}
+& \(N\)
+& \(N\)
+& \(N\)
+& \(0\)
+& \(N\)
+\\\bottomrule
+\end{tabular}
+  \begin{tablenotes}
+    \item[*]{\footnotesize \(N\) is the number of samples used in each method}.
+    \item[1]{\footnotesize Vanilla CIS kernel}.
+    \item[2]{\footnotesize Rao-Blackwellized CIS kernel}.
+  \end{tablenotes}
+  \end{threeparttable}
+  \vspace{-0.1in}
+\end{table*}

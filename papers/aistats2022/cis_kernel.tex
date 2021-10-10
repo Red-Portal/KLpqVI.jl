@@ -1,0 +1,42 @@
+
+
+\textit{Detailed derivation of \textbf{\cref{eq:cis_kernel}}}
+\begin{align}
+f(\vz) &= \frac{\sum_{i=0}^N w(\vz^{(i)})f(\vz^{(i)})}{\sum_{i=0}^N w(\vz^{(i)})} = \frac{\sum_{i=1}^N w(\vz^{(i)})f(\vz^{(i)}) + w(\vz_{t-1})f(\vz_{t-1})}{\sum_{i=0}^N w(\vz^{(i)})} \\
+    &=\frac{\sum_{i=1}^N w(\vz^{(i)})}{\sum_{i=0}^N w(\vz^{(i)})}\frac{\sum_{i=1}^N w(\vz^{(i)})f(\vz^{(i)})}{\sum_{i=1}^N w(\vz^{(i)})} +\frac{w(\vz_{t-1})}{\sum_{i=0}^N w(\vz^{(i)})}f(\vz_{t-1})\\
+    &= \alpha(z_{t-1},\vz^{(1:N)})\frac{\sum_{i=1}^N w(\vz^{(i)})f(\vz^{(i)})}{\sum_{i=1}^N w(\vz^{(i)})} + r(z_{t-1}|\vz^{(1:N)})f(\vz_{t-1}),
+\end{align}
+where
+    \(
+    \alpha\,(\vz_{t-1}, \vz^{(1:N)}) =
+      \sum^{N}_{i=1} w\,(\vz^{(i)})  
+    /
+      \sum^{N}_{i=0} w\,(\vz^{(i)})  
+  \), $f_{IS}=\sum_{i=1}^N w(\vz^{(i)})f(\vz^{(i)})/\sum_{i=1}^N w(\vz^{(i)})$, and 
+  \(
+  r\,(\vz_{t-1}\mid\vz^{(1:N)}) =w\,(\vz_{t-1}) / \sum^{N}_{i=0} w\,(\vz^{(i)}).
+  \)
+
+Taking expectations on both sides, we get
+\begin{align}
+\mathbb{E}[f(\vz)] &= \mathbb{E}\left[ \alpha(z_{t-1},\vz^{(1:N)})\frac{\sum_{i=1}^N w(\vz^{(i)})f(\vz^{(i)})}{\sum_{i=1}^N w(\vz^{(i)})}\right] + \mathbb{E}[r(z_{t-1}|\vz^{(1:N)})f(z_{t-1})]\\
+    &= \mathbb{E}\left[ \alpha(z_{t-1},\vz^{(1:N)})\frac{\sum_{i=1}^N w(\vz^{(i)})f(\vz^{(i)})}{\sum_{i=1}^N w(\vz^{(i)})}\right] + r(\vz_{t-1})f(\vz_{t-1}).
+\end{align}
+
+%\\
+%
+  %% &=  
+  %%  \int \alpha\,(\vz_{t-1}, \vz^{(1:N)}) \,
+  %%   \frac{
+  %%     \sum^{N}_{i=1} w\,(\vz^{(i)})\,f(\vz^{(i)})
+  %%   }
+  %%   {
+  %%     \sum^{N}_{i=1} w\,(\vz^{(i)})
+  %%   } \,
+  %%   q_{\vlambda}(\vz^{(1:N)})\,d\vz^{(1:N)}
+  %%   +
+  %%  r\,(\vz_{t-1})\,f(\vz_{t-1})
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:
