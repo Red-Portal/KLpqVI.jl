@@ -108,6 +108,13 @@ function run_task(prng::Random.AbstractRNG,
     X_test  = Array(X_test')
     model   = logisticgp(X_train, y_train, 1e-4)
 
+    μ = mean(X_train, dims=2)
+    σ = std(X_train, dims=2)
+    X_train .-= μ
+    X_train ./= σ
+    X_test .-= μ
+    X_test ./= σ
+
     #AdvancedVI.setadbackend(:forwarddiff)
     #Turing.Core._setadbackend(Val(:forwarddiff))
     #AdvancedVI.setadbackend(:reversediff)
@@ -212,6 +219,14 @@ function run_task(prng::Random.AbstractRNG,
     X_train, y_train, X_test, y_test = prepare_dataset(prng, data_x, data_y, ratio=0.9)
     X_train = Array(X_train')
     X_test  = Array(X_test')
+
+    μ = mean(X_train, dims=2)
+    σ = std(X_train, dims=2)
+    X_train .-= μ
+    X_train ./= σ
+    X_test .-= μ
+    X_test ./= σ
+
     jitter  = 1e-6
 
     n_features = size(X_train, 1)
