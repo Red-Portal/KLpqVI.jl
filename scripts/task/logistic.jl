@@ -128,6 +128,11 @@ function run_task(prng::Random.AbstractRNG,
         p   = StatsFuns.normcdf.(s)
         acc = mean((p .> 0.5) .== y_test)
         ll  = mean(logpdf.(Turing.BernoulliLogit.(s), y_test))
+
+        if (isinf(ll))
+            throw(OverflowError("predictive likelihood is inf"))
+        end
+
         (ll=ll, acc=acc,)
     end
 
