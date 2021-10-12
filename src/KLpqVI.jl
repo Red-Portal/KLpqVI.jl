@@ -9,7 +9,6 @@ using Memoization
 
 import Base.Iterators
 import SpecialFunctions
-import Tracker
 import Dates
 import PDMats
 import AdvancedVI
@@ -21,6 +20,11 @@ import ForwardDiff
 import PyCall
 import Random
 import Turing
+
+import HDF5
+import KernelFunctions
+import AbstractGPs
+
 
 #@eval Zygote begin
 #end
@@ -48,6 +52,7 @@ include("advi.jl")
 include("msc_cis.jl")
 include("msc_cisrb.jl")
 include("msc_parimh.jl")
+include("msc_seqimh.jl")
 include("rws.jl")
 include("psis.jl")
 include("lda_svi.jl")
