@@ -52,7 +52,7 @@ end
 function load_dataset(::Val{:breast})
     dataset, _ = DelimitedFiles.readdlm(
         datadir("dataset", "breast.csv"), ',', header=true)
-    data_x  = dataset[:, 3:end-1]
+    data_x  = dataset[:, 3:11]
     data_y  = dataset[:, 2]
 
     data_y[data_y .== "M"] .= 1.0
