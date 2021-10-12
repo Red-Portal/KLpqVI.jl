@@ -129,7 +129,7 @@
   \mathbb{V}_{q_\lambda}[f|\vz_{t-1}] \approx \mathbb{V}_{q_\lambda} \left[\frac{N^2Z^2}{(w(\vz_{t-1})+NZ)^2} f_{IS} + \frac{w(\vz_{t-1})}{(w(\vz_{t-1})+NZ)^2}\sum_{i=1}^N w(\vz^{(i)})f(\vz^{(i)})\right. \\ \left.
   + \left. \frac{w(\vz_{t-1})}{\sum_{i=0}^N w(\vz^{(i)})} f(\vz_{t-1}) \right\vert \vz_{t-1} \right].
   \end{align}
-  Observe that $\sum_{i=1}^N w(\vz^{(i)}) f(\vz^{(i)}) = O(N)$ since $\{\vz^{(1)}, \dots, \vz^{(N)}\}$ are independent and identically distributed and that $w(\vz_{t-1})f(\vz_{t-1})/\sum_{i=0}^N w(\vz^{(i)})=o(N)$.
+  Observe that $\sum_{i=1}^N w(\vz^{(i)}) f(\vz^{(i)}) = O(N)$ since $\{\vz^{(1)}, \dots, \vz^{(N)}\}$ are independent and identically distributed and that $w(\vz_{t-1})f(\vz_{t-1})/\sum_{i=0}^N w(\vz^{(i)})=o(1)$.
   Combining these, we obtain
   \begin{align}
     \Vsub{q_{\vlambda}}{  f \mid \vz_{t-1}, \vz^{(1:N)} } \approx \frac{N^4 Z^4}{(w(\vz_{t-1}) + NZ)^4} \Vsub{q_{\vlambda}}{ f_{\text{IS}} \,\middle\vert\, \vz_{t-1} },
