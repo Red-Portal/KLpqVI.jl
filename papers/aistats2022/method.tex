@@ -139,21 +139,22 @@ It can also be found in the review on multiple-try MCMC methods by~\citet[Table 
 Our results suggest that, for the seq.-IMH estimator and single-CIS estimator, increasing \(N\) improves the bias decrease rate.
 However, it is important to note that all bias bounds depend on \(w^*\).
 By the following proposition, in the initial stages of VI where the KL divergence is large, \(w^*\) is bounded below exponentially.
-%
-\begin{proposition}
-  \(w^* = \sup_{\vz} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda}\left(\vz\right)} \) is bounded below expoentially by the KL divergence such that
-  \(
+
+\begin{theoremEnd}{proposition}
+  \(w^* = \sup_{\vz} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda}\left(\vz\right)} \) is bounded below expoenentially by the KL divergence such that
+  \[
   \exp\left(\DKL{p\left(\cdot\mid\vx\right)}{ q_{\vlambda}\left(\cdot\right) }\right) \leq w^*.
-  \)
-  \begin{proof}
-    \(
-    \DKL{p\left(\cdot\mid\vx\right)}{ q_{\vlambda}\left(\cdot\right) }
-    = \int p\left(\vz\mid\vx\right) \log \frac{p\left(\vz\mid\vx\right)}{q_{\vlambda}\left(\vz\right)}\,d\vz
-    \leq \int p\left(\vz\mid\vx\right) \log M \, d\vz = \log w^*
-    \)
-  \end{proof}
-\end{proposition}
-%
+  \]
+\end{theoremEnd}
+\begin{proofEnd}
+  \begin{align}
+    &\DKL{p\left(\cdot\mid\vx\right)}{ q_{\vlambda}\left(\cdot\right) } \\
+    &= \int p\left(\vz\mid\vx\right) \log \frac{p\left(\vz\mid\vx\right)}{q_{\vlambda}\left(\vz\right)}\,d\vz \\
+    &\leq \int p\left(\vz\mid\vx\right) \log M \, d\vz \\
+    &= \log w^*
+  \end{align}
+\end{proofEnd}
+
 Thus, in the initial steps of VI, the bias decrease rate \(C\) will be close to 1, making the effect of \(N\) minimal.
 On the other hand, in the later steps of VI, the KL divergence is small.
 However, in this case \(t\) will be larege, therefore making the bias small regardless.

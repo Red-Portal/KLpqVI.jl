@@ -32,7 +32,7 @@
 \paragraph{Experimental Setup}
 We first present numerical simulation results of the three estimators.
 We chose the target distribution \(p\left(\vz\right)\) to be a 10 dimensional white Gaussian.
-We then randomly generated 2048 random \(q_{\vmu, \mSigma}(\vz)\) where \(\vmu\) is drawn from a multivariate Student's T distribution, and \(\mSigma = 1.5 \mI\).
+We then randomly generated 2048 random \(q_{\vmu, \mSigma}(\vz)\) where \(\vmu\) is drawn from a multivariate Student's T distribution, and \(\mSigma = 1.5^2 \mI\).
 Using the 2048 random \(q_{\vmu, \mSigma}\)s, we simulate 128 Markov-chains of length \(T=50\) and compute the bias and variance of the score function.
 
 \paragraph{Results}
@@ -41,7 +41,7 @@ We do not present the bias as the three schemes were visually indistinguishable 
 From the results, when the KL divergence is large, we can see that seq.-IMH and single-CIS do not benefit from increasing \(N\).
 On the other hand, the parallel state estimator always benefit from increasing \(N\).
 
-\subsection{Experimental Setup}
+\subsection{Baselines and Implementation}
 \paragraph{Implementation}
 We implemented MSC with PIMH on top of the Turing~\citep{ge2018t} probabilistic programming framework.
 Our implementation works with any model described in Turing, which automatically handles distributions with constrained support~\citep{JMLR:v18:16-107}.
@@ -50,14 +50,16 @@ We set the computational budget \(N=10\) and \(T=10^4\) for all experiments unle
 
 \vspace{-0.1in}
 \paragraph{Considered Baselines}
-We compare MSC-PIMH with
-\begin{enumerate*}[label=\textbf{(\roman*)}]
-  \item MSC using the CIS kernel (\textbf{MSC-CIS},~\citealt{NEURIPS2020_b2070693}), 
-  \item MSC using the CIS kernel with Rao-Blackwellization (\textbf{MSC-CISRB},~\citealt{NEURIPS2020_b2070693}),
-  \item the adaptive IS method using SNIS as introduced in~\cref{section:ivi_previous} (\textbf{SNIS}),
-  \item the reweighted wake-sleep algorithm (\textbf{RWS},~\citealt{DBLP:journals/corr/BornscheinB14}), and  
-  \item evidence lower-bound maximization (\textbf{ELBO},~\citealt{pmlr-v33-ranganath14}).
-\end{enumerate*}
+We compare 
+\vspace{-0.1in}
+\begin{enumerate}[noitemsep]
+  \item[\ding{182}] score climbing with the parallel state estimator and the IMH kernel (\textbf{par.-IMH}), 
+  \item[\ding{183}] score climbing with the sequential state estimator and the IMH kernel (\textbf{seq.-IMH}), 
+  \item[\ding{184}] score climbing with the single state estimator and the CIS kernel (\textbf{single-CIS},~\citealt{NEURIPS2020_b2070693}), 
+  \item[\ding{185}] score climbing with the single state estimator, the CIS kernel, and Rao-Blackwellization (\textbf{MSC-CISRB},~\citealt{NEURIPS2020_b2070693}),
+  \item[\ding{186}] the adaptive IS method using SNIS as introduced in~\cref{section:ivi_previous} (\textbf{SNIS}),
+  \item[\ding{187}] evidence lower-bound maximization (\textbf{ELBO},~\citealt{pmlr-v33-ranganath14}).
+\end{enumerate}
 Specifically, we use automatic differentiation VI (ADVI,~\citealt{JMLR:v18:16-107}) implemented by Turing.
 
 \begin{figure*}
@@ -87,15 +89,6 @@ Specifically, we use automatic differentiation VI (ADVI,~\citealt{JMLR:v18:16-10
   \vspace{-0.2in}
 \end{figure*}
 
-\vspace{-0.1in}
-\paragraph{Reinterpreting RWS}
-The original RWS algorithm assumes that independent samples from \(p(\vz\mid\vx)\) are available, possibly with an additional cost.
-%It uses these independent samples for estimating the gradient once every \(K\) steps, and uses SNIS for the rest.
-%In our setting, we do not assume that independent samples from \(p(\vz\mid\vx)\) are available.
-Since this is not the case in our setting, we reinterpret RWS as alternating between cheap (\textit{sleep update}) and expensive (\textit{wake update}) estimates.
-We respectively use SNIS and HMC for the sleep and wake updates, and perform the wake update every \(K=5\) steps as originally recommended by~\citet{DBLP:journals/corr/BornscheinB14}.
-%HMC shows excellent statistical performance in practice, but is much expensive as it requires multiple gradients \(\nabla_{\vz} p(\vz, \vx)\) for generating only a single samples.
-
 %% \subsection{Isotropic Gaussian}
 %% We first perform experiments with an 100-D isotropic multivariate Gaussian distribution.
 %% With Gaussian distributions, convergence can be evaluated exactly since their KL divergence is available in a closed form.
@@ -115,27 +108,26 @@ We evaluate MSC-PIMH on logistic regression with the Pima Indians diabetes (\tex
 \paragraph{Probabilistic Model}
 Instead of the usual single-level probit/logistic regression models used in VI, we choose a more complex hierarchical logistic regression model 
 %
-\begin{equation}
-y_i \sim \text{Bernoulli-Logit}\,(p),\;
-p \sim \mathcal{N}(\vx_i^{\top}\symbf{\beta} + \alpha,\, \sigma_{\alpha}^2),\;
-\symbf{\beta} \sim \mathcal{N}(\symbf{0},\, \sigma_{\beta}^2 \mI),\;
-\sigma_{\beta},\,\sigma_{\alpha} \sim \mathcal{N}^{+}(0, 1.0)
-\end{equation}
+\begin{align*}
+y_i &\sim \text{Bernoulli-Logit}\,(p) \\
+p &\sim \mathcal{N}(\vx_i^{\top}\symbf{\beta} + \alpha,\, \sigma_{\alpha}^2) \\
+\symbf{\beta} &\sim \mathcal{N}(\symbf{0},\, \sigma_{\beta}^2 \mI) \\
+\sigma_{\beta}, \sigma_{\alpha} &\sim \mathcal{N}^{+}(0, 1.0)
+\end{align*}
 %
 where \(\mathcal{N}^+(\mu, \sigma)\) is a positive constrained normal distribution with mean \(\mu\) and standard deviation \(\sigma\), \(\vx_i\) and \(y_i\) are the feature vector and target variable of the \(i\)th datapoint.
 The extra degrees of freedom \(\sigma_{\beta}\) and \(\sigma_{\alpha}\) make this model relatively more challenging.
 
 %
-\begin{wrapfigure}{r}{0.4\textwidth}
-  \vspace{-0.3in}
-  \includegraphics[scale=0.75]{figures/german_01.pdf}
-  \caption{Pareto-\(\widehat{k}\) statistics result on \texttt{german}.
-    The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
-    }\label{fig:paretok}
-  \vspace{-0.2in}
-\end{wrapfigure}
+%% \begin{wrapfigure}{r}{0.4\textwidth}
+%%   \vspace{-0.3in}
+%%   \includegraphics[scale=0.75]{figures/german_01.pdf}
+%%   \caption{Pareto-\(\widehat{k}\) statistics result on \texttt{german}.
+%%     The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
+%%     }\label{fig:paretok}
+%%   \vspace{-0.2in}
+%% \end{wrapfigure}
 %
-\vspace{-0.1in}
 \paragraph{Results}
 The test accuracy and test log-likelihood results are shown in~\cref{fig:logistic}.
 Our proposed MSC-PIMH is the fastest to converge on all the datasets.
@@ -145,7 +137,6 @@ Among the two, MSC-CISRB performs only marginally better than MSC-CIS.
 Meanwhile, SNIS converges the most slowly among inclusive VI methods.
 Although much slower to converge, ELBO achieves competitive results.
 
-\vspace{-0.1in}
 \paragraph{Inclusive VI v.s. Exclusive VI}
 The results of~\cref{fig:logistic} might be misleading to conclude that inclusive and exclusive VI deliver similar results.
 However, in the parameter space, they choose different optimization paths.
@@ -153,10 +144,29 @@ This is shown in~\cref{fig:paretok} through the Pareto-\(\widehat{k}\) diagnosti
 While the test accuracy suggests that ELBO converges around \(t=2000\), in terms of Pareto-\(\widehat{k}\), it takes much longer to converge (about \(t=5000\)).
 This shows that, even if their predictive performance is similar, the inclusive VI chooses paths that have better density coverage as expected.
 
+\subsection{Gaussian Process Classification}\label{section:bgp}
+\begin{figure*}
+  \vspace{-0.1in}
+  \centering
+  \subfloat[\texttt{sonar}]{
+    \includegraphics[scale=0.75]{figures/sonar_01.pdf}
+  }
+  \subfloat[\texttt{ionosphere}]{
+    \includegraphics[scale=0.75]{figures/ionosphere_01.pdf}
+  }
+  %% \subfloat[\texttt{german}]{
+  %%   \includegraphics[scale=0.75]{figures/breast_01.pdf}
+  %% } \\
+  \caption{Test accuracy and log-likelihood of logistic regression problems.
+    The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
+  }\label{fig:logistic}
+  \vspace{-0.2in}
+\end{figure*}
+
 \subsection{Marginal Likelihood Estimation}\label{section:mll}
 %
 \begin{figure}[H]
-  \vspace{-0.1in}
+  %\vspace{-0.1in}
   \centering
   \begin{minipage}[b]{0.17\linewidth}
     \centering
@@ -167,34 +177,29 @@ This shows that, even if their predictive performance is similar, the inclusive 
     \includegraphics[scale=0.7]{figures/radon_02.pdf}
     \subcaption{\texttt{radon}}
   \end{minipage}
-  \begin{minipage}[b]{0.35\linewidth}
-    \centering
-    \includegraphics[scale=0.7]{figures/sv_02.pdf}
-    \subcaption{\texttt{stock}}\label{fig:sv}
-  \end{minipage}
+  %% \begin{minipage}[b]{0.35\linewidth}
+  %%   \centering
+  %%   \includegraphics[scale=0.7]{figures/sv_02.pdf}
+  %%   \subcaption{\texttt{stock}}\label{fig:sv}
+  %% \end{minipage}
   \caption{Marginal log-likelihood (\(\log Z\)) estimates of considered methods.
     ELBO is omitted in~\cref{fig:sv} as it failed to deliver reasonable estimates.
     The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
   }\label{fig:marginal_likelihood}
-  \vspace{-0.15in}
+  %\vspace{-0.15in}
 \end{figure}
 %
 \paragraph{Experimental Setup}
-We now estimate the marginal log-likelihood \(\log Z\) of a stochastic volatility model (\texttt{stock}, \(\vz \in \mathbb{R}^{2613}\),~\citealt{kim_stochastic_1998}) and a hierarchical regression model with partial pooling (\texttt{radon}, \(\vz \in \mathbb{R}^{175}\),~\citealt{gelman_data_2007}) for modeling radon levels in U.S homes.
-For \texttt{stock}, we use 10 years of the S\&P index daily closing price (May 3, 2007, to May 3, 2017).
-\texttt{stock} is highly challenging as it is both high dimensional and strongly correlated.
+We now estimate the marginal log-likelihood of a hierarchical regression model with partial pooling (\texttt{radon}, \(\vz \in \mathbb{R}^{175}\),~\citealt{gelman_data_2007}) for modeling radon levels in U.S homes.
+\texttt{radon} contains multiple posterior degeneracies from the hierarchy.
 We estimated the reference marginal likelihood using \textit{thermodynamic integration} (TI,~\citealt{gelman_simulating_1998, neal_annealed_2001, lartillot_computing_2006}) with HMC implemented by Stan~\citep{carpenter_stan_2017, betancourt_conceptual_2017}.
 
-\vspace{-0.10in}
 \paragraph{Results}
 The results are shown in~\cref{fig:marginal_likelihood}.
 On \texttt{radon}, MSC-PIMH converges quickly and provides the most accurate estimate.
 By contrast, MSC-CIS and MSC-CISRB converge much slowly.
 SNIS and ELBO, on the other hand, overestimate \(\log Z\), which can be attributed to the mode-seeking behavior of ELBO and the small sample bias of SNIS.
-On \texttt{stock}, SNIS is unexpectedly the most accurate.
-Unfortunately, MSC-PIMH, MSC-CIS, MSC-CISRB all underestimate \(\log Z\).
-Nevertheless, MSC-PIMH provides much better estimates than the latter two.
-Lastly, we observe that only ELBO fails to converge given the same amount of SGD steps.
+
 
 %%% Local Variables:
 %%% TeX-master: "master"

@@ -3537,6 +3537,13 @@
   number = {2}
 }
 
+@inproceedings{habib2018auxiliary,
+  title = {Auxiliary Variational {{MCMC}}},
+  booktitle = {International Conference on Learning Representations},
+  author = {Habib, Raza and Barber, David},
+  year = {2019}
+}
+
 @article{hagerup_allocating_1997,
   title = {Allocating Independent Tasks to Parallel Processors: An Experimental Study},
   shorttitle = {Allocating {{Independent Tasks}} to {{Parallel Processors}}},
@@ -6837,6 +6844,20 @@
   series = {Proceedings of Machine Learning Research}
 }
 
+@inproceedings{pmlr-v139-campbell21a,
+  title = {A Gradient Based Strategy for {{Hamiltonian Monte Carlo}} Hyperparameter Optimization},
+  booktitle = {Proceedings of the 38th International Conference on Machine Learning},
+  author = {Campbell, Andrew and Chen, Wenlong and Stimper, Vincent and {Hernandez-Lobato}, Jose Miguel and Zhang, Yichuan},
+  year = {2021},
+  month = jul,
+  volume = {139},
+  pages = {1238--1248},
+  publisher = {{PMLR}},
+  abstract = {Hamiltonian Monte Carlo (HMC) is one of the most successful sampling methods in machine learning. However, its performance is significantly affected by the choice of hyperparameter values. Existing approaches for optimizing the HMC hyperparameters either optimize a proxy for mixing speed or consider the HMC chain as an implicit variational distribution and optimize a tractable lower bound that can be very loose in practice. Instead, we propose to optimize an objective that quantifies directly the speed of convergence to the target distribution. Our objective can be easily optimized using stochastic gradient descent. We evaluate our proposed method and compare to baselines on a variety of problems including sampling from synthetic 2D distributions, reconstructing sparse signals, learning deep latent variable models and sampling molecular configurations from the Boltzmann distribution of a 22 atom molecule. We find that our method is competitive with or improves upon alternative baselines in all these experiments.},
+  pdf = {http://proceedings.mlr.press/v139/campbell21a/campbell21a.pdf},
+  series = {Proceedings of Machine Learning Research}
+}
+
 @inproceedings{pmlr-v33-ranganath14,
   title = {Black Box Variational Inference},
   booktitle = {Proceedings of the 17th International Conference on Artificial Intelligence and Statistics ({{AISTATS}})},
@@ -6863,6 +6884,21 @@
   address = {{Lille, France}},
   abstract = {Bayesian Optimisation (BO) is a technique used in optimising a D-dimensional function which is typically expensive to evaluate. While there have been many successes for BO in low dimensions, scaling it to high dimensions has been notoriously difficult. Existing literature on the topic are under very restrictive settings. In this paper, we identify two key challenges in this endeavour. We tackle these challenges by assuming an additive structure for the function. This setting is substantially more expressive and contains a richer class of functions than previous work. We prove that, for additive functions the regret has only linear dependence on D even though the function depends on all D dimensions. We also demonstrate several other statistical and computational benefits in our framework. Via synthetic examples, a scientific simulation and a face detection problem we demonstrate that our method outperforms naive BO on additive functions and on several examples where the function is not additive.},
   pdf = {http://proceedings.mlr.press/v37/kandasamy15.pdf},
+  series = {Proceedings of Machine Learning Research}
+}
+
+@inproceedings{pmlr-v37-salimans15,
+  title = {Markov Chain {{Monte Carlo}} and Variational Inference: {{Bridging}} the Gap},
+  booktitle = {Proceedings of the 32nd International Conference on Machine Learning},
+  author = {Salimans, Tim and Kingma, Diederik and Welling, Max},
+  year = {2015},
+  month = jul,
+  volume = {37},
+  pages = {1218--1226},
+  publisher = {{PMLR}},
+  address = {{Lille, France}},
+  abstract = {Recent advances in stochastic gradient variational inference have made it possible to perform variational Bayesian inference with posterior approximations containing auxiliary random variables. This enables us to explore a new synthesis of variational inference and Monte Carlo methods where we incorporate one or more steps of MCMC into our variational approximation. By doing so we obtain a rich class of inference algorithms bridging the gap between variational methods and MCMC, and offering the best of both worlds: fast posterior approximation through the maximization of an explicit objective, with the option of trading off additional computation for additional accuracy. We describe the theoretical foundations that make this possible and show some promising first results.},
+  pdf = {http://proceedings.mlr.press/v37/salimans15.pdf},
   series = {Proceedings of Machine Learning Research}
 }
 
@@ -9181,6 +9217,17 @@
   year = {2015},
   pages = {2635--2639},
   publisher = {{ISCA}}
+}
+
+@article{zhang_variational_2018,
+  title = {Variational {{Hamiltonian Monte Carlo}} via Score Matching},
+  author = {Zhang, Cheng and Shahbaba, Babak and Zhao, Hongkai},
+  year = {2018},
+  month = jun,
+  volume = {13},
+  file = {/home/msca8h/Zotero/storage/ZMJ29LGF/Zhang et al. - 2018 - Variational Hamiltonian Monte Carlo via Score Matc.pdf},
+  journal = {Bayesian Analysis},
+  number = {2}
 }
 
 @article{zhou_automatic_2016,
