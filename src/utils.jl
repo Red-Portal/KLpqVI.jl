@@ -74,3 +74,16 @@ function get_variational_mode(q, model, varsym)
     DynamicPPL.setall!(vi, μ_z)
     vi.metadata[varsym].vals
 end
+
+function get_variational_mean_var(q, model, varsym)
+    vi  = DynamicPPL.VarInfo(model)
+    μ_η = mean(q.dist)
+    Σ_η = cov(q.dist)
+    DynamicPPL.setall!(vi, μ_η)
+    μ = vi.metadata[varsym].vals
+
+    vi  = DynamicPPL.VarInfo(model)
+    DynamicPPL.setall!(vi, Σ_η)
+    Σ = vi.metadata[varsym].vals
+    μ, Σ
+end
