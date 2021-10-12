@@ -121,13 +121,13 @@ function run_task(prng::Random.AbstractRNG,
         μ_β, Σ_β = get_variational_mean_var(q, model, Symbol("β"))
         μ_α, Σ_α = get_variational_mean_var(q, model, Symbol("α"))
 
-        f      = x_test*μ_β .+ μ_α[1]
-        σ²     = Σ_α[1] .+  sum(x_test'*(x_test*Σ_β), dims=1)[1,:]
-        λ⁻²    = 1/(π/8)
-        p      = StatsFuns.normcdf.(f ./ sqrt.(λ⁻² .+ σ²))
-
+        f   = x_test*μ_β .+ μ_α[1]
+        σ²  = Σ_α[1] .+  sum(x_test'*(x_test*Σ_β), dims=1)[1,:]
+        λ⁻² = 1/(π/8)
+        s   = f ./ sqrt.(λ⁻² .+ σ²)
+        p   = StatsFuns.normcdf.(s)
         acc = mean((p .> 0.5) .== y_test)
-        ll  = mean(logpdf.(Turing.Bernoulli.(p), y_test))
+        ll  = mean(logpdf.(Turing.BernoulliLogit.(s), y_test))
         (ll=ll, acc=acc,)
     end
 
