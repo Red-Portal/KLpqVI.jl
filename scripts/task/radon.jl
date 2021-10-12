@@ -14,6 +14,7 @@ Turing.@model radon(county, x, y) = begin
 
     a1   ~ MvNormal(fill(μ_a1, 85), fill(σ_a1, 85))
     a2   ~ MvNormal(fill(μ_a2, 85), fill(σ_a2, 85))
+
     μ_y  = a1[county] + a2[county].*x
     y    ~ MvNormal(μ_y, σ_y)
 end

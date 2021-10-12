@@ -23,21 +23,6 @@ function load_dataset(::Val{:german})
     data_x, data_y
 end
 
-function load_dataset(::Val{:sonar})
-    dataset = DelimitedFiles.readdlm(
-        datadir("dataset", "sonar.csv"), ',', skipstart=1)
-    data_x  = Float64.(dataset[:, 1:end-1,])
-    data_y  = dataset[:, end]
-    data_y  = map(data_y) do s
-        if(s == "Rock")
-            1.0
-        else
-            0.0
-        end
-    end
-    data_x, data_y
-end
-
 function load_dataset(::Val{:pima})
     dataset = DelimitedFiles.readdlm(
         datadir("dataset", "pima-indians-diabetes.csv"), ',', skipstart=1)
@@ -54,19 +39,6 @@ function load_dataset(::Val{:heart})
     data_x, data_y
 end
 
-function load_dataset(::Val{:ionosphere})
-    dataset = DelimitedFiles.readdlm(
-        datadir("dataset", "ionosphere.csv"), ',')
-    data_x  = dataset[:, 1:end-1,]
-    data_y  = dataset[:, end]
-
-    data_y[data_y .== "g"] .= 1.0
-    data_y[data_y .== "b"] .= 0.0
-
-    data_x = Float64.(data_x)
-    data_y = Float64.(data_y)
-    data_x, data_y
-end
 
 function prepare_dataset(prng::Random.AbstractRNG,
                          data_x::AbstractMatrix,
@@ -112,30 +84,16 @@ function hmc_params(task::Union{Val{:pima}, Val{:heart}})
      ϵ, L
 end
 
-function hmc_params(task::Val{:ionosphere})
-     ϵ = 0.07
-     L = 64
-     ϵ, L
-end
-
 function hmc_params(task::Val{:german})
      ϵ = 0.001
      L = 256
      ϵ, L
 end
 
-function hmc_params(task::Val{:sonar})
-     ϵ = 0.05
-     L = 127
-     ϵ, L
-end
-
 function run_task(prng::Random.AbstractRNG,
                   task::Union{Val{:pima},
-                              Val{:ionosphere},
                               Val{:heart},
                               Val{:german},
-                              Val{:sonar},
                               },
                   objective,
                   n_mc,
