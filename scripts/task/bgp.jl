@@ -222,10 +222,13 @@ function run_task(prng::Random.AbstractRNG,
 
     μ = mean(X_train, dims=2)
     σ = std(X_train, dims=2)
-    X_train .-= μ
-    X_train ./= σ
-    X_test .-= μ
-    X_test ./= σ
+
+    if task isa Val{:breast}
+        X_train .-= μ
+        X_train ./= σ
+        X_test  .-= μ
+        X_test  ./= σ
+    end
 
     jitter  = 1e-6
 
@@ -235,7 +238,6 @@ function run_task(prng::Random.AbstractRNG,
     n_params   = 2+n_features+n_data
     n_iter     = 10000
     opt        = Flux.ADAM(0.01)
-
 
     function joint_likelihood(z::AbstractVector)
         logα = z[1]
@@ -325,7 +327,6 @@ function run_task(prng::Random.AbstractRNG,
         elapsed        = Dates.now() - start_time
         elapsed_total += elapsed.value
         stat           = merge(stat, (elapsed=elapsed_total,))
-
         stats[t] = stat
     end
     Dict.(pairs.(stats))
