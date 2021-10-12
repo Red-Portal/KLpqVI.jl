@@ -2,8 +2,7 @@
 import Tracker
 
 ard_kernel(α², logℓ, σ²) =
-    α² * (KernelFunctions.Matern52Kernel() ∘ KernelFunctions.ARDTransform(@. exp(-logℓ))) +
-    σ² * KernelFunctions.WhiteKernel()
+    α²*(KernelFunctions.Matern52Kernel() ∘ KernelFunctions.ARDTransform(@. exp(-logℓ))) + σ² * KernelFunctions.WhiteKernel()
 
 Turing.@model function logisticgp(X, y, jitter=1e-6)
     n_features = size(X, 1)
@@ -222,6 +221,7 @@ function run_task(prng::Random.AbstractRNG,
     n_iter     = 10000
     opt        = Flux.ADAM(0.01)
 
+
     function joint_likelihood(z::AbstractVector)
         logα = z[1]
         logσ = z[2]
@@ -236,9 +236,8 @@ function run_task(prng::Random.AbstractRNG,
         σ²     = exp(logσ*2)
         kernel = ard_kernel(α², logℓ, σ²+jitter) 
         K      = KernelFunctions.kernelmatrix(kernel, X_train)
-
-        p_f    = logpdf(MvNormal(zeros(n_data), K), f)
-
+        p_f    = logpdf(MvNormal(zeros(n_data), K + jitter*I), f)
+        
         loglike = mapreduce(+, 1:n_data) do i
             logpdf(Turing.BernoulliLogit(f[i]), y_train[i])
         end 
@@ -264,7 +263,7 @@ function run_task(prng::Random.AbstractRNG,
     end
 
     function performance(λ)
-        logα = λ[1]
+        logα = λ[1] 
         logσ = λ[2]
         logℓ = view(λ, 3:2+n_features)
         f    = view(λ, 3+n_features:2+n_features+n_data)
@@ -289,7 +288,7 @@ function run_task(prng::Random.AbstractRNG,
     diff_result = DiffResults.GradientResult(λₜ)
     stats       = Vector{NamedTuple}(undef, n_iter)
     elapsed_total = 0
-    ProgressMeter.@showprogress for t = 1:n_iter
+    for t = 1:n_iter
         start_time = Dates.now()
         
         # sample gradient
@@ -314,5 +313,5 @@ function run_task(prng::Random.AbstractRNG,
 
         stats[t] = stat
     end
-    nothing, nothing, stats
+    Dict.(pairs.(stats))
 end

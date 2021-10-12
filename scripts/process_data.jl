@@ -9,6 +9,7 @@
 @everywhere using CSVFiles
             using ProgressMeter
 @everywhere using DataFrames
+@everywhere using Bootstrap
 
 @everywhere function process_data(ks, stats)::Dict
     mapreduce(merge, ks) do k
@@ -61,9 +62,19 @@ end
 
         name_μ = string(k) * "_mean"
         μ_t    = mean(ts)
-        μ_y    = [median(  [ys[i][t] for i = 1:length(ys)])      for t = 1:length(ys[1])]
-        e_l    = [quantile([ys[i][t] for i = 1:length(ys)], 0.1) for t = 1:length(ys[1])]
-        e_h    = [quantile([ys[i][t] for i = 1:length(ys)], 0.9) for t = 1:length(ys[1])]
+
+        CIs = map(1:length(ys[1])) do  t
+            boot = bootstrap(mean, [ys[i][t] for i = 1:length(ys)], AntitheticSampling(1024))
+            confint(boot, PercentileConfInt(0.8))
+        end
+
+        μ_y    = [CI[1][1] for CI in CIs]
+        e_l    = [CI[1][2] for CI in CIs]
+        e_h    = [CI[1][3] for CI in CIs]
+            #[median(  [ys[i][t] for i = 1:length(ys)])      for t = 1:length(ys[1])]
+        #e_l    = #[quantile([ys[i][t] for i = 1:length(ys)], 0.2) for t = 1:length(ys[1])]
+        #e_h    = #[quantile([ys[i][t] for i = 1:length(ys)], 0.8) for t = 1:length(ys[1])]
+
         y_stat = Array(hcat(μ_y, e_h - μ_y, e_l - μ_y)')
 
         Dict(name_t   => μ_t,
@@ -76,6 +87,26 @@ end
         #name = string(k)*".csv"
         #FileIO.save(joinpath(path, name), summ)
     end
+end
+
+function convergence_diagnostic()
+    data         = Dict()
+    data[:CIS]   = FileIO.load(datadir("exp_raw", "method=MSC_CIS_n_samples=16_task=gaussian.jld2")) 
+    data[:CISRB] = FileIO.load(datadir("exp_raw", "method=MSC_CISRB_n_samples=16_task=gaussian.jld2")) 
+    data[:PIMH]  = FileIO.load(datadir("exp_raw", "method=MSC_PIMH_n_samples=16_task=gaussian.jld2")) 
+
+    p    = load_dataset(Val(:gaussian))
+    ∫pℓp = entropy(p)
+
+    result             = Dict()
+    result["cis"]       = [stat[:kl] for stat ∈ data[:CIS]["result"][1]]         .+ ∫pℓp
+    result["cisrb"]     = [stat[:kl] for stat ∈ data[:CISRB]["result"][1]]       .+ ∫pℓp
+    result["pimh"]      = [stat[:kl] for stat ∈ data[:PIMH]["result"][1]]        .+ ∫pℓp
+
+    result["pimh_est"]  = [stat[:crossent] for stat ∈ data[:PIMH]["result"][1]]  .+ ∫pℓp
+    result["cis_est"]   = [stat[:crossent] for stat ∈ data[:CIS]["result"][1]] .+ ∫pℓp
+    result["cisrb_est"] = [stat[:crossent] for stat ∈ data[:CISRB]["result"][1]]   .+ ∫pℓp
+    FileIO.save(datadir("exp_pro", "convergence_diagnostic.jld2"), result)
 end
 
 function main()
