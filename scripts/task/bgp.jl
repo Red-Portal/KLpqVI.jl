@@ -13,10 +13,10 @@ Turing.@model function logisticgp(X, y, jitter=1e-6)
 
     α²     = exp(logα*2)
     σ²     = exp(logσ*2)
-    kernel = ard_kernel(α², logℓ, σ²+jitter) 
+    kernel = ard_kernel(α², logℓ, σ²) 
     K      = KernelFunctions.kernelmatrix(kernel, X)
 
-    f  ~ MvNormal(zeros(size(X,2)), K)
+    f  ~ MvNormal(zeros(size(X,2)), K + jitter*I)
     y .~ Turing.BernoulliLogit.(f)
 end
 
@@ -234,7 +234,7 @@ function run_task(prng::Random.AbstractRNG,
 
         α²     = exp(logα*2)
         σ²     = exp(logσ*2)
-        kernel = ard_kernel(α², logℓ, σ²+jitter) 
+        kernel = ard_kernel(α², logℓ, σ²) 
         K      = KernelFunctions.kernelmatrix(kernel, X_train)
         p_f    = logpdf(MvNormal(zeros(n_data), K + jitter*I), f)
         
