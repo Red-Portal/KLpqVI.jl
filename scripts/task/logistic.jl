@@ -115,12 +115,19 @@ function run_task(prng::Random.AbstractRNG,
     model   = logistic_regression(x_train, y_train, n_dims)
 
     function plot_callback(logπ, q, objective, klpq)
-        β   = get_variational_mode(q, model, Symbol("β"))
-        α   = get_variational_mode(q, model, Symbol("α"))
-        s   = x_test*β .+ α
-        p   = StatsFuns.logistic.(s)
+        #β   = get_variational_mode(q, model, Symbol("β"))
+        #α   = get_variational_mode(q, model, Symbol("α"))
+
+        μ_β, Σ_β = get_variational_mean_var(q, model, Symbol("β"))
+        μ_α, Σ_α = get_variational_mean_var(q, model, Symbol("α"))
+
+        f      = x_test*μ_β .+ μ_α[1]
+        σ²     = Σ_α[1] .+  sum(x_test'*(x_test*Σ_β), dims=1)[1,:]
+        λ⁻²    = 1/(π/8)
+        p      = StatsFuns.normcdf.(f ./ sqrt.(λ⁻² .+ σ²))
+
         acc = mean((p .> 0.5) .== y_test)
-        ll  = sum(logpdf.(Turing.BernoulliLogit.(s), y_test))
+        ll  = mean(logpdf.(Turing.Bernoulli.(p), y_test))
         (ll=ll, acc=acc,)
     end
 
