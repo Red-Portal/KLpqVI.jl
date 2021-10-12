@@ -219,7 +219,7 @@ function run_task(prng::Random.AbstractRNG,
     n_data     = size(X_train, 2)
     n_samples  = n_mc
     n_params   = 2+n_features+n_data
-    n_iter     = 3000
+    n_iter     = 10000
     opt        = Flux.ADAM(0.01)
 
     function joint_likelihood(z::AbstractVector)
