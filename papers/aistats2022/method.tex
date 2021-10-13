@@ -28,6 +28,9 @@
     The dark circles denote the MCMC samples used for estimating the score gradient at \(t=2\).
     }\label{fig:overview}
 \end{figure*}
+%
+\input{table_cost}
+%
 
 \paragraph{Overview}
 Recently,~\citet{NEURIPS2020_b2070693} and~\citet{pmlr-v124-ou20a} proposed two similar but independent methods for performing inclusive variational inference.
@@ -86,12 +89,8 @@ That is, for each Markov-chain \(i \in \{1, \ldots, N\}\),
 where \(\vz_{t-1}^{(i)}\) is the state of the \(i\)th chain at the previous SGD step.
 Computationally speaking, we are still applying \(K\big(\vz_{t-1}^{(i)}\big)\) \(N\) times in total, so the cost is similar to the sequential state estimator.
 However, the Markov-chain are \(N\) times shorter, which, in a traditional MCMC view, might seem to result in worse statistical performance.
-An illustration of the parallel state estimator is shown in~\cref{fig:par}
-Detailed pseudocodes of the considered schemes are provided in the \textit{supplementary material}.
+An illustration of the parallel state estimator is shown in~\cref{fig:par}, while pseudocodes of the considered schemes are provided in the \textit{supplementary material}.
 
-%
-\input{table_cost}
-%
 \vspace{-0.05in}
 \paragraph{Computational Cost}
 The three scheme using the CIS kernel and the IMH kernel can have different computational cost depending on the parameter \(N\).

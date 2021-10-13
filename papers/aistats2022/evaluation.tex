@@ -25,7 +25,8 @@
 \begin{figure}[t]
 \centering
 \includegraphics[scale=0.8]{figures/simulation_02.pdf}
-\caption{Variance of score function estimated using the three estimators depending on \(N\) and the KL divergence.}\label{fig:simulation}
+\caption{Variance of score function estimated using the three estimators depending on \(N\) and the KL divergence.
+Each point represent a random \(\vlambda\) where the score is evaluated.}\label{fig:simulation}
 \end{figure}
 %
 \subsection{Numerical Simulation}
@@ -50,45 +51,19 @@ We set the computational budget \(N=10\) and \(T=10^4\) for all experiments unle
 
 \vspace{-0.1in}
 \paragraph{Considered Baselines}
-We compare 
+We compare the following baselines.
 \vspace{-0.1in}
 \begin{enumerate}[noitemsep]
-  \item[\ding{182}] score climbing with the parallel state estimator and the IMH kernel (\textbf{par.-IMH}), 
-  \item[\ding{183}] score climbing with the sequential state estimator and the IMH kernel (\textbf{seq.-IMH}), 
-  \item[\ding{184}] score climbing with the single state estimator and the CIS kernel (\textbf{single-CIS},~\citealt{NEURIPS2020_b2070693}), 
-  \item[\ding{185}] score climbing with the single state estimator, the CIS kernel, and Rao-Blackwellization (\textbf{MSC-CISRB},~\citealt{NEURIPS2020_b2070693}),
-  \item[\ding{186}] the adaptive IS method using SNIS as introduced in~\cref{section:ivi_previous} (\textbf{SNIS}),
-  \item[\ding{187}] evidence lower-bound maximization (\textbf{ELBO},~\citealt{pmlr-v33-ranganath14}).
+  \item[\ding{182}] \textbf{par.-IMH}: Score climbing with the parallel state estimator and the IMH kernel. 
+  \item[\ding{183}] \textbf{seq.-IMH}: Score climbing with the sequential state estimator and the IMH kernel 
+  \item[\ding{184}] \textbf{single-CIS}: Score climbing with the single state estimator and the CIS kernel~\citep{NEURIPS2020_b2070693}.
+  \item[\ding{185}] \textbf{single-CISRB}: Score climbing with the single state estimator and the CIS kernel, but also Rao-Blackwellization~\citep{NEURIPS2020_b2070693}.
+  \item[\ding{184}] \textbf{single-HMC}: Score climbing with the single state estimator and the HMC kernel.
+  \item[\ding{186}] \textbf{SNIS}: adaptive IS using SNIS (as discussed in~\cref{section:ivi_previous}).
+  \item[\ding{187}] \textbf{ELBO}: evidence lower-bound maximization with automatic differentiation VI~\citep{pmlr-v33-ranganath14, JMLR:v18:16-107} and the path derivative estimator~\citep{NIPS2017_e91068ff}.
 \end{enumerate}
-Specifically, we use automatic differentiation VI (ADVI,~\citealt{JMLR:v18:16-107}) implemented by Turing.
 
-\begin{figure*}
-  \vspace{-0.1in}
-  \centering
-  \subfloat[\texttt{pima}]{
-    \includegraphics[scale=0.75]{figures/pima_02.pdf}
-  }
-  \subfloat[\texttt{heart}]{
-    \includegraphics[scale=0.75]{figures/heart_02.pdf}
-  }
-  \subfloat[\texttt{german}]{
-    \includegraphics[scale=0.75]{figures/german_02.pdf}
-  } \\
-  \subfloat[\texttt{pima}]{
-    \includegraphics[scale=0.75]{figures/pima_03.pdf}
-  }
-  \subfloat[\texttt{heart}]{
-    \includegraphics[scale=0.75]{figures/heart_03.pdf}
-  }
-  \subfloat[\texttt{german}]{
-    \includegraphics[scale=0.75]{figures/german_03.pdf}
-  }
-  \caption{Test accuracy and log-likelihood of logistic regression problems.
-    The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
-  }\label{fig:logistic}
-  \vspace{-0.2in}
-\end{figure*}
-
+\input{logistic_table.tex}
 %% \subsection{Isotropic Gaussian}
 %% We first perform experiments with an 100-D isotropic multivariate Gaussian distribution.
 %% With Gaussian distributions, convergence can be evaluated exactly since their KL divergence is available in a closed form.
@@ -109,25 +84,15 @@ We evaluate MSC-PIMH on logistic regression with the Pima Indians diabetes (\tex
 Instead of the usual single-level probit/logistic regression models used in VI, we choose a more complex hierarchical logistic regression model 
 %
 \begin{align*}
-y_i &\sim \text{Bernoulli-Logit}\,(p) \\
-p &\sim \mathcal{N}(\vx_i^{\top}\symbf{\beta} + \alpha,\, \sigma_{\alpha}^2) \\
+\sigma_{\beta}, \sigma_{\alpha} &\sim \mathcal{N}^{+}(0, 1.0) \\
 \symbf{\beta} &\sim \mathcal{N}(\symbf{0},\, \sigma_{\beta}^2 \mI) \\
-\sigma_{\beta}, \sigma_{\alpha} &\sim \mathcal{N}^{+}(0, 1.0)
+p &\sim \mathcal{N}(\vx_i^{\top}\symbf{\beta} + \alpha,\, \sigma_{\alpha}^2) \\
+y_i &\sim \text{Bernoulli-Logit}\,(p)
 \end{align*}
 %
 where \(\mathcal{N}^+(\mu, \sigma)\) is a positive constrained normal distribution with mean \(\mu\) and standard deviation \(\sigma\), \(\vx_i\) and \(y_i\) are the feature vector and target variable of the \(i\)th datapoint.
 The extra degrees of freedom \(\sigma_{\beta}\) and \(\sigma_{\alpha}\) make this model relatively more challenging.
 
-%
-%% \begin{wrapfigure}{r}{0.4\textwidth}
-%%   \vspace{-0.3in}
-%%   \includegraphics[scale=0.75]{figures/german_01.pdf}
-%%   \caption{Pareto-\(\widehat{k}\) statistics result on \texttt{german}.
-%%     The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
-%%     }\label{fig:paretok}
-%%   \vspace{-0.2in}
-%% \end{wrapfigure}
-%
 \paragraph{Results}
 The test accuracy and test log-likelihood results are shown in~\cref{fig:logistic}.
 Our proposed MSC-PIMH is the fastest to converge on all the datasets.
@@ -137,16 +102,35 @@ Among the two, MSC-CISRB performs only marginally better than MSC-CIS.
 Meanwhile, SNIS converges the most slowly among inclusive VI methods.
 Although much slower to converge, ELBO achieves competitive results.
 
+\begin{figure}[H]
+  \vspace{-0.2in}
+  \centering
+  \subfloat[Test Accuracy]{
+    \includegraphics[scale=0.95]{figures/german_02.pdf}
+  }  \\
+  %% \subfloat[\texttt{heart}]{
+  %%   \includegraphics[scale=0.75]{figures/heart_02.pdf}
+  %% }
+  %% \subfloat[\texttt{german}]{
+  %%   \includegraphics[scale=0.75]{figures/german_02.pdf}
+  %% }
+  \subfloat[Test LPD]{
+    \includegraphics[scale=0.95]{figures/german_03.pdf}
+  }
+  \caption{Test accuracy and log predictive density on the \texttt{german} dataset.
+    The solid lines and colored regions are the mean and 80\% bootstrap confidence interval.
+  }\label{fig:logistic}
+  \vspace{-0.1in}
+\end{figure}
+%
 \paragraph{Inclusive VI v.s. Exclusive VI}
 The results of~\cref{fig:logistic} might be misleading to conclude that inclusive and exclusive VI deliver similar results.
 However, in the parameter space, they choose different optimization paths.
-This is shown in~\cref{fig:paretok} through the Pareto-\(\widehat{k}\) diagnostic~\citep{NEURIPS2020_7cac11e2, vehtari_pareto_2021}, which determines how reliable the importance weights are when computed using \(q_{\vlambda}(\vz)\).
+This is shown in~\cref{fig:logistic}.
 While the test accuracy suggests that ELBO converges around \(t=2000\), in terms of Pareto-\(\widehat{k}\), it takes much longer to converge (about \(t=5000\)).
 This shows that, even if their predictive performance is similar, the inclusive VI chooses paths that have better density coverage as expected.
 
-\subsection{Gaussian Process Classification}\label{section:bgp}
 \begin{figure*}
-  \vspace{-0.1in}
   \centering
   \subfloat[\texttt{sonar}]{
     \includegraphics[scale=0.75]{figures/sonar_01.pdf}
@@ -162,19 +146,41 @@ This shows that, even if their predictive performance is similar, the inclusive 
   }\label{fig:logistic}
   \vspace{-0.2in}
 \end{figure*}
+%
+\subsection{Gaussian Process Classification}\label{section:bgp}
+\paragraph{Experimental Setup}
+Now for a more challenging problem, we perform classification with latent Gaussian processes~\citep{rasmussen_gaussian_2006, NIPS2014_8c6744c9}.
+The probabililistic model is given as
+\begin{align*}
+  \log \vtheta &\sim \mathcal{N}(\mathbf{0}, \mI) \\
+   f &\sim \mathcal{GP}\left(\mathbf{0}, \mSigma_{\vtheta}\right) \\
+   y_i &\sim \text{Bernoulli-Logit}\left(  f\left( \vx_i \right) \right)
+\end{align*}
+where we chose a Mat\'ern 5/2 covariance kernel with automatic relevance detection~\citep{neal_bayesian_1996}.
+For the datasets, we use the sonar classification (\textbf{\texttt{sonar}}, \(\vz \in \mathbb{R}^{249}\),~\citealt{gorman_analysis_1988}), ionosphere (\textbf{\texttt{ionosphere}}, \(\vz \in \mathbb{R}^{351}\),~\citealt{Sigillito1989ClassificationOR}), and breast cancer (\textbf{\texttt{breast}}, \(\vz \in \mathbb{R}^{523}\),~\citealt{wolberg_multisurface_1990}) datasets.
+For \texttt{breast}, we preprocessed the input features with z-standardization.
+10\% of the data points were randomly selected in each of the 100 repetitions as test data.
+
+\paragraph{Result}
+The results are shown in~\cref{fig:logistic}.
+We can clearly see that among inclusive variational methods, the parallel state estimator (par.-IMH) converges the fastest.
+On the other hand, the performance sequential state estimator (seq.-IMH) is very similar to the CIS kernel with Rao-Blackwellization (single-CISRB).
+Meanwhile, in terms of held-out predictive probability, exclusive VI (ELBO) converged quickly to a point where the uncertainty is not well calibrated.
+All inclusive VI methods were much better calibrated albeit slower to converge.
+This matches the 
 
 \subsection{Marginal Likelihood Estimation}\label{section:mll}
 %
 \begin{figure}[H]
   %\vspace{-0.1in}
   \centering
-  \begin{minipage}[b]{0.17\linewidth}
+  \begin{minipage}[b]{0.3\linewidth}
     \centering
-    \includegraphics[scale=0.75]{figures/radon_03.pdf}
+    \includegraphics[scale=0.8]{figures/radon_03.pdf}
   \end{minipage}
-  \begin{minipage}[b]{0.35\linewidth}
+  \begin{minipage}[b]{0.6\linewidth}
     \centering
-    \includegraphics[scale=0.7]{figures/radon_02.pdf}
+    \includegraphics[scale=0.8]{figures/radon_02.pdf}
     \subcaption{\texttt{radon}}
   \end{minipage}
   %% \begin{minipage}[b]{0.35\linewidth}
@@ -183,7 +189,6 @@ This shows that, even if their predictive performance is similar, the inclusive 
   %%   \subcaption{\texttt{stock}}\label{fig:sv}
   %% \end{minipage}
   \caption{Marginal log-likelihood (\(\log Z\)) estimates of considered methods.
-    ELBO is omitted in~\cref{fig:sv} as it failed to deliver reasonable estimates.
     The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
   }\label{fig:marginal_likelihood}
   %\vspace{-0.15in}
