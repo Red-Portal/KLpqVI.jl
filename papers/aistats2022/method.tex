@@ -101,8 +101,6 @@ When estimating the score, the single state estimator computes \(\nabla_{\vlambd
 However,~\cite{NEURIPS2020_b2070693} also discuss a Rao-Blackwellized version of the CIS kernel, which also computes the gradient \(N\) times.
 
 \subsection{Theoretical Analysis of Bias}\label{section:theory}
-
-%\textcolor{red}{
 \vspace{-0.05in}
 \paragraph{Adaptive MCMC and Ergodicity}
 For bounded functions, a bound on the bias of MCMC estimators can be easily derived from the convergence rates of MCMC kernels as shown by~\citet[Theorem 4]{jiang_mcmc_2021}.
@@ -159,11 +157,41 @@ On the other hand, in the later steps of VI, the KL divergence is small.
 However, in this case \(t\) will be larege, therefore making the bias small regardless.
 
 \subsection{Theoretical Analysis of Variance}
-Geometric ergodicity of the CIS and IMH kernels guarentee that the bias will be small regardless of the kernel and parameter \(N\).
-In contrast, variance often dominate the mean-square error of MCMC estimators.
-Therefore, analyzing the variance will be more relevant in practice.
+For MCMC estimators, variance often dominate the mean-square error.
+Therefore, analyzing the variance is more relevant to practice.
 
-\input{var_seq}
+\paragraph{Variance of Single State Estimator}
+The variance of the single estimator is given by the law of total variance such as
+\begin{align}
+  &\V{g_{\text{single}}} \nonumber \\
+  &= \E{ \Vsub{K_{\vlambda_{t-1}}\left(\vz_{t-1}, \vz\right)}{ s\left(\vlambda; \vz\right) \mid \vz_{t-1} }} \nonumber \\
+  &\quad + \V{ \Esub{K_{\vlambda_{t-1}}\left(\vz_{t-1}, \vz\right)}{ s\left(\vlambda; \vz\right) \mid \vz_{t-1} } }, \\
+  \intertext{and assuming stationarity such that \(\vz_{t-1} \sim p\left(\vz \mid \vx\right)\),}
+  &= \Esub{p\left(\cdot \mid\vx \right)}{ \Vsub{K_{\vlambda_{t-1}}\left(\vz_{t-1}, \vz\right)}{ s\left(\vlambda; \vz\right) \mid \vz_{t-1} }} \nonumber\\
+  &\quad + \Vsub{p\left(\cdot \mid\vx \right)}{ \Esub{K_{\vlambda_{t-1}}\left(\vz_{t-1}, \vz\right)}{ s\left(\vlambda; \vz\right) \mid \vz_{t-1} } } \\
+  &= \Vsub{p\left(\cdot\mid\vx \right)}{g_{\text{single}}} \\
+  &= \sigma^2
+\end{align}
+Therefore, ideally, the variance will be equal to the variance of an independent draw from the posterior.
+This also suggests that, under stationarity, the variance of the single state estimator will be similar regardless of the MCMC kernel \(K_{\vlambda_{t-1}}\left(\vz_{t-1}, \vz\right)\).
+
+\paragraph{Variance of Parallel State Estimator}
+On the other hand, the parallel state estimator can be seen as an average of \textit{i.i.d.} single state estimators.
+Therefore, under stationarity, the variance is
+\begin{align}
+  \V{g_{\text{par.}}} = \frac{\sigma^2}{N}
+\end{align}
+However, the variance reduction rate does not require stationarity.
+Therefore, the parallel state estimator \textit{always} enjoys \(\mathcal{O}\left(\nicefrac{1}{N}\right)\) variance reduction.
+
+\paragraph{Variance of Sequential State Estimator}
+The variance of the sequential state estimator is given by the variance of a correlated sum such that
+\begin{align}
+  \V{g_{\text{seq.}}} &= \Vsub{p\left(\cdot\mid\vx\right)}{g_{\text{seq.}}} &\text{(stationarity)} \\
+  &= \frac{1}{N^2} \E{ \sum_{i=1}^N \V{ s\left(\vlambda; \vz_{T+i} \right) \mid \vz_{T}}
+     \sum_{i=1}^N \V{ s\left(\vlambda; \vz_{T+i} \right) }}
+\end{align}
+
 \input{variance_approx}
 
 %%% Local Variables:

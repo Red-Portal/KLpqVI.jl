@@ -12,18 +12,7 @@ The hierarchical logistic regression used in~\cref{section:logistic} is
 \end{align*}
 where \(\vx_i\) and \(y_i\) are the predictors and binary target variable of the \(i\)th datapoints.
 
-\subsection{Stochastic Volatility}
-The stochastic volatility model used in~\cref{section:mll} is
-\begin{align*}
-    \mu    &\sim \mathrm{Cauchy}(0, 10) \\
-    \phi   &\sim \mathrm{Uniform}\,(-1, 1) \\
-    \sigma &\sim \mathrm{Cauchy}^+(0, 5) \\
-    h_1    &\sim \mathcal{N}\left( 0, \frac{\sigma^2}{1 - \phi^2} \right) \\
-    h_{t+1} &\sim \mathcal{N}\left( \mu + \phi\,\left( h_{t} - \mu \right), \sigma^2 \right) \\
-    y_t    &\sim \mathcal{N}\left( 0, \exp\left( h_{t} \right) \right)
-\end{align*}
-where \(y_t\) is the stock price at the \(t\)th point in time.
-We used the reparameterized version where \(h_{t}\) is sampled from a white multivariate Gaussian described by the~\citet{stan2020}.
+\subsection{Gaussian Process Logistic Regression}
 
 \subsection{Radon Hierarchical Regression}
 The partially pooled linear regression model used in~\cref{section:mll} is

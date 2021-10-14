@@ -57,11 +57,14 @@ We compare the following baselines.
   \item[\ding{182}] \textbf{par.-IMH}: Score climbing with the parallel state estimator and the IMH kernel. 
   \item[\ding{183}] \textbf{seq.-IMH}: Score climbing with the sequential state estimator and the IMH kernel 
   \item[\ding{184}] \textbf{single-CIS}: Score climbing with the single state estimator and the CIS kernel~\citep{NEURIPS2020_b2070693}.
-  \item[\ding{185}] \textbf{single-CISRB}: Score climbing with the single state estimator and the CIS kernel, but also Rao-Blackwellization~\citep{NEURIPS2020_b2070693}.
+  \item[\ding{185}] \textbf{single-CISRB}: Rao-Blackwellized version of single-CIS~\citep{NEURIPS2020_b2070693}.
   \item[\ding{184}] \textbf{single-HMC}: Score climbing with the single state estimator and the HMC kernel.
   \item[\ding{186}] \textbf{SNIS}: adaptive IS using SNIS (as discussed in~\cref{section:ivi_previous}).
   \item[\ding{187}] \textbf{ELBO}: evidence lower-bound maximization with automatic differentiation VI~\citep{pmlr-v33-ranganath14, JMLR:v18:16-107} and the path derivative estimator~\citep{NIPS2017_e91068ff}.
 \end{enumerate}
+For ELBO, we use only a single sample as originally described by~\citet{NIPS2017_e91068ff}.
+This also ensures a fair comparison against inclusive KL minimization methods since the iteration complexity of computing the ELBO gradient can be easily few orders of magnitude larger.
+Finally, we only use single-HMC in the logistic regression experiment due to the high computational demands, 
 
 \input{logistic_table.tex}
 %% \subsection{Isotropic Gaussian}
@@ -103,10 +106,10 @@ Meanwhile, SNIS converges the most slowly among inclusive VI methods.
 Although much slower to converge, ELBO achieves competitive results.
 
 \begin{figure}[H]
-  \vspace{-0.2in}
+  %\vspace{-0.2in}
   \centering
   \subfloat[Test Accuracy]{
-    \includegraphics[scale=0.95]{figures/german_02.pdf}
+    \includegraphics[scale=0.90]{figures/german_02.pdf}
   }  \\
   %% \subfloat[\texttt{heart}]{
   %%   \includegraphics[scale=0.75]{figures/heart_02.pdf}
@@ -114,8 +117,8 @@ Although much slower to converge, ELBO achieves competitive results.
   %% \subfloat[\texttt{german}]{
   %%   \includegraphics[scale=0.75]{figures/german_02.pdf}
   %% }
-  \subfloat[Test LPD]{
-    \includegraphics[scale=0.95]{figures/german_03.pdf}
+  \subfloat[Test Log Predictive Density]{
+    \includegraphics[scale=0.90]{figures/german_03.pdf}
   }
   \caption{Test accuracy and log predictive density on the \texttt{german} dataset.
     The solid lines and colored regions are the mean and 80\% bootstrap confidence interval.
@@ -130,13 +133,12 @@ This is shown in~\cref{fig:logistic}.
 While the test accuracy suggests that ELBO converges around \(t=2000\), in terms of Pareto-\(\widehat{k}\), it takes much longer to converge (about \(t=5000\)).
 This shows that, even if their predictive performance is similar, the inclusive VI chooses paths that have better density coverage as expected.
 
-\begin{figure*}
+\subsection{Gaussian Process Classification}\label{section:bgp}
+%
+\begin{figure}[H]
   \centering
   \subfloat[\texttt{sonar}]{
     \includegraphics[scale=0.75]{figures/sonar_01.pdf}
-  }
-  \subfloat[\texttt{ionosphere}]{
-    \includegraphics[scale=0.75]{figures/ionosphere_01.pdf}
   }
   %% \subfloat[\texttt{german}]{
   %%   \includegraphics[scale=0.75]{figures/breast_01.pdf}
@@ -144,10 +146,10 @@ This shows that, even if their predictive performance is similar, the inclusive 
   \caption{Test accuracy and log-likelihood of logistic regression problems.
     The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
   }\label{fig:logistic}
-  \vspace{-0.2in}
-\end{figure*}
+\end{figure}
 %
-\subsection{Gaussian Process Classification}\label{section:bgp}
+\input{gp_table.tex}
+%
 \paragraph{Experimental Setup}
 Now for a more challenging problem, we perform classification with latent Gaussian processes~\citep{rasmussen_gaussian_2006, NIPS2014_8c6744c9}.
 The probabililistic model is given as
@@ -160,6 +162,7 @@ where we chose a Mat\'ern 5/2 covariance kernel with automatic relevance detecti
 For the datasets, we use the sonar classification (\textbf{\texttt{sonar}}, \(\vz \in \mathbb{R}^{249}\),~\citealt{gorman_analysis_1988}), ionosphere (\textbf{\texttt{ionosphere}}, \(\vz \in \mathbb{R}^{351}\),~\citealt{Sigillito1989ClassificationOR}), and breast cancer (\textbf{\texttt{breast}}, \(\vz \in \mathbb{R}^{523}\),~\citealt{wolberg_multisurface_1990}) datasets.
 For \texttt{breast}, we preprocessed the input features with z-standardization.
 10\% of the data points were randomly selected in each of the 100 repetitions as test data.
+For this experiment, the iteration complexity of ELBO is almost two orders of magnitude larger than all inclusive KL minimization methods.
 
 \paragraph{Result}
 The results are shown in~\cref{fig:logistic}.
