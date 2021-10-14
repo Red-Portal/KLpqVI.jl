@@ -1,4 +1,30 @@
 
+  \begin{theoremEnd}[]{proposition}\label{thm:rej_kl_bound}
+    The average unnormalized weight of the rejection states is bounded below by the KL divergence such as
+    \[
+    Z\,\exp\big(\DKL{p}{q_{\vlambda}}\big) \leq \Esub{p(\vz_{t-1}\mid\vx)}{w\,(\vz_{t-1})}.
+    \]
+  \end{theoremEnd}
+\begin{proofEnd}
+    By the definition of the inclusive KL divergence,
+    \begin{align}
+      \DKL{p}{q_{\vlambda}} = \int p\,(\vz\mid\vx) \log \frac{p\,(\vz\mid\vx)}{q_{\vlambda}(\vz)} \, d\vz
+      &\leq \log \Esub{p(\vz\mid\vx)}{\frac{p\,(\vz\mid\vx)}{q_{\vlambda}(\vz)}} \\
+      &= \log \Esub{p(\vz\mid\vx)}{ \frac{w\,(\vz)}{Z} } \label{eq:weight_bound_kl}
+    \end{align}
+    where the right-hand side follows from Jensen's inequality.
+    By a simple change of notation, we relate~\eqref{eq:weight_bound_kl} with the rejection states \(\vz_{t-1}\) such as
+    \begin{align}
+      \DKL{p}{q_{\vlambda}} &\leq \log \Esub{p(\vz_{t-1}\mid\vx)}{\frac{w\,(\vz_{t-1})}{Z}}.
+    \end{align}
+    Then,
+    \begin{align}
+      \exp\big(\DKL{p}{q_{\vlambda}}\big) &\leq \Esub{p(\vz_{t-1}\mid\vx)}{
+        \frac{w\,(\vz_{t-1})}{Z}} \\
+      Z \exp\big(\DKL{p}{q_{\vlambda}}\big) &\leq \Esub{p(\vz_{t-1}\mid\vx)}{w\,(\vz_{t-1})}.
+    \end{align}
+\end{proofEnd}
+
 \begin{theoremEnd}[]{proposition}\label{thm:imh_bound}
   The rejection rate \(r\,(\vz_{t-1})\) of a IMH sampler is bounded below such that
   \vspace{-0.02in}

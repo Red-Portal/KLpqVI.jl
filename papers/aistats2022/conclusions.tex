@@ -1,12 +1,14 @@
 
-\vspace{-0.12in}
-\section{Conclusions}
-\vspace{-0.08in}
-In this paper, we investigated the properties of Markovian score climbing (MSC) with independent Metropolis-Hastings (IMH) type Markov-chain Monte Carlo (MCMC) kernels.
-We proved that IMH type kernels are able to automatically perform bias-variance tradeoff using their accept-reject mechanism.
-We also analyzed the limitation of the conditional importance sampling (CIS) kernel originally used in MSC.
-We then proposed parallel IMH (PIMH) as an alternative that enjoys the benefits of CIS without its limitations.
-Our experiments verify that MSC combined with PIMH performs well on the considered Bayesian inference problems, even compared to exclusive variational inference methods.
+\section{Discussions}\label{section:discussion}
+In this paper, we compared three different MCMC score estimators used for inclusive KL divergence minimization.
+Among the three estimators, the parallel state estimator that we proposed achieves strong variance reduction by increasing the number of samples.
+We demonstrated the performance of the parallel state estimator with the IMH kernel on various general Bayesian inference benchmarks.
+Also, on our problems, minimizing the inclusive KL divergence shows to be competitive against exclusive KL divergence minimization.
+
+Our results are not in line with the previous conclusions of~\citet{dhaka_challenges_2021} that inclusive KL divergence does not work better than inclusive KL divergence for high-dimensional problems (\citeauthor{dhaka_challenges_2021} consider few hundreds of dimensions).
+While it is true that the inclusive KL fails in high dimensional and \textit{correlated} posteriors, it is questionable how correlated these posteriors really are in practice.
+Also, as shown in~\cref{fig:logistic} using the parallel estimator for score climbing results in vastly improved performance over other estimators.
+This suggests that the negative results on realistic problems obtained by~\citet{dhaka_challenges_2021} may be a problem of the inference algorithms rather than the inclusive KL.
 
 %An interesting direction for future research would be to invstigate whether such result 
 %This is against the conclusions of~\citet{dhaka_challenges_2021} that exclusive VI should outperform inclusive VI in high-dimensions. 

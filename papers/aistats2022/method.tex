@@ -2,7 +2,7 @@
 %\vspace{-0.05in}
 \section{Markov-chain Monte Carlo Estimators for Score Climbing Variational Inference}
 \vspace{-0.05in}
-\subsection{Overview of Estimation Strategies}\label{section:jsa_msc}
+\subsection{Overview of Estimation Strategies}\label{section:overview}
 %
 \vspace{-0.05in}
 
@@ -132,9 +132,16 @@ It can also be found in the review on multiple-try MCMC methods by~\citet[Table 
 %
 \input{bias_cis}
 %
+\begin{figure}[H]
+  \centering
+  \includegraphics[scale=0.8]{figures/bias_01.pdf}
+  \caption{Relative bias of different estimators.
+  For simplicity, we take \(w^* = \exp\left( \DKL{p}{q} \right)\).}\label{fig:bias}
+\end{figure}
+%
 \paragraph{Reducing Bias by Increasing \(N\)}
-Our results suggest that, for the seq.-IMH estimator and single-CIS estimator, increasing \(N\) improves the bias decrease rate.
-However, it is important to note that all bias bounds depend on \(w^*\).
+For the seq.-IMH estimator and single-CIS estimator, increasing \(N\) improves the bias decrease rate.
+However, it is worth noting that all bias bounds depend on \(w^*\).
 By the following proposition, in the initial stages of VI where the KL divergence is large, \(w^*\) is bounded below exponentially.
 
 \begin{theoremEnd}{proposition}
@@ -147,14 +154,14 @@ By the following proposition, in the initial stages of VI where the KL divergenc
   \begin{align}
     &\DKL{p\left(\cdot\mid\vx\right)}{ q_{\vlambda}\left(\cdot\right) } \\
     &= \int p\left(\vz\mid\vx\right) \log \frac{p\left(\vz\mid\vx\right)}{q_{\vlambda}\left(\vz\right)}\,d\vz \\
-    &\leq \int p\left(\vz\mid\vx\right) \log M \, d\vz \\
+    &\leq \int p\left(\vz\mid\vx\right) \log w^* \, d\vz \\
     &= \log w^*
   \end{align}
 \end{proofEnd}
 
-Thus, in the initial steps of VI, the bias decrease rate \(C\) will be close to 1, making the effect of \(N\) minimal.
-On the other hand, in the later steps of VI, the KL divergence is small.
-However, in this case \(t\) will be larege, therefore making the bias small regardless.
+Thus, bias reduction is only happens close to convergence of SGD.
+In the initial steps, the bias will be large regardless of \(N\) and the method.
+This phenomenon is illustrated in~\cref{fig:bias}.
 
 \subsection{Theoretical Analysis of Variance}
 For MCMC estimators, variance often dominate the mean-square error.
@@ -192,7 +199,11 @@ The variance of the sequential state estimator is given by the variance of a cor
      \sum_{i=1}^N \V{ s\left(\vlambda; \vz_{T+i} \right) }}
 \end{align}
 
-\input{variance_approx}
+%
+%\input{imh_bound}
+%
+
+%\input{variance_approx}
 
 %%% Local Variables:
 %%% TeX-master: "master"

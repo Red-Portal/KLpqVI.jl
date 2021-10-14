@@ -1,9 +1,9 @@
 
-\begin{theoremEnd}{propossition}\label{thm:bias_seq}
+\begin{theoremEnd}{theorem}\label{thm:bias_seq}
   Assuming \(w^* = \sup_{\vz} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda_{t}}\left(\vz\right)} < \infty\; \text{for} \; \forall \vlambda \) and the score function is bounded such that \(\left|\,s(\vz; \vlambda)\,\right| \leq \frac{L}{2}\), the bias of the sequential state estimator with an IMH kernel at iteration \(t\) is bounded as
   {\small
   \[
-    \mathrm{Bias}\left[ g_{\mathrm{seq.,\, t}} \right] \leq \frac{L}{N} \, (w^* - 1)
+  \mathrm{Bias}\left[ g_{\mathrm{seq.,\, t}} \right] \leq L \left( 1 - \frac{N}{2 \, w^*} \right) + \mathcal{O}\left({\left(\nicefrac{1}{w^*}\right)}^2\right)
   \]
   }
 \end{theoremEnd}
@@ -38,9 +38,12 @@
     &=    \frac{1}{N} \sum_{i=1}^N C^i \\
     &=    \frac{1}{N} \left(\frac{ C \left(1 - C^{N}\right)}{1 - C}\right) \\
     &=    \frac{C}{N} \frac{ \left(1 - C^{N}\right) }{1 - C} \\
-    &\leq \frac{1}{N} \frac{ C }{1 - C} \\
-    &=    \frac{1}{N} \frac{ 1 - \nicefrac{1}{w^*} }{ \nicefrac{1}{w^*} } \\
-    &=    \frac{1}{N} \left( w^* - 1 \right)
+    &=  \frac{w^* - 1}{N} \left( 1 - {\left( 1 - \frac{1}{w^*} \right) }^N \right).
+  \end{align}
+  While this bound itself is not very intuitive, by performing a Laurent series expansiona at \(x = \infty\), we obtain a close approximation
+  \begin{align}
+    \frac{w^* - 1}{N} \left( 1 - {\left( 1 - \frac{1}{w^*} \right) }^N \right)
+    \approx 1 - \frac{N+1}{2 w^*} + \mathcal{O}\left({\left(\frac{1}{w^*}\right)}^2\right)
   \end{align}
 
   Finally, by the definition of the total-variation distance, 
@@ -49,7 +52,7 @@
    &\leq \DTV{\eta_{seq.,\, t}(\cdot)}{p(\cdot\mid\vx)} \\
    &\leq \sup_{h : \mathcal{Z} \rightarrow \left[ \text{-}\nicefrac{L}{2}, \nicefrac{L}{2} \right]} \left|\, \Esub{\eta_{\mathrm{seq.},\, t}(\cdot)}{h} - \Esub{p(\cdot\mid\vx)}{h} \,\right| \\
    &= L \, \DTV{ \eta_{\mathrm{seq.},\, t}(\cdot) }{p\left(\cdot\mid\vx\right)}  \\
-   &\leq \frac{L}{N} \left( w^* - 1 \right).
+   &\leq L \left( 1 - \frac{N}{2 \, w^*} \right) + \mathcal{O}\left({\left(\nicefrac{1}{w^*}\right)}^2\right).
  \end{align}
 \end{proofEnd}
 
