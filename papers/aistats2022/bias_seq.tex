@@ -1,9 +1,9 @@
 
-\begin{theoremEnd}{theorem}\label{thm:bias_seq}
-  Assuming \(w^* = \sup_{\vz} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda_{t}}\left(\vz\right)} < \infty\; \text{for} \; \forall \vlambda \) and the score function is bounded such that \(\left|\,s(\vz; \vlambda)\,\right| \leq \frac{L}{2}\), the bias of the sequential state estimator with an IMH kernel at iteration \(t\) is bounded as
+\begin{theoremEnd}{theorem}(Bias of seq.-IMH)\label{thm:bias_seq}
+  Assuming \(w^* = \sup_{\vz} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda_{t}}\left(\vz\right)} < \infty\) and the score function is bounded such that \(\left|\,s(\vz; \vlambda)\,\right| \leq \frac{L}{2}\), the bias of the sequential state estimator with an IMH kernel averaging \(N\) states at iteration \(t\) is bounded as
   {\small
   \[
-  \mathrm{Bias}\left[ g_{\mathrm{seq.,\, t}} \right] \leq L \left( 1 - \frac{N}{2 \, w^*} \right) + \mathcal{O}\left({\left(\nicefrac{1}{w^*}\right)}^2\right)
+  \mathrm{Bias}\left[ g_{\mathrm{seq.,\, t}} \right] \leq L \left( 1 - \frac{N}{2 \, w^*} \right) + \mathcal{O}\left({\left(\frac{1}{w^*}\right)}^2\right)
   \]
   }
 \end{theoremEnd}
@@ -49,10 +49,9 @@
   Finally, by the definition of the total-variation distance, 
  \begin{align}
    \mathrm{bias}\left[ g_{\mathrm{seq., t}} \right]
-   &\leq \DTV{\eta_{seq.,\, t}(\cdot)}{p(\cdot\mid\vx)} \\
    &\leq \sup_{h : \mathcal{Z} \rightarrow \left[ \text{-}\nicefrac{L}{2}, \nicefrac{L}{2} \right]} \left|\, \Esub{\eta_{\mathrm{seq.},\, t}(\cdot)}{h} - \Esub{p(\cdot\mid\vx)}{h} \,\right| \\
    &= L \, \DTV{ \eta_{\mathrm{seq.},\, t}(\cdot) }{p\left(\cdot\mid\vx\right)}  \\
-   &\leq L \left( 1 - \frac{N}{2 \, w^*} \right) + \mathcal{O}\left({\left(\nicefrac{1}{w^*}\right)}^2\right).
+   &\leq L \left( 1 - \frac{N}{2 \, w^*} \right) + \mathcal{O}\left({\left(\frac{1}{w^*}\right)}^2\right).
  \end{align}
 \end{proofEnd}
 

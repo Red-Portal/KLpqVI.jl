@@ -4,7 +4,7 @@ Given an observed data \(\vx\) and a latent variable \(\vz\), Bayesian inference
 Instead of working directly with the target distribution \(p\,(\vz\,|\,\vx)\), variational inference (VI,~\citealt{jordan_introduction_1999, blei_variational_2017, zhang_advances_2019}) searches for a variational approximation \(q_{\lambda}(\vz)\) that is similar to \(p\,(\vz\,|\,\vx)\) according to a discrepancy measure \(D\,(p,\, q_{\vlambda})\).
 
 Naturally, choosing a good discrepancy measure, or objective function, is a critical part of the problem.
-This fact had lead to a quest for good divergence measures~\citep{NIPS2016_7750ca35, NIPS2017_35464c84, NEURIPS2018_1cd138d0, pmlr-v97-ruiz19a}.
+This fact had lead to a quest for good divergence measures~\citep{pmlr-v37-salimans15, NIPS2016_7750ca35, NIPS2017_35464c84, NEURIPS2018_1cd138d0, pmlr-v97-ruiz19a}.
 So far, the exclusive KL divergence \(\DKL{q_{\lambda}}{p}\) (or reverse KL divergence) has been used ``exclusively'' among various discrepancy measures.
 This is partly because the exclusive KL is defined as an average over \(q_{\lambda}(\vz)\), which can be estimated efficiently.
 By contrast, the inclusive KL is defined as
@@ -23,28 +23,28 @@ By contrast, the inclusive KL is defined as
 Interestingly, this is a chicken-and-egg problem as our goal is to obtain \(p\,(\vz\,|\,\vx)\) in the first place.
 Despite this challenge, minimizing~\eqref{eq:klpq} has drawn the attention of researchers because it is believed to result in favorable statistical properties~\citep{minka2005divergence, mackay_local_2001}.
 
-For performing inclusive VI,~\citet{NEURIPS2020_b2070693} and~\citet{pmlr-v124-ou20a} have recently proposed  methods that perform stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951}) with the score function estimated using Markov-chain Monte Carlo (MCMC).
-These MCMC score climbing schemes operate a (or multiple) Markov-chain in conjuction with the VI optimizer.
+For minimizing the inclusive KL divergence,~\citet{NEURIPS2020_b2070693} and~\citet{pmlr-v124-ou20a} have recently proposed  methods that perform stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951}) with the score function estimated using Markov-chain Monte Carlo (MCMC).
+These MCMC score climbing schemes operate a Markov-chain in conjunction with the VI optimizer.
 In addition, within the MCMC kernel, they both use Metropolis-Hastings proposals generated from the variational approximation \(\vz^* \sim q_{\vlambda}\left(\cdot\right)\).
-Therefore, the MCMC kernel itself benefits from the variational inference process, gradually improving over time.
-This enables the MCMC kernel to be sufficiently efficient without the need of computationally expensive kernel such as Hamiltonian Monte Carlo~\citep{duane_hybrid_1987, neal_mcmc_2011, betancourt_conceptual_2017}.
+The MCMC kernel itself benefits from VI, enjoying better proposals over time without the need of computationally expensive proposals as in Hamiltonian Monte Carlo~\citep{duane_hybrid_1987, neal_mcmc_2011, betancourt_conceptual_2017}.
+Also, in terms of computational cost, score climbing is efficient compared to other divergences since we do not need to differentiate through the likelihood.
 
-While the methods by~\citeauthor{NEURIPS2020_b2070693} and~\citeauthor{pmlr-v124-ou20a} are conceptually similar, they use their MCMC kernels in slightly different ways.
-At each SGD iteration, for estimating the score function, \citeauthor{NEURIPS2020_b2070693} use a single state of the Markov-chain generated from a computationally expensive MCMC kernel.
-On the other hand, given a similar computational budget,~\citeauthor{pmlr-v124-ou20a} use \(N\) states generated from a cheaper MCMC kernel.
-We call the former option the \textit{single state estimator} and the later the \(sequential state estimator\)
-It is now natural to ask, ``which is better? An estimator with multiple cheap samples? or one with a single expensive sample?''.
+While the methods by~\citet{NEURIPS2020_b2070693} and~\citet{pmlr-v124-ou20a} are conceptually similar, they both use their MCMC kernels in different ways.
+At each SGD iteration, for estimating the score function, \citeauthor{NEURIPS2020_b2070693} use a single sample generated from a relatively expansive MCMC kernel, while~\citeauthor{pmlr-v124-ou20a} average multiple samples generated from a cheaper MCMC kernel.
+We call the former scheme the \textit{single state estimator} and the later the \textit{sequential state estimator}.
+Given the two options, it is natural to ask, ``which is better? An estimator with multiple cheap samples? or one with a single expensive sample?''.
 
-In this paper, we propose a third, but seldomly mentioned option exist.
-We call this the setup \textit{the parallel state estimator}.
-For this estimator, we operate \(N\) parallel Markov-chains parallel, where only a single state transition is performed on each chain.
-The variance of this estimator dramatically benefits from increasing the computational budget compared to the single and sequential state estimators.
-While this comes at the cost of slightly higher bias, we observe that the variance reduction is significant enough.
+In this paper, we propose a third novel scheme, the \textit{the parallel state estimator}.
+The parallel state estimator operates \(N\) parallel Markov-chains parallel, where only a single state transition is performed on each chain.
+The variance of this estimator linearly decreases with the computational budget \(N\) unlike the single and sequential state estimators.
+While the strong variance reduction comes at the cost of slightly higher bias, we observe that this is not a significant downside in practice.
 
-We compare the bias and variance of the three different schemes and conduct experiments on general Bayesian inference benchmarks.
+We compare the bias and variance of the three different schemes and conduct experiments on general Bayesian inference problems.
 Our results show that, given a similar number of computational budget \(N\), the parallel state estimator results in the best performance.
-Also, score climbing VI with the parallel state estimator is competitive against evidence lower-bound minimization (ELBO), against the conclusions of~\cite{dhaka_challenges_2021} (we further discuss this discrepancy in~\cref{section:discussion}).
-Computationally, score climbing is much more efficient since we do not need to differentiate through the likelihood, which is often more expensive than simple evaluation.
+Also, score climbing VI with the parallel state estimator is competitive against evidence lower-bound minimization (ELBO).
+Interestingly, this observation is against the conclusions of~\cite{dhaka_challenges_2021}
+We further discuss this discrepancy in the Discussions~\cref{section:discussion}.
+
 
 %% generated by the conditional importance sampling (CIS,~\citealt{NEURIPS2020_b2070693, andrieu_particle_2010, andrieu_uniform_2018}) kernel, which uses \(N\) samples from \(q_{\vlambda}(\cdot)\) per transition.
 %% \citeauthor{pmlr-v124-ou20a}, on the other hand, use multiple sequentially generated states from independent Metropolis-Hastings (IMH,~\citealt[Algorithm 25]{hastings_monte_1970}), which only uses 1 sample from \(q_{\vlambda}(\cdot)\).

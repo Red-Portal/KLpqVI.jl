@@ -1,6 +1,6 @@
 
-\begin{theoremEnd}{theorem}
-  Assuming \(w^* = \sup_{\vz} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda_{\tau}}\left(\vz\right)} < \infty \; \text{for}\;\forall \vlambda \) and that the score function is bounded as \(\left|\, s\left(\vz; \vlambda\right) \,\right| \leq \frac{L}{2}\), the bias of the parallel state estimator with an IMH kernel at iteration \(t\) is bounded as
+\begin{theoremEnd}{theorem}(Bias of par.-IMH)
+  Assuming \(w^* = \sup_{\vz} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda_{\tau}}\left(\vz\right)} < \infty\) and that the score function is bounded as \(\left|\, s\left(\vz; \vlambda\right) \,\right| \leq \frac{L}{2}\), the bias of the parallel state estimator with an IMH kernel and \(N\) parallel chains at iteration \(t\) is bounded as
   {\small
 \[
     \mathrm{Bias}\left[ g_{\mathrm{par.,\, t}} \right] \leq L\, \left(1 - \frac{1}{w^*}\right).

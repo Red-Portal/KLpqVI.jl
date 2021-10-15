@@ -4,15 +4,16 @@
 \subsection{Inclusive Variational Inference Until Now}\label{section:ivi_previous}
 \vspace{-0.05in}
 \paragraph{Score Function and Variational Inference}
-A typical way to perform VI is to use stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951, bottou_online_1999}), which requires unbiased gradient estimates of the optimization target \(g(\vlambda)\).
-In this case, SGD can be performed by repeating the update
+A typical way to perform VI is to use stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951, bottou_online_1999}), provided that unbiased gradient estimates of the optimization target \(g(\vlambda)\) are available.
+In this case, SGD is performed by repeating the update
+\vspace{-0.02in}
 \begin{align}
   \vlambda_{t} = \vlambda_{t-1} + \gamma_{t} \, g\left(\vlambda_{t-1}\right)
 \end{align}
-where \(\gamma_1, \ldots, \gamma_T\) is a step-size schedule follwing the conditions of~\citet{robbins_stochastic_1951, bottou_online_1999}.
-In the case of inclusive variational inference, obtaining \(g\) corresponds to estimating
+where \(\gamma_1, \ldots, \gamma_T\) is a step-size schedule following the conditions of~\citet{robbins_stochastic_1951, bottou_online_1999}.
+In the case of inclusive KL divergence minimization, obtaining \(g\) corresponds to estimating
 %
-\vspace{-0.05in}
+\vspace{-0.02in}
 \begin{align}
   \nabla_{\vlambda} \DKL{p}{q_{\lambda}}
   &= \Esub{p(\vz\mid\vx)}{ - \nabla_{\vlambda} \log q_{\vlambda}(\vz) } \\
@@ -38,8 +39,8 @@ When it is easy to sample from the variational approximation \(q_{\lambda}(\vz)\
 %\vspace{-0.05in}
 where \(w\,(\vz) = p\,(\vz,\vx) / q_{\vlambda}(\vz)\) is known as the \textit{importance weight}, and \(\vz^{(1)},\, \ldots,\, \vz^{(N)}\) are \(N\) independent samples from \(q_{\vlambda}(\vz)\).
 This scheme is equivalent to adaptive IS methods~\citep{cappe_adaptive_2008, bugallo_adaptive_2017} since the IS proposal \(q_{\vlambda}(\vz)\) is iteratively optimized based on the current samples.
-Though IS is unbiased, it is highly unstable in practice.
-A more stable alternative is to use the \textit{normalized weight} \(\widetilde{w}^{(i)} = \nicefrac{w\,(\vz^{(i)})}{\sum_{i=1}^N w\,(\vz^{(i)}) }\), which is known as the self-normalized IS (SNIS) approximation.
+Although IS is unbiased, it is highly unstable in practice.
+A more stable alternative is to use the \textit{normalized weight} \(\widetilde{w}^{(i)} = \nicefrac{w\,(\vz^{(i)})}{\sum_{i=1}^N w\,(\vz^{(i)}) }\), which results in the self-normalized IS (SNIS) approximation.
 Unfortunately, SNIS still fails to converge even on moderate dimensional objectives and unlike IS, it is no longer unbiased~\citep{robert_monte_2004, mcbook}.
 
 %

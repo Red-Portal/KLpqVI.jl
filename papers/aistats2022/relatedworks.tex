@@ -1,28 +1,27 @@
-
+\vspace{-0.05in}
 \section{Related Works}\label{section:related}
+\vspace{-0.05in}
 \paragraph{Inclusive KL minimization}
-Our method directly builds on top of MSC~\citep{NEURIPS2020_b2070693}, which is a method for minizing the inclusive KL divergence.
-Concurrently,~\citet{pmlr-v124-ou20a} has proposed JSA which is conceptually very similar to MSC.
-Unlike~\citeauthor{NEURIPS2020_b2070693}, they apply JSA for training variational autoencoders with discrete latent variables.
-Also, JSA can only be applied to models with \textit{i.i.d.}, which is more restrictive.
-Other than MSC and JSA only a few have been proposed for general VI based on SGD.
+Our method directly builds on top of MSC~\citep{NEURIPS2020_b2070693}, which is a method for minimizing the inclusive KL divergence.
+Concurrently,~\citet{pmlr-v124-ou20a} proposed JSA which they for training variational autoencoders with discrete latent variables.
+Unlike MSC, JSA can specifically be applied models with \textit{i.i.d.} data with minibatches.
+Before the two, only a few have proposed methods that minimize the inclusive KL using SGD.
 Notably,~\citet{DBLP:journals/corr/BornscheinB14} use SNIS for estimating the stochastic gradients, while~\citet{li_approximate_2017} use an MCMC kernel to refine samples from \(q_{\vlambda}(\vz)\) to better resemble samples from \(p(\vz\mid\vx)\).
 
+\vspace{-0.1in}
 \paragraph{MCMC for VI}
-Other than for minimizing the inclusive KL, MCMC has been widely utilized for VI.
-For example,~\citet{pmlr-v97-ruiz19a, pmlr-v37-salimans15} construct alternative divergence bounds from samples from an MCMC sampler.
-For the MCMC kernel, both caess used the costly HMC kernel.
-It would be interesting to investigate whether these method would benefit from different types of MCMC kernels and estimation schemes as discussed in this work.
+Not restricted to inclusive KL minimization, MCMC has been widely utilized in VI.
+For example,~\citet{pmlr-v37-salimans15, pmlr-v97-ruiz19a} construct alternative divergence bounds from samples of an MCMC sampler.
 
+\vspace{-0.1in}
 \paragraph{Adaptive MCMC}
-As pointed out by~\citet{pmlr-v124-ou20a}, MSC is structurally equivalent to adaptive MCMC methods.
-Strong resemblence can be found in methods using stochastic approximation for adapting the proposal distribution used inside the MCMC kernel.
+As pointed out by~\citet{pmlr-v124-ou20a}, using \(q_{\vlambda}\) within the MCMC kernel makes score climbing structurally equivalent to adaptive MCMC.
 In particular,~\citet{10.1007/s11222-008-9110-y, garthwaite_adaptive_2016} discuss the use of stochastic approximation in adaptive MCMC.
-Among adaptive MCMC methods,~\citet{andrieu_ergodicity_2006, keith_adaptive_2008, holden_adaptive_2009, giordani_adaptive_2010} specifically discuss adapting the propsosal of IMH kernels.
-In particular, \citet{keith_adaptive_2008} propose to use \textit{cross-entroy minimization}~\citep{barbakh_cross_2009}, which is mathematically identical to inclusive VI.
+Also,~\citet{andrieu_ergodicity_2006, keith_adaptive_2008, holden_adaptive_2009, giordani_adaptive_2010} specifically discuss adapting the propsosal of IMH kernels.
+Most similar to score climbing VI is the work of~\citet{keith_adaptive_2008} where they propose to use \textit{cross-entropy minimization}~\citep{barbakh_cross_2009}, which is mathematically identical to inclusive VI.
 More recently, several other methods that apply variational inference for adapting the MCMC kernel have been developed.
 For adapting the proposals of an IMH sampler, \citet{habib2018auxiliary} minimize the exclusive KL divergence while~\cite{neklyudov_metropolishastings_2019} minimize the symmetric KL divergence.
-And for HMC,~\citet{zhang_variational_2018, pmlr-v139-campbell21a} have proposed to minimize various other divergence measures.
+And for HMC,~\citet{zhang_variational_2018, pmlr-v139-campbell21a} have proposed to use score matching, ELBO maximization and kernelized Stein discrepancy minimization.
 
 %% \vspace{-0.1in}
 %% \paragraph{Ergodicity and Inclusive VI}

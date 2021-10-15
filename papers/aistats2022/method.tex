@@ -4,8 +4,6 @@
 \vspace{-0.05in}
 \subsection{Overview of Estimation Strategies}\label{section:overview}
 %
-\vspace{-0.05in}
-
 \begin{figure*}
     \centering
     \begin{subfigure}[b]{0.25\textwidth}
@@ -31,54 +29,55 @@
 %
 \input{table_cost}
 %
-
+\vspace{-0.05in}
 \paragraph{Overview}
 Recently,~\citet{NEURIPS2020_b2070693} and~\citet{pmlr-v124-ou20a} proposed two similar but independent methods for performing inclusive variational inference.
 Both methods estimate the score gradient by operating a Markov-chain in parallel with the VI optimization sequence.
-Also, they both use MCMC kernels that can effectively used the variational approximation \(q_{\vlambda_t}(\vz)\).
-Because of this, both methods are much more efficient compared to previous VI approaches~\citep{pmlr-v97-ruiz19a, pmlr-v70-hoffman17a} that used expensive MCMC kernels such as Hamiltonian Monte Carlo.
+They notably use MCMC kernels that can effectively utilize the variational approximation \(q_{\vlambda_t}(\vz)\).
+Because of this, both methods are computationally more efficient compared to previous VI approaches~\citep{pmlr-v97-ruiz19a, pmlr-v70-hoffman17a} that used expensive MCMC kernels such as Hamiltonian Monte Carlo.
 
 \vspace{-0.05in}
 \paragraph{Single State Estimator}
-In Markovian score climbing (MSC), \citeauthor{NEURIPS2020_b2070693} estimate the score gradient by performing an MCMC iteration and update the parameters such that
+In Markovian score climbing (MSC),~\citet{NEURIPS2020_b2070693} estimate the score gradient by performing an MCMC transition and estimate the score function gradient as
 \vspace{-0.05in}
 \begin{align*}
   &\vz_t \sim K_{\vlambda_{t-1}}\left(\vz_{t-1}, \cdot \right) \\
   &g_{\text{single-CIS}}(\vlambda) = s\,(\vz_t; \vlambda)
 \end{align*}
 where \(K_{\vlambda_{t-1}}\left(\vz_{t-1}, \cdot\right)\) is a MCMC kernel leaving \(p\,(\vz\mid\vx)\) invariant and \(g_{\text{single}}\left(\vlambda\right)\) denotes the score estimator.
-For \(K_{\vlambda_{t-1}}\left(\vz_{t-1}, \cdot\right)\), they propose a new type of kernel inspired by particle MCMC~\citep{andrieu_particle_2010, andrieu_uniform_2018}, the conditional importance sampling (CIS) kernel.
+For the MCMC kernel, they propose a new type of kernel inspired by particle MCMC~\citep{andrieu_particle_2010, andrieu_uniform_2018}, the conditional importance sampling (CIS) kernel.
 Since the estimator uses \textit{a single state} created by the CIS kernel, we call it the single state estimator with the CIS kernel (single-CIS).
 The CIS kernel internally uses \(N\) samples from the \(q_{\vlambda_{t-1}}(\vz)\), hence the dependence on \(\vlambda_{t-1}\).
 When compared to MCMC kernels that only use a single sample from \(q_{\vlambda_{t-1}}(\vz)\), it is \(N\) times more expensive, but hopefully, statistically superior.
 
-\vspace{-0.05in}
+\vspace{-0.08in}
 \paragraph{Sequential State Estimator}
-On the other hand, at each SGD iteration \(t\),~\citep{pmlr-v124-ou20a} perform \(N\) sequential Markov-chain transitions and use the average of the intermediate states for estimation.
+On the other hand, at each SGD iteration \(t\),~\citet{pmlr-v124-ou20a} perform \(N\) sequential Markov-chain transitions and use the average of the intermediate states for estimation.
 That is, for the index \(i \in \{1, \ldots, N\}\),
 \vspace{-0.05in}
 \begin{align*}
   &\vz_{T+i} \sim K_{\vlambda_{t-1}}^i\left(\vz_{T}, \cdot \right) \\
   &g_{\text{seq.-IMH}}(\vlambda) = \frac{1}{N} \sum_{i=1}^N s\,(\vz_{T+i}; \vlambda)
 \end{align*}
-where \(\vz_T\) is the last Markov-chain state of the previous SGD iteration.
+where \(\vz_T\) is the last Markov-chain state of the previous SGD iteration 
+\(t-1\).
 \(K^{i}_{\vlambda_{t-1}}(\vz_{T}, \cdot)\) denotes the MCMC kernel sequentially applied \(i\) times.
-For the MCMC kernel, they use the classic independent Metropolis-Hastings (IMH,~\citealt[Algorithm 25]{robert_monte_2004}~\citealt{hastings_monte_1970}) algorithm, which uses only a single sample from \(q_{\vlambda_{t-1}}(\vz)\) (notice the dependence on \(\vlambda_{t-1}\) just like the aforementioned CIS kernel).
+For the MCMC kernel, they use the independent Metropolis-Hastings (IMH,~\citealt[Algorithm 25]{robert_monte_2004}~\citealt{hastings_monte_1970}) algorithm, which uses only a single sample from \(q_{\vlambda_{t-1}}(\vz)\) (notice the dependence on \(\vlambda_{t-1}\)).
 Therefore, the cost of \(N\) state transitions with IMH is similar to the cost of a single transition with CIS.
-Since the estimator uses sequential states, we call it the sequential state esimator with the IMH kernel (seq.-IMH)
+Since the estimator uses sequential states, we call it the sequential state estimator with the IMH kernel (seq.-IMH)
 
 %\subsection{The Parallel State Estimator}\label{section:overview}
-
+\vspace{-0.08in}
 \paragraph{Overview}
 The single and sequential state estimators represent two different ways of using a fixed computational budget.
 The former uses a single sample generated in an expensive way, while the latter uses multiple samples generated in a cheap way.
 Illustrations of the two schemes are provided in~\cref{fig:single,fig:seq}.
 
-\vspace{-0.05in}
+\vspace{-0.08in}
 \paragraph{Parallel State Estimator}
-In this work, we add a new scheme into the mix: \textit{the parallel state estimator}.
+In this work, we propose a new scheme into the mix: \textit{the parallel state estimator}.
 Like the sequential state estimator, we use the cheaper IMH kernel, but instead of applying the MCMC kernel \(N\) times to a single chain, we apply the MCMC kernel a single time to \(N\) \textit{parallel Markov-chains}.
-That is, for each Markov-chain \(i \in \{1, \ldots, N\}\),
+That is, for each Markov-chain indexed by \(i \in \{1, \ldots, N\}\),
 %
 \vspace{-0.05in}
 \begin{align*}
@@ -89,33 +88,35 @@ That is, for each Markov-chain \(i \in \{1, \ldots, N\}\),
 where \(\vz_{t-1}^{(i)}\) is the state of the \(i\)th chain at the previous SGD step.
 Computationally speaking, we are still applying \(K\big(\vz_{t-1}^{(i)}\big)\) \(N\) times in total, so the cost is similar to the sequential state estimator.
 However, the Markov-chain are \(N\) times shorter, which, in a traditional MCMC view, might seem to result in worse statistical performance.
-An illustration of the parallel state estimator is shown in~\cref{fig:par}, while pseudocodes of the considered schemes are provided in the \textit{supplementary material}.
+An illustration of the parallel state estimator is shown in~\cref{fig:par}.
 
 \vspace{-0.05in}
 \paragraph{Computational Cost}
 The three scheme using the CIS kernel and the IMH kernel can have different computational cost depending on the parameter \(N\).
-The computational costs of each scemes are organized in~\cref{table:cost}.
+The computational costs of each scemes are organized in~\cref{table:cost} while detailed pseudocodes of the considered schemes are provided in the \textit{supplementary material}.
 In the CIS kernel, \(N\) controls the number of internal proposals sampled from \(q_{\vlambda}(\vz)\).
 In the sequential and parallel state estimators, the IMH kernel only uses a single sample from \(q_{\vlambda}(\vz)\), but applies the kernel \(N\) times.
+Assuming caching is done as much as possible, the parallel state estimator needs twice the density evaluations of \(q_{\vlambda}(\vz)\) compared to other methods.
+This added cost, however, is minimal since the overall computational cost is dominated by  \(p(\vz,\vx)\).
 When estimating the score, the single state estimator computes \(\nabla_{\vlambda} \log q_{\vlambda}(\vz)\) only once, while for the sequential and parallel state estimators compute it \(N\) times.
 However,~\cite{NEURIPS2020_b2070693} also discuss a Rao-Blackwellized version of the CIS kernel, which also computes the gradient \(N\) times.
+Lastly, notice that score climbing does not need to differentiate through the likelihood unlike ELBO maximization, making its base computational cost significantly cheaper.
 
 \subsection{Theoretical Analysis of Bias}\label{section:theory}
 \vspace{-0.05in}
 \paragraph{Adaptive MCMC and Ergodicity}
-For bounded functions, a bound on the bias of MCMC estimators can be easily derived from the convergence rates of MCMC kernels as shown by~\citet[Theorem 4]{jiang_mcmc_2021}.
-In the context of MSC, the convergence rate of an MCMC kernel is a subtle subject since the kernel is now \(adaptive\) as it depends on \(\vlambda_t\), which is in turn dependent on all of the past MCMC samples.
+For bounded functions, an upper bound on the bias of MCMC estimators can be easily derived from the convergence rates of MCMC kernels.
+In the context of score climbing VI, the MCMC convergence is a subtle subject since the kernel is now \textit{adaptive} as it depends on \(\vlambda_t\), which is in turn dependent on all of the past MCMC samples.
 This is clearly the type of problem adaptive MCMC algorithms have been concerned with~\citep{andrieu_ergodicity_2006}.
-However, our setting crucially differs with adaptive MCMC in that our goal is not to obtain asymptotically unbiased samples.
-Instead, we use the MCMC samples acquired during each SGD step, in which \(\vlambda_t\) is fixed.
-That is, our MCMC kernel is instantaneously not adaptive, and we are thus we are free to use the ergodicity results of these kernels.
-However, we note that, as far as Deoblin's condition holds such that \(w^* = \sup_{\vz, \vlambda} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda}\left(\vz\right)}  < \infty\) and the SGD stepsize sequence satisfies the diminishing adaptation condition~\citep{10.2307/27595854}, the MCMC kernel will indeed result in asymptotically unbised samples.
+Fortunately, our setting crucially differs from adaptive MCMC in that we do not seek to obtain asymptotically unbiased samples.
+Instead, we only use the MCMC samples acquired during each SGD step, within the corresponding SGD step, in which \(\vlambda_t\) is fixed.
+That is, our MCMC kernel is instantaneously not adaptive, and we are thus free to use the corresponding ergodic convergence rates.
+In addition, as far as Deoblin's condition holds such that \(w^* = \sup_{\vz, \vlambda} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda}\left(\vz\right)}  < \infty\) for all \(\vlambda_t\) and the SGD stepsize sequence satisfies the diminishing adaptation condition~\citep{10.2307/27595854}, the kernel will eventually result in asymptotically unbiased samples.
 
 \vspace{-0.05in}
 \paragraph{Boundedness Assumption}
-Since convergence rates are defined with the total-variation distance, our bias results assume that the score function is bounded.
-That is, \(\norm{\nabla_{\vlambda} \log q_{\vlambda}(\vz)} < L\) for any \(\vlambda\).
-This boundedness assumption is reasonable since theoretical guarentees of SGD often assume Lipschitz-continuity of the gradients, from which boundedness follows as a consequence.
+We generally assume that the score function is bounded such that, \(\norm{\nabla_{\vlambda} \log q_{\vlambda}(\vz)} < L\) for any \(\vlambda\).
+his boundedness assumption is reasonable since theoretical guarentees of SGD often assume Lipschitz-continuity.% of the gradients, from which boundedness follows as a consequence.}
 %}
 
 %For the seq.-IMH estimator, the bias is bounded geometrically with the number of states \(N\) and the number of SGD iteration \(t\).
@@ -124,12 +125,8 @@ This boundedness assumption is reasonable since theoretical guarentees of SGD of
 %
 \input{bias_par}
 %
-Finally, we analyze the bias of the single-CIS estimator.
-Our proof is based on the fact that the CIS kernel is identical to the iterated sampling importance resampling (i-SIR) algorithm by~\citet{andrieu_uniform_2018}.
-Especially, we utilize the the convergence rate of the i-SIR kernel.
-In addition, we note that the CIS kernel can be reformulated as an accept-reject type kernel that uses Barker's acceptance function~\citep{barker_monte_1965}.
-With this perspective, it is identical to the ensemble MCMC sampler independently proposed by~\citet{austad_parallel_2007, neal_mcmc_2011a}.
-It can also be found in the review on multiple-try MCMC methods by~\citet[Table 12]{martino_review_2018a}.
+For the single-CIS estimator, our proof is based on the fact that the CIS kernel is identical to the iterated sampling importance resampling (i-SIR) algorithm by~\citet{andrieu_uniform_2018}.
+We also note that the CIS kernel can be reformulated as a multiple-try~\citet[Table 12]{martino_review_2018a} accept-reject type kernel that uses Barker's acceptance function~\citep{barker_monte_1965}, resulting in the ensemble MCMC sampler~\citet{austad_parallel_2007, neal_mcmc_2011a}.
 %
 \input{bias_cis}
 %
@@ -137,6 +134,7 @@ It can also be found in the review on multiple-try MCMC methods by~\citet[Table 
 \vspace{-0.05in}
   \centering
   \includegraphics[scale=0.8]{figures/bias_01.pdf}
+  \vspace{-0.3in}
   \caption{Relative bias of different estimators.
   For simplicity, we take \(w^* = \exp\left( \DKL{p}{q} \right)\).}\label{fig:bias}
 \vspace{-0.05in}
@@ -145,10 +143,9 @@ It can also be found in the review on multiple-try MCMC methods by~\citet[Table 
 \vspace{-0.05in}
 \paragraph{Reducing Bias by Increasing \(N\)}
 For the seq.-IMH estimator and single-CIS estimator, increasing \(N\) improves the bias decrease rate.
-However, it is worth noting that all bias bounds depend on \(w^*\).
-By the following proposition, in the initial stages of VI where the KL divergence is large, \(w^*\) is bounded below exponentially.
-
-\begin{theoremEnd}{proposition}
+However, the bounds depend on \(w^*\), which is bounded below exponentially as shown by the following proposition.
+%
+\begin{theoremEnd}{proposition}\label{thm:kl_bound}
   \(w^* = \sup_{\vz} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda}\left(\vz\right)} \) is bounded below exponentially by the KL divergence such that
   \[
   \exp\left(\DKL{p\left(\cdot\mid\vx\right)}{ q_{\vlambda}\left(\cdot\right) }\right) \leq w^*.
@@ -163,17 +160,18 @@ By the following proposition, in the initial stages of VI where the KL divergenc
   \end{align}
 \end{proofEnd}
 
-Thus, bias reduction is only happens close to convergence of SGD.
-In the initial steps, the bias will be large regardless of \(N\) and the method.
+Thus, in the initial steps of SGD where the KL divergence is large, the bias will also be large regardless of \(N\).
+Therefore, increasing \(N\) will not bring significant reduction in bias.
 To illustrate this point we visualized the bounds in~\cref{fig:bias}.
 
+\vspace{-0.05in}
 \subsection{Theoretical Analysis of Variance}
-For MCMC estimators, variance often dominate the mean-square error.
-Therefore, analyzing the variance is more relevant to practice.
+For MCMC estimators, variance often dominates the mean squared error.
+Therefore, variance gives a better sense of their practical performance.
 
 \vspace{-0.05in}
 \paragraph{Variance of Single State Estimator}
-The variance of the single estimator is given by the law of total variance such as
+The variance of the single estimator is given by the law of total variance such that
 \begin{align}
   &\V{g_{\text{single}}} \nonumber \\
   &= \E{ \Vsub{K_{\vlambda_{t-1}}\left(\vz_{t-1}, \vz\right)}{ s\left(\vlambda; \vz\right) \mid \vz_{t-1} }} \nonumber \\
@@ -182,32 +180,34 @@ The variance of the single estimator is given by the law of total variance such 
   &= \Esub{p\left(\cdot \mid\vx \right)}{ \Vsub{K_{\vlambda_{t-1}}\left(\vz_{t-1}, \vz\right)}{ s\left(\vlambda; \vz\right) \mid \vz_{t-1} }} \nonumber\\
   &\quad + \Vsub{p\left(\cdot \mid\vx \right)}{ \Esub{K_{\vlambda_{t-1}}\left(\vz_{t-1}, \vz\right)}{ s\left(\vlambda; \vz\right) \mid \vz_{t-1} } } \\
   &= \Vsub{p\left(\cdot\mid\vx \right)}{g_{\text{single}}} \\
-  &= \sigma^2
+  &= \sigma^2.
 \end{align}
-Therefore, ideally, the variance will be equal to the variance of an independent draw from the posterior.
-This also suggests that, under stationarity, the variance of the single state estimator will be similar regardless of the MCMC kernel \(K_{\vlambda_{t-1}}\left(\vz_{t-1}, \vz\right)\).
+Ideally, the variance will be equal to the variance of an independent draw from the posterior.
+This also suggests that, under stationarity, the variance of a single state estimator will be similar with any MCMC kernel.
 
+\vspace{-0.05in}
 \paragraph{Variance of Parallel State Estimator}
 On the other hand, the parallel state estimator can be seen as an average of \textit{i.i.d.} single state estimators.
 Therefore, under stationarity, the variance is
 \begin{align}
   \V{g_{\text{par.}}} = \frac{\sigma^2}{N}
 \end{align}
-However, the variance reduction rate does not require stationarity.
-Therefore, the parallel state estimator \textit{always} enjoys \(\mathcal{O}\left(\nicefrac{1}{N}\right)\) variance reduction.
+Note that the variance reduction rate does not necessarily require stationarity.
+The parallel state estimator thus \textit{always} enjoys \(\mathcal{O}\left(\nicefrac{1}{N}\right)\) variance reduction.
 
+\vspace{-0.05in}
 \paragraph{Variance of Sequential State Estimator}
-Now, assuming stationarity, the variance of the sequential state estimator is given as
+Assuming stationarity, the variance of the sequential state estimator is given as
 \begin{align}
-  \V{g_{\text{seq.}}} = \frac{\sigma^2}{N} + \frac{2}{N^2} \sum_{i > j}^N \Esub{p\left(\vz_T \mid \vx \right)}{ \Cov{ \vz_{i}, \vz_{j} \mid \vz_{T} } }\label{eq:var_seq}.
+  \V{g_{\text{seq.}}} = \frac{\sigma^2}{N} + \frac{2}{N^2} \sum_{i < j}^N \Esub{p\left(\vz_T \mid \vx \right)}{ \Cov{ \vz_{i}, \vz_{j} \mid \vz_{T} } }\label{eq:var_seq}.
 \end{align}
-which is similar to the variance of a normal MCMC estimator.
+which is similar to the variance of a regular MCMC estimator.
 Here, \(T = N\,\left(t - 1\right)\) is the last state of the chain at the previous SGD iteration \(t-1\).
 (Detailed derivation is in the \textit{supplementary material}.)
 Provided that the covariance term does not exist, the performance will be equal to the parallel state estimator.
-However, due to rejections in the MCMC kernel, adjacent states will have some level of correlation.
-In the context of VI, the rejection rate will be large when the KL divergence is large as a consequence of~\cref{thm:kl_bound}.
-Therefore, in practice, we can expect the performance of the sequential state estimator to be worse than the parallel state estimator.
+However, due to rejections in the MCMC kernel, adjacent states will have some level of positive covariance.
+Unfortunately, the rejection rate will be large when the KL divergence is large as implied by~\cref{thm:kl_bound}.
+Thus, in practice, we can expect the performance of the sequential state estimator to be worse than the parallel state estimator.
 This is clearly the case as shown in the numerical simulation in~\cref{section:simulation}.
 
 %
