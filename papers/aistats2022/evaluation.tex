@@ -45,7 +45,7 @@ Using the 2048 random \(q_{\vmu, \mSigma}\)s, we simulate 128 Markov-chains of l
 \paragraph{Results}
 The variance results are shown in~\cref{fig:simulation}.
 We do not present the bias as all methods were visually indistinguishable.
-From the results, when the KL divergence is large, we can see that seq.-IMH and single-CIS do not benefit from increasing \(N\).
+From the results, when the KL divergence is significant, we see that seq.-IMH and single-CIS do not benefit from increasing \(N\).
 On the other hand, the parallel state estimator always benefits from increasing \(N\).
 The variance of the parallel state estimator follows a linear trend until the large KL divergence prevents the chains from achieving stationary.
 
@@ -72,7 +72,7 @@ We compare the following methods.
 \end{enumerate}
 \vspace{-0.05in}
 For ELBO, we use only a single sample as originally described by~\citet{NIPS2017_e91068ff}.
-This also ensures a fair comparison against inclusive KL minimization methods since the iteration complexity of computing the ELBO gradient can be easily few orders of magnitude larger.
+This also ensures a fair comparison against inclusive KL minimization methods since the iteration complexity of computing the ELBO gradient can be easily a few orders of magnitude larger.
 Also, we only use single-HMC in the logistic regression experiment due to its high computational demands, 
 
 
@@ -102,11 +102,11 @@ The extra degrees of freedom \(\sigma_{\beta}\) and \(\sigma_{\alpha}\) make thi
 \vspace{-0.05in}
 \paragraph{Results}
 The test accuracy and test log predictive density (Test LPD) results are shown in~\cref{table:logistic}.
-Our proposed parallel state estimator (par.-IMH) achieves the best results both in terms of accuracy and predictive density.
+Our proposed parallel state estimator (par.-IMH) achieves the best accuracy and predictive density results.
 Despite having access to high-quality HMC samples, single-HMC shows poor performance.
 This supports our analysis that par.-IMH with \(N > 1\) superior variance reduction to the single state estimator.
 Also, seq.-IMH showed poor performance overall due to the correlated samples.
-Among the two CIS kernel based methods, single-CISRB performs only marginally better than single-CIS.
+Among the two CIS kernel-based methods, single-CISRB performs only marginally better than single-CIS.
 
 \begin{figure}[H]
   \vspace{-0.05in}
@@ -132,7 +132,7 @@ Among the two CIS kernel based methods, single-CISRB performs only marginally be
 %
   \vspace{-0.1in}
 \paragraph{Inclusive KL v.s. Exclusive KL}
-While both ELBO and par.-IMH showed similar numerical performance, in the parameter space, they choose different optimization paths.
+While both ELBO and par.-IMH showed similar numerical performance, they chose different optimization paths in the parameter space.
 This is shown in~\cref{fig:logistic}.
 While the test accuracy suggests that ELBO converges quickly around \(t=2000\) (\cref{fig:german_acc}), in terms of uncertainty estimate, it takes much longer to converge (\cref{fig:german_lpd}).
 This shows that inclusive KL minimization chooses a path that has better density coverage as expected.
@@ -163,7 +163,7 @@ For this experiment, the iteration complexity of ELBO is almost two orders of ma
   %% \subfloat[\texttt{german}]{
   %%   \includegraphics[scale=0.75]{figures/breast_01.pdf}
   %% } \\
-  \caption{Test log preditive density on the \texttt{sonar} dataset.
+  \caption{Test log predictive density on the \texttt{sonar} dataset.
     The solid lines and colored regions are the medians and 80\% percentiles computed from 30 repetitions.
   }\label{fig:gp}
 \end{figure}
@@ -172,10 +172,10 @@ For this experiment, the iteration complexity of ELBO is almost two orders of ma
 \paragraph{Result}
 The results are shown in~\cref{table:gp}.
 Again, among inclusive KL minimization, the parallel state estimator (par.-IMH) achieved the best results.
-Compared to ELBO, its accuracy was lower on \texttt{sonar} but the uncertainty estimates where much better.
+Compared to ELBO, its accuracy was lower on \texttt{sonar}, but the uncertainty estimates were much better.
 This is better shown in~\cref{fig:gp}, where ELBO quickly converges to a point with poor uncertainty calibration.
 Meanwhile, on \texttt{breast}, ELBO gives better uncertainty estimates than inclusive KL minimization methods.
-This happens when the modal estimate (preferred by the exclusive KL) gives both good accuracy and uncertainty estimates.
+This happens when the modal estimate (preferred by the exclusive KL) gives good accuracy and uncertainty estimates.
 
   \vspace{-0.05in}
 \subsection{Marginal Likelihood Estimation}\label{section:mll}
@@ -213,7 +213,7 @@ We estimated the reference marginal likelihood using \textit{thermodynamic integ
 \paragraph{Results}
 The results are shown in~\cref{fig:marginal_likelihood}.
 par.-IMH converges quickly and provides the most accurate estimate.
-By contrast, other estimator converge much slowly.
+By contrast, other estimators converge much slowly.
 SNIS and ELBO, on the other hand, overestimate \(\log Z\), which can be attributed to the mode-seeking behavior of ELBO and the small sample bias of SNIS.
 
 

@@ -2,7 +2,7 @@
 \section{Related Works}\label{section:related}
 \vspace{-0.05in}
 \paragraph{Inclusive KL minimization}
-Our method directly builds on top of MSC~\citep{NEURIPS2020_b2070693}, which is a method for minimizing the inclusive KL divergence.
+Our method directly builds on top of MSC~\citep{NEURIPS2020_b2070693}, which minimizes the inclusive KL divergence.
 Concurrently,~\citet{pmlr-v124-ou20a} proposed JSA which they for training variational autoencoders with discrete latent variables.
 Unlike MSC, JSA can specifically be applied models with \textit{i.i.d.} data with minibatches.
 Before the two, only a few have proposed methods that minimize the inclusive KL using SGD.
@@ -21,7 +21,7 @@ Also,~\citet{andrieu_ergodicity_2006, keith_adaptive_2008, holden_adaptive_2009,
 Most similar to score climbing VI is the work of~\citet{keith_adaptive_2008} where they propose to use \textit{cross-entropy minimization}~\citep{barbakh_cross_2009}, which is mathematically identical to inclusive VI.
 More recently, several other methods that apply variational inference for adapting the MCMC kernel have been developed.
 For adapting the proposals of an IMH sampler, \citet{habib2018auxiliary} minimize the exclusive KL divergence while~\cite{neklyudov_metropolishastings_2019} minimize the symmetric KL divergence.
-And for HMC,~\citet{zhang_variational_2018, pmlr-v139-campbell21a} have proposed to use score matching, ELBO maximization and kernelized Stein discrepancy minimization.
+And for HMC,~\citet{zhang_variational_2018, pmlr-v139-campbell21a} have proposed to use score matching, ELBO maximization, and kernelized Stein discrepancy minimization.
 
 %% \vspace{-0.1in}
 %% \paragraph{Ergodicity and Inclusive VI}
