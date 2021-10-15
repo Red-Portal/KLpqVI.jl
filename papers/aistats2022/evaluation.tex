@@ -37,9 +37,9 @@ Each point represent a random \(\vlambda\) where the score is evaluated.}\label{
 \vspace{-0.05in}
 \paragraph{Experimental Setup}
 We first present numerical simulation results of the three estimators.
-We chose the target posterior to be a 10 dimensional white Gaussian.
-We then randomly generated 2048 random \(\vlambda = \vmu\) where \(q_{\vlambda}(\vz) = \mathcal{N}(\vmu, \mSigma)\), \(\vmu\) is drawn from a multivariate Student's T distribution, and \(\mSigma = 1.5^2 \mI\).
-Using the 2048 random \(q_{\vmu, \mSigma}\)s, we simulate 128 Markov-chains of length \(T=50\) and estimate the bias and variance of the score function.
+We choose the target posterior to be a 10 dimensional white Gaussian.
+We then randomly generate 2048 random \(\vlambda = \vmu\) where \(q_{\vlambda}(\vz) = \mathcal{N}(\vmu, \mSigma)\), \(\vmu\) is drawn from a multivariate Student's T distribution, and \(\mSigma = 1.5^2 \mI\).
+Using the 2048 random \(\vlambda\)s, we simulate 128 Markov-chains of length \(T=50\) and estimate the bias and variance of the score function.
 
 \vspace{-0.05in}
 \paragraph{Results}
@@ -57,7 +57,7 @@ The variance of the parallel state estimator follows a linear trend until the la
 For the realistic experiments, we implemented score climbing VI on top of the Turing~\citep{ge2018t} probabilistic programming framework.
 Our implementation works with any model described in Turing, which automatically handles distributions with constrained support~\citep{JMLR:v18:16-107}.
 We use the ADAM optimizer by~\citet{kingma_adam_2015} with a learning rate of 0.01 in all of the experiments.
-The computational budget is set to \(N=10\) and \(T=10^4\) for all experiments unless specified.
+The computational budget is set to \(N=10\) and the number of SGD iterations is \(T=10^4\) for all experiments unless specified.
 
 We compare the following methods.
 \vspace{-0.1in}
@@ -79,7 +79,7 @@ Also, we only use single-HMC in the logistic regression experiment due to its hi
 \subsection{Hierarchical Logistic Regression}\label{section:logistic}
 \vspace{-0.05in}
 \paragraph{Experimental Setup}
-We first perform logistic regression with the Pima Indians diabetes (\textbf{\texttt{pima}}, \(\vz \in \mathbb{R}^{11}\),~\citealt{smith_using_1988}), German credit (\textbf{\texttt{german}}, \(\vz \in \mathbb{R}^{27}\)), and heart disease (\textbf{\texttt{heart}}, \(\vz \in \mathbb{R}^{16}\),~\citealt{detrano_international_1989}) datasets obtained from the UCI repository~\citep{Dua:2019}.
+We perform logistic regression with the Pima Indians diabetes (\textbf{\texttt{pima}}, \(\vz \in \mathbb{R}^{11}\),~\citealt{smith_using_1988}), German credit (\textbf{\texttt{german}}, \(\vz \in \mathbb{R}^{27}\)), and heart disease (\textbf{\texttt{heart}}, \(\vz \in \mathbb{R}^{16}\),~\citealt{detrano_international_1989}) datasets obtained from the UCI repository~\citep{Dua:2019}.
 10\% of the data points were randomly selected in each of the 100 repetitions as test data.
 
 \input{gp_table.tex}
@@ -101,11 +101,11 @@ The extra degrees of freedom \(\sigma_{\beta}\) and \(\sigma_{\alpha}\) make thi
 
 \vspace{-0.05in}
 \paragraph{Results}
-The test accuracy and test log predictive density (Test LPD) results are shown in~\cref{table:logistic}.
+The test accuracy and test log predictive density (LPD) results are shown in~\cref{table:logistic}.
 Our proposed parallel state estimator (par.-IMH) achieves the best accuracy and predictive density results.
 Despite having access to high-quality HMC samples, single-HMC shows poor performance.
-This supports our analysis that par.-IMH with \(N > 1\) superior variance reduction to the single state estimator.
-Also, seq.-IMH showed poor performance overall due to the correlated samples.
+This supports our analysis that par.-IMH with \(N > 1\) has superior variance reduction to the single state estimator.
+Also, seq.-IMH showed poor performance overall due to the correlation of the samples.
 Among the two CIS kernel-based methods, single-CISRB performs only marginally better than single-CIS.
 
 \begin{figure}[H]
@@ -171,8 +171,8 @@ For this experiment, the iteration complexity of ELBO is almost two orders of ma
 \vspace{-0.05in}
 \paragraph{Result}
 The results are shown in~\cref{table:gp}.
-Again, among inclusive KL minimization, the parallel state estimator (par.-IMH) achieved the best results.
-Compared to ELBO, its accuracy was lower on \texttt{sonar}, but the uncertainty estimates were much better.
+Again, among inclusive KL minimization, the parallel state estimator (par.-IMH) achieves the best results.
+Compared to ELBO, its accuracy was lower on \texttt{sonar}, but the uncertainty estimates are much better.
 This is better shown in~\cref{fig:gp}, where ELBO quickly converges to a point with poor uncertainty calibration.
 Meanwhile, on \texttt{breast}, ELBO gives better uncertainty estimates than inclusive KL minimization methods.
 This happens when the modal estimate (preferred by the exclusive KL) gives good accuracy and uncertainty estimates.
@@ -183,7 +183,7 @@ This happens when the modal estimate (preferred by the exclusive KL) gives good 
 \paragraph{Experimental Setup}
 Lastly, we now estimate the marginal log-likelihood of a hierarchical regression model with partial pooling (\texttt{radon}, \(\vz \in \mathbb{R}^{175}\),~\citealt{gelman_data_2007}) for modeling radon levels in U.S homes.
 \texttt{radon} contains multiple posterior degeneracies from the hierarchy.
-We estimated the reference marginal likelihood using \textit{thermodynamic integration} (TI,~\citealt{gelman_simulating_1998, neal_annealed_2001, lartillot_computing_2006}) with HMC implemented by Stan~\citep{carpenter_stan_2017, betancourt_conceptual_2017}.
+We estimated the reference marginal likelihood using thermodynamic integration (TI,~\citealt{gelman_simulating_1998, neal_annealed_2001, lartillot_computing_2006}) with HMC implemented by Stan~\citep{carpenter_stan_2017, betancourt_conceptual_2017}.
 %
 \begin{figure}[H]
   \vspace{-0.15in}
