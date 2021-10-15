@@ -1,6 +1,6 @@
 
 %\vspace{-0.05in}
-\section{Markov-chain Monte Carlo Estimators for Score Climbing Variational Inference}
+\section{Markov-chain Monte Carlo Estimators for Score Climbing}
 \vspace{-0.05in}
 \subsection{Overview of Estimation Strategies}\label{section:overview}
 %
@@ -111,6 +111,7 @@ Instead, we use the MCMC samples acquired during each SGD step, in which \(\vlam
 That is, our MCMC kernel is instantaneously not adaptive, and we are thus we are free to use the ergodicity results of these kernels.
 However, we note that, as far as Deoblin's condition holds such that \(w^* = \sup_{\vz, \vlambda} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda}\left(\vz\right)}  < \infty\) and the SGD stepsize sequence satisfies the diminishing adaptation condition~\citep{10.2307/27595854}, the MCMC kernel will indeed result in asymptotically unbised samples.
 
+\vspace{-0.05in}
 \paragraph{Boundedness Assumption}
 Since convergence rates are defined with the total-variation distance, our bias results assume that the score function is bounded.
 That is, \(\norm{\nabla_{\vlambda} \log q_{\vlambda}(\vz)} < L\) for any \(\vlambda\).
@@ -133,12 +134,15 @@ It can also be found in the review on multiple-try MCMC methods by~\citet[Table 
 \input{bias_cis}
 %
 \begin{figure}[H]
+\vspace{-0.05in}
   \centering
   \includegraphics[scale=0.8]{figures/bias_01.pdf}
   \caption{Relative bias of different estimators.
   For simplicity, we take \(w^* = \exp\left( \DKL{p}{q} \right)\).}\label{fig:bias}
+\vspace{-0.05in}
 \end{figure}
 %
+\vspace{-0.05in}
 \paragraph{Reducing Bias by Increasing \(N\)}
 For the seq.-IMH estimator and single-CIS estimator, increasing \(N\) improves the bias decrease rate.
 However, it is worth noting that all bias bounds depend on \(w^*\).
@@ -161,12 +165,13 @@ By the following proposition, in the initial stages of VI where the KL divergenc
 
 Thus, bias reduction is only happens close to convergence of SGD.
 In the initial steps, the bias will be large regardless of \(N\) and the method.
-This phenomenon is illustrated in~\cref{fig:bias}.
+To illustrate this point we visualized the bounds in~\cref{fig:bias}.
 
 \subsection{Theoretical Analysis of Variance}
 For MCMC estimators, variance often dominate the mean-square error.
 Therefore, analyzing the variance is more relevant to practice.
 
+\vspace{-0.05in}
 \paragraph{Variance of Single State Estimator}
 The variance of the single estimator is given by the law of total variance such as
 \begin{align}
@@ -192,12 +197,18 @@ However, the variance reduction rate does not require stationarity.
 Therefore, the parallel state estimator \textit{always} enjoys \(\mathcal{O}\left(\nicefrac{1}{N}\right)\) variance reduction.
 
 \paragraph{Variance of Sequential State Estimator}
-The variance of the sequential state estimator is given by the variance of a correlated sum such that
+Now, assuming stationarity, the variance of the sequential state estimator is given as
 \begin{align}
-  \V{g_{\text{seq.}}} &= \Vsub{p\left(\cdot\mid\vx\right)}{g_{\text{seq.}}} &\text{(stationarity)} \\
-  &= \frac{1}{N^2} \E{ \sum_{i=1}^N \V{ s\left(\vlambda; \vz_{T+i} \right) \mid \vz_{T}}
-     \sum_{i=1}^N \V{ s\left(\vlambda; \vz_{T+i} \right) }}
+  \V{g_{\text{seq.}}} = \frac{\sigma^2}{N} + \frac{2}{N^2} \sum_{i > j}^N \Esub{p\left(\vz_T \mid \vx \right)}{ \Cov{ \vz_{i}, \vz_{j} \mid \vz_{T} } }\label{eq:var_seq}.
 \end{align}
+which is similar to the variance of a normal MCMC estimator.
+Here, \(T = N\,\left(t - 1\right)\) is the last state of the chain at the previous SGD iteration \(t-1\).
+(Detailed derivation is in the \textit{supplementary material}.)
+Provided that the covariance term does not exist, the performance will be equal to the parallel state estimator.
+However, due to rejections in the MCMC kernel, adjacent states will have some level of correlation.
+In the context of VI, the rejection rate will be large when the KL divergence is large as a consequence of~\cref{thm:kl_bound}.
+Therefore, in practice, we can expect the performance of the sequential state estimator to be worse than the parallel state estimator.
+This is clearly the case as shown in the numerical simulation in~\cref{section:simulation}.
 
 %
 %\input{imh_bound}
