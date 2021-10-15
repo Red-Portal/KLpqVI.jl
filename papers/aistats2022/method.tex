@@ -62,7 +62,7 @@ That is, for the index \(i \in \{1, \ldots, N\}\),
   &g_{\text{seq.-IMH}}(\vlambda) = \frac{1}{N} \sum_{i=1}^N s\,(\vz_{T+i}; \vlambda)
 \end{align*}
 where \(\vz_T\) is the last Markov-chain state of the previous SGD iteration.
-\(K^{i}_{\vz_{t-1}}(\vz_{T}, \cdot)\) denotes the MCMC kernel sequentially applied \(i\) times.
+\(K^{i}_{\vlambda_{t-1}}(\vz_{T}, \cdot)\) denotes the MCMC kernel sequentially applied \(i\) times.
 For the MCMC kernel, they use the classic independent Metropolis-Hastings (IMH,~\citealt[Algorithm 25]{robert_monte_2004}~\citealt{hastings_monte_1970}) algorithm, which uses only a single sample from \(q_{\vlambda_{t-1}}(\vz)\) (notice the dependence on \(\vlambda_{t-1}\) just like the aforementioned CIS kernel).
 Therefore, the cost of \(N\) state transitions with IMH is similar to the cost of a single transition with CIS.
 Since the estimator uses sequential states, we call it the sequential state esimator with the IMH kernel (seq.-IMH)
@@ -145,7 +145,7 @@ However, it is worth noting that all bias bounds depend on \(w^*\).
 By the following proposition, in the initial stages of VI where the KL divergence is large, \(w^*\) is bounded below exponentially.
 
 \begin{theoremEnd}{proposition}
-  \(w^* = \sup_{\vz} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda}\left(\vz\right)} \) is bounded below expoenentially by the KL divergence such that
+  \(w^* = \sup_{\vz} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda}\left(\vz\right)} \) is bounded below exponentially by the KL divergence such that
   \[
   \exp\left(\DKL{p\left(\cdot\mid\vx\right)}{ q_{\vlambda}\left(\cdot\right) }\right) \leq w^*.
   \]
