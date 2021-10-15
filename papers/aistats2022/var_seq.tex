@@ -1,43 +1,40 @@
 
-\begin{theoremEnd}{theorem}
-  The variance of the sequential state estimator is
-  %Assuming the Markov-chain has achieved stationarity and \(w^* = \sup_{\vz} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda}\left(\vz\right)} < \infty \), for a bounded functional \(f : \mathcal{Z} \rightarrow [\text{-}\nicefrac{1}{2},\nicefrac{1}{2}]\), the bias of the parallel mode estimator at iteration \(t\) is bounded as
-  %% \begin{align*}
-  %%   \mathrm{Bias}\left[ g_{\mathrm{par.,\, t}} \right] \leq {\left(1 - \frac{1}{w^*}\right)}
-  %% \end{align*}
-\end{theoremEnd}
-\begin{proofEnd}
-  For notational convenience, let us define \(g\left(\vz\right) = s\left(\vz; \vlambda\right)\).
+\textit{Detailed derivation of \textbf{\cref{eq:var_seq}}}
 
+First, remember that the estimator is defined as
   \begin{align}
-    \V{g_{\mathrm{seq., t}}} = \E{ \V{g \mid \vz_{T}} } + \V{ \E{g \mid \vz_{T}} }
+    g_{\text{seq.}} = \frac{1}{N} \sum_{i=1}^N s\left(\vlambda; \vz_{T+i}\right),
   \end{align}
+  where \( \vz_{T+i} \sim K_{\vlambda_{t-1}}^i\left( \vz_{T}, \cdot \right) \) and \(\vz_T\) is the last Markov-chain state at the previous SGD iteration \(t-1\).
+Then, the variance is given as
 
-  \begin{align}
-    &\E{ \V{g \mid \vz_{T}} } \\
-    &= \E{
-      \frac{1}{N^2} \sum^{N}_{i=1} \V{ g\left(\vz_{T+i}\right) \mid \vz_{T} }
-      + \frac{2}{N^2} \sum_{i<j} \Cov{g\left(\vz_{T+1}\right), g\left(\vz_{T+i}\right) \mid \vz_{T} }
-    } \\
-    &=
-      \frac{1}{N^2} \sum^{N}_{i=1} \E{ \V{ g\left(\vz_{T+i}\right) \mid \vz_{T} }
-      }\\
-      &\qquad\qquad + \frac{2}{N^2} \sum_{i<j} \E{ \Cov{g\left(\vz_{T+1}\right), g\left(\vz_{T+i}\right) \mid \vz_{T} }
-    } \\
-    &= 
-    \frac{1}{N} \sigma^2 +
-    \frac{2}{N^2} \sum_{i < j}
-    \Esub{p\left(\vz_T\mid\vx\right)}{
-      \Cov{ g\left(\vz_{T+i}\right), g\left(\vz_{T+j}\right) \mid \vz_T}
-    }  &\text{(Stationarity)} \\
-    &= 
-    \frac{1}{N} \sigma^2 +
-    \frac{2}{N^2} \sum_{i < j}
-    \Esub{p\left(\vz_T\mid\vx\right)}{
-      \Cov{ g\left(\vz_{T+i}\right), g\left(\vz_{T+j}\right) \mid \vz_T}
-    } 
-  \end{align}
-\end{proofEnd}
+\begin{align}
+  \V{g_{\text{seq.}}}
+  &= \V{ \Esub{K\left(\vz_{T}, \vz\right)}{ \frac{1}{N} \sum_{i=1}^N s\left(\vlambda; \vz_{T+i}\right)  \,\Bigg\vert\, \vz_T } }
+  + \E{ \Vsub{K\left(\vz_{T}, \vz\right)}{ \frac{1}{N} \sum_{i=1}^N s\left(\vlambda; \vz_{T+i}\right) \,\Bigg\vert\,  \vz_T } } &\text{(Total Variance)} \\
+  &= \frac{1}{N^2} \sum_{i=1}^N \Vsub{K\left(\vz_{T}, \vz\right)}{ \E{  s\left(\vlambda; \vz_{T+i}\right) \mid \vz_T } } \\
+  &\quad + \E{ \frac{1}{N^2}  \sum_{i=1}^N  \Vsub{K\left(\vz_{T}, \vz\right)}{ s\left(\vlambda; \vz_{T+i}\right)  \mid  \vz_T } 
++ \frac{2}{N^2}  \sum_{j > i}^N \Cov{ s\left(\vlambda; \vz_{T+i}\right), s\left(\vlambda; \vz_{T+j}\right) \mid  \vz_T }
+  } \\
+  &= \frac{1}{N^2} \sum_{i=1}^N \Vsub{K\left(\vz_{T}, \vz\right)}{ \E{  s\left(\vlambda; \vz_{T+i}\right) \mid \vz_T } } 
+   + \frac{1}{N^2} \sum_{i=1}^N   \Esub{K\left(\vz_{T}, \vz\right)}{ \V{ s\left(\vlambda; \vz_{T+i}\right)  \mid  \vz_T } } \\
+ &\quad+ \frac{2}{N^2}  \sum_{j > i}^N \E{ \Cov{ s\left(\vlambda; \vz_{T+i}\right), s\left(\vlambda; \vz_{T+j}\right) \mid  \vz_T }
+  },
+\intertext{\text{where by assuming stationarity such that \(\vz_{T} \sim p\left(\vz \mid \vx \right)\),}}
+  &= \frac{1}{N^2} \sum_{i=1}^N \Vsub{p\left(\vz_T \mid \vx \right)}{ \E{  s\left(\vlambda; \vz_{T+i}\right) \mid \vz_T } } 
+   + \frac{1}{N^2} \sum_{i=1}^N   \Esub{p\left(\vz_T \mid \vx \right)}{ \V{ s\left(\vlambda; \vz_{T+i}\right)  \mid  \vz_T } } \\
+ &\quad+ \frac{2}{N^2}  \sum_{j > i}^N \E{ \Cov{ s\left(\vlambda; \vz_{T+i}\right), s\left(\vlambda; \vz_{T+j}\right) \mid  \vz_T }
+  } \\
+  &= \frac{1}{N^2} \sum_{i=1}^N \Vsub{p\left(\vz \mid \vx \right)}{ s\left(\vlambda; \vz\right) } 
+ + \frac{2}{N^2}  \sum_{i < j}^N \E{ \Cov{ s\left(\vlambda; \vz_{T+i}\right), s\left(\vlambda; \vz_{T+j}\right) \mid  \vz_T }
+  } \\
+  &= \frac{1}{N} \Vsub{p\left(\vz \mid \vx \right)}{ s\left(\vlambda; \vz\right) } 
+ + \frac{2}{N^2}  \sum_{i < j}^N \E{ \Cov{ s\left(\vlambda; \vz_{T+i}\right), s\left(\vlambda; \vz_{T+j}\right) \mid  \vz_T }
+  } \\
+  &= \frac{\sigma^2}{N}
+ + \frac{2}{N^2}  \sum_{i < j}^N \E{ \Cov{ s\left(\vlambda; \vz_{T+i}\right), s\left(\vlambda; \vz_{T+j}\right) \mid  \vz_T }
+  }
+\end{align}
 
 %%% Local Variables:
 %%% TeX-master: "master"

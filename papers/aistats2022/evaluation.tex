@@ -24,25 +24,29 @@
 
 \begin{figure}[t]
 \centering
-\includegraphics[scale=0.8]{figures/simulation_02.pdf}
+\includegraphics[scale=0.7]{figures/simulation_02.pdf}
 \caption{Variance of score function estimated using the three estimators depending on \(N\) and the KL divergence.
 Each point represent a random \(\vlambda\) where the score is evaluated.}\label{fig:simulation}
 \end{figure}
 %
-\subsection{Numerical Simulation}
+\subsection{Numerical Simulation}\label{section:simulation}
+\vspace{-0.05in}
 \paragraph{Experimental Setup}
 We first present numerical simulation results of the three estimators.
 We chose the target distribution \(p\left(\vz\right)\) to be a 10 dimensional white Gaussian.
 We then randomly generated 2048 random \(q_{\vmu, \mSigma}(\vz)\) where \(\vmu\) is drawn from a multivariate Student's T distribution, and \(\mSigma = 1.5^2 \mI\).
 Using the 2048 random \(q_{\vmu, \mSigma}\)s, we simulate 128 Markov-chains of length \(T=50\) and compute the bias and variance of the score function.
 
+\vspace{-0.05in}
 \paragraph{Results}
 The variance results are shown in~\cref{fig:simulation}.
 We do not present the bias as the three schemes were visually indistinguishable for all settings.
 From the results, when the KL divergence is large, we can see that seq.-IMH and single-CIS do not benefit from increasing \(N\).
 On the other hand, the parallel state estimator always benefit from increasing \(N\).
 
+\vspace{-0.05in}
 \subsection{Baselines and Implementation}
+\vspace{-0.05in}
 \paragraph{Implementation}
 We implemented MSC with PIMH on top of the Turing~\citep{ge2018t} probabilistic programming framework.
 Our implementation works with any model described in Turing, which automatically handles distributions with constrained support~\citep{JMLR:v18:16-107}.
@@ -96,6 +100,7 @@ y_i &\sim \text{Bernoulli-Logit}\,(p)
 where \(\mathcal{N}^+(\mu, \sigma)\) is a positive constrained normal distribution with mean \(\mu\) and standard deviation \(\sigma\), \(\vx_i\) and \(y_i\) are the feature vector and target variable of the \(i\)th datapoint.
 The extra degrees of freedom \(\sigma_{\beta}\) and \(\sigma_{\alpha}\) make this model relatively more challenging.
 
+\vspace{-0.05in}
 \paragraph{Results}
 The test accuracy and test log-likelihood results are shown in~\cref{fig:logistic}.
 Our proposed MSC-PIMH is the fastest to converge on all the datasets.
@@ -106,7 +111,7 @@ Meanwhile, SNIS converges the most slowly among inclusive VI methods.
 Although much slower to converge, ELBO achieves competitive results.
 
 \begin{figure}[H]
-  %\vspace{-0.2in}
+  \vspace{-0.05in}
   \centering
   \subfloat[Test Accuracy]{
     \includegraphics[scale=0.90]{figures/german_02.pdf}
@@ -123,9 +128,10 @@ Although much slower to converge, ELBO achieves competitive results.
   \caption{Test accuracy and log predictive density on the \texttt{german} dataset.
     The solid lines and colored regions are the mean and 80\% bootstrap confidence interval.
   }\label{fig:logistic}
-  \vspace{-0.1in}
+  \vspace{-0.05in}
 \end{figure}
 %
+  \vspace{-0.05in}
 \paragraph{Inclusive VI v.s. Exclusive VI}
 The results of~\cref{fig:logistic} might be misleading to conclude that inclusive and exclusive VI deliver similar results.
 However, in the parameter space, they choose different optimization paths.
@@ -133,6 +139,7 @@ This is shown in~\cref{fig:logistic}.
 While the test accuracy suggests that ELBO converges around \(t=2000\), in terms of Pareto-\(\widehat{k}\), it takes much longer to converge (about \(t=5000\)).
 This shows that, even if their predictive performance is similar, the inclusive VI chooses paths that have better density coverage as expected.
 
+  \vspace{-0.05in}
 \subsection{Gaussian Process Classification}\label{section:bgp}
 %
 \begin{figure}[H]
@@ -148,6 +155,7 @@ This shows that, even if their predictive performance is similar, the inclusive 
 %
 \input{gp_table.tex}
 %
+  \vspace{-0.05in}
 \paragraph{Experimental Setup}
 Now for a more challenging problem, we perform classification with latent Gaussian processes~\citep{rasmussen_gaussian_2006, NIPS2014_8c6744c9}.
 The probabililistic model is given as
@@ -162,6 +170,7 @@ For \texttt{breast}, we preprocessed the input features with z-standardization.
 10\% of the data points were randomly selected in each of the 100 repetitions as test data.
 For this experiment, the iteration complexity of ELBO is almost two orders of magnitude larger than all inclusive KL minimization methods.
 
+  \vspace{-0.05in}
 \paragraph{Result}
 The results are shown in~\cref{fig:logistic}.
 We can clearly see that among inclusive variational methods, the parallel state estimator (par.-IMH) converges the fastest.
@@ -170,6 +179,7 @@ Meanwhile, in terms of held-out predictive probability, exclusive VI (ELBO) conv
 All inclusive VI methods were much better calibrated albeit slower to converge.
 This matches the 
 
+  \vspace{-0.05in}
 \subsection{Marginal Likelihood Estimation}\label{section:mll}
 %
 \begin{figure}[H]
@@ -195,11 +205,13 @@ This matches the
   %\vspace{-0.15in}
 \end{figure}
 %
+  \vspace{-0.05in}
 \paragraph{Experimental Setup}
 We now estimate the marginal log-likelihood of a hierarchical regression model with partial pooling (\texttt{radon}, \(\vz \in \mathbb{R}^{175}\),~\citealt{gelman_data_2007}) for modeling radon levels in U.S homes.
 \texttt{radon} contains multiple posterior degeneracies from the hierarchy.
 We estimated the reference marginal likelihood using \textit{thermodynamic integration} (TI,~\citealt{gelman_simulating_1998, neal_annealed_2001, lartillot_computing_2006}) with HMC implemented by Stan~\citep{carpenter_stan_2017, betancourt_conceptual_2017}.
 
+  \vspace{-0.05in}
 \paragraph{Results}
 The results are shown in~\cref{fig:marginal_likelihood}.
 On \texttt{radon}, MSC-PIMH converges quickly and provides the most accurate estimate.
