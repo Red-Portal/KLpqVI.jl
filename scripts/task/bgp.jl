@@ -50,48 +50,16 @@ function load_dataset(::Val{:ionosphere})
 end
 
 function load_dataset(::Val{:breast})
-    dataset, _ = DelimitedFiles.readdlm(
-        datadir("dataset", "breast.csv"), ',', header=true)
-    data_x  = dataset[:, 3:11]
+    dataset = DelimitedFiles.readdlm(datadir("dataset", "wdbc.data"), ',')
+    data_x  = dataset[:, 3:end]
     data_y  = dataset[:, 2]
 
     data_y[data_y .== "M"] .= 1.0
     data_y[data_y .== "B"] .= 0.0
-
     data_x = Float64.(data_x)
     data_y = Float64.(data_y)
+
     data_x, data_y
-end
-
-function evaluate_metric(prng, X_test, y_test, X_data, q, model)
-    n_samples = 32
-    fs    = sample_variable(prng, q, model, Symbol("f"),    n_samples)
-    logσs = sample_variable(prng, q, model, Symbol("logσ"), n_samples)
-    logαs = sample_variable(prng, q, model, Symbol("logα"), n_samples)
-    logℓs = sample_variable(prng, q, model, Symbol("logℓ"),  n_samples)
-
-    p_res = Array{Float64}(undef, size(X_test, 2), n_samples)
-    for i = 1:n_samples
-        f    = view(fs, :, i)
-        logℓ = view(logℓs, :, i)
-        logσ = logσs[1, i]
-        logα = logαs[1, i]
-        α²   = exp(logα*2)
-        σ²   = exp(logσ*2)
-
-        kernel  = ard_kernel(α², logℓ, σ²) 
-        gp      = AbstractGPs.GP(kernel)
-        gp_post = AbstractGPs.posterior(gp(X_data, σ² + 1e-6), f)
-        μ, σ²   = mean_and_var(gp_post(X_test))
-        λ⁻²     = 1/(π/8)
-        p       = StatsFuns.normcdf.(μ ./ sqrt.(λ⁻² .+ σ²))
-        p_res[:,i] = p
-    end
-    p_μ = mean(p_res, dims=2)[:,1]
-    y_pred  = p_μ .> 0.5
-    nlpd    = mean(logpdf.(Bernoulli.(p_μ), y_test))
-    acc     = mean(y_pred .== y_test)
-    nlpd, acc
 end
 
 function run_task(prng::Random.AbstractRNG,
@@ -106,14 +74,17 @@ function run_task(prng::Random.AbstractRNG,
     X_train, y_train, X_test, y_test = prepare_dataset(prng, data_x, data_y, ratio=0.9)
     X_train = Array(X_train')
     X_test  = Array(X_test')
-    model   = logisticgp(X_train, y_train, 1e-4)
+    model   = logisticgp(X_train, y_train, 1e-6)
 
-    μ = mean(X_train, dims=2)
-    σ = std(X_train, dims=2)
-    X_train .-= μ
-    X_train ./= σ
-    X_test .-= μ
-    X_test ./= σ
+    if task isa Val{:breast}
+        μ = mean(X_train, dims=2)
+        σ = std(X_train, dims=2)
+
+        X_train .-= μ
+        X_train ./= σ
+        X_test  .-= μ
+        X_test  ./= σ
+    end
 
     #AdvancedVI.setadbackend(:forwarddiff)
     #Turing.Core._setadbackend(Val(:forwarddiff))
@@ -136,7 +107,7 @@ function run_task(prng::Random.AbstractRNG,
         stat = if(mod(i-1, 1) == 0)
             kernel  = ard_kernel(α², logℓ, σ²) 
             gp      = AbstractGPs.GP(kernel)
-            gp_post = AbstractGPs.posterior(gp(X_train, σ² + 1e-6), f)
+            gp_post = AbstractGPs.posterior(gp(X_train, 1e-6), f)
             μ, σ²   = mean_and_var(gp_post(X_test))
 
             #μ, σ²   = mean_and_var(gp_post, X_test, dims=2)
@@ -220,18 +191,17 @@ function run_task(prng::Random.AbstractRNG,
     X_train = Array(X_train')
     X_test  = Array(X_test')
 
-    μ = mean(X_train, dims=2)
-    σ = std(X_train, dims=2)
-
     if task isa Val{:breast}
+        μ = mean(X_train, dims=2)
+        σ = std(X_train, dims=2)
+
         X_train .-= μ
         X_train ./= σ
         X_test  .-= μ
         X_test  ./= σ
     end
 
-    jitter  = 1e-6
-
+    jitter     = 1e-6
     n_features = size(X_train, 1)
     n_data     = size(X_train, 2)
     n_samples  = n_mc
@@ -289,7 +259,7 @@ function run_task(prng::Random.AbstractRNG,
         
         kernel  = ard_kernel(α², logℓ, σ²) 
         gp      = AbstractGPs.GP(kernel)
-        gp_post = AbstractGPs.posterior(gp(X_train, σ² + 1e-6), f)
+        gp_post = AbstractGPs.posterior(gp(X_train, 1e-6), f)
         μ, σ²   = mean_and_var(gp_post(X_test))
 
         #μ, σ²   = mean_and_var(gp_post, X_test, dims=2)
