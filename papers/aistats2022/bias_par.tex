@@ -12,10 +12,10 @@
   \begin{align}
     \eta_{\mathrm{par.},\, t}(\vz) = \frac{1}{N} \sum_{i=1}^N K\left(\vz_{t-1}^{(i)}, \vz\right).
   \end{align}
-  and consequently,
-  \begin{align}
-      g_{\mathrm{par.}, t}(\vlambda) = \int s\left(\vz; \vlambda\right) \, \eta_{\mathrm{par.},\, t}(\vz) \, d\vz.
-  \end{align}
+  %% and consequently,
+  %% \begin{align}
+  %%     g_{\mathrm{par.}, t}(\vlambda) = \int s\left(\vz; \vlambda\right) \, \eta_{\mathrm{par.},\, t}(\vz) \, d\vz.
+  %% \end{align}
   Similarly with~\cref{thm:bias_seq}, 
   \begin{align}
     \DTV{ \eta_{\mathrm{par.},\, t}(\vz) }{p\left(\cdot\mid\vx\right)}
@@ -29,7 +29,7 @@
    \mathrm{Bias}\left[ g_{\mathrm{par., t}} \right]
    &\leq \sup_{h : \mathcal{Z} \rightarrow \left[ \text{-}\nicefrac{L}{2}, \nicefrac{L}{2} \right]} \left|\, \Esub{\eta_{\mathrm{par.},\, t}(\cdot)}{h} - \Esub{p(\cdot\mid\vx)}{h} \,\right| \\
    &= L\, \DTV{ \eta_{\mathrm{par.},\, t}(\cdot) }{p\left(\cdot\mid\vx\right)}  \\
-   &\leq L \, \left(1 - \frac{1}{w^*}\right)
+   &\leq L \, \left(1 - \frac{1}{w^*}\right).
  \end{align}
 \end{proofEnd}
 

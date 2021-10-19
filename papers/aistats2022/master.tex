@@ -1,6 +1,6 @@
 
 \documentclass[twoside]{article} % For LaTeX2e
-\usepackage{aistats2022}
+\usepackage[accepted]{aistats2022}
 
 \usepackage[round]{natbib}
 %\renewcommand{\bibname}{References}
@@ -23,7 +23,7 @@
 \usepackage{caption}     
 \usepackage{subcaption}     
 \usepackage{float}     
-%\usepackage[15-]{pagesel}
+%\usepackage[-11]{pagesel}
 
 \usepackage{minted}
 %\usepackage{newunicodechar}
@@ -56,7 +56,7 @@
 % command to supply a shorter title of your paper so that it can be
 % used as headings.
 %
-%\runningtitle{I use this title instead because the last one was very long}
+\runningtitle{Markov-Chain Monte Carlo Score Estimators for Variational Inference with Score Climbing}
 
 % If your paper is accepted and the number of authors is large, the
 % style will print as headings an error message. Use the following
@@ -67,7 +67,7 @@
 
 \twocolumn[
 \aistatstitle{Markov-Chain Monte Carlo Score Estimators for \\ Variational Inference with Score Climbing}
-\aistatsauthor{Kyurae Kim \And Jisu Oh \And Hongseok Kim }
+\aistatsauthor{Kyurae Kim, \; Jisu Oh, \; Hongseok Kim }
 \aistatsaddress{Sogang University} ]
 
 \begin{abstract}
@@ -81,10 +81,10 @@
 \input{relatedworks.tex}
 \input{conclusions.tex}
 
-\subsubsection*{Acknowledgments}
-  This work initially started in the process of understanding the performance of the Markovian score climbing algorithm by~\citet{NEURIPS2020_b2070693}.
-  We thank Hongseok Yang for pointing us to a relevant related work by~\citet{kim2021adaptive}, Guanyang Wang for insightful discussions about the independent Metropolis-Hastings algorithm, Geon Park and Kwanghee Choi for constructive comments that enriched this paper.
-  We also aknowledge the Computer Science Department of Sogang University for providing computational resources.
+%% \subsubsection*{Acknowledgments}
+%%   This work initially started in the process of understanding the performance of the Markovian score climbing algorithm by~\citet{NEURIPS2020_b2070693}.
+%%   We thank Hongseok Yang for pointing us to a relevant related work by~\citet{kim2021adaptive}, Guanyang Wang for insightful discussions about the independent Metropolis-Hastings algorithm, Geon Park and Kwanghee Choi for constructive comments that enriched this paper.
+%%   We also aknowledge the Computer Science Department of Sogang University for providing computational resources.
 
 \bibliography{references}
 
@@ -92,15 +92,25 @@
 \onecolumn
 \appendix
 
-%\section{Additional Experimental Results}
-%% \subsection{Experimental Environment}\label{section:resources}
-%% All of our experiments presented in this paper were executed on a server with 20 Intel Xeon E5--2640 CPUs and 64GB RAM.
-%% Each of the CPUs has 20 logical threads with 32k L1 cache, 256k L2 cache, and 25MB L3 cache.
-%% All of our experiments can be executed within a few days on a system with similar computational capabilities.
+\begin{center}
+  \LARGE\bf
+  Markov-Chain Monte Carlo Score Estimators for \\
+  Variational Inference with Score Climbing \\
+  \textit{Appendix}
+\end{center}
+%% \begin{center}
+%%   \bf
+%%   Markov-Chain Monte Carlo Score Estimators for \\ Variational Inference with Score Climbing
+%%   \textit{Appendix}
+%% \end{center}
 
-%\input{paretok_additional}
+%\section{Additional Experimental Results}
+\section{Computational Resources}\label{section:resources}
+ All of our experiments presented in this paper were executed on a server with 20 Intel Xeon E5--2640 CPUs and 64GB RAM.
+Each of the CPUs has 20 logical threads with 32k L1 cache, 256k L2 cache, and 25MB L3 cache.
+All of our experiments can be executed within 12 hours on a system with similar computational capabilities.
+
 \input{pseudocode}
-%\input{simulations}
 \input{prob_models}
 
 %\newpage

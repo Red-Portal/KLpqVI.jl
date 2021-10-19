@@ -37,6 +37,7 @@ function find_hmc_params()
     #sample_posterior(prng, Val(:ionosphere))
     #sample_posterior(prng, Val(:german))
     #sample_posterior(prng, Val(:sonar))
+    sample_posterior(prng, Val(:radon))
 
     #AdvancedVI.setadbackend(:zygote)
     #Turing.Core._setadbackend(Val(:zygote))
@@ -49,5 +50,5 @@ function find_hmc_params()
     #sample_posterior(prng, Val(:gaussian_correlated))
     #sample_posterior(prng, Val(:gaussian))
 
-    sample_posterior_full(prng, Val(:colon))
+    #sample_posterior_full(prng, Val(:colon))
 end

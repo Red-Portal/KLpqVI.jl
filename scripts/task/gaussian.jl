@@ -10,7 +10,7 @@ function create_gaussian(prng::Random.AbstractRNG,
     else
         diagm(exp.(randn(prng, n_dims)))
     end
-    μ = randn(prng, n_dims)
+    μ = [-5.0, 2.0]
     MvNormal(μ, Σ)
 end
 
@@ -18,7 +18,7 @@ function load_dataset(task::Val{:gaussian})
     seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
     prng = Random123.Philox4x(UInt64, seed, 8);
 
-    n_dims = 100
+    n_dims = 2
     create_gaussian(prng, 0.0, n_dims; correlated=false)
 end
 
@@ -56,7 +56,8 @@ function run_task(prng::Random.AbstractRNG,
         μ  = mean(q.dist)
         Σ  = cov(q.dist)
         kl = kl_divergence(p, MvNormal(μ, Σ))
-        (kl=kl,)
+        z  = objective_.z.val
+        (kl=kl, z=z)
     end
 
     n_iter      = 10000

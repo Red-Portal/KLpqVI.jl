@@ -14,11 +14,11 @@
       stepsize schedule \(\gamma_t\)}
     \For{\textcolor{black}{\(t = 1, 2, \ldots, T\)}}{
       \( \vz_{t} \sim K_{\vlambda_{t-1}}(\vz_{t-1}, \cdot) \)\;
-      \(s\,(\vz;\vlambda) = \nabla_{\vlambda} \log q_{\vlambda}(\vz)\)\;
-      \( g_{\text{single}} = s\,(\vz_{t};\vlambda_{t-1}) \)\;
+      \(s\,(\vlambda; \vz) = \nabla_{\vlambda} \log q_{\vlambda}(\vz)\)\;
+      \( g_{\text{single}} = s\,(\vlambda_{t-1}; \vz_{t}) \)\;
       \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t\, g_{\text{single}} \)\;
     }
-    \caption{Single State Estimator}\label{alg:msc}
+    \caption{Score Climbing with the Single State Estimator}
   \end{algorithm2e}
 \end{minipage}
 
@@ -33,16 +33,16 @@
       stepsize schedule \(\gamma_t\)
     }
     \For{\(t = 1, 2, \ldots, T\)}{
-      \(T = N (t-1) \)\;
+      \(\tau = N (t-1) \)\;
       \For{\(i = 1, 2, \ldots, N\)}{
-          \(\vz_{t} \sim K_{\vlambda_{t-1}}(\vz_{T + i}, \cdot)\)\;
+          \(\vz_{t} \sim K_{\vlambda_{t-1}}(\vz_{\tau + i}, \cdot)\)\;
       }
-      \( s\left(\vz; \vlambda\right) = \nabla_{\vlambda} \log q_{\vlambda}(\vz) \)\;
-      \( g_{\text{seq.}} = \frac{1}{N} \sum^{N}_{i=1} s\,(\vz_{T + i};\vlambda_{t-1}) \)\;
+      \( s\left(\vlambda; \vz\right) = \nabla_{\vlambda} \log q_{\vlambda}(\vz) \)\;
+      \( g_{\text{seq.}} = \frac{1}{N} \sum^{N}_{i=1} s\,(\vlambda_{t-1}; \vz_{T + i}) \)\;
       \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t \, g_{\text{seq.}} \,
        \)\;
     }
-    \caption{Sequential State Estimator}\label{alg:pimh}
+    \caption{Score Climbing with the Sequential State Estimator}
   \end{algorithm2e}
 \end{minipage}
 
@@ -60,11 +60,11 @@
         \For{\(i = 1, 2, \ldots, N\)}{
           \(\vz^{(i)}_{t} \sim K_{\vlambda_{t-1}}(\vz^{(i)}_{t-1}, \cdot)\)\;
       }
-      \( s\left(\vz; \vlambda\right) = \nabla_{\vlambda} \log q_{\vlambda}(\vz) \)\;
-      \( g_{\text{par.}} = \frac{1}{N} \sum^{N}_{i=1} s\,(\vz_{t}^{(i)};\vlambda_{t-1}) \)\;
+      \( s\left(\vlambda; \vz\right) = \nabla_{\vlambda} \log q_{\vlambda}(\vz) \)\;
+      \( g_{\text{par.}} = \frac{1}{N} \sum^{N}_{i=1} s\,(\vlambda_{t-1}; \vz_{t}^{(i)}) \)\;
       \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t\, g_{\text{par.}} \)\;
     }
-    \caption{Parallel State Estimator}\label{alg:pimh}
+    \caption{Score Climbing with the Parallel State Estimator}
   \end{algorithm2e}
 \end{minipage}
 
@@ -77,11 +77,11 @@
       number of proposals \(N\)
     }
     \(\vz^{(0)} = \vz_{t-1}\) \;
-    \(\;\vz^{(i)} \sim q_{\vlambda_{t-1}}(\vz)\) for \(i = 1, 2,\ldots, N\) \;
-    \(\;w(\vz^{(i)}) = p(\vz^{(i)},\vx) \,/\, q_{\vlambda_{t-1}}(\vz^{(i)}) \) for \(i = 0, 1,\ldots, N\)\;
-    \(\;\widetilde{w}^{(i)} = \nicefrac{w(\vz^{(i)})}{ \sum^{N}_{i=0} w(\vz^{(i)}) }\) for \(i = 0, 1,\ldots, N\)\;
+    \(\;\vz^{(i)} \sim q_{\vlambda_{t-1}}(\vz)\quad\) for \(i = 1, 2,\ldots, N\) \;
+    \(\;w(\vz^{(i)}) = p(\vz^{(i)},\vx) \,/\, q_{\vlambda_{t-1}}(\vz^{(i)})\quad\) for \(i = 0, 1,\ldots, N\)\;
+    \(\;\widetilde{w}^{(i)} = \nicefrac{w(\vz^{(i)})}{ \sum^{N}_{i=0} w(\vz^{(i)}) }\quad\) for \(i = 0, 1,\ldots, N\)\;
     \(\vz_{t} \sim \mathrm{Multinomial}(\widetilde{w}^{(0)}, \widetilde{w}^{(1)}, \ldots, \widetilde{w}^{(N)}) \)\;
-    \caption{Conditional Importance Sampling Kernel}\label{alg:cis}
+    \caption{Conditional Importance Sampling Kernel}
   \end{algorithm2e}
 \end{minipage}
 
@@ -105,7 +105,7 @@
           %\(\vz_t \leftarrow \vz_{t-1}\)
           \(\vz_t = \vz_{t-1}\)
         }
-        \caption{Independent Metropolis-Hastings Kernel}\label{alg:imh}
+        \caption{Independent Metropolis-Hastings Kernel}
   \end{algorithm2e}
 \end{minipage}
 

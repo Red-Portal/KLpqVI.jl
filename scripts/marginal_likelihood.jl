@@ -36,20 +36,6 @@ include("task/task.jl")
     ℓprior
 end
 
-function stochastic_volatility_transform_prior(ϵ, y)
-    ε       = 1e-10
-    T       = length(y)
-    ϕ       = ϵ[1]
-    ϵ_σ     = ϵ[2]
-    ϵ_μ     = ϵ[3]
-    ϵ_h_std = ϵ[4:3+T]
-    ϕ       = quantile(Uniform(-1+ε, 1-ε), ϵ[1])
-    σ       = quantile(truncated(Cauchy(0, 5), ε, Inf), ϵ[2])
-    μ       = quantile(Cauchy(0, 10), ϵ[3])
-    h_std   = quantile.(Ref(Normal()), ϵ[4:3+T])
-    vcat(ϕ, σ, μ, h_std)
-end
-
 @inbounds function stochastic_volalitility_sample(prng, y)
     ϵ        = 1e-10
     T        = length(y)
