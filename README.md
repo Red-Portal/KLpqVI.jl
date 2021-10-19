@@ -3,14 +3,14 @@
 
 This code base is using the Julia Language and [DrWatson](https://juliadynamics.github.io/DrWatson.jl/stable/)
 to make a reproducible scientific project named
->  Inclusive Variational Inference with Independent Metropolis--Hastings
+>  Markov-Chain Monte Carlo Score Estimators for Variational Inference with Score Climbing
 
 ## Project Structure
 | Path  | Description  |
 |:--|:--|
 | scripts/ | Scripts for executing the experiments  |
 | scripts/task | Code specific to each benchmark problems  |
-| src/ | Code for our implemented algorithms (MSC, RWS, SNIS, etc...) |
+| src/ | Code for our implemented algorithms |
 | stan/ | Code for estimating the marginal likelihoods using Stan |
 
 
@@ -23,8 +23,10 @@ The datasets used in this work are as follows:
    * [German credit](https://archive.ics.uci.edu/ml/datasets/statlog+(german+credit+data))
    * [Pima indians diabetes](https://www.kaggle.com/uciml/pima-indians-diabetes-database)
    * [Heart disease](https://archive.ics.uci.edu/ml/datasets/heart+disease)
+   * [Sonar](https://archive.ics.uci.edu/ml/datasets/Connectionist+Bench+(Sonar,+Mines+vs.+Rocks))
+   * [Ionosphere](https://archive.ics.uci.edu/ml/datasets/ionosphere)
+   * [Breast](https://archive.ics.uci.edu/ml/datasets/breast+cancer+wisconsin+%28original%29)
    * [Radon](https://github.com/stan-dev/example-models/blob/master/ARM/Ch.19/radon.data.R)
-   * [Stochastic volatility](https://github.com/TuringLang/TuringExamples/blob/master/benchmarks/sto_volatility/data.csv)
 
 1. Open a Julia console and do:
    ```

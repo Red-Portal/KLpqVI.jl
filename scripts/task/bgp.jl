@@ -305,7 +305,7 @@ function run_task(prng::Random.AbstractRNG,
     diff_result = DiffResults.GradientResult(λₜ)
     stats       = Vector{NamedTuple}(undef, n_iter)
     elapsed_total = 0
-    for t = 1:n_iter
+    ProgressMeter.@showprogress for t = 1:n_iter
         start_time = Dates.now()
         
         # sample gradient

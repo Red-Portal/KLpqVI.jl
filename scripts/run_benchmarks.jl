@@ -85,22 +85,6 @@ function general_benchmarks()
                              :task  =>task,
                              :n_samples=>10),
 
-                        # Dict(:method=>"MSC_HMC",
-                        #      :task  =>task,
-                        #      :n_samples=>10),
-
-                        # Dict(:method=>"MSC_CISRB_HMC",
-                        #      :task  =>task,
-                        #      :n_samples=>10),
-
-                        # Dict(:method=>"MSC_PIMH_HMC",
-                        #      :task  =>task,
-                        #      :n_samples=>10),
-
-                        # Dict(:method=>"RWS",
-                        #      :task  =>task,
-                        #      :n_samples=>10),
-
                         Dict(:method=>"SNIS",
                              :task  =>task,
                              :n_samples=>10),
@@ -120,88 +104,104 @@ function general_benchmarks()
         end
     end
 
-    # n_samples = 10
-    # for task ∈ ["sv"]#, "radon"]
-    #     for settings ∈ [# Dict(:method=>"MSC_PIMH",
-    #                     #      :task  =>task,
-    #                     #      :n_samples=>n_samples),
+    n_samples = 10
+    for task ∈ ["radon"]
+        for settings ∈ [# Dict(:method=>"MSC_PIMH",
+                        #      :task  =>task,
+                        #      :n_samples=>n_samples),
 
-    #                     # Dict(:method=>"MSC_SIMH",
-    #                     #     :task  =>task,
-    #                     #     :n_samples=>n_samples),
+                        # Dict(:method=>"MSC_SIMH",
+                        #     :task  =>task,
+                        #     :n_samples=>n_samples),
 
-    #                     # Dict(:method=>"MSC_CIS",
-    #                     #      :task  =>task,
-    #                     #      :n_samples=>n_samples),
+                        # Dict(:method=>"MSC_CIS",
+                        #      :task  =>task,
+                        #      :n_samples=>n_samples),
 
-    #                     # Dict(:method=>"MSC_CISRB",
-    #                     #      :task  =>task,
-    #                     #      :n_samples=>n_samples),
+                        # Dict(:method=>"MSC_CISRB",
+                        #      :task  =>task,
+                        #      :n_samples=>n_samples),
 
-    #                     # Dict(:method=>"SNIS",
-    #                     #      :task  =>task,
-    #                     #      :n_samples=>n_samples),
+                        # Dict(:method=>"SNIS",
+                        #      :task  =>task,
+                        #      :n_samples=>n_samples),
 
-    #                     # Dict(:method=>"RWS",
-    #                     #      :task  =>task,
-    #                     #      :n_samples=>n_samples),
+                        # Dict(:method=>"RWS",
+                        #      :task  =>task,
+                        #      :n_samples=>n_samples),
 
-    #                     # Dict(:method=>"ELBO",
-    #                     #      :task  =>task,
-    #                     #      :n_samples=>n_samples),
+                        # Dict(:method=>"ELBO",
+                        #      :task  =>task,
+                        #      :n_samples=>n_samples),
 
-    #                     # Dict(:method=>"MSC_HMC",
-    #                     #      :task  =>task,
-    #                     #      :n_samples=>n_samples),
+                        # Dict(:method=>"MSC_HMC",
+                        #      :task  =>task,
+                        #      :n_samples=>n_samples),
 
-    #                     ]
-    #         settings[:n_reps] = 100
-    #         @info "starting epxeriment" settings=settings
-    #         produce_or_load(datadir("exp_raw"),
-    #                         settings,
-    #                         run_experiment,
-    #                         suffix="jld2",
-    #                         loadfile=false,
-    #                         tag=false)
-    #     end
-    # end
+                        ]
+            settings[:n_reps] = 100
+            @info "starting epxeriment" settings=settings
+            produce_or_load(datadir("exp_raw"),
+                            settings,
+                            run_experiment,
+                            suffix="jld2",
+                            loadfile=false,
+                            tag=false)
+        end
+    end
 
-    # n_samples = 10
-    # for task ∈ ["sonar", "ionosphere", "breast"]
-    #     for settings ∈ [Dict(:method=>"MSC_PIMH",
-    #                          :task  =>task,
-    #                          :n_samples=>n_samples),
+    n_samples = 10
+    for task ∈ ["sonar", "ionosphere", "breast"]
+        for settings ∈ [Dict(:method=>"MSC_PIMH",
+                             :task  =>task,
+                             :n_samples=>n_samples),
 
-    #                     Dict(:method=>"MSC_SIMH",
-    #                         :task  =>task,
-    #                         :n_samples=>n_samples),
+                        Dict(:method=>"MSC_SIMH",
+                            :task  =>task,
+                            :n_samples=>n_samples),
 
-    #                     Dict(:method=>"MSC_CIS",
-    #                          :task  =>task,
-    #                          :n_samples=>n_samples),
+                        Dict(:method=>"MSC_CIS",
+                             :task  =>task,
+                             :n_samples=>n_samples),
 
-    #                     Dict(:method=>"MSC_CISRB",
-    #                          :task  =>task,
-    #                          :n_samples=>n_samples),
+                        Dict(:method=>"MSC_CISRB",
+                             :task  =>task,
+                             :n_samples=>n_samples),
 
-    #                     Dict(:method=>"SNIS",
-    #                          :task  =>task,
-    #                          :n_samples=>n_samples),
+                        Dict(:method=>"SNIS",
+                             :task  =>task,
+                             :n_samples=>n_samples),
 
-    #                     Dict(:method=>"ELBO",
-    #                          :task  =>task,
-    #                          :n_samples=>n_samples),
-    #                     ]
-    #         settings[:n_reps] = 30
-    #         @info "starting epxeriment" settings=settings
-    #         produce_or_load(datadir("exp_raw"),
-    #                         settings,
-    #                         run_experiment,
-    #                         suffix="jld2",
-    #                         loadfile=false,
-    #                         tag=false)
-    #     end
-    # end
+                        Dict(:method=>"ELBO",
+                             :task  =>task,
+                             :n_samples=>n_samples),
+                        ]
+            settings[:n_reps] = 30
+            @info "starting epxeriment" settings=settings
+            produce_or_load(datadir("exp_raw"),
+                            settings,
+                            run_experiment,
+                            suffix="jld2",
+                            loadfile=false,
+                            tag=false)
+        end
+    end
+
+    n_samples = 1
+    for task ∈ ["sonar", "ionosphere", "breast"]
+        for settings ∈ [Dict(:method=>"ELBO",
+                             :task  =>task,
+                             :n_samples=>n_samples),]
+            settings[:n_reps] = 30
+            @info "starting epxeriment" settings=settings
+            produce_or_load(datadir("exp_raw"),
+                            settings,
+                            run_experiment,
+                            suffix="jld2",
+                            loadfile=false,
+                            tag=false)
+        end
+    end
 
     for n_samples ∈ [20, 50]
     for task ∈ ["sonar"]
@@ -236,22 +236,6 @@ function general_benchmarks()
         end
     end
     end
-
-    # n_samples = 10
-    # for task ∈ ["sonar", "ionosphere", "breast"]
-    #     for settings ∈ [Dict(:method=>"ELBO",
-    #                          :task  =>task,
-    #                          :n_samples=>n_samples),]
-    #         settings[:n_reps] = 30
-    #         @info "starting epxeriment" settings=settings
-    #         produce_or_load(datadir("exp_raw"),
-    #                         settings,
-    #                         run_experiment,
-    #                         suffix="jld2",
-    #                         loadfile=false,
-    #                         tag=false)
-    #     end
-    # end
 end
 
 function gaussian_benchmarks()

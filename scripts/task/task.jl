@@ -18,6 +18,5 @@ import SimpleWeightedGraphs
 include("gaussian.jl")
 include("logistic.jl")
 include("eightschools.jl")
-include("sv.jl")
 include("radon.jl")
 include("bgp.jl")

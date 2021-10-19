@@ -11,6 +11,9 @@
 @everywhere using DataFrames
 @everywhere using Bootstrap
 
+using Printf
+using PrettyTables
+
 @everywhere function process_data(ks, stats)::Dict
     mapreduce(merge, ks) do k
         filt_stats = filter(stat -> k ∈ keys(stat), stats)
@@ -107,6 +110,87 @@ function convergence_diagnostic()
     result["cis_est"]   = [stat[:crossent] for stat ∈ data[:CIS]["result"][1]] .+ ∫pℓp
     result["cisrb_est"] = [stat[:crossent] for stat ∈ data[:CISRB]["result"][1]]   .+ ∫pℓp
     FileIO.save(datadir("exp_pro", "convergence_diagnostic.jld2"), result)
+end
+
+function draw_table_logistic()
+    entries = []
+    for (method, name) ∈ [("ELBO",      "ELBO"),
+                          ("MSC_PIMH",  "par.-IMH"),
+                          ("MSC_SIMH",  "seq.-IMH"),
+                          ("MSC_CIS",   "single-CIS"),
+                          ("MSC_CISRB", "single-CISRB"),
+                          ("MSC_HMC",   "single-HMC"),
+                          ("SNIS",      "SNIS"),
+                          ]
+        row_entries = String[]
+        push!(row_entries, name)
+
+        for (i, problem) ∈ enumerate(["pima", "heart", "german"])
+            data = FileIO.load(datadir("exp_pro", "method=$(method)_n_reps=100_n_samples=10_task=$(problem).jld2"))
+            acc_y, acc_Δ₊, acc_Δ₋ = data["acc_y"][:,end]
+            acc_y₊ = acc_y + acc_Δ₊ 
+            acc_y₋ = acc_y + acc_Δ₋
+            push!(row_entries, Printf.@sprintf("%.2f {\\scriptsize(%.2f, %.2f)}", acc_y, acc_y₋, acc_y₊))
+
+            ll_y, ll_Δ₊, ll_Δ₋ = data["ll_y"][:,end]
+            ll_y₊ = ll_y + ll_Δ₊ 
+            ll_y₋ = ll_y + ll_Δ₋
+            push!(row_entries, Printf.@sprintf("%.2f {\\scriptsize(%.2f, %.2f)}", ll_y, ll_y₋, ll_y₊))
+        end
+        push!(entries, row_entries)
+    end
+    table = permutedims(hcat(entries...))
+    display(PrettyTables.pretty_table(table;
+                                      backend = Val(:latex),
+                                      tf = PrettyTables.tf_latex_booktabs,
+                                      header=(["",
+                                               "pima acc",  "pima ll",
+                                               "heart_acc", "heart_ll",
+                                               "german_acc", "german_ll"],
+                                              ["",
+                                               "acc", "l",
+                                               "acc", "ll",
+                                               "acc", "ll"])))
+end
+
+function draw_table_gp()
+    entries = []
+    for (method, name, N) ∈ [("ELBO",      "ELBO", 1),
+                             ("MSC_PIMH",  "par.-IMH", 10),
+                             ("MSC_SIMH",  "seq.-IMH", 10),
+                             ("MSC_CIS",   "single-CIS", 10),
+                             ("MSC_CISRB", "single-CISRB", 10),
+                             ("SNIS",      "SNIS", 10),
+                             ]
+        row_entries = String[]
+        push!(row_entries, name)
+
+        for (i, problem) ∈ enumerate(["sonar", "ionosphere", "breast"])
+            data = FileIO.load(datadir("exp_pro", "method=$(method)_n_reps=30_n_samples=$(N)_task=$(problem).jld2"))
+            acc_y, acc_Δ₊, acc_Δ₋ = data["acc_y"][:,end]
+            acc_y₊ = acc_y + acc_Δ₊ 
+            acc_y₋ = acc_y + acc_Δ₋
+            push!(row_entries, Printf.@sprintf("%.2f {\\scriptsize(%.2f, %.2f)}", acc_y, acc_y₋, acc_y₊))
+
+            ll_y, ll_Δ₊, ll_Δ₋ = data["nlpd_y"][:,end]
+            ll_y₊ = ll_y + ll_Δ₊ 
+            ll_y₋ = ll_y + ll_Δ₋
+            push!(row_entries, Printf.@sprintf("%.2f {\\scriptsize(%.2f, %.2f)}", ll_y, ll_y₋, ll_y₊))
+        end
+        push!(entries, row_entries)
+    end
+    table = permutedims(hcat(entries...))
+    display(PrettyTables.pretty_table(table;
+                                      backend = Val(:latex),
+                                      tf = PrettyTables.tf_latex_booktabs,
+                                      header=(["",
+                                               "sonar_acc",  "sonar_ll",
+                                               "ionosphere_acc", "ionosphere_ll",
+                                               "breast_acc", "breast_ll"],
+                                              ["",
+                                               "acc", "ll",
+                                               "acc", "ll",
+                                               "acc", "ll"])))
 end
 
 function main()
