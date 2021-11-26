@@ -45,7 +45,7 @@ function prepare_dataset(prng::Random.AbstractRNG,
                          data_y::AbstractVector;
                          ratio::Real=0.9)
     n_data      = size(data_x, 1)
-    shuffle_idx = Random.shuffle(1:n_data)
+    shuffle_idx = Random.shuffle(prng, 1:n_data)
     data_x      = data_x[shuffle_idx,:]
     data_y      = data_y[shuffle_idx]
 
@@ -123,9 +123,9 @@ function run_task(prng::Random.AbstractRNG,
 
         f   = x_test*μ_β .+ μ_α[1]
         σ²  = Σ_α[1] .+  sum(x_test'*(x_test*Σ_β), dims=1)[1,:]
-        λ⁻² = 1/(π/8)
-        s   = f ./ sqrt.(λ⁻² .+ σ²)
-        p   = StatsFuns.normcdf.(s)
+
+        s       = f ./ sqrt.(1 .+ π*σ²)/8
+        p       = StatsFuns.logistic.(s)
         acc = mean((p .> 0.5) .== y_test)
         ll  = mean(logpdf.(Turing.BernoulliLogit.(s), y_test))
 
