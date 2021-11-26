@@ -1,8 +1,8 @@
 
 import Tracker
 
-ard_kernel(α², logℓ, σ²) =
-    α²*(KernelFunctions.Matern52Kernel() ∘ KernelFunctions.ARDTransform(@. exp(-logℓ))) + σ² * KernelFunctions.WhiteKernel()
+ard_kernel(α², logℓ) =
+    α²*(KernelFunctions.Matern52Kernel() ∘ KernelFunctions.ARDTransform(@. exp(-logℓ)))
 
 Turing.@model function logisticgp(X, y, jitter=1e-6)
     n_features = size(X, 1)
@@ -13,10 +13,10 @@ Turing.@model function logisticgp(X, y, jitter=1e-6)
 
     α²     = exp(logα*2)
     σ²     = exp(logσ*2)
-    kernel = ard_kernel(α², logℓ, σ²) 
+    kernel = ard_kernel(α², logℓ) 
     K      = KernelFunctions.kernelmatrix(kernel, X)
 
-    f  ~ MvNormal(zeros(size(X,2)), K + jitter*I)
+    f  ~ MvNormal(zeros(size(X,2)), K + (σ² + jitter)*I)
     y .~ Turing.BernoulliLogit.(f)
 end
 
@@ -74,7 +74,8 @@ function run_task(prng::Random.AbstractRNG,
     X_train, y_train, X_test, y_test = prepare_dataset(prng, data_x, data_y, ratio=0.9)
     X_train = Array(X_train')
     X_test  = Array(X_test')
-    model   = logisticgp(X_train, y_train, 1e-6)
+    jitter  = 1e-4
+    model   = logisticgp(X_train, y_train, jitter)
 
     if task isa Val{:breast}
         μ = mean(X_train, dims=2)
@@ -100,24 +101,22 @@ function run_task(prng::Random.AbstractRNG,
         logσ = get_variational_mode(q, model, Symbol("logσ"))
         logℓ = get_variational_mode(q, model, Symbol("logℓ"))
         logα = get_variational_mode(q, model, Symbol("logα"))
-        σ²  = exp(logσ[1]*2)
+        σ²_n = exp(logσ[1]*2)
         α²  = exp(logα[1]*2)
         ℓ   = exp.(logℓ)
 
         stat = if(mod(i-1, 1) == 0)
-            kernel  = ard_kernel(α², logℓ, σ²) 
+            kernel  = ard_kernel(α², logℓ) 
             gp      = AbstractGPs.GP(kernel)
-            gp_post = AbstractGPs.posterior(gp(X_train, 1e-6), f)
+            gp_post = AbstractGPs.posterior(gp(X_train, jitter), f)
             μ, σ²   = mean_and_var(gp_post(X_test))
 
-            #μ, σ²   = mean_and_var(gp_post, X_test, dims=2)
-            λ⁻²     = 1/(π/8)
-            p       = StatsFuns.normcdf.(μ ./ sqrt.(λ⁻² .+ σ²))
+            s       = μ ./ sqrt.(1 .+ π*(σ².+σ²_n)/8)
+            p       = StatsFuns.logistic.(s)
             y_pred  = p .> 0.5
-            nlpd    = mean(logpdf.(Bernoulli.(p), y_test))
+            nlpd    = mean(logpdf.(Turing.BernoulliLogit.(s), y_test))
             acc     = mean(y_pred .== y_test)
 
-            #nlpd, acc = evaluate_metric(prng, X_test, y_test, X_train, q, model)
             (acc = acc, nlpd = nlpd)
         else
             NamedTuple()
@@ -130,6 +129,7 @@ function run_task(prng::Random.AbstractRNG,
     varsyms     = keys(varinfo.metadata)
     n_params    = sum([size(varinfo.metadata[sym].vals, 1) for sym ∈ varsyms])
     θ           = 0.1*randn(prng, n_params*2)
+    #θ[n_params+1:end] .+= 1.0
 
     q_init      = Turing.Variational.meanfield(model)
     q_init      = AdvancedVI.update(q_init, θ)
@@ -152,30 +152,6 @@ function run_task(prng::Random.AbstractRNG,
                      )
     Dict.(pairs.(stats))
 end
-
-# function sonar_test()
-#     AdvancedVI.setadbackend(:forwarddiff)
-#     Turing.Core._setadbackend(Val(:forwarddiff))
-
-#     seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
-#     prng = Random123.Philox4x(UInt64, seed, 8)
-#     Random123.set_counter!(prng, 1)
-
-#     #data_x, data_y = load_dataset(Val(:sonar))
-#     #X_train, y_train, X_test, y_test = prepare_dataset(prng, data_x, data_y, ratio=0.9)
-#     #X_train = Array(X_train')
-#     #X_test  = Array(X_test')
-
-#     X_train = @SMatrix randn(60, 150)
-#     y_train = @SVector rand(50)
-#     y_train = y_train .> 0.5
-
-#     model   = logisticgp(X_train, y_train, 1e-4)
-#     δ       = 1e-6
-#     mcmc    = Turing.NUTS(200, 0.8; max_depth=5)
-#     samples = Turing.sample(model, mcmc, 1_000)
-#     samples
-# end
 
 
 function run_task(prng::Random.AbstractRNG,
@@ -201,7 +177,7 @@ function run_task(prng::Random.AbstractRNG,
         X_test  ./= σ
     end
 
-    jitter     = 1e-6
+    jitter     = 1e-4
     n_features = size(X_train, 1)
     n_data     = size(X_train, 2)
     n_samples  = n_mc
@@ -221,9 +197,9 @@ function run_task(prng::Random.AbstractRNG,
 
         α²     = exp(logα*2)
         σ²     = exp(logσ*2)
-        kernel = ard_kernel(α², logℓ, σ²) 
+        kernel = ard_kernel(α², logℓ) 
         K      = KernelFunctions.kernelmatrix(kernel, X_train)
-        p_f    = logpdf(MvNormal(zeros(n_data), K + jitter*I), f)
+        p_f    = logpdf(MvNormal(zeros(n_data), K + (σ² + jitter)*I), f)
         
         loglike = mapreduce(+, 1:n_data) do i
             logpdf(Turing.BernoulliLogit(f[i]), y_train[i])
@@ -255,23 +231,24 @@ function run_task(prng::Random.AbstractRNG,
         logℓ = view(λ, 3:2+n_features)
         f    = view(λ, 3+n_features:2+n_features+n_data)
         α²   = exp(2*logα)
-        σ²   = exp(2*logσ)
+        σ²_n = exp(2*logσ)
         
-        kernel  = ard_kernel(α², logℓ, σ²) 
+        kernel  = ard_kernel(α², logℓ) 
         gp      = AbstractGPs.GP(kernel)
-        gp_post = AbstractGPs.posterior(gp(X_train, 1e-6), f)
+        gp_post = AbstractGPs.posterior(gp(X_train, jitter), f)
         μ, σ²   = mean_and_var(gp_post(X_test))
 
-        #μ, σ²   = mean_and_var(gp_post, X_test, dims=2)
-        λ⁻²     = 1/(π/8)
-        p       = StatsFuns.normcdf.(μ ./ sqrt.(λ⁻² .+ σ²))
+        s       = μ ./ sqrt.(1 .+ π*(σ².+σ²_n)/8)
+        p       = StatsFuns.logistic.(s)
         y_pred  = p .> 0.5
-        nlpd    = mean(logpdf.(Bernoulli.(p), y_test))
+        nlpd    = mean(logpdf.(Turing.BernoulliLogit.(s), y_test))
         acc     = mean(y_pred .== y_test)
         (nlpd=nlpd, acc=acc)
     end
 
     λₜ          = randn(prng, n_params*2)*0.1
+    λₜ[n_params+1:end] .+= 1.0
+
     diff_result = DiffResults.GradientResult(λₜ)
     stats       = Vector{NamedTuple}(undef, n_iter)
     elapsed_total = 0
