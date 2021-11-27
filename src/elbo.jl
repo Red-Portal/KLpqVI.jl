@@ -43,5 +43,6 @@ function grad!(
         -res
     end
     gradient!(alg, f, θ, out)
-    NamedTuple()
+    nelbo = DiffResults.value(out)
+    (elbo=-nelbo,)
 end
