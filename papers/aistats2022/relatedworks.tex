@@ -4,7 +4,7 @@
 \paragraph{Inclusive KL minimization}
 Our method directly builds on top of MSC~\citep{NEURIPS2020_b2070693}, which minimizes the inclusive KL divergence.
 Concurrently,~\citet{pmlr-v124-ou20a} proposed JSA which they for training variational autoencoders with discrete latent variables.
-Unlike MSC, JSA can specifically be applied models with \textit{i.i.d.} data with minibatches.
+Unlike MSC, JSA can specifically be applied to models with \textit{i.i.d.} data with minibatches.
 Before the two, only a few have proposed methods that minimize the inclusive KL using SGD.
 Notably,~\citet{DBLP:journals/corr/BornscheinB14} use SNIS for estimating the stochastic gradients, while~\citet{li_approximate_2017} use an MCMC kernel to refine samples from \(q_{\vlambda}(\vz)\) to better resemble samples from \(p(\vz\mid\vx)\).
 

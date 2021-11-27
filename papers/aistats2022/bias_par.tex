@@ -21,7 +21,7 @@
     \DTV{ \eta_{\mathrm{par.},\, t}(\vz) }{p\left(\cdot\mid\vx\right)}
     &= \DTV{\frac{1}{N} \sum_{i=1}^N K\left(\vz_{t-1}^{(i)}, \vz\right)}{p\left(\cdot\mid\vx\right)} \\
     &\leq \frac{1}{N} \sum_{i=1}^N  \DTV{K\left(\vz_{t-1}^{(i)}, \cdot\right)}{p\left(\cdot\mid\vx\right)} &\text{(Triangle inequality)} \\
-    &=    \DTV{K(\vz_t, \cdot)}{p\left(\cdot\mid\vx\right)} &\text{(Uniform ergodicity)} \\
+    &=    \DTV{K(\vz_{t-1}, \cdot)}{p\left(\cdot\mid\vx\right)} &\text{(Uniform ergodicity)} \\
     &\leq 1 - \frac{1}{w^*}.
   \end{align}
   And, finally the bias is given as

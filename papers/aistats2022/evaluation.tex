@@ -79,7 +79,7 @@ Also, we only use single-HMC in the logistic regression experiment due to its hi
 \subsection{Hierarchical Logistic Regression}\label{section:logistic}
 \vspace{-0.05in}
 \paragraph{Experimental Setup}
-We first perform logistic regression with the Pima Indians diabetes (\textbf{\texttt{pima}}, \(\vz \in \mathbb{R}^{11}\),~\citealt{smith_using_1988}), German credit (\textbf{\texttt{german}}, \(\vz \in \mathbb{R}^{27}\)), and heart disease (\textbf{\texttt{heart}}, \(\vz \in \mathbb{R}^{16}\),~\citealt{detrano_international_1989}) datasets obtained from the UCI repository~\citep{Dua:2019}.
+We first perform logistic regression with the \texttt{Pima Indians} diabetes (\(\vz \in \mathbb{R}^{11}\),~\citealt{smith_using_1988}), \texttt{German credit} (\(\vz \in \mathbb{R}^{27}\)), and \texttt{heart disease} (\(\vz \in \mathbb{R}^{16}\),~\citealt{detrano_international_1989}) datasets obtained from the UCI repository~\citep{Dua:2019}.
 10\% of the data points were randomly selected in each of the 100 repetitions as test data.
 
 \input{gp_table.tex}
@@ -149,7 +149,7 @@ The simplified probabilistic model is
    y_i &\sim \text{Bernoulli-Logit}\left(  f\left( \vx_i \right) \right)
 \end{align*}
 where we chose a Mat\'ern 5/2 covariance kernel with automatic relevance determination~\citep{neal_bayesian_1996}.
-For the datasets, we use the sonar classification (\textbf{\texttt{sonar}}, \(\vz \in \mathbb{R}^{249}\),~\citealt{gorman_analysis_1988}), ionosphere (\textbf{\texttt{ionosphere}}, \(\vz \in \mathbb{R}^{351}\),~\citealt{Sigillito1989ClassificationOR}), and breast cancer (\textbf{\texttt{breast}}, \(\vz \in \mathbb{R}^{523}\),~\citealt{wolberg_multisurface_1990}) datasets.
+For the datasets, we use the \texttt{sonar} (\(\vz \in \mathbb{R}^{249}\),~\citealt{gorman_analysis_1988}), \texttt{ionosphere} (\(\vz \in \mathbb{R}^{351}\),~\citealt{Sigillito1989ClassificationOR}), and \texttt{breast cancer} (\(\vz \in \mathbb{R}^{523}\),~\citealt{wolberg_multisurface_1990}) datasets.
 For \texttt{breast}, we preprocessed the input features with z-standardization.
 10\% of the data points were randomly selected in each of the 100 repetitions as test data.
 For this experiment, the iteration complexity of ELBO is almost two orders of magnitude larger than all inclusive KL minimization methods.
