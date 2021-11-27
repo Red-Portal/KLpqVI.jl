@@ -862,12 +862,6 @@ git-tree-sha1 = "415766f120a5c9c94c50fb69e2f3f0c20634f41a"
 uuid = "af5da776-676b-467e-8baf-acd8249e4f0f"
 version = "1.2.1"
 
-[[GraphIO]]
-deps = ["DelimitedFiles", "LightGraphs", "Requires", "SimpleTraits"]
-git-tree-sha1 = "0bcec60e0f5b951001beb950ed54737779ac0c83"
-uuid = "aa1b3936-2fda-51b9-ab35-c553d3a640a2"
-version = "0.5.0"
-
 [[Graphics]]
 deps = ["Colors", "LinearAlgebra", "NaNMath"]
 git-tree-sha1 = "1c5a84319923bea76fa145d49e93aa4394c73fc2"
@@ -2112,12 +2106,6 @@ deps = ["InteractiveUtils", "MacroTools"]
 git-tree-sha1 = "5d7e3f4e11935503d3ecaf7186eac40602e7d231"
 uuid = "699a6c99-e7fa-54fc-8d76-47d257e15c1d"
 version = "0.9.4"
-
-[[SimpleWeightedGraphs]]
-deps = ["LightGraphs", "LinearAlgebra", "Markdown", "SparseArrays", "Test"]
-git-tree-sha1 = "f3f7396c2d5e9d4752357894889a87340262f904"
-uuid = "47aef6b3-ad0c-573a-a1e2-d07658019622"
-version = "1.1.1"
 
 [[Sobol]]
 deps = ["DelimitedFiles", "Random"]
