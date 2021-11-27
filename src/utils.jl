@@ -78,7 +78,7 @@ end
 function get_variational_mean_var(q, model, varsym)
     vi  = DynamicPPL.VarInfo(model)
     μ_η = mean(q.dist)
-    Σ_η = cov(q.dist)
+    Σ_η = var(q.dist)
     DynamicPPL.setall!(vi, μ_η)
     μ = vi.metadata[varsym].vals
 
