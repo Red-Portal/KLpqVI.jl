@@ -1,0 +1,57 @@
+
+\begin{lemma}\label{thm:kernel_apply_bias}
+  For some function \(f\), a MCMC kernel \(K\left(\vz, \cdot\right)\) leaving \(\pi\left(\vz\right)\) invariant, and an intermediate distribution \(\eta\left(\vz\right)\), the bias of \(K\eta\left(\vz^*\right) = \int \eta\left(\vz\right) K\left(\vz, \vz^*\right) d\vz\) is bounded as
+  \[
+  \abs{ \Esub{K\eta\left(\vz\right)}{f\left(\vz\right)} - \Esub{\pi\left(\vz\right)}{f\left(\vz\right)}} \leq \sup_{\vz} \abs{ \Esub{K\left(\vz, \vz^*\right)}{f\left(\vz^*\right)} - \Esub{\pi\left(\vz\right)}{f\left(\vz\right)} }
+  \]
+\end{lemma}
+\begin{proof}
+  \begin{align}
+    \abs{ \Esub{K\eta\left(\vz\right)}{f\left(\vz\right)} - \Esub{\pi\left(\vz\right)}{f\left(\vz\right)}} 
+    &= \abs{
+      \int \int \eta\left(\vz\right) K\left(\vz, \vz^*\right) f\left(\vz^*\right) d\vz \, d\vz^*
+      -
+      \int \pi\left(\vz^*\right) f\left(\vz^*\right) d\vz^*
+    } \\
+    &= \abs{
+      \int \eta\left(\vz\right) \int 
+      K\left(\vz, \vz^*\right) f\left(\vz^*\right) - \pi\left(\vz^*\right) f\left(\vz^*\right) d\vz \, d\vz^*
+    } \\
+    &= \abs{
+      \int \eta\left(\vz\right) 
+      \abs{
+      \int 
+        K\left(\vz, \vz^*\right) f\left(\vz^*\right) - \pi\left(\vz^*\right) f\left(\vz^*\right)   d\vz^*
+      } d\vz
+    }, \\
+    \intertext{and by setting \(M = \sup_{\vz} \abs{ \int K\left(\vz, \vz^*\right) f\left(\vz^*\right) - \pi\left(\vz^*\right) f\left(\vz^*\right) d\vz^* }\),
+    }
+    &\leq \abs{
+      \int \eta\left(\vz\right) M d\vz
+    } \\
+    &= \abs{ M \int \eta\left(\vz\right)  d\vz } \\
+    &= \sup_{\vz} \abs{ \int K\left(\vz, \vz^*\right) f\left(\vz^*\right) - \pi\left(\vz^*\right) f\left(\vz^*\right) d\vz^* }
+  \end{align}
+\end{proof}
+
+\begin{lemma}\label{thm:mh_ratio}
+  The Metropolis-Hastings ratio can be represented as
+  \[
+  q\left(\vz^*\right)\,\min\left(1, \frac{w\left(\vz^*\right)}{w\left(\vz\right)} \right)
+  = \pi\left(\vz^*\right)\,\min\left(\frac{1}{w\left(\vz\right)}, \frac{1}{w\left(\vz^*\right)}\right) 
+  \]
+  where \(w\left(\vz\right) = \frac{\pi\left(\vz\right)}{q\left(\vz\right)}\).
+\end{lemma}
+\begin{proof}
+  \begin{align}
+    q\left(\vz^*\right)\,\min\left(1, \frac{w\left(\vz^*\right)}{w\left(\vz\right)} \right)
+    &= q\left(\vz^*\right)\,\min\left(1, \frac{\pi\left(\vz^*\right)}{\pi\left(\vz\right)} \frac{q\left(\vz\right)}{q\left(\vz^*\right)} \right) \\
+    &= \min\left(q\left(\vz^*\right), \frac{\pi\left(\vz^*\right)}{\pi\left(\vz\right)} q\left(\vz\right) \right) \\
+    &= \pi\left(\vz^*\right) \min\left(\frac{q\left(\vz^*\right)}{\pi\left(\vz^*\right)}, \frac{q\left(\vz\right)}{\pi\left(\vz\right)} \right) \\
+    &= \pi\left(\vz^*\right) \min\left(\frac{1}{w\left(\vz^*\right)}, \frac{1}{w\left(\vz\right)} \right)
+  \end{align}
+\end{proof}
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:

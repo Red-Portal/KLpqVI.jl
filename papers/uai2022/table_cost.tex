@@ -1,0 +1,74 @@
+
+% Second version of table, with booktabs.
+\begin{table*}
+  \vspace{-0.1in}
+\centering
+\caption{Computational Costs of Markov-chain Schemes}\label{table:cost}
+\setlength{\tabcolsep}{2pt}
+  \begin{threeparttable}
+\begin{tabular}{lccccc}\toprule
+& \multicolumn{3}{c}{\footnotesize Posterior Sampling} & \multicolumn{2}{c}{\footnotesize Stochastic gradient} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-6}
+  & \(\footnotesize p\left( \vz, \vx \right)\)
+  & \(\footnotesize q_{\vlambda}(\vz)\)
+  & \(\footnotesize q_{\vlambda}(\vz)\)
+  & \(\footnotesize p\left( \vz, \vx \right)\)
+  & \(\footnotesize q_{\vlambda}(\vz)\)
+  \\
+  & {\footnotesize\# Eval.  }
+  & {\footnotesize\# Eval.  }
+  & {\footnotesize\# Samples}
+  & {\footnotesize\# Grad.  }
+  & {\footnotesize\# Grad.  }
+%
+\\\midrule
+%
+{\footnotesize
+Evidence Lower Bound Path Derivative
+}
+& \(0\)
+& \(0\)
+& \(N\)
+& \(N\)
+& \(N\)
+\\\arrayrulecolor{black!30}\midrule
+%
+{\footnotesize
+Single State Estimator with CIS Kernel (single-CIS)
+}
+& \(N-1\)
+& \(N\)
+& \(N-1\)
+& \(0\)
+& \(1\)\tnote{1}\;\;{\footnotesize or}\;\(N\)\tnote{2}
+\\
+%
+{\footnotesize
+Sequential State Estimator with IMH Kernel (seq.-IMH)
+}
+& \(N\)
+& \(N+1\)
+& \(N\)
+& \(0\)
+& \(N\)
+\\
+%
+{\footnotesize
+Parallel State Estimator with IMH Kernel (par.-IMH)
+}
+& \(N\)
+& \(2 \, N\)
+& \(N\)
+& \(0\)
+& \(N\)
+\\\bottomrule
+\end{tabular}
+  \begin{tablenotes}
+    \item[*]{\footnotesize We assume that the parameters are cached as much as possible}.
+    \item[*]{\footnotesize \(N\) is the number of samples used in each method}.
+    \item[1]{\footnotesize Vanilla CIS kernel}.
+    \item[2]{\footnotesize Rao-Blackwellized CIS kernel}.
+  \end{tablenotes}
+  \end{threeparttable}
+  \vspace{-0.15in}
+\end{table*}

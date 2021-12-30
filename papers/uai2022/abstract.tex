@@ -1,0 +1,14 @@
+
+Recently, variational inference methods that minimize the inclusive Kullback-Leibler (KL) divergence using Markov-chain Monte Carlo (MCMC) have been developed.
+These methods perform stochastic gradient descent by obtaining noisy estimates of the score function using MCMC.
+%While conceptually similar, one uses a single Markov-chain state from the conditional importance sampling (CIS) kernel while the other uses multiple states from the independent Metropolis-Hastings (IMH).
+%So far, multiple ways to operate the Markov-chains have proposed, but it is unclear which results in better VI performance.
+In this paper, we compare three different ways to operate Markov-chains for VI, and compare the performance of different schemes.
+In particular, we propose the parallel state estimator, which averages a single state of multiple parallel Markov-chains.
+Compared to previously used MCMC based score climbing schemes, this estimator has lower variance enabling faster convergence.
+Our experiments show that, when using our proposed scheme, inclusive KL divergence minimization is competitive against evidence lower bound minimization.
+%Our results motivate the use of the inclusive KL divergence for VI.
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:

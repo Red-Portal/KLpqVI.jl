@@ -1,0 +1,38 @@
+
+\begin{theoremEnd}{theorem}(Bias of par.-IMH)
+  Assuming \(w^* = \sup_{\vz} \nicefrac{p\left(\vz\mid\vx\right)}{q_{\vlambda_{\tau}}\left(\vz\right)} < \infty\) and that the score function is bounded as \(\left|\, s\left(\vz; \vlambda\right) \,\right| \leq \frac{L}{2}\), the bias of the parallel state estimator with an IMH kernel and \(N\) parallel chains at iteration \(t\) is bounded as
+  {\small
+\[
+    \mathrm{Bias}\left[ g_{\mathrm{par.,\, t}} \right] \leq L\, \left(1 - \frac{1}{w^*}\right).
+\]
+  }
+\end{theoremEnd}
+\begin{proofEnd}
+  We denote the empirical distribution of the Markov-chain states at iteration \(t\) as
+  \begin{align}
+    \eta_{\mathrm{par.},\, t}(\vz) = \frac{1}{N} \sum_{i=1}^N K\left(\vz_{t-1}^{(i)}, \vz\right).
+  \end{align}
+  %% and consequently,
+  %% \begin{align}
+  %%     g_{\mathrm{par.}, t}(\vlambda) = \int s\left(\vz; \vlambda\right) \, \eta_{\mathrm{par.},\, t}(\vz) \, d\vz.
+  %% \end{align}
+  Similarly with~\cref{thm:bias_seq}, 
+  \begin{align}
+    \DTV{ \eta_{\mathrm{par.},\, t}(\vz) }{p\left(\cdot\mid\vx\right)}
+    &= \DTV{\frac{1}{N} \sum_{i=1}^N K\left(\vz_{t-1}^{(i)}, \vz\right)}{p\left(\cdot\mid\vx\right)} \\
+    &\leq \frac{1}{N} \sum_{i=1}^N  \DTV{K\left(\vz_{t-1}^{(i)}, \cdot\right)}{p\left(\cdot\mid\vx\right)} &\text{(Triangle inequality)} \\
+    &=    \DTV{K(\vz_{t-1}, \cdot)}{p\left(\cdot\mid\vx\right)} &\text{(Uniform ergodicity)} \\
+    &\leq 1 - \frac{1}{w^*}.
+  \end{align}
+  And, finally the bias is given as
+ \begin{align}
+   \mathrm{Bias}\left[ g_{\mathrm{par., t}} \right]
+   &\leq \sup_{h : \mathcal{Z} \rightarrow \left[ \text{-}\nicefrac{L}{2}, \nicefrac{L}{2} \right]} \left|\, \Esub{\eta_{\mathrm{par.},\, t}(\cdot)}{h} - \Esub{p(\cdot\mid\vx)}{h} \,\right| \\
+   &= L\, \DTV{ \eta_{\mathrm{par.},\, t}(\cdot) }{p\left(\cdot\mid\vx\right)}  \\
+   &\leq L \, \left(1 - \frac{1}{w^*}\right).
+ \end{align}
+\end{proofEnd}
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:
