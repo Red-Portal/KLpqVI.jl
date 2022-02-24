@@ -4,18 +4,18 @@
 
 %\usepackage{fouriernc}
 \usepackage{unicode-math}
-\setmathfont{STIX2Math.otf}
-\setmainfont[
-         BoldFont={STIX2Text-Bold.otf}, 
-         ItalicFont={STIX2Text-Italic.otf},
-         BoldItalicFont={STIX2Text-BoldItalic.otf}
-         ]{STIX2Text-Regular.otf}
-%\setmainfont{STIXTwoText-Regular.otf}
+%% \setmathfont{STIX2Math.otf}
 %% \setmainfont[
-%%          BoldFont={STIXTwoText-Bold.otf}, 
-%%          ItalicFont={STIXTwoText-Italic.otf},
-%%          BoldItalicFont={STIXTwoText-BoldItalic.otf}
-%%          ]{STIXTwoText-Regular.otf}
+%%          BoldFont={STIX2Text-Bold.otf}, 
+%%          ItalicFont={STIX2Text-Italic.otf},
+%%          BoldItalicFont={STIX2Text-BoldItalic.otf}
+%%          ]{STIX2Text-Regular.otf}
+\setmathfont{STIXTwoMath-Regular.otf}
+\setmainfont[
+         BoldFont={STIXTwoText-Bold.otf}, 
+         ItalicFont={STIXTwoText-Italic.otf},
+         BoldItalicFont={STIXTwoText-BoldItalic.otf}
+         ]{STIXTwoText-Regular.otf}
 
 %\setmainfont{Times New Roman}
 %\setmathfont{Erewhon-Math.otf}
@@ -34,6 +34,18 @@
 
 \usepackage{dsfont}
 \usepackage[algo2e, ruled]{algorithm2e}
+
+\usepackage{pgfplots}
+\pgfkeys{/pgfplots/tuftelike/.style={
+  semithick,
+  tick style={major tick length=4pt,semithick,black},
+  separate axis lines,
+  axis x line*=bottom,
+  axis x line shift=5pt,
+  xlabel shift=-2pt,
+  axis y line*=left,
+  axis y line shift=5pt,
+  ylabel shift=-2pt}}
 
 \usepackage{proof-at-the-end}
 \newtheorem{remark}{\textbf{Remark}}
@@ -109,11 +121,13 @@
 
 \newcommand{\Df}[2]{D_{f}(#1\parallel#2)}
 \newcommand{\DKL}[2]{D_{\mathrm{KL}}(#1\parallel#2)}
-\newcommand{\DChi}[2]{D_{\chi^2}(#1\paallel#2)}
+\newcommand{\DChi}[2]{D_{\chi^2}(#1\parallel#2)}
 \newcommand{\norm}[1]{{\left\lVert\,#1\,\right\rVert}}
+\newcommand{\normsub}[2]{{\left\lVert\,#2\,\right\rVert}_{#1}}
 \newcommand{\abs}[1]{{\left|\,#1\,\right|}}
 \newcommand{\DTV}[2]{{\left\lVert\,#1 - #2\,\right\rVert}_{\mathrm{TV}}}
 
+%\DeclarePairedDelimiter\norm{\lVert}{\rVert}
 %\newcommand{\symbfup}[1]{\mathbf{#1}}
 %\newcommand{\symbf}[1]{\mathbf{#1}}
 

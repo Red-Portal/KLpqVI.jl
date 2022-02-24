@@ -38,8 +38,10 @@
 \usepackage{pgfplots}
 \usepackage{pgfplotstable}
 
+\pgfplotsset{compat=1.18}
 \usetikzlibrary{patterns}
 \usetikzlibrary{fit, calc}
+\usetikzlibrary{pgfplots.groupplots}
 \usepgfplotslibrary{fillbetween}
 \usepgfplotslibrary{groupplots}
 \usepgfplotslibrary{statistics}
@@ -59,7 +61,7 @@
 % command to supply a shorter title of your paper so that it can be
 % used as headings.
 %
-\runningtitle{Markov-Chain Monte Carlo Score Estimators for Variational Inference with Score Climbing}
+\runningtitle{Markov-Chain Monte Carlo Estimators for Variational Inference with Score Climbing}
 
 % If your paper is accepted and the number of authors is large, the
 % style will print as headings an error message. Use the following
@@ -118,9 +120,8 @@ All of our experiments can be executed within 12 hours on a system with similar 
 
 %\newpage
 \section{Proofs}\label{section:proofs}
-\input{var_seq}
+%\input{var_seq}
 \input{lemmas}
-%\input{score_bound}
 \printProofs
 
 \end{document}

@@ -1,0 +1,49 @@
+
+\begin{tikzpicture}
+  \begin{semilogyaxis}[
+      tuftelike,
+      xlabel={
+        \footnotesize
+        Iteration
+      },
+      ylabel={
+        \footnotesize
+        Score Bias
+      },
+      xtick={1,1000,2000,3000,4000,5000},
+      xticklabels={1,1k,2k,3k,4k,5k},
+      ytick={0.01,1,100},
+      %% ylabel near ticks,
+      %% xlabel near ticks,
+      log basis y=10,
+      minor tick length=1.5pt,
+      major tick length=2.5pt,
+      every tick/.style={
+        black,
+        semithick,
+      },
+      xmin  =1,
+      xmax  =5000,
+      ymin  =0.01,
+      ymax  =100,
+      % smooth,
+      % enlargelimits = true,
+      % ymajorgrids,
+      % yminorgrids,
+      % xmajorgrids,
+      width =4.5cm,
+      height=3.5cm,
+      % legend pos=north,
+      legend style = { 
+        legend columns = 2,
+        draw           = none,
+        at={(0,1)},
+        anchor=south west,
+        legend cell align={left},
+    }]
+    \input{figures/bias_pimh_16}
+    \input{figures/bias_pimh_64}
+    \input{figures/bias_simh_16}
+    \input{figures/bias_simh_64}
+  \end{semilogyaxis}
+\end{tikzpicture}

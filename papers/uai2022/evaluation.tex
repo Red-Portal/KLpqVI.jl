@@ -25,31 +25,31 @@
 \vspace{-0.05in}
 \section{Evaluations}\label{section:eval}
 
-\begin{figure}[t]
-\centering
-\includegraphics[scale=0.8]{figures/simulation_02.pdf}
-        \vspace{-0.1in}
-\caption{Variance of score function estimated using the three estimators depending on \(N\) and the KL divergence.
-Each point represent a random \(\vlambda\) where the score is evaluated.}\label{fig:simulation}
-\vspace{-0.2in}
-\end{figure}
+%% \begin{figure}[t]
+%% \centering
+%% \includegraphics[scale=0.8]{figures/simulation_02.pdf}
+%%         \vspace{-0.1in}
+%% \caption{Variance of score function estimated using the three estimators depending on \(N\) and the KL divergence.
+%% Each point represent a random \(\vlambda\) where the score is evaluated.}\label{fig:simulation}
+%% \vspace{-0.2in}
+%% \end{figure}
 %
-\vspace{-0.05in}
-\subsection{Numerical Simulation}\label{section:simulation}
-\vspace{-0.05in}
-\paragraph{Experimental Setup}
-We first present numerical simulation results of the three estimators.
-We chose the target posterior to be a 10 dimensional white Gaussian.
-We then randomly generated 2048 random \(\vlambda = \vmu\) where \(q_{\vlambda}(\vz) = \mathcal{N}(\vmu, \mSigma)\), \(\vmu\) is drawn from a multivariate Student's T distribution, and \(\mSigma = 1.5^2 \mI\).
-Using the 2048 random \(q_{\vlambda}\)s, we simulate 128 Markov-chains of length \(T=50\) and estimate the bias and variance of the score function.
+%% \vspace{-0.05in}
+%% \subsection{Numerical Simulation}\label{section:simulation}
+%% \vspace{-0.05in}
+%% \paragraph{Experimental Setup}
+%% We first present numerical simulation results of the three estimators.
+%% We chose the target posterior to be a 10 dimensional white Gaussian.
+%% We then randomly generated 2048 random \(\vlambda = \vmu\) where \(q_{\vlambda}(\vz) = \mathcal{N}(\vmu, \mSigma)\), \(\vmu\) is drawn from a multivariate Student's T distribution, and \(\mSigma = 1.5^2 \mI\).
+%% Using the 2048 random \(q_{\vlambda}\)s, we simulate 128 Markov-chains of length \(T=50\) and estimate the bias and variance of the score function.
 
-\vspace{-0.05in}
-\paragraph{Results}
-The variance results are shown in~\cref{fig:simulation}.
-We do not present the bias as all methods were visually indistinguishable.
-From the results, when the KL divergence is significant, we see that seq.-IMH and single-CIS do not benefit from increasing \(N\).
-On the other hand, the parallel state estimator always benefits from increasing \(N\).
-The variance of the parallel state estimator follows a linear trend until the large KL divergence prevents the chains from achieving stationary.
+%% \vspace{-0.05in}
+%% \paragraph{Results}
+%% The variance results are shown in~\cref{fig:simulation}.
+%% We do not present the bias as all methods were visually indistinguishable.
+%% From the results, when the KL divergence is significant, we see that seq.-IMH and single-CIS do not benefit from increasing \(N\).
+%% On the other hand, the parallel state estimator always benefits from increasing \(N\).
+%% The variance of the parallel state estimator follows a linear trend until the large KL divergence prevents the chains from achieving stationary.
 
 
 \vspace{-0.05in}
@@ -181,44 +181,44 @@ This is better shown in~\cref{fig:gp}, where ELBO quickly converges to a point w
 %Meanwhile, on \texttt{breast}, ELBO gives better uncertainty estimates than inclusive KL minimization methods.
 %This happens when the modal estimate (preferred by the exclusive KL) gives good accuracy and uncertainty estimates.
 
-  \vspace{-0.05in}
-\subsection{Marginal Likelihood Estimation}\label{section:mll}
-  \vspace{-0.05in}
-\paragraph{Experimental Setup}
-Lastly, we now estimate the marginal log-likelihood of a hierarchical regression model with partial pooling (\texttt{radon}, \(\vz \in \mathbb{R}^{175}\),~\citealt{gelman_data_2007}) for modeling radon levels in U.S homes.
-\texttt{radon} contains multiple posterior degeneracies from the hierarchy.
-We estimated the reference marginal likelihood using \textit{thermodynamic integration} (TI,~\citealt{gelman_simulating_1998, neal_annealed_2001, lartillot_computing_2006}) with HMC implemented by Stan~\citep{carpenter_stan_2017, betancourt_conceptual_2017}.
-%
-\begin{figure}[H]
-  %\vspace{-0.15in}
-  \centering
-  \begin{minipage}[b]{0.25\linewidth}
-    \centering
-    \includegraphics[scale=0.9]{figures/radon_03.pdf}
-  \end{minipage}
-  \begin{minipage}[b]{0.7\linewidth}
-    \centering
-    \includegraphics[scale=0.9]{figures/radon_02.pdf}
-    %\subcaption{\texttt{radon}}
-  \end{minipage}
-    \vspace{-0.1in}
-  %% \begin{minipage}[b]{0.35\linewidth}
-  %%   \centering
-  %%   \includegraphics[scale=0.7]{figures/sv_02.pdf}
-  %%   \subcaption{\texttt{stock}}\label{fig:sv}
-  %% \end{minipage}
-  \caption{Marginal log-likelihood estimates on the \texttt{radon} dataset.
-    The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
-  }\label{fig:marginal_likelihood}
-  %\vspace{-0.1in}
-\end{figure}
-%
-  \vspace{-0.2in}
-\paragraph{Results}
-The results are shown in~\cref{fig:marginal_likelihood}.
-par.-IMH converges quickly and provides the most accurate estimate.
-By contrast, other estimators converge much slowly.
-SNIS and ELBO, on the other hand, overestimate \(\log Z\), which can be attributed to the mode-seeking behavior of ELBO and the small sample bias of SNIS.
+%%   \vspace{-0.05in}
+%% \subsection{Marginal Likelihood Estimation}\label{section:mll}
+%%   \vspace{-0.05in}
+%% \paragraph{Experimental Setup}
+%% Lastly, we now estimate the marginal log-likelihood of a hierarchical regression model with partial pooling (\texttt{radon}, \(\vz \in \mathbb{R}^{175}\),~\citealt{gelman_data_2007}) for modeling radon levels in U.S homes.
+%% \texttt{radon} contains multiple posterior degeneracies from the hierarchy.
+%% We estimated the reference marginal likelihood using \textit{thermodynamic integration} (TI,~\citealt{gelman_simulating_1998, neal_annealed_2001, lartillot_computing_2006}) with HMC implemented by Stan~\citep{carpenter_stan_2017, betancourt_conceptual_2017}.
+%% %
+%% \begin{figure}[H]
+%%   %\vspace{-0.15in}
+%%   \centering
+%%   \begin{minipage}[b]{0.25\linewidth}
+%%     \centering
+%%     \includegraphics[scale=0.9]{figures/radon_03.pdf}
+%%   \end{minipage}
+%%   \begin{minipage}[b]{0.7\linewidth}
+%%     \centering
+%%     \includegraphics[scale=0.9]{figures/radon_02.pdf}
+%%     %\subcaption{\texttt{radon}}
+%%   \end{minipage}
+%%     \vspace{-0.1in}
+%%   %% \begin{minipage}[b]{0.35\linewidth}
+%%   %%   \centering
+%%   %%   \includegraphics[scale=0.7]{figures/sv_02.pdf}
+%%   %%   \subcaption{\texttt{stock}}\label{fig:sv}
+%%   %% \end{minipage}
+%%   \caption{Marginal log-likelihood estimates on the \texttt{radon} dataset.
+%%     The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
+%%   }\label{fig:marginal_likelihood}
+%%   %\vspace{-0.1in}
+%% \end{figure}
+%% %
+%%   \vspace{-0.2in}
+%% \paragraph{Results}
+%% The results are shown in~\cref{fig:marginal_likelihood}.
+%% par.-IMH converges quickly and provides the most accurate estimate.
+%% By contrast, other estimators converge much slowly.
+%% SNIS and ELBO, on the other hand, overestimate \(\log Z\), which can be attributed to the mode-seeking behavior of ELBO and the small sample bias of SNIS.
 
 
 %%% Local Variables:

@@ -1,0 +1,456 @@
+
+\begin{theoremEnd}{theorem}\label{thm:par_bias}
+  Assuming \(\eta\left(\vz\right) < M \, \pi\left(\vz\right)\) for some \(M < \infty\) and \(\norm{\vs\left(\vlambda; \vz\right)} \leq L\), the bias of the parallel state estimator with an IMH kernel is bounded as
+  {\small
+  \[
+  \mathrm{Bias}\left[ \vg_{\text{par.-IMH}} \right] \leq 
+  C
+  \,
+  \sqrt{\DKL{\pi}{q}}
+  +
+  L \, \left( 1 - \frac{1}{w^*} \right)
+  \]
+  }
+  for some positive constant \(C\).
+\end{theoremEnd}
+\begin{proofEnd}
+  The bias of a the parallel state estimator kernel is bounded as
+  {\small
+  \begin{align}
+    &\mathrm{Bias}\left[ \vg_{\text{par.-IMH}} \right]
+    \\
+    &=
+    \norm{
+      \int 
+      \eta\left(\vz^{(i)}\right) \, 
+      \int \frac{1}{N}\,\sum^{N}_{i=1} K\left(\vz^{(i)}, \vz^*\right)\,\vs\left(\vlambda;\vz^*\right) \, d\vz^* \, d\vz_{(1:N)}
+      -
+      \int \pi\left(\vz^*\right) \vs\left(\vlambda;\vz^*\right) d\vz^*
+    }
+    \\
+    &=
+    \norm{
+      \frac{1}{N} \,
+      \int 
+      \eta\left(\vz^{(i)}\right) \, 
+      \int \sum^{N}_{i=1} \big(\, K\,(\vz^{(i)}, \vz^*\,) - \pi\,(\vz^*\,) \,\big) \,
+       \vs\left(\vlambda;\vz^*\right)
+      d\vz^* \, d\vz_{(1:N)}
+    }
+    \\
+    &=
+    \norm{
+      \frac{1}{N} \sum^{N}_{i=1} \,
+      \int 
+      \eta\left(\vz^{(i)}\right) \, 
+      \int \big(\, K\,(\vz^{(i)}, \vz^*\,) - \pi\,(\vz^*\,) \,\big) \,
+       \vs\left(\vlambda;\vz^*\right)
+      d\vz^* \, d\vz_{(1:N)}
+    }
+    \\
+    &\leq
+    \frac{1}{N} \sum^{N}_{i=1} \,
+    \norm{
+      \int 
+      \eta\left(\vz^{(i)}\right) \, 
+      \int \big(\, K\,(\vz^{(i)}, \vz^*\,) - \pi\,(\vz^*\,) \,\big) \,
+       \vs\left(\vlambda;\vz^*\right)
+      d\vz^* \, d\vz_{(1:N)}
+    }&\text{(Triangle Inequality)}
+    \\
+    &=
+    \norm{
+      \int 
+      \eta\left(\vz\right) \, 
+      \int \big(\, K\,(\vz, \vz^*\,) - \pi\,(\vz^*\,) \,\big) \,
+       \vs\left(\vlambda;\vz^*\right)
+      d\vz^* \, d\vz
+    }&\text{(Independence)}
+    \\
+    &=
+    \norm{
+      \int 
+      \eta\left(\vz\right) \, 
+      \int \pi\,(\vz^*\,) \, \big(\,
+      T_1\left(w\left(\vz\right) \vee w\left(\vz^*\right)\right)
+       - 1
+      \,\big) \,
+       \vs\left(\vlambda;\vz^*\right)
+      d\vz^* \, d\vz
+      +
+      \int \eta\left(\vz\right)
+      \lambda\left(w\left(\vz\right)\right) \, \vs\left(\vlambda;\vz\right)
+    }&\text{(\cref{thm:imh_exact_kernel})}
+    \\
+    &\leq
+    \norm{
+      \int \eta\left(\vz\right)
+      \int \pi\left(\vz^*\right)\,
+      \big(\,
+      T_1\,(w\,(\vz\,) \vee w\,(\vz^*\,)) - 1)
+      \,\big)\,
+      \vs\left(\vlambda;\vz^*\right)
+      d\vz^* \, d\vz
+    }
+    + 
+    \norm{
+      \int \eta\left(\vz\right)
+      \lambda\left(w\left(\vz\right)\right) \, \vs\left(\vlambda;\vz\right)
+      d\vz
+    }&\text{(Triangle Inequality)}
+    \\
+    &=
+    \underbrace{
+    \norm{
+      \int \eta\left(\vz\right)
+      \int \pi\left(\vz^*\right)\, \left(\frac{1}{w\left(\vz\right) \vee w\left(\vz^*\right)} - 1\right) \vs\left(\vlambda;\vz^*\right) d\vz^*
+      d\vz
+    }
+    }_{\text{T1}}
+    + 
+    \underbrace{
+    \norm{
+      \int \eta\left(\vz\right) \,
+      \lambda\left(w\left(\vz\right)\right) \, \vs\left(\vlambda;\vz\right)
+      d\vz
+    }}_{\text{T2}}.\label{eq:imh_bias_main}
+  \end{align}
+  }
+
+  For T1, we denote the set of the accepted proposals \(A\) as \(A\left(w\right) = \{\,\vz^* \mid w\left(\vz^*\right) > w\,\}\), and the set of the rejected proposals \(R\) as \(R\left(w\right) = A^c\left(w\right)\).
+  Then,
+  \begin{align}
+    &\norm{
+      \int \eta\left(\vz\right)
+      \left(
+      \int \pi\left(\vz^*\right)\, \left(\frac{1}{w\left(\vz\right) \vee w\left(\vz^*\right)} - 1\right) \vs\left(\vlambda;\vz^*\right) d\vz^*
+      \right)
+      d\vz
+    }
+    \\
+    &=
+    \norm{
+      \int \eta\left(\vz\right)
+      \left\{
+      \int_{A\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \left(\frac{1}{w\left(\vz^*\right)} - 1\right) \vs\left(\vlambda;\vz^*\right) d\vz^*
+      +
+      \int_{R\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \left(\frac{1}{w\left(\vz\right)} - 1\right) \vs\left(\vlambda;\vz^*\right) d\vz^*
+      \right\} d\vz
+    }
+    \\
+    &\leq
+    \underbrace{
+    \norm{
+      \int \eta\left(\vz\right)
+      \int_{A\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \left(\frac{1}{w\left(\vz^*\right)} - 1\right) \vs\left(\vlambda;\vz^*\right) d\vz^*
+      d\vz
+    }
+    }_{\text{T3}}
+    +
+    \underbrace{
+    \norm{
+      \int \eta\left(\vz\right)
+      \int_{R\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \left(\frac{1}{w\left(\vz\right)} - 1\right) \vs\left(\vlambda;\vz^*\right) d\vz^*
+      d\vz
+    }
+    }_{\text{T4}}
+  \end{align}
+  For T3, 
+  \begin{align}
+    \norm{
+      \int \eta\left(\vz\right)
+      \int_{A\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \left(\frac{1}{w\left(\vz^*\right)} - 1\right) \vs\left(\vlambda;\vz^*\right) d\vz^*
+      d\vz
+    }
+    &=
+    \norm{
+      \int \eta\left(\vz\right)\,d\vz \;
+      \int_{A\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \left(\frac{1}{w\left(\vz^*\right)} - 1\right) \vs\left(\vlambda;\vz^*\right) d\vz^*
+    }
+    \\
+    &=
+    \norm{
+      \int_{A\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \left(\frac{1}{w\left(\vz^*\right)} - 1\right) \vs\left(\vlambda;\vz^*\right) d\vz^*
+    }
+    \\
+    &\leq
+    \int_{A\left(w\left(\vz\right)\right)}
+    \pi\left(\vz^*\right)\,
+    \abs{
+     \frac{1}{w\left(\vz^*\right)} - 1
+    } \,
+    \norm{
+      \vs\left(\vlambda;\vz^*\right)
+    } \,
+    d\vz^*
+    \\
+    &\leq
+    \int
+    \pi\left(\vz^*\right)\,
+    \abs{
+     \frac{1}{w\left(\vz^*\right)} - 1
+    } \,
+    \norm{
+      \vs\left(\vlambda;\vz^*\right)
+    } \,
+    d\vz^*
+    \\
+    &\leq
+    \int
+    \abs{
+      \pi\left(\vz^*\right) - q\left(\vz^*\right)
+    } \,
+    \norm{
+      \vs\left(\vlambda;\vz^*\right)
+    } \,
+    d\vz^*
+    \\
+    &\leq
+    L \,
+    \int
+    \abs{
+      \pi\left(\vz^*\right) - q\left(\vz^*\right)
+    } \,
+    d\vz^*
+    \\
+    &\leq
+    2 \, L \, \DTV{\pi}{q}.\label{eq:imh_bias_left}
+  \end{align}
+  %% The bound depends on the level of assumption we would like to impose.
+  %% With the assumption of \(\norm{\vs} \leq L \),
+  %% \begin{align}
+  %%   \int
+  %%   \pi\left(\vz^*\right)\,
+  %%   \abs{
+  %%    \frac{1}{w\left(\vz^*\right)} - 1
+  %%   } \,
+  %%   \norm{
+  %%     \vs\left(\vz^*\right)
+  %%   } \,
+  %%   d\vz^*
+  %%   &=
+  %%   \int
+  %%   \abs{
+  %%    \pi\left(\vz^*\right) - q\left(\vz^*\right)
+  %%   } \,
+  %%   \norm{
+  %%     \vs\left(\vz^*\right)
+  %%   } \,
+  %%   d\vz^*
+  %%   \\
+  %%   &\leq
+  %%   L\,
+  %%   \int
+  %%   \abs{
+  %%    \pi\left(\vz^*\right) - q\left(\vz^*\right)
+  %%   } \,
+  %%   d\vz^*
+  %%   \\
+  %%   &=
+  %%   2 \, L\, \DTV{\pi}{q}.
+  %% \end{align}
+  %% Without this assumption,
+  %% \begin{align}
+  %%   \int
+  %%   \pi\left(\vz^*\right)\,
+  %%   \abs{
+  %%    \frac{1}{w\left(\vz^*\right)} - 1
+  %%   } \,
+  %%   \norm{
+  %%     \vs\left(\vz^*\right)
+  %%   } \,
+  %%   d\vz^*
+  %%   &\leq
+  %%   \sqrt{
+  %%     \int
+  %%     \pi\left(\vz^*\right)\,
+  %%     {\left(
+  %%       \frac{1}{w\left(\vz^*\right)} - 1
+  %%     \right)}^2 \,
+  %%     d\vz^*
+  %%     \,
+  %%     \int
+  %%     \pi\left(\vz^*\right)\,
+  %%     \norm{
+  %%       \vs\left(\vz^*\right)
+  %%     }^2 \,
+  %%     d\vz^*
+  %%   }
+  %%   &\text{(Cauchy-Schwarz)}
+  %%   \\
+  %%   &=
+  %%   \sqrt{\pi\left(\vs^2\right)}
+  %%   \sqrt{
+  %%     \int
+  %%     \pi\left(\vz^*\right)\,
+  %%     {\left(
+  %%       \frac{1}{w\left(\vz^*\right)} - 1
+  %%     \right)}^2 \,
+  %%     d\vz^*
+  %%   }
+  %%   \\
+  %%   &=
+  %%   \sqrt{\pi\left(\vs^2\right)}
+  %%   \sqrt{
+  %%     \DChi{q}{\pi}
+  %%   }
+  %% \end{align}
+
+  Now, for T4,
+  \begin{align}
+    \norm{
+      \int \eta\left(\vz\right)
+      \int_{R\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \left(\frac{1}{w\left(\vz\right)} - 1\right) \vs\left(\vlambda;\vz^*\right) d\vz^*
+      d\vz
+    }
+    &=
+    \norm{
+      \int \eta\left(\vz\right) \,
+      \left(\frac{1}{w\left(\vz\right)} - 1\right)
+ \,
+      d\vz
+      \int_{R\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \vs\left(\vz^*\right) d\vz^*
+    }
+    \\
+    &=
+    \underbrace{
+    \norm{
+      \int \eta\left(\vz\right) \,
+      \left(\frac{1}{w\left(\vz\right)} - 1\right)
+      d\vz
+    }
+    }_{\text{T5}}
+    \,
+    \underbrace{
+    \norm{
+      \int_{R\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \vs\left(\vz^*\right) d\vz^*,
+    }
+    }_{\text{T6}},
+  \end{align}
+  while T5 is bounded as
+  \begin{align}
+    \norm{
+      \int \eta\left(\vz\right) \,
+      \left(\frac{1}{w\left(\vz\right)} - 1\right)
+      \,
+      d\vz
+    }
+    &=
+    \int \eta\left(\vz\right) \,
+    \abs{\frac{q\left(\vz\right)}{\pi\left(\vz\right)} - 1}
+    \,
+    d\vz
+    \\
+    &=
+    \int \frac{\eta\left(\vz\right)}{\pi\left(\vz\right)} \,
+    \abs{\left(q\left(\vz\right) - \pi\left(\vz\right)\right)}
+    \,
+    d\vz
+    \\
+    &\leq
+    M  \int  \,
+    \abs{q\left(\vz\right) - \pi\left(\vz\right)}
+    \,
+    d\vz
+    \\
+    &=
+    2 \, M \, \DTV{\pi}{q}
+  \end{align}
+  and T6 is bounded as
+  \begin{align}
+    \norm{
+      \int_{R\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \vs\left(\vlambda;\vz^*\right) d\vz^*
+    }
+    &\leq
+    \int_{R\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \norm{\vs\left(\vlambda;\vz^*\right)} d\vz^*
+    \\
+    &\leq
+    \int \pi\left(\vz^*\right)\, \norm{\vs\left(\vlambda;\vz^*\right)} \, d\vz^*
+    \\
+    &\leq
+    L \, \int \pi\left(\vz^*\right)\, \, d\vz^*
+    \\
+    &\leq
+    L.
+  \end{align}
+
+  %% With the assumption of \(\norm{\vs} \leq L\), the same term is bounded as
+  %% \begin{align}
+  %%   \norm{
+  %%     \int_{R} \pi\left(\vz^*\right)\, \vs\left(\vz^*\right) d\vz^*
+  %%   }
+  %%   &\leq
+  %%   \int_{R} \pi\left(\vz^*\right)\, \norm{ \vs\left(\vz^*\right) } d\vz^*
+  %%   \\
+  %%   &\leq
+  %%   L.
+  %% \end{align}
+
+  Finally, for T2,
+  \begin{align}
+    \norm{
+      \int \eta\left(\vz\right) \,
+      \lambda\left(w\left(\vz\right)\right) \, \vs\left(\vlambda;\vz\right)
+      d\vz
+    }
+    &\leq
+    \int
+    \eta\left(\vz\right) \,
+    \lambda\left(w\left(\vz\right)\right) \,
+    \norm{
+      \vs\left(\vlambda;\vz\right)
+    }\,
+    d\vz
+    \\
+    &\leq
+    \int
+    \eta\left(\vz\right) \,
+    \left(1 - \frac{1}{w^*}\right) \,
+    \norm{
+      \vs\left(\vlambda;\vz\right)
+    }\,
+    d\vz
+    \\
+    &=
+    \left(1 - \frac{1}{w^*}\right)
+    \int
+    \eta\left(\vz\right)
+    \,
+    \norm{
+      \vs\left(\vlambda;\vz\right)
+    }\,
+    d\vz
+    \\
+    &\leq
+    L
+    \,
+    \left(1 - \frac{1}{w^*}\right)
+    \,
+    \int
+    \eta\left(\vz\right)
+    \, d\vz
+    \\
+    &=
+    L
+    \,
+    \left(1 - \frac{1}{w^*}\right)
+  \end{align}
+
+  By combining T1, T2, T3, and T4, we conclude
+  \begin{align}
+    \mathrm{Bias}\left[ \vg_{\text{par.-IMH}} \right]
+    &\leq
+    2 \, L \, \DTV{\pi}{q} + 2 \, L \, M \, \DTV{\pi}{q} + L \, \left(1 - \frac{1}{w^*}\right)
+    \\
+    &=
+    2 \, L \, \left( 1 + M \right) \, \DTV{\pi}{q} + L \, \left(1 - \frac{1}{w^*}\right)
+    \\
+    &\leq
+    2 \, L \, \left( 1 + M \right) \, \sqrt{\DKL{\pi}{q}} + L \, \left(1 - \frac{1}{w^*}\right).
+    &\text{(Pinsker's Inequality)}
+  \end{align}
+\end{proofEnd}
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:

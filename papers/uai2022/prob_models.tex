@@ -32,20 +32,20 @@ where \(D\) is the number of dimensions.
 The jitter term \(\delta\) is used for numerical stability.
 We set a small value of \(\delta = 1\times10^{-6}\).
 
-\subsection{Radon Hierarchical Regression}
-The partially pooled linear regression model used in~\cref{section:mll} is
-\begin{align*}
-  \sigma_{a_1} &\sim \mathrm{Gamma}\left( \alpha = 1, \beta = 0.02 \right) \\
-  \sigma_{a_2} &\sim \mathrm{Gamma}\left( \alpha = 1, \beta = 0.02 \right) \\
-  \sigma_{y}  &\sim \mathrm{Gamma}\left( \alpha = 1, \beta = 0.02 \right) \\
-  \mu_{a_1}    &\sim \mathcal{N}\left( 0, 1 \right) \\
-  \mu_{a_2}    &\sim \mathcal{N}\left( 0, 1 \right) \\
-  a_{1,\, c}     &\sim \mathcal{N}\left( \mu_{a_1}, \sigma_{a_1}^2 \right) \\
-  a_{2,\, c}     &\sim \mathcal{N}\left( \mu_{a_2}, \sigma_{a_2}^2 \right) \\
-  y_i         &\sim \mathcal{N}\left( a_{1,\, c_i} + a_{2,\, c_i}\,x_i,\, \sigma_y^2 \right)
-\end{align*}
-where \(a_{1,\,c}\) is the intercept at the county \(c\), \(a_{2,\,c}\) is the slope at the county \(c\), \(c_i\) is the county of the \(i\)th datapoint, \(x_i\) and \(y_i\) are the floor predictor of the measurement and the measured radon level of the \(i\)the datapoint, respectively.
-The model pools the datapoints into their respective counties, which complicates the posterior geometry~\citep{betancourt_hierarchical_2020}.
+%% \subsection{Radon Hierarchical Regression}
+%% The partially pooled linear regression model used in~\cref{section:mll} is
+%% \begin{align*}
+%%   \sigma_{a_1} &\sim \mathrm{Gamma}\left( \alpha = 1, \beta = 0.02 \right) \\
+%%   \sigma_{a_2} &\sim \mathrm{Gamma}\left( \alpha = 1, \beta = 0.02 \right) \\
+%%   \sigma_{y}  &\sim \mathrm{Gamma}\left( \alpha = 1, \beta = 0.02 \right) \\
+%%   \mu_{a_1}    &\sim \mathcal{N}\left( 0, 1 \right) \\
+%%   \mu_{a_2}    &\sim \mathcal{N}\left( 0, 1 \right) \\
+%%   a_{1,\, c}     &\sim \mathcal{N}\left( \mu_{a_1}, \sigma_{a_1}^2 \right) \\
+%%   a_{2,\, c}     &\sim \mathcal{N}\left( \mu_{a_2}, \sigma_{a_2}^2 \right) \\
+%%   y_i         &\sim \mathcal{N}\left( a_{1,\, c_i} + a_{2,\, c_i}\,x_i,\, \sigma_y^2 \right)
+%% \end{align*}
+%% where \(a_{1,\,c}\) is the intercept at the county \(c\), \(a_{2,\,c}\) is the slope at the county \(c\), \(c_i\) is the county of the \(i\)th datapoint, \(x_i\) and \(y_i\) are the floor predictor of the measurement and the measured radon level of the \(i\)the datapoint, respectively.
+%% The model pools the datapoints into their respective counties, which complicates the posterior geometry~\citep{betancourt_hierarchical_2020}.
 
 %%% Local Variables:
 %%% TeX-master: "master"

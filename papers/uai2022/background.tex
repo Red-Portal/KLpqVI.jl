@@ -3,43 +3,46 @@
 \vspace{-0.05in}
 \subsection{Inclusive Variational Inference Until Now}\label{section:ivi_previous}
 \vspace{-0.05in}
-\paragraph{Score Function and Variational Inference}
-A typical way to perform VI is to use stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951, bottou_online_1999}), provided that unbiased gradient estimates of the optimization target \(g(\vlambda)\) are available.
+\paragraph{Variational Inference}
+The goal of VI is to find the optimal variational parameter \(\vlambda\) identifying \(q_{\vlambda}\) that minimizes the discrepancy measure \(D\left(\pi, q_{\vlambda}\right)\) (in our case, the inclusive KL).
+A typical way to perform VI is to use stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951, bottou_online_1999}), provided that unbiased gradient estimates of the optimization target \(\vg(\vlambda)\) are available.
 In this case, SGD is performed by repeating the update
 %\vspace{-0.02in}
 \begin{align}
   \vlambda_{t} = \vlambda_{t-1} + \gamma_{t} \, \vg\left(\vlambda_{t-1}\right)
 \end{align}
 where \(\gamma_1, \ldots, \gamma_T\) is a step-size schedule following the conditions of~\citet{robbins_stochastic_1951, bottou_online_1999}.
-In the case of inclusive KL divergence minimization, obtaining \(\vg\) corresponds to estimating
+In the case of inclusive KL divergence minimization, \(\vg\) estimates
 %
 %\vspace{-0.02in}
+{
 \begin{align}
-  \nabla_{\vlambda} \DKL{p}{q_{\lambda}}
-  &= \Esub{p(\vz\mid\vx)}{ - \nabla_{\vlambda} \log q_{\vlambda}(\vz) } \\
-  &= - \Esub{p(\vz\mid\vx)}{ \vs\,(\vz; \vlambda) } \\
-  &\approx \vg\left(\vlambda\right)
+  \nabla_{\vlambda} \DKL{\pi}{q_{\lambda}}
+  = -\Esub{\pi}{ \vs\,(\vz; \vlambda) } 
+  \approx \vg\left(\vlambda\right)
 \end{align}
+}%
 %\vspace{-0.05in}
 %
 where \(s\,(\vz; \vlambda) = \nabla_{\vlambda} \log q_{\vlambda}(\vz)\) is known as the \textit{score function}.
-Evidently, estimating \(\nabla_{\vlambda} \DKL{p}{q_{\lambda}}\) requires integrating the score function over \(p(\vz\mid\vx)\), which is prohibitive.
-Different inclusive variational inference methods form a different estimator \(\vg\).
+%% Evidently, estimating \(\nabla_{\vlambda} \DKL{\pi}{q_{\lambda}}\) requires integrating the score function over \(\pi\), which is prohibitive.
+%Different inclusive variational inference methods form a different estimator \(\vg\).
 
 \vspace{-0.05in}
 \paragraph{Importance Sampling}
-When it is easy to sample from the variational approximation \(q_{\lambda}(\vz)\), one can use importance sampling (IS, \citealt{robert_monte_2004, mcbook}) for estimating \(g\) since 
+When it is easy to sample from the variational approximation \(q_{\lambda}(\vz)\), one can use importance sampling (IS, \citealt{robert_monte_2004, mcbook}) for estimating \(\vg\) since 
 \vspace{-0.05in}
 \begin{align}
-  \Esub{p(\vz\mid\vx)}{ s\,(\vz; \vlambda) } 
-  &\propto \Esub{q_{\vlambda}}{ w\,(\vz) \, \vs\,(\vz; \vlambda) } \\
+  \Esub{\pi}{ \vs\,(\vz; \vlambda) } 
+  &\propto Z\,\Esub{\pi}{ \vs\,(\vz; \vlambda) } \label{eq:is_est} \\
+  &= \Esub{q_{\vlambda}}{ w\,(\vz) \, \vs\,(\vz; \vlambda) } \\
   &\approx \frac{1}{N} \sum^{N}_{i=1} w\,(\vz^{(i)}) \, \vs\,(\vz^{(i)}; \vlambda) \\
   &= \vg_{IS}(\vlambda)
 \end{align}
 %\vspace{-0.05in}
-where \(w\,(\vz) = p\,(\vz,\vx) / q_{\vlambda}(\vz)\) is known as the \textit{importance weight}, and \(\vz^{(1)},\, \ldots,\, \vz^{(N)}\) are \(N\) independent samples from \(q_{\vlambda}(\vz)\).
+where \(w\,(\vz) = p\,(\vz,\vx) / q_{\vlambda}(\vz)\) is known as the \textit{importance weight}, \(Z\) is the marginal \(p\left(\vx\right) = \int p\left(\vx, \vz\right) \, d\vz\), and \(\vz^{(1)},\, \ldots,\, \vz^{(N)}\) are \(N\) independent samples from \(q_{\vlambda}(\vz)\).
 This scheme is equivalent to adaptive IS methods~\citep{cappe_adaptive_2008, bugallo_adaptive_2017} since the IS proposal \(q_{\vlambda}(\vz)\) is iteratively optimized based on the current samples.
-Although IS is unbiased, it is highly unstable in practice.
+Although IS is unbiased, it is highly numerically unstable because of \(Z\) in \cref{eq:is_est}.
 A more stable alternative is to use the \textit{normalized weight} \(\widetilde{w}^{(i)} = \nicefrac{w\,(\vz^{(i)})}{\sum_{i=1}^N w\,(\vz^{(i)}) }\), which results in the self-normalized IS (SNIS) approximation.
 Unfortunately, SNIS still fails to converge even on moderate dimensional objectives and unlike IS, it is no longer unbiased~\citep{robert_monte_2004, mcbook}.
 

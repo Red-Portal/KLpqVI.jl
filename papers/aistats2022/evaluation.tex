@@ -27,9 +27,11 @@
 
 \begin{figure}[t]
 \centering
-\includegraphics[scale=0.7]{figures/simulation_02.pdf}
+\includegraphics[scale=0.8]{figures/simulation_02.pdf}
+        \vspace{-0.1in}
 \caption{Variance of score function estimated using the three estimators depending on \(N\) and the KL divergence.
 Each point represent a random \(\vlambda\) where the score is evaluated.}\label{fig:simulation}
+\vspace{-0.2in}
 \end{figure}
 %
 \vspace{-0.05in}
@@ -39,7 +41,7 @@ Each point represent a random \(\vlambda\) where the score is evaluated.}\label{
 We first present numerical simulation results of the three estimators.
 We chose the target posterior to be a 10 dimensional white Gaussian.
 We then randomly generated 2048 random \(\vlambda = \vmu\) where \(q_{\vlambda}(\vz) = \mathcal{N}(\vmu, \mSigma)\), \(\vmu\) is drawn from a multivariate Student's T distribution, and \(\mSigma = 1.5^2 \mI\).
-Using the 2048 random \(q_{\vmu, \mSigma}\)s, we simulate 128 Markov-chains of length \(T=50\) and estimate the bias and variance of the score function.
+Using the 2048 random \(q_{\vlambda}\)s, we simulate 128 Markov-chains of length \(T=50\) and estimate the bias and variance of the score function.
 
 \vspace{-0.05in}
 \paragraph{Results}
@@ -109,10 +111,11 @@ Also, seq.-IMH showed poor performance overall due to the correlated samples.
 Among the two CIS kernel-based methods, single-CISRB performs only marginally better than single-CIS.
 
 \begin{figure}[H]
-  \vspace{-0.05in}
+  %\vspace{-0.1in}
   \centering
   \subfloat[Test Accuracy]{
-    \includegraphics[scale=0.90]{figures/german_02.pdf}\label{fig:german_acc}
+    \includegraphics[scale=0.9]{figures/german_02.pdf}\label{fig:german_acc}
+    \vspace{-0.1in}
   }  \\
   %% \subfloat[\texttt{heart}]{
   %%   \includegraphics[scale=0.75]{figures/heart_02.pdf}
@@ -121,13 +124,14 @@ Among the two CIS kernel-based methods, single-CISRB performs only marginally be
   %%   \includegraphics[scale=0.75]{figures/german_02.pdf}
   %% }
   \subfloat[Test Log Predictive Density]{
-    \includegraphics[scale=0.90]{figures/german_03.pdf}\label{fig:german_lpd}
+    \includegraphics[scale=0.9]{figures/german_03.pdf}\label{fig:german_lpd}
+    \vspace{-0.05in}
   }
     \vspace{-0.05in}
   \caption{Test accuracy and log predictive density on the \texttt{german} dataset.
     The solid lines and colored regions are the mean and 80\% bootstrap confidence interval computed from 100 repetitions.
   }\label{fig:logistic}
-  \vspace{-0.05in}
+  \vspace{-0.1in}
 \end{figure}
 %
   \vspace{-0.1in}
@@ -149,7 +153,7 @@ The simplified probabilistic model is
    y_i &\sim \text{Bernoulli-Logit}\left(  f\left( \vx_i \right) \right)
 \end{align*}
 where we chose a Mat\'ern 5/2 covariance kernel with automatic relevance determination~\citep{neal_bayesian_1996}.
-For the datasets, we use the \texttt{sonar} (\(\vz \in \mathbb{R}^{249}\),~\citealt{gorman_analysis_1988}), \texttt{ionosphere} (\(\vz \in \mathbb{R}^{351}\),~\citealt{Sigillito1989ClassificationOR}), and \texttt{breast cancer} (\(\vz \in \mathbb{R}^{523}\),~\citealt{wolberg_multisurface_1990}) datasets.
+For the datasets, we use the \texttt{sonar} (\(\vz \in \mathbb{R}^{249}\),~\citealt{gorman_analysis_1988}), \texttt{ionosphere} (\(\vz \in \mathbb{R}^{351}\),~\citealt{Sigillito1989ClassificationOR}), and \texttt{breast} (\(\vz \in \mathbb{R}^{544}\),~\citealt{wolberg_multisurface_1990}) datasets.
 For \texttt{breast}, we preprocessed the input features with z-standardization.
 10\% of the data points were randomly selected in each of the 100 repetitions as test data.
 For this experiment, the iteration complexity of ELBO is almost two orders of magnitude larger than all inclusive KL minimization methods.
@@ -157,23 +161,25 @@ For this experiment, the iteration complexity of ELBO is almost two orders of ma
 %
 \begin{figure}[H]
   \centering
-     \includegraphics[scale=0.8]{figures/sonar_01.pdf}
+     \includegraphics[scale=0.9]{figures/ionosphere_01.pdf}
   %% \subfloat[\texttt{german}]{
   %%   \includegraphics[scale=0.75]{figures/breast_01.pdf}
   %% } \\
-  \caption{Test log predictive density on the \texttt{sonar} dataset.
-    The solid lines and colored regions are the medians and 80\% percentiles computed from 30 repetitions.
+     \vspace{-0.1in}
+  \caption{Test log predictive density on the \texttt{ionosphere} dataset.
+    The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
   }\label{fig:gp}
+  \vspace{-0.1in}
 \end{figure}
 %
 \vspace{-0.05in}
 \paragraph{Result}
 The results are shown in~\cref{table:gp}.
 Again, among inclusive KL minimization, the parallel state estimator (par.-IMH) achieved the best results.
-Compared to ELBO, its accuracy was lower on \texttt{sonar}, but the uncertainty estimates were much better.
+Compared to ELBO, its accuracy was lower on \texttt{breast}, but the uncertainty estimates were much better.
 This is better shown in~\cref{fig:gp}, where ELBO quickly converges to a point with poor uncertainty calibration.
-Meanwhile, on \texttt{breast}, ELBO gives better uncertainty estimates than inclusive KL minimization methods.
-This happens when the modal estimate (preferred by the exclusive KL) gives good accuracy and uncertainty estimates.
+%Meanwhile, on \texttt{breast}, ELBO gives better uncertainty estimates than inclusive KL minimization methods.
+%This happens when the modal estimate (preferred by the exclusive KL) gives good accuracy and uncertainty estimates.
 
   \vspace{-0.05in}
 \subsection{Marginal Likelihood Estimation}\label{section:mll}
@@ -184,16 +190,16 @@ Lastly, we now estimate the marginal log-likelihood of a hierarchical regression
 We estimated the reference marginal likelihood using \textit{thermodynamic integration} (TI,~\citealt{gelman_simulating_1998, neal_annealed_2001, lartillot_computing_2006}) with HMC implemented by Stan~\citep{carpenter_stan_2017, betancourt_conceptual_2017}.
 %
 \begin{figure}[H]
-  \vspace{-0.15in}
+  %\vspace{-0.15in}
   \centering
-  \begin{minipage}[b]{0.3\linewidth}
+  \begin{minipage}[b]{0.25\linewidth}
     \centering
-    \includegraphics[scale=0.8]{figures/radon_03.pdf}
+    \includegraphics[scale=0.9]{figures/radon_03.pdf}
   \end{minipage}
-  \begin{minipage}[b]{0.6\linewidth}
+  \begin{minipage}[b]{0.7\linewidth}
     \centering
-    \includegraphics[scale=0.8]{figures/radon_02.pdf}
-    \subcaption{\texttt{radon}}
+    \includegraphics[scale=0.9]{figures/radon_02.pdf}
+    %\subcaption{\texttt{radon}}
   \end{minipage}
     \vspace{-0.1in}
   %% \begin{minipage}[b]{0.35\linewidth}
@@ -204,7 +210,7 @@ We estimated the reference marginal likelihood using \textit{thermodynamic integ
   \caption{Marginal log-likelihood estimates on the \texttt{radon} dataset.
     The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
   }\label{fig:marginal_likelihood}
-  \vspace{-0.1in}
+  %\vspace{-0.1in}
 \end{figure}
 %
   \vspace{-0.2in}

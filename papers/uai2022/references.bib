@@ -117,7 +117,8 @@
   issue_date = {July 2011},
   journal = {ACM Transactions on Graphics},
   keywords = {edge-aware image processing,image pyramids},
-  number = {4}
+  number = {4},
+  series = {{{SIGGRAPH}}'11}
 }
 
 @inproceedings{10.1145/2063384.2063405,
@@ -134,13 +135,14 @@
 
 @inproceedings{10.1145/258734.258887,
   title = {Design Galleries: {{A}} General Approach to Setting Parameters for Computer Graphics and Animation},
-  booktitle = {Proceedings of the 24th Annual Conference on Computer Graphics and Interactive Techniques ({{SIGGRAPH}})},
+  booktitle = {Proc. {{Annu}}. {{Conf}}. {{Comput}}. {{Graph}}. {{Interact}}. {{Techn}}.},
   author = {Marks, J. and Andalman, B. and Beardsley, P. A. and Freeman, W. and Gibson, S. and Hodgins, J. and Kang, T. and Mirtich, B. and Pfister, H. and Ruml, W. and Ryall, K. and Seims, J. and Shieber, S.},
   year = {1997},
   pages = {389--400},
   publisher = {{ACM Press/Addison-Wesley Publishing Co.}},
   address = {{USA}},
-  keywords = {animation,computer-aided design,image rendering,lighting,motion synthesis,particle systems,physical modeling,visualization,volume rendering}
+  keywords = {animation,computer-aided design,image rendering,lighting,motion synthesis,particle systems,physical modeling,visualization,volume rendering},
+  series = {{{SIGGRAPH}}'97}
 }
 
 @inproceedings{10.1145/2593882.2593900,
@@ -300,6 +302,51 @@
   series = {{{SIGGRAPH}}'20}
 }
 
+@article{10.1145/3414685.3417793,
+  title = {Path Tracing Estimators for Refractive Radiative Transfer},
+  author = {Pediredla, Adithya and Chalmiani, Yasin Karimi and Scopelliti, Matteo Giuseppe and Chamanzar, Maysamreza and Narasimhan, Srinivasa and Gkioulekas, Ioannis},
+  year = {2020},
+  month = nov,
+  volume = {39},
+  publisher = {{Association for Computing Machinery}},
+  address = {{New York, NY, USA}},
+  abstract = {Rendering radiative transfer through media with a heterogeneous refractive index is challenging because the continuous refractive index variations result in light traveling along curved paths. Existing algorithms are based on photon mapping techniques, and thus are biased and result in strong artifacts. On the other hand, existing unbiased methods such as path tracing and bidirectional path tracing cannot be used in their current form to simulate media with a heterogeneous refractive index. We change this state of affairs by deriving unbiased path tracing estimators for this problem. Starting from the refractive radiative transfer equation (RRTE), we derive a path-integral formulation, which we use to generalize path tracing with next-event estimation and bidirectional path tracing to the heterogeneous refractive index setting. We then develop an optimization approach based on fast analytic derivative computations to produce the point-to-point connections required by these path tracing algorithms. We propose several acceleration techniques to handle complex scenes (surfaces and volumes) that include participating media with heterogeneous refractive fields. We use our algorithms to simulate a variety of scenes combining heterogeneous refraction and scattering, as well as tissue imaging techniques based on ultrasonic virtual waveguides and lenses. Our algorithms and publicly-available implementation can be used to characterize imaging systems such as refractive index microscopy, schlieren imaging, and acousto-optic imaging, and can facilitate the development of inverse rendering techniques for related applications.},
+  articleno = {241},
+  file = {/home/msca8h/Zotero/storage/X3LZM3QI/Pediredla et al. - 2020 - Path tracing estimators for refractive radiative t.pdf},
+  issue_date = {December 2020},
+  journal = {ACM Trans. Graph.},
+  keywords = {eikonal equation,gradient index,refractive radiative transfer},
+  number = {6}
+}
+
+@article{10.1145/3478513.3480495,
+  title = {Ships, Splashes, and Waves on a Vast Ocean},
+  author = {Huang, Libo and Qu, Ziyin and Tan, Xun and Zhang, Xinxin and Michels, Dominik L. and Jiang, Chenfanfu},
+  year = {2021},
+  month = dec,
+  volume = {40},
+  publisher = {{Association for Computing Machinery}},
+  address = {{New York, NY, USA}},
+  abstract = {The simulation of large open water surface is challenging using a uniform volumetric discretization of the Navier-Stokes equations. Simulating water splashes near moving objects, which height field methods for water waves cannot capture, necessitates high resolutions. Such simulations can be carried out using the Fluid-Implicit-Particle (FLIP) method. However, the FLIP method is not efficient for the long-lasting water waves that propagate to long distances, which require sufficient depth for a correct dispersion relationship. This paper presents a new method to tackle this dilemma through an efficient hybridization of volumetric and surface-based advection-projection discretizations. We design a hybrid time-stepping algorithm that combines a FLIP domain and an adaptively remeshed Boundary Element Method (BEM) domain for the incompressible Euler equations. The resulting framework captures the detailed water splashes near moving objects with the FLIP method, and produces convincing water waves with correct dispersion relationships at modest additional costs.},
+  articleno = {203},
+  issue_date = {December 2021},
+  journal = {ACM Trans. Graph.},
+  keywords = {boundary element method (BEM),fluid dynamics,fluid-implicit-particle (FLIP) method,hybrid discretization,multiscale modeling},
+  number = {6}
+}
+
+@article{10.1214/06-BA127,
+  title = {Nested Sampling for General {{Bayesian}} Computation},
+  author = {Skilling, John},
+  year = {2006},
+  volume = {1},
+  pages = {833--859},
+  publisher = {{International Society for Bayesian Analysis}},
+  journal = {Bayesian Analysis},
+  keywords = {algorithm,annealing,Bayesian computation,evidence,marginal likelihood,Model selection,nest,phase change},
+  number = {4}
+}
+
 @article{10.1214/17-STS611,
   title = {Importance Sampling: {{Intrinsic}} Dimension and Computational Cost},
   author = {Agapiou, S. and Papaspiliopoulos, O. and {Sanz-Alonso}, D. and Stuart, A. M.},
@@ -358,18 +405,6 @@
   abstract = {We consider basic ergodicity properties of adaptive Markov chain Monte Carlo algorithms under minimal assumptions, using coupling constructions. We prove convergence in distribution and a weak law of large numbers. We also give counterexamples to demonstrate that the assumptions we make are not redundant.},
   journal = {Journal of Applied Probability},
   number = {2}
-}
-
-@article{10.2307/27821441,
-  title = {Preference Uncertainty, Preference Learning, and Paired Comparison Experiments},
-  author = {Kingsley, David C. and Brown, Thomas C.},
-  year = {2010},
-  volume = {86},
-  pages = {530--544},
-  publisher = {{[Board of Regents of the University of Wisconsin System, University of Wisconsin Press]}},
-  abstract = {Results from paired comparison experiments suggest that as respondents progress through a sequence of binary choices they become more consistent, apparently fine-tuning their preferences. Consistency may be indicated by the variance of the estimated valuation distribution measured by the error term in the random utility model. A significant reduction in the variance is shown to be consistent with a model of preference uncertainty allowing for preference learning. Respondents become more adept at discriminating among items as they gain experience considering and comparing them, suggesting that methods allowing for such experience may obtain more well founded values.},
-  journal = {Land Economics},
-  number = {3}
 }
 
 @article{10.2307/27821441,
@@ -469,6 +504,18 @@
   series = {{{ICML}}'13}
 }
 
+@inproceedings{10.5555/3061507.3061534,
+  title = {Monte-{{Carlo}} Ray-Tracing for Realistic Interactive Ultrasound Simulation},
+  booktitle = {Proceedings of the Eurographics Workshop on Visual Computing for Biology and Medicine},
+  author = {Mattausch, O. and Goksel, O.},
+  year = {2016},
+  pages = {173--181},
+  publisher = {{Eurographics Association}},
+  address = {{Goslar, DEU}},
+  abstract = {Ray-based simulations have been shown to generate impressively realistic ultrasound images in interactive frame rates. Recent efforts used GPU-based surface ray-tracing to simulate complex ultrasound interactions such as multiple reflections and refractions. These methods are restricted to perfectly specular reflections (i.e., following only a single reflective/refractive ray), whereas real tissue exhibits roughness of varying degree at tissue interfaces, causing partly diffuse reflections and refractions. Such surface interactions are significantly more complex and can in general not be handled by such deterministic ray-tracing approaches. However, they can be efficiently computed by Monte-Carlo sampling techniques, where many ray paths are generated with respect to a probability distribution. In this paper we introduce Monte-Carlo ray-tracing for ultrasound. This enables the realistic simulation of ultrasound interactions such as soft shadows and fuzzy reflections. We discuss how to properly weight the contribution of each ray path in order to simulate the behavior of a beamformed ultrasound signal. Tracing many individual rays per transducer element is easily parallelizable on modern GPUs, as opposed to previous approaches based on recursive binary ray-tracing.},
+  series = {{{VCBM}} '16}
+}
+
 @article{10.5555/3122009.3208005,
   title = {Robust and Scalable Bayes via a Median of Subset Posterior Measures},
   author = {Minsker, Stanislav and Srivastava, Sanvesh and Lin, Lizhen and Dunson, David B.},
@@ -539,6 +586,18 @@
   number = {9}
 }
 
+@article{abdi_automatic_2017,
+  title = {Automatic Quality Assessment of Echocardiograms Using Convolutional Neural Networks: Feasibility on the Apical Four-Chamber View},
+  shorttitle = {Automatic {{Quality Assessment}} of {{Echocardiograms Using Convolutional Neural Networks}}},
+  author = {Abdi, Amir H. and Luong, Christina and Tsang, Teresa and Allan, Gregory and Nouranian, Saman and Jue, John and Hawley, Dale and Fleming, Sarah and Gin, Ken and Swift, Jody and Rohling, Robert and Abolmaesumi, Purang},
+  year = {2017},
+  month = jun,
+  volume = {36},
+  pages = {1221--1230},
+  journal = {IEEE Transactions on Medical Imaging},
+  number = {6}
+}
+
 @article{adedinsewo_artificial_2020,
   title = {Artificial Intelligence-Enabled {{ECG}} Algorithm to Identify Patients with Left Ventricular Systolic Dysfunction Presenting to the Emergency Department with Dyspnea},
   author = {Adedinsewo, Demilade and Carter, Rickey E. and Attia, Zachi and Johnson, Patrick and Kashou, Anthony H. and Dugan, Jennifer L. and Albus, Michael and Sheele, Johnathan M. and Bellolio, Fernanda and Friedman, Paul A. and {Lopez-Jimenez}, Francisco and Noseworthy, Peter A.},
@@ -561,6 +620,28 @@
   publisher = {{ACM}},
   address = {{New York, NY, USA}},
   series = {{{SIGMETRICS}}'93}
+}
+
+@book{ainslie_principles_2010,
+  title = {Principles of Sonar Performance Modelling},
+  author = {Ainslie, Michael Anthony},
+  year = {2010},
+  publisher = {{Springer Published in association with Praxis Pub}},
+  address = {{Heidelberg [Germany] London New York Chichester, UK}},
+  language = {eng},
+  lccn = {551.465},
+  series = {Springer {{Praxis}} Books in Geophysical Sciences}
+}
+
+@article{aja-fernandez_estimation_2006,
+  title = {On the Estimation of the Coefficient of Variation for Anisotropic Diffusion Speckle Filtering},
+  author = {{Aja-Fernandez}, S. and {Alberola-Lopez}, C.},
+  year = {2006},
+  month = sep,
+  volume = {15},
+  pages = {2694--2701},
+  journal = {IEEE Transactions on Image Processing},
+  number = {9}
 }
 
 @article{akyildiz_convergence_2021,
@@ -595,6 +676,17 @@
   file = {/home/msca8h/Zotero/storage/EIYAWAEP/Al Hinai et al. - 2021 - Deep learning analysis of resting electrocardiogra.pdf},
   journal = {European Heart Journal - Digital Health},
   language = {en}
+}
+
+@article{ali_local_2022,
+  title = {Local Sound Speed Estimation for Pulse-Echo Ultrasound in Layered Media},
+  author = {Ali, Rehman and Telichko, Arsenii V. and Wang, Huaijun and Sukumar, Uday K. and {Vilches-Moure}, Jose G. and Paulmurugan, Ramasamy and Dahl, Jeremy J.},
+  year = {2022},
+  month = feb,
+  volume = {69},
+  pages = {500--511},
+  journal = {IEEE Transactions on Ultrasonics, Ferroelectrics, and Frequency Control},
+  number = {2}
 }
 
 @inproceedings{alipourfard_cherrypick_2017,
@@ -692,6 +784,18 @@
   number = {2}
 }
 
+@article{ang_optimal_1992,
+  title = {Optimal Importance-sampling Density Estimator},
+  author = {Ang, George L. and Ang, Alfredo H.-S. and Tang, Wilson H.},
+  year = {1992},
+  month = jun,
+  volume = {118},
+  pages = {1146--1163},
+  journal = {Journal of Engineering Mechanics},
+  language = {en},
+  number = {6}
+}
+
 @article{angelino_patterns_2016,
   title = {Patterns of Scalable {{Bayesian}} Inference},
   author = {Angelino, Elaine and Johnson, Matthew James and Adams, Ryan P.},
@@ -702,6 +806,18 @@
   journal = {Foundations and Trends\textregistered{} in Machine Learning},
   language = {en},
   number = {2-3}
+}
+
+@inproceedings{annangi_ai_2020,
+  title = {{{AI}} Assisted Feedback System for Transmit Parameter Optimization in {{Cardiac Ultrasound}}},
+  booktitle = {Proc. {{IEEE Int}}. {{Ultrason}}. {{Symp}}.},
+  author = {Annangi, Pavan and Ravishankar, Hariharan and Patil, Rohan and Tore, Bjastaad and Aase, Svein Arne and Steen, Erik},
+  year = {2020},
+  month = sep,
+  pages = {1--4},
+  publisher = {{IEEE}},
+  address = {{Las Vegas, NV, USA}},
+  series = {{{IUS}}'20}
 }
 
 @inproceedings{ansel_opentuner_2014,
@@ -749,6 +865,17 @@
   number = {5}
 }
 
+@article{asl_contrast_2011,
+  title = {Contrast Enhancement and Robustness Improvement of Adaptive Ultrasound Imaging Using Forward-Backward Minimum Variance Beamforming},
+  author = {Asl, B M and Mahloojifar, A},
+  year = {2011},
+  month = apr,
+  volume = {58},
+  pages = {858--867},
+  journal = {IEEE Transactions on Ultrasonics, Ferroelectrics and Frequency Control},
+  number = {4}
+}
+
 @article{asl_lowcomplexity_2012,
   title = {A Low-Complexity Adaptive Beamformer for Ultrasound Imaging Using Structured Covariance Matrix},
   author = {Asl, B. M. and Mahloojifar, A.},
@@ -762,7 +889,7 @@
 
 @inproceedings{ath_bayesian_2021,
   title = {How {{Bayesian}} Should {{Bayesian}} Optimisation Be?},
-  booktitle = {Proceedings of the Genetic and Evolutionary Computation Conference Companion},
+  booktitle = {Proc.  {{Genetic Evol}}. {{Comput}}. {{Conf}}. {{Companion}}},
   author = {George De Ath, Richard Everson, Jonathan Fieldsend},
   year = {2021},
   publisher = {{Association for Computing Machinery}},
@@ -791,6 +918,17 @@
   type = {Master Thesis}
 }
 
+@inproceedings{austeng_use_2013,
+  title = {Use of the Minimum Variance Beamformer in Synthetic Aperture Sonar Imaging},
+  booktitle = {Proceedings of the {{European Conference}} on {{Underwater Acoustics}}},
+  author = {Austeng, Andreas and Jensen, Are C. and Nilsen, Carl-Inge C. and Callow, Hayden J. and Hansen, Roy E.},
+  year = {2013},
+  pages = {070098},
+  address = {{Edinburgh, Scotland}},
+  file = {/home/msca8h/Zotero/storage/G9GV37BU/Austeng et al. - 2013 - Use of the minimum variance beamformer in syntheti.pdf},
+  series = {{{ECUA}}'12}
+}
+
 @inproceedings{axelsen_evaluation_2010,
   title = {Evaluation of Automatic Time Gain Compensated In-Vivo Ultrasound Sequences},
   booktitle = {{{IEEE International Ultrasonics Symposium}}},
@@ -803,6 +941,28 @@
   file = {/home/msca8h/Zotero/storage/KWKSCNCV/Axelsen et al. - 2010 - Evaluation of automatic time gain compensated in-v.pdf}
 }
 
+@inproceedings{aykin_efficient_2016,
+  title = {Efficient Ray-Casting of Quadric Surfaces for Forward-Scan Sonars},
+  booktitle = {{{OCEANS}} 2016 {{MTS}}/{{IEEE Monterey}}},
+  author = {Aykin, Murat D. and Negahdaripour, Shahriar},
+  year = {2016},
+  month = sep,
+  pages = {1--7},
+  publisher = {{IEEE}},
+  address = {{Monterey, CA, USA}}
+}
+
+@article{aykin_modeling_2016,
+  title = {Modeling 2-{{D}} Lens-Based Forward-Scan Sonar Imagery for Targets with Diffuse Reflectance},
+  author = {Aykin, Murat D. and Negahdaripour, Shahriar S.},
+  year = {2016},
+  month = jul,
+  volume = {41},
+  pages = {569--582},
+  journal = {IEEE Journal of Oceanic Engineering},
+  number = {3}
+}
+
 @inproceedings{backstrom_group_2006,
   title = {Group Formation in Large Social Networks: Membership, Growth, and Evolution},
   booktitle = {Proc. 12th {{ACM SIGKDD Int}}. {{Conf}}. {{Knowl}}. {{Discovery Data Mining}}},
@@ -813,6 +973,17 @@
   address = {{New York, NY, USA}},
   keywords = {diffusion of innovations,on-line communities,social networks},
   series = {{{KDD}}'06}
+}
+
+@article{baggenstoss_specular_2013,
+  title = {Specular Decomposition of Active Sonar Returns Using Combined Waveforms},
+  author = {Baggenstoss, Paul M.},
+  year = {2013},
+  month = oct,
+  volume = {49},
+  pages = {2509--2521},
+  journal = {IEEE Transactions on Aerospace and Electronic Systems},
+  number = {4}
 }
 
 @article{bai_containment_2011,
@@ -938,6 +1109,17 @@
   publisher = {{Springer Berlin Heidelberg}},
   address = {{Berlin, Heidelberg}},
   collaborator = {Barbakh, Wesam Ashour and Wu, Ying and Fyfe, Colin}
+}
+
+@article{bares_noise_2010,
+  title = {Noise Estimation in Long-Range Matched-Filter Envelope Sonar Data},
+  author = {Bares, Robert and Evans, Dafydd and Long, Stephen},
+  year = {2010},
+  month = apr,
+  volume = {35},
+  pages = {230--235},
+  journal = {IEEE Journal of Oceanic Engineering},
+  number = {2}
 }
 
 @article{barker_monte_1965,
@@ -1090,6 +1272,16 @@
   series = {Proceedings of {{Machine Learning Research}}}
 }
 
+@article{bell_bayesian_2000,
+  title = {A {{Bayesian}} Approach to Robust Adaptive Beamforming},
+  author = {Bell, K.L. and Ephraim, Y. and Van Trees, H.L.},
+  year = {Feb./2000},
+  volume = {48},
+  pages = {386--398},
+  journal = {IEEE Transactions on Signal Processing},
+  number = {2}
+}
+
 @inproceedings{bell_challenge_2020,
   title = {Challenge on {{Ultrasound Beamforming}} with {{Deep Learning}} ({{CUBDL}})},
   booktitle = {2020 {{IEEE International Ultrasonics Symposium}} ({{IUS}})},
@@ -1099,6 +1291,29 @@
   pages = {1--5},
   publisher = {{IEEE}},
   address = {{Las Vegas, NV, USA}}
+}
+
+@article{bell_simulation_1997,
+  title = {Simulation and Analysis of Synthetic Sidescan Sonar Images},
+  author = {Bell, J.M. and Linnett, L.M.},
+  year = {1997},
+  volume = {144},
+  pages = {219},
+  journal = {IEE Proceedings - Radar, Sonar and Navigation},
+  language = {en},
+  number = {4}
+}
+
+@article{bellettini_theoretical_2002,
+  title = {Theoretical Accuracy of Synthetic Aperture Sonar Micronavigation Using a Displaced Phase-Center Antenna},
+  author = {Bellettini, A. and Pinto, M.A.},
+  year = {2002},
+  month = oct,
+  volume = {27},
+  pages = {780--789},
+  journal = {IEEE Journal of Oceanic Engineering},
+  language = {en},
+  number = {4}
 }
 
 @article{ben-nun_demystifying_2018,
@@ -1304,6 +1519,18 @@
   abstract = {Under ideal conditions only a small neighborhood of model configurations will be consistent with both the observed data and the domain expertise we encode in our prior model, resulting in a posterior distribution that strongly concentrates along each parameter. This not only yields precise inferences and but also facilitates accurate estimation of those inferences. Under more realistic conditions, however, our measurements and domain expertise can be much less informative, allowing our posterior distribution to stretch across more expansive, complex neighborhoods of the model configuration space. These intricate uncertainties complicate not only the utility of our inferences but also our ability to quantify those inferences computationally. In this case study we will explore the theoretical concept of identifiability and its more geometric counterpart degeneracy that better generalizes to applied statistical practice. We will also discuss the principled ways in which we can identify and then compensate for degenerate inferences before demonstrating these strategies in a series of pedagogical examples.}
 }
 
+@inproceedings{betancourt_nested_2011,
+  title = {Nested Sampling with Constrained {{Hamiltonian Monte Carlo}}},
+  booktitle = {Proceedings of the {{International Workshop}} on {{Bayesian Inference}} and {{Maximum Entropy Methods}} in {{Science}} and {{Engineering}}},
+  author = {Betancourt, Michael and {Mohammad-Djafari}, Ali and Bercher, Jean-Fran{\c c}ois and Bessi{\'e}re, Pierre},
+  year = {2011},
+  volume = {1305},
+  pages = {165--172},
+  address = {{Chamonix, (France)}},
+  file = {/home/msca8h/Zotero/storage/N7NTHL39/Betancourt et al. - 2011 - Nested Sampling with Constrained Hamiltonian Monte.pdf},
+  series = {{{AIP Conference Proceedings}}}
+}
+
 @article{betancourt_optimizing_2015,
   title = {Optimizing the Integrator Step Size for {{Hamiltonian Monte Carlo}}},
   author = {Betancourt, M. J. and Byrne, Simon and Girolami, Mark},
@@ -1353,6 +1580,17 @@
   language = {en}
 }
 
+@inproceedings{bianchi_robust_2014,
+  title = {Robust Beamforming under Uncertainties in the Loudspeakers Directivity Pattern},
+  booktitle = {2014 {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}} ({{ICASSP}})},
+  author = {Bianchi, L. and Magalotti, R. and Antonacci, F. and Sarti, A. and Tubaro, S.},
+  year = {2014},
+  month = may,
+  pages = {4448--4452},
+  publisher = {{IEEE}},
+  address = {{Florence, Italy}}
+}
+
 @article{bini_despeckling_2014,
   title = {Despeckling Low {{SNR}}, Low Contrast Ultrasound Images via Anisotropic Level Set Diffusion},
   author = {Bini, A. A. and Bhat, M. S.},
@@ -1377,6 +1615,51 @@
   journal = {Journal of the American Statistical Association},
   language = {en},
   number = {518}
+}
+
+@phdthesis{blomberg_adaptive_2012,
+  title = {Adaptive Beamforming for Active Sonar Imaging},
+  author = {Blomberg, Ann E. A.},
+  year = {2012},
+  file = {/home/msca8h/Zotero/storage/I3LFUWU5/Blomberg - Adaptive beamforming for active sonar imaging.pdf},
+  school = {University of Oslo},
+  type = {Doctoral {{Thesis}}}
+}
+
+@inproceedings{blomberg_apes_2009,
+  title = {{{APES}} Beamforming Applied to Medical Ultrasound Imaging},
+  booktitle = {2009 {{IEEE International Ultrasonics Symposium}}},
+  author = {Blomberg, Ann E.A. and Holfort, Iben Kraglund and Austeng, Andreas and Synnevag, Johan-Fredrik and Holm, Sverre and Jensen, Jorgen Arendt},
+  year = {2009},
+  month = sep,
+  pages = {2347--2350},
+  publisher = {{IEEE}},
+  address = {{Rome}},
+  file = {/home/msca8h/Zotero/storage/JDLMSDK7/Blomberg et al. - 2009 - APES beamforming applied to medical ultrasound ima.pdf}
+}
+
+@article{blomberg_improving_2013,
+  title = {Improving Sonar Performance in Shallow Water Using Adaptive Beamforming},
+  author = {Blomberg, Ann Elisabeth Albright and Austeng, Andreas and Hansen, Roy Edgar and Synnes, Stig Asle Vaksvik},
+  year = {2013},
+  month = apr,
+  volume = {38},
+  pages = {297--307},
+  journal = {IEEE Journal of Oceanic Engineering},
+  number = {2}
+}
+
+@article{bodnar_bayesian_2017,
+  title = {Bayesian Estimation of the Global Minimum Variance Portfolio},
+  author = {Bodnar, Taras and Mazur, Stepan and Okhrin, Yarema},
+  year = {2017},
+  month = jan,
+  volume = {256},
+  pages = {292--307},
+  file = {/home/msca8h/Zotero/storage/A6BGLH7W/Bodnar et al. - 2017 - Bayesian estimation of the global minimum variance.pdf},
+  journal = {European Journal of Operational Research},
+  language = {en},
+  number = {1}
 }
 
 @article{botev_markov_2013,
@@ -1463,13 +1746,23 @@
   number = {6}
 }
 
+@inproceedings{briles_realtime_2005,
+  title = {Real-Time Implementation of an Adaptive Bayesian Beamformer},
+  booktitle = {Proceedings of the {{IEEE}}/{{SP Workshop}} on {{Statistical Signal Processing}}},
+  author = {Briles, S.D. and Arrowood, J. and Cases, T. and Turcotte, D. and Fiset, E.},
+  year = {2005},
+  pages = {259--264},
+  publisher = {{IEEE}},
+  address = {{Bordeaux, France}}
+}
+
 @inproceedings{brochu_bayesian_2010,
   title = {A {{Bayesian Interactive Optimization Approach}} to {{Procedural Animation Design}}},
-  booktitle = {Proceedings of the 2010 {{ACM SIGGRAPH}}/{{Eurographics Symposium}} on {{Computer Animation}}},
+  booktitle = {Proc. {{ACM SIGGRAPH}}/{{Eurographics Symp}}. {{Comput}}. {{Animation}}},
   author = {Brochu, Eric and Brochu, Tyson and {de Freitas}, Nando},
   year = {2010},
   pages = {103--112},
-  publisher = {{Eurographics Association}},
+  publisher = {{Eurographics Assoc.}},
   address = {{Goslar, DEU}},
   series = {{{SCA}} '10}
 }
@@ -1532,6 +1825,17 @@
   number = {5-6}
 }
 
+@article{brown_interpolation_2020,
+  title = {Interpolation Kernels for Synthetic Aperture Sonar Along-Track Motion Estimation},
+  author = {Brown, Daniel C. and Gerg, Isaac D. and Blanford, Thomas E.},
+  year = {2020},
+  month = oct,
+  volume = {45},
+  pages = {1497--1505},
+  journal = {IEEE Journal of Oceanic Engineering},
+  number = {4}
+}
+
 @article{bruel_autotuning_2017,
   title = {Autotuning {{CUDA}} Compiler Parameters for Heterogeneous Applications Using the {{OpenTuner}} Framework: {{WSCAD15}}},
   shorttitle = {Autotuning {{CUDA}} Compiler Parameters for Heterogeneous Applications Using the {{OpenTuner}} Framework},
@@ -1583,6 +1887,33 @@
   language = {en}
 }
 
+@article{buchner_nested_2021,
+  title = {Nested Sampling Methods},
+  author = {Buchner, Johannes},
+  year = {2021},
+  month = jul,
+  abstract = {Nested sampling (NS) computes parameter posterior distributions and makes Bayesian model comparison computationally feasible. Its strengths are the unsupervised navigation of complex, potentially multi-modal posteriors until a well-defined termination point. A systematic literature review of nested sampling algorithms and variants is presented. We focus on complete algorithms, including solutions to likelihood-restricted prior sampling, parallelisation, termination and diagnostics. The relation between number of live points, dimensionality and computational cost is studied for two complete algorithms. A new formulation of NS is presented, which casts the parameter space exploration as a search on a tree. Previously published ways of obtaining robust error estimates and dynamic variations of the number of live points are presented as special cases of this formulation. A new on-line diagnostic test is presented based on previous insertion rank order work. The survey of nested sampling methods concludes with outlooks for future research.},
+  archiveprefix = {arXiv},
+  eprint = {2101.09675},
+  eprinttype = {arxiv},
+  file = {/home/msca8h/Zotero/storage/8BI8JY7M/Buchner - 2021 - Nested Sampling Methods.pdf;/home/msca8h/Zotero/storage/P6NYEYIC/2101.html},
+  journal = {arXiv:2101.09675 [astro-ph, stat]},
+  keywords = {Astrophysics - Instrumentation and Methods for Astrophysics,Statistics - Computation},
+  primaryclass = {astro-ph, stat}
+}
+
+@article{bucker_simple_1994,
+  title = {A Simple 3-{{D Gaussian}} Beam Sound Propagation Model for Shallow Water},
+  author = {Bucker, Homer P.},
+  year = {1994},
+  month = may,
+  volume = {95},
+  pages = {2437--2440},
+  journal = {The Journal of the Acoustical Society of America},
+  language = {en},
+  number = {5}
+}
+
 @book{buder_lapesd_,
   title = {{{LaPeSD LibGOMP}}},
   author = {Buder, Patrick A.}
@@ -1632,6 +1963,17 @@
   series = {{{IWOMP}}'99}
 }
 
+@article{burckhardt_speckle_1978,
+  title = {Speckle in Ultrasound {{B}}-Mode Scans},
+  author = {Burckhardt, Christoph B.},
+  year = {1978},
+  month = jan,
+  volume = {25},
+  pages = {1--6},
+  journal = {IEEE Transactions on Sonics and Ultrasonics},
+  number = {1}
+}
+
 @article{burgess_understanding_2018,
   title = {Understanding Disentangling in \$\textbackslash beta\$-{{VAE}}},
   author = {Burgess, Christopher P. and Higgins, Irina and Pal, Arka and Matthey, Loic and Watters, Nick and Desjardins, Guillaume and Lerchner, Alexander},
@@ -1674,6 +2016,25 @@
   number = {4}
 }
 
+@article{buskenes_lowcomplexity_2016,
+  title = {Low-Complexity Adaptive Sonar Imaging},
+  author = {Buskenes, Jo Inge and Hansen, Roy Edgar and Austeng, Andreas},
+  year = {2016},
+  pages = {1--10},
+  journal = {IEEE Journal of Oceanic Engineering}
+}
+
+@article{buskenes_optimized_2015,
+  title = {An Optimized {{GPU}} Implementation of the {{MVDR}} Beamformer for Active Sonar Imaging},
+  author = {Buskenes, Jo Inge and Asen, Jon Petter and Nilsen, Carl-Inge Colombo and Austeng, Andreas},
+  year = {2015},
+  month = apr,
+  volume = {40},
+  pages = {441--451},
+  journal = {IEEE Journal of Oceanic Engineering},
+  number = {2}
+}
+
 @inproceedings{byrd_parallelisation_2010,
   title = {On the Parallelisation of {{MCMC}} by Speculative Chain Execution},
   booktitle = {Proc. {{Int}}. {{Parallel Distrib}}. {{Process}}. {{Symp}}. {{Workshop}}  {{Phd Forum}}},
@@ -1700,6 +2061,17 @@
   series = {{{IPDPS}}'08}
 }
 
+@article{byrne_timedomain_2015,
+  title = {Time-Domain Wideband Adaptive Beamforming for Radar Breast Imaging},
+  author = {Byrne, Dallan and Craddock, Ian J.},
+  year = {2015},
+  month = apr,
+  volume = {63},
+  pages = {1725--1735},
+  journal = {IEEE Transactions on Antennas and Propagation},
+  number = {4}
+}
+
 @inproceedings{cadena_how_2019,
   title = {How Well Do Deep Neural Networks Trained on Object Recognition Characterize the Mouse Visual System?},
   booktitle = {{{NeurIPS Neuro AI Workshop}}},
@@ -1719,6 +2091,61 @@
   language = {en},
   number = {49},
   series = {{{PNAS}}}
+}
+
+@article{callow_motioncompensation_2009,
+  title = {Motion-Compensation Improvement for Widebeam, Multiple-Receiver {{SAS}} Systems},
+  author = {Callow, H.J. and Hayes, M.P. and Gough, P.T.},
+  year = {2009},
+  month = jul,
+  volume = {34},
+  pages = {262--268},
+  journal = {IEEE Journal of Oceanic Engineering},
+  number = {3}
+}
+
+@phdthesis{callow_signal_2003,
+  title = {Signal Processing for Synthetic Aperture Sonar Image Enhancement},
+  author = {Callow, Hayden John},
+  year = {2003},
+  month = apr,
+  file = {/home/msca8h/Zotero/storage/RMTRBYNR/Callow - 2003 - Signal processing for synthetic aperture sonar ima.pdf},
+  school = {University of Canterbury},
+  type = {Doctoral {{Thesis}}}
+}
+
+@inproceedings{canepa_comparison_2017,
+  title = {Comparison of Computation Time and Accuracy of the Real Time Implementation of Two Beamforming Algorithms},
+  booktitle = {Proceedings of the {{Underwater Acoustics Conference}} and {{Exhibition}}},
+  author = {Canepa, Gaetano and Tesei, Alessandra and Troiano, Luigi and Biagini, Stefano and Aglietti, Federico and Dymond, Rodney and Mazzi, Marco and Vermeij, Arjan and Grandi, Vittorio},
+  year = {2017},
+  month = sep,
+  pages = {121--128},
+  address = {{Skiathos, Greece}},
+  series = {{{UACE}}'17}
+}
+
+@article{cao_interactive_2016,
+  title = {Interactive Sound Propagation with Bidirectional Path Tracing},
+  author = {Cao, Chunxiao and Ren, Zhong and Schissler, Carl and Manocha, Dinesh and Zhou, Kun},
+  year = {2016},
+  month = nov,
+  volume = {35},
+  pages = {1--11},
+  file = {/home/msca8h/Zotero/storage/KZ4QVQGV/Cao et al. - 2016 - Interactive sound propagation with bidirectional p.pdf},
+  journal = {ACM Transactions on Graphics},
+  language = {en},
+  number = {6}
+}
+
+@article{capon_highresolution_1969,
+  title = {High-Resolution Frequency-Wavenumber Spectrum Analysis},
+  author = {Capon, J.},
+  year = {1969},
+  volume = {57},
+  pages = {1408--1418},
+  journal = {Proceedings of the IEEE},
+  number = {8}
 }
 
 @article{cappe_adaptive_2008,
@@ -1806,6 +2233,17 @@
   number = {1}
 }
 
+@article{carlson_covariance_1988,
+  title = {Covariance Matrix Estimation Errors and Diagonal Loading in Adaptive Arrays},
+  author = {Carlson, B.D.},
+  year = {1988},
+  month = jul,
+  volume = {24},
+  pages = {397--401},
+  journal = {IEEE Transactions on Aerospace and Electronic Systems},
+  number = {4}
+}
+
 @article{carpenter_stan_2017,
   title = {Stan: {{A}} Probabilistic Programming Language},
   shorttitle = {{\emph{Stan}}},
@@ -1866,6 +2304,63 @@
   series = {The {{Wadsworth}} \& {{Brooks}}/{{Cole Statistics}}/{{Probability}} Series}
 }
 
+@article{cerqueira_novel_2017,
+  title = {A Novel {{GPU}}-Based Sonar Simulator for Real-Time Applications},
+  author = {Cerqueira, R{\^o}mulo and Trocoli, Tiago and Neves, Gustavo and Joyeux, Sylvain and Albiez, Jan and Oliveira, Luciano},
+  year = {2017},
+  month = nov,
+  volume = {68},
+  pages = {66--76},
+  journal = {Computers \& Graphics},
+  language = {en}
+}
+
+@article{cerqueira_novel_2017a,
+  title = {A Novel {{GPU}}-Based Sonar Simulator for Real-Time Applications},
+  author = {Cerqueira, R{\^o}mulo and Trocoli, Tiago and Neves, Gustavo and Joyeux, Sylvain and Albiez, Jan and Oliveira, Luciano},
+  year = {2017},
+  month = nov,
+  volume = {68},
+  pages = {66--76},
+  journal = {Computers \& Graphics},
+  language = {en}
+}
+
+@article{cerqueira_rasterized_2020,
+  title = {A Rasterized Ray-Tracer Pipeline for Real-Time, Multi-Device Sonar Simulation},
+  author = {Cerqueira, R{\^o}mulo and Trocoli, Tiago and Albiez, Jan and Oliveira, Luciano},
+  year = {2020},
+  month = sep,
+  volume = {111},
+  pages = {101086},
+  file = {/home/msca8h/Zotero/storage/ZI6H9IHF/Cerqueira et al. - 2020 - A rasterized ray-tracer pipeline for real-time, mu.pdf},
+  journal = {Graphical Models},
+  language = {en}
+}
+
+@article{cerqueira_rasterized_2020a,
+  title = {A Rasterized Ray-Tracer Pipeline for Real-Time, Multi-Device Sonar Simulation},
+  author = {Cerqueira, R{\^o}mulo and Trocoli, Tiago and Albiez, Jan and Oliveira, Luciano},
+  year = {2020},
+  month = sep,
+  volume = {111},
+  pages = {101086},
+  file = {/home/msca8h/Zotero/storage/BMLQ4WHN/Cerqueira et al. - 2020 - A rasterized ray-tracer pipeline for real-time, mu.pdf},
+  journal = {Graphical Models},
+  language = {en}
+}
+
+@article{chakrabarty_bayesian_2018,
+  title = {A {{Bayesian}} Approach to Informed Spatial Filtering with Robustness against {{DOA}} Estimation Errors},
+  author = {Chakrabarty, Soumitro and Habets, Emanuel A. P.},
+  year = {2018},
+  month = jan,
+  volume = {26},
+  pages = {145--160},
+  journal = {IEEE/ACM Transactions on Audio, Speech, and Language Processing},
+  number = {1}
+}
+
 @inproceedings{chan_autotuning_2009,
   title = {Autotuning Multigrid with {{PetaBricks}}},
   booktitle = {Proceedings of the {{Conference}} on {{High Performance Computing Networking}}, {{Storage}} and {{Analysis}} - {{SC}} '09},
@@ -1884,6 +2379,17 @@
   author = {Chang, Woong-Gi and You, Tackgeun and Seo, Seonguk and Kwak, Suha and Han, Bohyung},
   year = {2019},
   month = jun
+}
+
+@inproceedings{chang_multiple_2005,
+  title = {Multiple Object Tracking with Kernel Particle Filter},
+  booktitle = {Proceedings of the {{IEEE Computer Society Conference}} on {{Computer Vision}} and {{Pattern}}},
+  author = {Chang, Cheng and Ansari, R. and Khokhar, A.},
+  year = {2005},
+  volume = {1},
+  pages = {566--573},
+  publisher = {{IEEE}},
+  address = {{San Diego, CA, USA}}
 }
 
 @article{chang_usefulness_2021,
@@ -1988,6 +2494,16 @@
   series = {{{WSDM}} '13}
 }
 
+@article{cheng-choulee_eigenspacebased_1997,
+  title = {Eigenspace-Based Adaptive Array Beamforming with Robust Capabilities},
+  author = {{Cheng-Chou Lee} and {Ju-Hong Lee}},
+  year = {Dec./1997},
+  volume = {45},
+  pages = {1711--1716},
+  journal = {IEEE Transactions on Antennas and Propagation},
+  number = {12}
+}
+
 @article{ching_transitional_2007,
   title = {Transitional {{Markov Chain Monte Carlo Method}} for {{Bayesian Model Updating}}, {{Model Class Selection}}, and {{Model Averaging}}},
   author = {Ching, Jianye and Chen, Yi-Chu},
@@ -2010,6 +2526,15 @@
   address = {{Bangalore, India}},
   file = {/home/msca8h/Zotero/storage/TZTYX998/Choi et al. - 2010 - Model-driven autotuning of sparse matrix-vector mu.pdf},
   language = {en}
+}
+
+@article{choi_physicsbased_2021,
+  title = {Physics-Based Modelling and Simulation of Multibeam Echosounder Perception for Autonomous Underwater Manipulation},
+  author = {Choi, Woen-Sug and Olson, Derek R. and Davis, Duane and Zhang, Mabel and Racson, Andy and Bingham, Brian and McCarrin, Michael and Vogt, Carson and Herman, Jessica},
+  year = {2021},
+  volume = {8},
+  abstract = {One of the key distinguishing aspects of underwater manipulation tasks is the perception challenges of the ocean environment, including turbidity, backscatter, and lighting effects. Consequently, underwater perception often relies on sonar-based measurements to estimate the vehicle's state and surroundings, either standalone or in concert with other sensing modalities, to support the perception necessary to plan and control manipulation tasks. Simulation of the multibeam echosounder, while not a substitute for in-water testing, is a critical capability for developing manipulation strategies in the complex and variable ocean environment. Although several approaches exist in the literature to simulate synthetic sonar images, the methods in the robotics community typically use image processing and video rendering software to comply with real-time execution requirements. In addition to a lack of physics-based interaction model between sound and the scene of interest, several basic properties are absent in these rendered sonar images\textendash notably the coherent imaging system and coherent speckle that cause distortion of the object geometry in the sonar image. To address this deficiency, we present a physics-based multibeam echosounder simulation method to capture these fundamental aspects of sonar perception. A point-based scattering model is implemented to calculate the acoustic interaction between the target and the environment. This is a simplified representation of target scattering but can produce realistic coherent image speckle and the correct point spread function. The results demonstrate that this multibeam echosounder simulator generates qualitatively realistic images with high efficiency to provide the sonar image and the physical time series signal data. This synthetic sonar data is a key enabler for developing, testing, and evaluating autonomous underwater manipulation strategies that use sonar as a component of perception.},
+  journal = {Frontiers in Robotics and AI}
 }
 
 @article{chopin_central_2004,
@@ -2093,6 +2618,21 @@
   address = {{Paris, France}}
 }
 
+@article{churchill_synthetic_2020,
+  title = {Synthetic {{Aperture Radar Image}} Formation with Uncertainty Quantification},
+  author = {Churchill, Victor and Gelb, Anne},
+  year = {2020},
+  month = jul,
+  abstract = {Synthetic aperture radar (SAR) is a day or night any-weather imaging modality that is an important tool in remote sensing. Most existing SAR image formation methods result in a maximum a posteriori image which approximates the reflectivity of an unknown ground scene. This single image provides no quantification of the certainty with which the features in the estimate should be trusted. In addition, finding the mode is generally not the best way to interrogate a posterior. This paper addresses these issues by introducing a sampling framework to SAR image formation. A hierarchical Bayesian model is constructed using conjugate priors that directly incorporate coherent imaging and the problematic speckle phenomenon which is known to degrade image quality. Samples of the resulting posterior as well as parameters governing speckle and noise are obtained using a Gibbs sampler. These samples may then be used to compute estimates, and also to derive other statistics like variance which aid in uncertainty quantification. The latter information is particularly important in SAR, where ground truth images even for synthetically-created examples are typically unknown. An example result using real-world data shows that the sampling-based approach introduced here to SAR image formation provides parameter-free estimates with improved contrast and significantly reduced speckle, as well as unprecedented uncertainty quantification information.},
+  archiveprefix = {arXiv},
+  eprint = {2007.06380},
+  eprinttype = {arxiv},
+  file = {/home/msca8h/Zotero/storage/EAJ7A5G7/Churchill and Gelb - 2020 - Synthetic Aperture Radar Image Formation with Unce.pdf;/home/msca8h/Zotero/storage/2WX44B2A/2007.html},
+  journal = {arXiv:2007.06380 [eess, stat]},
+  keywords = {Electrical Engineering and Systems Science - Image and Video Processing,Statistics - Applications},
+  primaryclass = {eess, stat}
+}
+
 @inproceedings{ciorba_openmp_2018,
   title = {{{OpenMP}} Loop Scheduling Revisited: Making a Case for More Schedules},
   booktitle = {Evolving {{OpenMP}} for {{Evolving Architectures}}},
@@ -2144,6 +2684,32 @@
   series = {Wiley Series in Probability and Mathematical Statistics}
 }
 
+@inproceedings{cohen_progressive_1988,
+  title = {A {{Progressive Refinement Approach}} to {{Fast Radiosity Image Generation}}},
+  booktitle = {Proceedings of the 15th {{Annual Conference}} on {{Computer Graphics}} and {{Interactive Techniques}}},
+  author = {Cohen, Michael F. and Chen, Shenchang Eric and Wallace, John R. and Greenberg, Donald P.},
+  year = {1988},
+  pages = {75--84},
+  publisher = {{Association for Computing Machinery}},
+  address = {{New York, NY, USA}},
+  abstract = {A reformulated radiosity algorithm is presented that produces initial images in time linear to the number of patches. The enormous memory costs of the radiosity algorithm are also eliminated by computing form-factors on-the-fly. The technique is based on the approach of rendering by progressive refinement. The algorithm provides a useful solution almost immediately which progresses gracefully and continuously to the complete radiosity solution. In this way the competing demands of realism and interactivity are accommodated. The technique brings the use of radiosity for interactive rendering within reach and has implications for the use and development of current and future graphics workstations.},
+  file = {/home/msca8h/Zotero/storage/PCBUV2GR/Cohen et al. - 1988 - A Progressive Refinement Approach to Fast Radiosit.pdf},
+  keywords = {adaptive subdivsion,backward ray tracing,global illumination,progressive refinement,radiosity,z-buffer},
+  series = {{{SIGGRAPH}} '88}
+}
+
+@incollection{cohen_pulse_1987,
+  title = {Pulse Compression in Radar Systems},
+  booktitle = {Principles of {{Modern Radar}}},
+  author = {Cohen, Marvin N.},
+  year = {1987},
+  pages = {465--501},
+  publisher = {{Springer US}},
+  address = {{Boston, MA}},
+  file = {/home/msca8h/Zotero/storage/ZI3LDLGD/Cohen - 1987 - Pulse compression in radar systems.pdf},
+  language = {en}
+}
+
 @article{cohen_randomout_2017,
   title = {{{RandomOut}}: {{Using}} a Convolutional Gradient Norm to Rescue Convolutional Filters},
   shorttitle = {{{RandomOut}}},
@@ -2158,6 +2724,17 @@
   journal = {arXiv:1602.05931 [cs]},
   keywords = {Computer Science - Computer Vision and Pattern Recognition},
   primaryclass = {cs}
+}
+
+@inproceedings{coiras_gpubased_2009,
+  title = {{{GPU}}-Based Simulation of Side-Looking Sonar Images},
+  booktitle = {{{OCEANS}} 2009-{{EUROPE}}},
+  author = {Coiras, E. and {Ramirez-Montesinos}, A. and Groen, J.},
+  year = {2009},
+  month = may,
+  pages = {1--6},
+  publisher = {{IEEE}},
+  address = {{Bremen, Germany}}
 }
 
 @inproceedings{coll-font_ecgbased_2017,
@@ -2180,6 +2757,15 @@
   journal = {Biomedical Signal Processing and Control},
   language = {en},
   number = {5}
+}
+
+@phdthesis{cook_synthetic_2007,
+  title = {Synthetic Aperture Sonar Motion Estimation and Compensation},
+  author = {Cook, Daniel A.},
+  year = {2007},
+  file = {/home/msca8h/Zotero/storage/MTQ8F8RN/Cook - 2007 - Synthetic aperture sonar motion estimation and com.pdf},
+  school = {Georgia Institute of Technology},
+  type = {Master {{Thesis}}}
 }
 
 @article{cornuet_adaptive_2012,
@@ -2329,6 +2915,26 @@
   number = {10}
 }
 
+@phdthesis{danesh_real_2013,
+  title = {Real Time Active Sonar Simulation in a Deep Ocean Environment},
+  author = {Danesh, Sheida Anya},
+  year = {2013},
+  file = {/home/msca8h/Zotero/storage/SPAFDMXR/Danesh - 2013 - Real time active sonar simulation in a deep ocean .pdf},
+  school = {Massachusetts Institute of Technology},
+  type = {Master {{Thesis}}}
+}
+
+@article{das_realvalued_2021,
+  title = {Real-Valued Sparse {{Bayesian}} Learning for off-Grid Direction-of-Arrival ({{DOA}}) Estimation in Ocean Acoustics},
+  author = {Das, Anup},
+  year = {2021},
+  month = jan,
+  volume = {46},
+  pages = {172--182},
+  journal = {IEEE Journal of Oceanic Engineering},
+  number = {1}
+}
+
 @inproceedings{datta_stencil_2008,
   title = {Stencil {{Computation Optimization}} and {{Auto}}-{{Tuning}} on {{State}}-of-the-{{Art Multicore Architectures}}},
   booktitle = {Proceedings of the 2008 {{ACM}}/{{IEEE Conference}} on {{Supercomputing}}},
@@ -2418,6 +3024,19 @@
   number = {5}
 }
 
+@article{degooijer_conditional_2003,
+  title = {On Conditional Density Estimation},
+  author = {De Gooijer, Jan G. and Zerom, Dawit},
+  year = {2003},
+  month = may,
+  volume = {57},
+  pages = {159--176},
+  file = {/home/msca8h/Zotero/storage/LYHMFZMD/De Gooijer and Zerom - 2003 - On Conditional Density Estimation.pdf},
+  journal = {Statistica Neerlandica},
+  language = {en},
+  number = {2}
+}
+
 @book{delmoral_feynmankac_2004,
   title = {Feynman-{{Kac Formulae}}},
   author = {Del Moral, Pierre},
@@ -2440,10 +3059,32 @@
   number = {3}
 }
 
+@inproceedings{demarco_computationallyefficient_2015,
+  title = {A Computationally-Efficient {{2D}} Imaging Sonar Model for Underwater Robotics Simulations in {{Gazebo}}},
+  booktitle = {{{OCEANS}} 2015 - {{MTS}}/{{IEEE Washington}}},
+  author = {DeMarco, Kevin J. and West, Michael E. and Howard, Ayanna M.},
+  year = {2015},
+  month = oct,
+  pages = {1--7},
+  publisher = {{IEEE}},
+  address = {{Washington, DC}}
+}
+
 @misc{demetrescu_9th_2006,
   title = {9th {{DIMACS}} Implementation Challenge - Shortest Paths},
   author = {Demetrescu, Camil and Goldberg, Andrew and Johnson, David},
   year = {2006}
+}
+
+@inproceedings{demuth_frequency_1977,
+  title = {Frequency Domain Beamforming Techniques},
+  booktitle = {{{ICASSP}} '77. {{IEEE International Conference}} on {{Acoustics}}, {{Speech}}, and {{Signal Processing}}},
+  author = {DeMuth, G.},
+  year = {1977},
+  volume = {2},
+  pages = {713--715},
+  publisher = {{Institute of Electrical and Electronics Engineers}},
+  address = {{Hartford, CT, USA}}
 }
 
 @article{deng_speckle_2011,
@@ -2498,6 +3139,21 @@
   journal = {The American Journal of Cardiology},
   language = {en},
   number = {5}
+}
+
+@article{devlin_nouturn_2021,
+  title = {The {{No}}-{{U}}-{{Turn Sampler}} as a {{Proposal Distribution}} in a {{Sequential Monte Carlo Sampler}} with a {{Near}}-{{Optimal L}}-{{Kernel}}},
+  author = {Devlin, Lee and Horridge, Paul and Green, Peter L. and Maskell, Simon},
+  year = {2021},
+  month = aug,
+  abstract = {Markov Chain Monte Carlo (MCMC) is a powerful method for drawing samples from non-standard probability distributions and is utilized across many fields and disciplines. Methods such as Metropolis-Adjusted Langevin (MALA) and Hamiltonian Monte Carlo (HMC), which use gradient information to explore the target distribution, are popular variants of MCMC. The Sequential Monte Carlo (SMC) sampler is an alternative sampling method which, unlike MCMC, can readily utilise parallel computing architectures and also has tuning parameters not available to MCMC. One such parameter is the L-kernel which can be used to minimise the variance of the estimates from an SMC sampler. In this letter, we show how the proposal used in the No-U-Turn Sampler (NUTS), an advanced variant of HMC, can be incorporated into an SMC sampler to improve the efficiency of the exploration of the target space. We also show how the SMC sampler can be optimized using both a near-optimal L-kernel and a Hamiltonian proposal},
+  archiveprefix = {arXiv},
+  eprint = {2108.02498},
+  eprinttype = {arxiv},
+  file = {/home/msca8h/Zotero/storage/8D9GRHF3/Devlin et al. - 2021 - The No-U-Turn Sampler as a Proposal Distribution i.pdf;/home/msca8h/Zotero/storage/AMEJ9MMA/2108.html},
+  journal = {arXiv:2108.02498 [stat]},
+  keywords = {Statistics - Computation},
+  primaryclass = {stat}
 }
 
 @article{dhaka_challenges_2021,
@@ -2604,6 +3260,19 @@
   pages = {518--525},
   publisher = {{IEEE}},
   address = {{Larnaca, Cyprus}}
+}
+
+@article{dippel_multiscale_2002,
+  title = {Multiscale Contrast Enhancement for Radiographies: {{Laplacian}} Pyramid versus Fast Wavelet Transform},
+  shorttitle = {Multiscale Contrast Enhancement for Radiographies},
+  author = {Dippel, S. and Stahl, M. and Wiemker, R. and Blaffert, T.},
+  year = {2002},
+  month = apr,
+  volume = {21},
+  pages = {343--353},
+  journal = {IEEE Transactions on Medical Imaging},
+  language = {en},
+  number = {4}
 }
 
 @article{doi:10.1080/01621459.1951.10500768,
@@ -2724,6 +3393,23 @@
   number = {Jul}
 }
 
+@article{dudgeon_fundamentals_1977,
+  title = {Fundamentals of Digital Array Processing},
+  author = {Dudgeon, D.E.},
+  year = {1977},
+  volume = {65},
+  pages = {898--904},
+  journal = {Proceedings of the IEEE},
+  number = {6}
+}
+
+@phdthesis{duersch_backprojection_,
+  title = {Backprojection for {{Synthetic Aperture Radar}}},
+  author = {Duersch, Michael Israel},
+  school = {Brigham Young University},
+  type = {Doctoral {{Thesis}}}
+}
+
 @inproceedings{duplyakin_active_2016,
   title = {Active {{Learning}} in {{Performance Analysis}}},
   booktitle = {2016 {{IEEE International Conference}} on {{Cluster Computing}} ({{CLUSTER}})},
@@ -2782,6 +3468,17 @@
   number = {TR92-01-01,}
 }
 
+@incollection{edgar_introduction_2011,
+  title = {Introduction to {{Synthetic Aperture Sonar}}},
+  booktitle = {Sonar {{Systems}}},
+  author = {Edgar, Roy},
+  year = {2011},
+  month = sep,
+  publisher = {{InTech}},
+  file = {/home/msca8h/Zotero/storage/BMQL4KR9/Edgar - 2011 - Introduction to Synthetic Aperture Sonar.pdf},
+  language = {en}
+}
+
 @inproceedings{eggensperger_efficient_2015,
   title = {Efficient {{Benchmarking}} of {{Hyperparameter Optimizers}} via {{Surrogates}}},
   booktitle = {Proceedings of the {{Twenty}}-{{Ninth AAAI Conference}} on {{Artificial Intelligence}}},
@@ -2821,6 +3518,31 @@
   keywords = {Bayesian Data Analysis,Stan,StanCon}
 }
 
+@incollection{el-zehiry_learning_2013,
+  title = {Learning the Manifold of Quality Ultrasound Acquisition},
+  booktitle = {Med. {{Image Comput}}. {{Comput}}.-{{Assisted Intervention}}},
+  author = {{El-Zehiry}, Noha and Yan, Michelle and Good, Sara and Fang, Tong and Zhou, S. Kevin and Grady, Leo},
+  year = {2013},
+  volume = {7908},
+  pages = {122--130},
+  publisher = {{Springer Berlin Heidelberg}},
+  address = {{Berlin, Heidelberg}},
+  series = {{{MICCAI}}'13}
+}
+
+@article{ellis_bistatic_1991,
+  title = {Bistatic Reverberation Calculations Using a Three-Dimensional Scattering Function},
+  author = {Ellis, Dale D. and Crowe, D. Vance},
+  year = {1991},
+  month = may,
+  volume = {89},
+  pages = {2207--2214},
+  file = {/home/msca8h/Zotero/storage/PTH4W6G5/Ellis and Crowe - 1991 - Bistatic reverberation calculations using a three-.pdf},
+  journal = {The Journal of the Acoustical Society of America},
+  language = {en},
+  number = {5}
+}
+
 @article{elvira_rethinking_2018,
   title = {Rethinking the {{Effective Sample Size}}},
   author = {Elvira, V{\'i}ctor and Martino, Luca and Robert, Christian P.},
@@ -2847,6 +3569,16 @@
   series = {{{ISPASS}}'19}
 }
 
+@techreport{evans_application_1982,
+  title = {Application of {{Advanced Signal Processing Techniques}} to {{Angle}} of {{Arrival Estimation}} in {{ATC Navigation}} and {{Surveillance Systems}}},
+  author = {Evans, J. E. and Sun, D. F. and Johnson, J. R.},
+  year = {1982},
+  month = jun,
+  institution = {{MIT Lexington Lincoln Lab.}},
+  number = {ADA118306},
+  type = {Technical {{Report}}}
+}
+
 @article{fairbrother_gaussianprocesses_2018,
   title = {{{GaussianProcesses}}. Jl: {{A Nonparametric Bayes}} Package for the {{Julia Language}}},
   author = {Fairbrother, Jamie and Nemeth, Christopher and Rischard, Maxime and Brea, Johanni and Pinder, Thomas},
@@ -2855,6 +3587,17 @@
   eprint = {1812.09064},
   eprinttype = {arxiv},
   journal = {arXiv preprint arXiv:1812.09064}
+}
+
+@article{fan_tracking_1992,
+  title = {Tracking of Conventional Beamforming with Hydrophone Array of Varying Geometry},
+  author = {Fan, H. and Hu, X.},
+  year = {1992},
+  month = apr,
+  volume = {28},
+  pages = {335--354},
+  journal = {IEEE Transactions on Aerospace and Electronic Systems},
+  number = {2}
 }
 
 @book{fang_symmetric_2018,
@@ -2886,7 +3629,7 @@
 }
 
 @article{fearnhead_adaptive_2013,
-  title = {An {{Adaptive Sequential Monte Carlo Sampler}}},
+  title = {An Adaptive Sequential {{Monte Carlo}} Sampler},
   author = {Fearnhead, Paul and Taylor, Benjamin M.},
   year = {2013},
   month = jun,
@@ -2896,6 +3639,18 @@
   journal = {Bayesian Analysis},
   language = {en},
   number = {2}
+}
+
+@inproceedings{featherstone_novel_1997,
+  title = {A Novel Method to Improve the Performance of {{Capon}}'s Minimum Variance Estimator},
+  booktitle = {Proceedings of the {{International Conference}} on {{Antennas}} and {{Propagation}}},
+  author = {Featherstone, W.},
+  year = {1997},
+  volume = {1997},
+  pages = {v1-322-v1-322},
+  publisher = {{IEE}},
+  address = {{Edinburgh, UK}},
+  language = {en}
 }
 
 @inproceedings{feng_building_2007,
@@ -3017,6 +3772,15 @@
   year = {2020}
 }
 
+@phdthesis{fortune_phase_2005,
+  title = {Phase Error Estimation for Synthetic Aperture Imagery},
+  author = {Fortune, Steven A.},
+  year = {2005},
+  file = {/home/msca8h/Zotero/storage/EI5HQ35R/Fortune - 2005 - Phase error estimation for synthetic aperture imag.pdf},
+  school = {University of Canterbury},
+  type = {Doctoral {{Thesis}}}
+}
+
 @article{fox_adapting_2003,
   title = {Adapting the {{Sample Size}} in {{Particle Filters Through KLD}}-{{Sampling}}},
   author = {Fox, Dieter},
@@ -3043,6 +3807,14 @@
   journal = {arXiv:2003.00152 [cs, stat]},
   keywords = {Computer Science - Artificial Intelligence,Computer Science - Machine Learning,Computer Science - Neural and Evolutionary Computing,Statistics - Machine Learning},
   primaryclass = {cs, stat}
+}
+
+@article{frey_bayesian_2016,
+  title = {Bayesian Shrinkage of Portfolio Weights},
+  author = {Frey, Christoph},
+  year = {2016},
+  journal = {SSRN Electronic Journal},
+  language = {en}
 }
 
 @article{frigo_design_2005,
@@ -3073,6 +3845,16 @@
   year = {2014},
   pages = {3680--3688},
   publisher = {{Curran Associates, Inc.}}
+}
+
+@article{frost_algorithm_1972,
+  title = {An Algorithm for Linearly Constrained Adaptive Array Processing},
+  author = {Frost, O.L.},
+  year = {1972},
+  volume = {60},
+  pages = {926--935},
+  journal = {Proceedings of the IEEE},
+  number = {8}
 }
 
 @article{fuentes_autonomous_2020,
@@ -3146,6 +3928,17 @@
   address = {{Lake Buena Vista, FL}}
 }
 
+@article{gaudes_robust_2007,
+  title = {Robust Array Beamforming with Sidelobe Control Using Support Vector Machines},
+  author = {Gaudes, Csar C. and Santamaria, Ignacio and Via, Javier and Masgrau Gomez, Enrique Masgrau and Ses Paules, Talesa},
+  year = {2007},
+  month = feb,
+  volume = {55},
+  pages = {574--584},
+  journal = {IEEE Transactions on Signal Processing},
+  number = {2}
+}
+
 @misc{gcc_gcc_2018,
   title = {{{GCC}}, the {{GNU}} Compiler Collection},
   author = {GCC},
@@ -3179,6 +3972,17 @@
   journal = {arXiv:2004.07780 [cs, q-bio]},
   keywords = {Computer Science - Artificial Intelligence,Computer Science - Computer Vision and Pattern Recognition,Computer Science - Machine Learning,Quantitative Biology - Neurons and Cognition},
   primaryclass = {cs, q-bio}
+}
+
+@article{gelb_statistics_2010a,
+  title = {Statistics of Distinct Clutter Classes in Midfrequency Active Sonar},
+  author = {Gelb, James M and Heath, Ross E and Tipple, George L},
+  year = {2010},
+  month = apr,
+  volume = {35},
+  pages = {220--229},
+  journal = {IEEE Journal of Oceanic Engineering},
+  number = {2}
 }
 
 @book{gelman_bayesian_2014,
@@ -3238,6 +4042,31 @@
   file = {/home/msca8h/Zotero/storage/A6GUD9J4/Gelman and Meng - 1998 - Simulating normalizing constants from importance .pdf},
   journal = {Statistical Science},
   number = {2}
+}
+
+@article{gemba_estimating_2018,
+  title = {Estimating Relative Channel Impulse Responses from Ships of Opportunity in a Shallow Water Environment},
+  author = {Gemba, Kay L. and Sarkar, Jit and Cornuelle, Bruce and Hodgkiss, William S. and Kuperman, W. A.},
+  year = {2018},
+  month = sep,
+  volume = {144},
+  pages = {1231--1244},
+  file = {/home/msca8h/Zotero/storage/I5AVSL8X/Gemba et al. - 2018 - Estimating relative channel impulse responses from.pdf},
+  journal = {The Journal of the Acoustical Society of America},
+  language = {en},
+  number = {3}
+}
+
+@article{gerstoft_adaptive_2003,
+  title = {Adaptive Beamforming of a Towed Array during a Turn},
+  author = {Gerstoft, P. and Hodgkiss, W.S. and Kuperman, W.A. and {Heechun Song} and Siderius, M. and Nielsen, P.L.},
+  year = {2003},
+  month = jan,
+  volume = {28},
+  pages = {44--54},
+  journal = {IEEE Journal of Oceanic Engineering},
+  language = {en},
+  number = {1}
 }
 
 @inproceedings{geyer_markov_1991,
@@ -3326,6 +4155,17 @@
   journal = {SIAM Journal on Scientific and Statistical Computing},
   language = {en},
   number = {4}
+}
+
+@article{goldstein_reducedrank_1997,
+  title = {Reduced-Rank Adaptive Filtering},
+  author = {Goldstein, J.S. and Reed, I.S.},
+  year = {1997},
+  month = feb,
+  volume = {45},
+  pages = {492--496},
+  journal = {IEEE Transactions on Signal Processing},
+  number = {2}
 }
 
 @article{Gopal2011RunningRM,
@@ -3427,6 +4267,18 @@
   primaryclass = {stat}
 }
 
+@article{green_increasing_2022,
+  title = {Increasing the Efficiency of {{Sequential Monte Carlo}} Samplers through the Use of Approximately Optimal {{L}}-Kernels},
+  author = {Green, P.L. and Devlin, L.J. and Moore, R.E. and Jackson, R.J. and Li, J. and Maskell, S.},
+  year = {2022},
+  month = jan,
+  volume = {162},
+  pages = {108028},
+  file = {/home/msca8h/Zotero/storage/NNF9LQDW/Green et al. - 2022 - Increasing the efficiency of Sequential Monte Carl.pdf},
+  journal = {Mechanical Systems and Signal Processing},
+  language = {en}
+}
+
 @article{grenander_representations_1994,
   title = {Representations of {{Knowledge}} in {{Complex Systems}}},
   author = {Grenander, Ulf and Miller, Michael I.},
@@ -3468,6 +4320,30 @@
   file = {/home/msca8h/Zotero/storage/6HSV9JLM/Gu et al. - 2018 - Recent advances in convolutional neural networks.pdf;/home/msca8h/Zotero/storage/CTXXIA74/gu2017.pdf},
   journal = {Pattern Recognition},
   language = {en}
+}
+
+@article{gu_stochastic_1998,
+  title = {A Stochastic Approximation Algorithm with {{Markov}} Chain {{Monte}}-{{Carlo}} Method for Incomplete Data Estimation Problems},
+  author = {Gu, Ming Gao and Kong, Fan Hui},
+  year = {1998},
+  month = jun,
+  volume = {95},
+  pages = {7270--7274},
+  file = {/home/msca8h/Zotero/storage/MWI2B2JX/Gu and Kong - 1998 - A stochastic approximation algorithm with Markov c.pdf},
+  journal = {Proceedings of the National Academy of Sciences},
+  language = {en},
+  number = {13}
+}
+
+@inproceedings{gueriot_sonar_2007,
+  title = {Sonar Data Simulation Based on Tube Tracing},
+  booktitle = {{{OCEANS}} 2007 - {{Europe}}},
+  author = {Gueriot, Didier and Sintes, Christophe and Garello, Rene},
+  year = {2007},
+  month = jun,
+  pages = {1--6},
+  publisher = {{IEEE}},
+  address = {{Aberdeen, Scotland, UK}}
 }
 
 @inproceedings{gupta_exploiting_2018,
@@ -3547,6 +4423,17 @@
   fjournal = {Bernoulli},
   journal = {Bernoulli},
   number = {2}
+}
+
+@inproceedings{habeck_nested_2015,
+  title = {Nested Sampling with Demons},
+  booktitle = {Proceedings of the {{International Workshop}} on {{Bayesian Inference}} and {{Maximum Entropy Methods}} in {{Science}} And},
+  author = {Habeck, Michael},
+  year = {2015},
+  volume = {1641},
+  pages = {121--129},
+  address = {{Clos Luc\'e, Amboise, France}},
+  series = {{{AIP Conference Proceedings}}}
 }
 
 @inproceedings{habib2018auxiliary,
@@ -3696,7 +4583,7 @@
 @inproceedings{hemmsen_ultrasound_2010,
   title = {Ultrasound Image Quality Assessment: A Framework for Evaluation of Clinical Image Quality},
   shorttitle = {Ultrasound Image Quality Assessment},
-  booktitle = {{{SPIE Medical Imaging}}},
+  booktitle = {Proc. {{SPIE Med}}. {{Imag}}.},
   author = {Hemmsen, Martin Christian and Petersen, Mads M{\o}ller and Nikolov, Svetoslav Ivanov and Nielsen, Michael Backmann and Jensen, J{\o}rgen Arendt},
   year = {2010},
   month = mar,
@@ -3731,7 +4618,7 @@
 
 @inproceedings{henrandez-lobato_predictive_2014,
   title = {Predictive Entropy Search for Efficient Global Optimization of Black-Box Functions},
-  booktitle = {Advances in {{Neural Information Processing Systems}}},
+  booktitle = {Adv. {{Neural Inf}}. {{Process}}. {{Syst}}.},
   author = {{Henr{\'a}ndez-Lobato}, Jos{\'e} Miguel and Hoffman, Matthew W. and Ghahramani, Zoubin},
   year = {2014},
   volume = {27},
@@ -3789,6 +4676,15 @@
   primaryclass = {cs, stat}
 }
 
+@book{hildebrand_introduction_2003,
+  title = {Introduction to {{Numerical Analysis}}:},
+  author = {Hildebrand, Francis B.},
+  year = {2003},
+  month = mar,
+  publisher = {{Dover Publications}},
+  series = {Dover {{Books}} on {{Mathematics}}}
+}
+
 @inproceedings{hoefler_performance_2011,
   title = {Performance Modeling for Systematic Performance Tuning},
   booktitle = {State of the {{Practice Reports}} on - {{SC}} '11},
@@ -3843,6 +4739,19 @@
   file = {/home/msca8h/Zotero/storage/XQC5UB3T/Holden et al. - 2009 - Adaptive independent Metropolis–Hastings.pdf},
   journal = {The Annals of Applied Probability},
   number = {1}
+}
+
+@inproceedings{holfort_investigation_2008,
+  title = {Investigation of Sound Speed Errors in Adaptive Beamforming},
+  booktitle = {{{IEEE Ultrasonics Symposium}}},
+  author = {Holfort, Iben Kraglund and Gran, Fredrik and Jensen, Jorgen Arendt},
+  year = {2008},
+  month = nov,
+  pages = {1080--1083},
+  publisher = {{IEEE}},
+  address = {{Beijing, China}},
+  file = {/home/msca8h/Zotero/storage/XD9D4ERS/Holfort et al. - 2008 - Investigation of sound speed errors in adaptive be.pdf},
+  series = {{{IUS}}'08}
 }
 
 @article{honeine_online_2012,
@@ -3916,6 +4825,18 @@
   address = {{Phoenix, AZ, USA}}
 }
 
+@article{huang_new_2019,
+  title = {New Designs on {{MVDR}} Robust Adaptive Beamforming Based on Optimal Steering Vector Estimation},
+  author = {Huang, Yongwei and Zhou, Mingkang and Vorobyov, Sergiy A.},
+  year = {2019},
+  month = jul,
+  volume = {67},
+  pages = {3624--3638},
+  file = {/home/msca8h/Zotero/storage/IRJH3W2J/Huang et al. - 2019 - New Designs on MVDR Robust Adaptive Beamforming Ba.pdf},
+  journal = {IEEE Transactions on Signal Processing},
+  number = {14}
+}
+
 @article{hummel_factoring_1992,
   title = {Factoring: A Method for Scheduling Parallel Loops},
   author = {Hummel, Susan Flynn and Schonberg, Edith and Flynn, Lawrence E.},
@@ -3941,16 +4862,13 @@
   series = {{{SPAA}} '96}
 }
 
-@incollection{hutchison_probabilisticdriven_2010,
-  title = {Probabilistic-{{Driven Oriented Speckle Reducing Anisotropic Diffusion}} with {{Application}} to {{Cardiac Ultrasonic Images}}},
-  booktitle = {Medical {{Image Computing}} and {{Computer}}-{{Assisted Intervention}} \textendash{} {{MICCAI}} 2010},
-  author = {Hutchison, David and Kanade, Takeo and Kittler, Josef and Kleinberg, Jon M. and Mattern, Friedemann and Mitchell, John C. and Naor, Moni and Nierstrasz, Oscar and Pandu Rangan, C. and Steffen, Bernhard and Sudan, Madhu and Terzopoulos, Demetri and Tygar, Doug and Vardi, Moshe Y. and Weikum, Gerhard and {Vegas-Sanchez-Ferrero}, G. and {Aja-Fernandez}, S. and {Martin-Fernandez}, M. and Frangi, A. F. and Palencia, C.},
-  year = {2010},
-  volume = {6361},
-  pages = {518--525},
-  publisher = {{Springer Berlin Heidelberg}},
-  address = {{Berlin, Heidelberg}},
-  file = {/home/msca8h/Zotero/storage/7FCQGGNX/Hutchison et al. - 2010 - Probabilistic-Driven Oriented Speckle Reducing Ani.pdf}
+@phdthesis{hunter_underwater_2006,
+  title = {Underwater Acoustic Modelling for Synthetic Aperture Sonar},
+  author = {Hunter, Alan J.},
+  year = {2006},
+  file = {/home/msca8h/Zotero/storage/L9DYKTSV/Hunter - 2006 - Underwater acoustic modelling for synthetic apertu.pdf},
+  school = {University of Canterbury},
+  type = {Doctoral {{Thesis}}}
 }
 
 @article{iba_population_2001,
@@ -4085,6 +5003,16 @@
   number = {3}
 }
 
+@book{jensen_computational_2011,
+  title = {Computational Ocean Acoustics},
+  author = {Jensen, Finn B. and Kuperman, William A. and Porter, Michael B. and Schmidt, Henrik},
+  year = {2011},
+  publisher = {{Springer New York}},
+  address = {{New York, NY}},
+  file = {/home/msca8h/Zotero/storage/2F5FYG5W/Jensen et al. - 2011 - Computational Ocean Acoustics.pdf},
+  language = {en}
+}
+
 @inproceedings{jerfel2021variational,
   title = {Variational Refinement for Importance {{SamplingUsing}} the Forward Kullback-Leibler Divergence},
   booktitle = {Third Symposium on Advances in Approximate Bayesian Inference},
@@ -4137,11 +5065,33 @@
   primaryclass = {math, stat}
 }
 
+@article{jiang_robust_2014,
+  title = {Robust Beamforming by Linear Programming},
+  author = {Jiang, Xue and Zeng, Wen-Jun and Yasotharan, A. and So, Hing Cheung and Kirubarajan, Thiagalingam},
+  year = {2014},
+  month = apr,
+  volume = {62},
+  pages = {1834--1849},
+  journal = {IEEE Transactions on Signal Processing},
+  number = {7}
+}
+
 @inproceedings{jiang*_fantastic_2020,
   title = {Fantastic {{Generalization Measures}} and {{Where}} to {{Find Them}}},
   booktitle = {International {{Conference}} on {{Learning Representations}}},
   author = {Jiang*, Yiding and Neyshabur*, Behnam and Mobahi, Hossein and Krishnan, Dilip and Bengio, Samy},
   year = {2020}
+}
+
+@article{jianli_adaptive_1996,
+  title = {An Adaptive Filtering Approach to Spectral Estimation and {{SAR}} Imaging},
+  author = {{Jian Li} and Stoica, P.},
+  year = {1996},
+  month = jun,
+  volume = {44},
+  pages = {1469--1484},
+  journal = {IEEE Transactions on Signal Processing},
+  number = {6}
 }
 
 @article{jin_openmp_1999,
@@ -4239,6 +5189,19 @@
   pages = {1--42},
   journal = {Journal of Machine Learning Research},
   number = {183}
+}
+
+@inproceedings{johannsson_imaging_2010,
+  title = {Imaging Sonar-Aided Navigation for Autonomous Underwater Harbor Surveillance},
+  booktitle = {Proceedings of the {{IEEE}}/{{RSJ International Conference}} on {{Intelligent Robots}} and {{Systems}}},
+  author = {Johannsson, H and Kaess, M and Englot, B and Hover, F and Leonard, J},
+  year = {2010},
+  month = oct,
+  pages = {4396--4403},
+  publisher = {{IEEE}},
+  address = {{Taipei}},
+  file = {/home/msca8h/Zotero/storage/N96N5GQP/Johannsson et al. - 2010 - Imaging sonar-aided navigation for autonomous unde.pdf},
+  series = {{{IROS}}'10}
 }
 
 @book{johnson_nlopt_2011,
@@ -4358,6 +5321,19 @@
   language = {en}
 }
 
+@article{kajiya_rendering_1986,
+  title = {The Rendering Equation},
+  author = {Kajiya, James T.},
+  year = {1986},
+  month = aug,
+  volume = {20},
+  pages = {143--150},
+  abstract = {We present an integral equation which generalizes a variety of known rendering algorithms. In the course of discussing a monte carlo solution we also present a new form of variance reduction, called Hierarchical sampling and give a number of elaborations shows that it may be an efficient new technique for a wide variety of monte carlo procedures. The resulting rendering algorithm extends the range of optical phenomena which can be effectively simulated.},
+  journal = {ACM SIGGRAPH Computer Graphics},
+  language = {en},
+  number = {4}
+}
+
 @inproceedings{kaleem_adaptive_2014,
   title = {Adaptive Heterogeneous Scheduling for Integrated {{GPUs}}},
   booktitle = {2014 23rd {{International Conference}} on {{Parallel Architecture}} and {{Compilation Techniques}} ({{PACT}})},
@@ -4425,6 +5401,25 @@
   number = {6}
 }
 
+@phdthesis{kaouri_leftright_2000,
+  title = {Left-Right Ambiguity Resolution of a Towed Array Sonar},
+  author = {Kaouri, Katerina},
+  year = {2000},
+  file = {/home/msca8h/Zotero/storage/XUZKR4R9/Kaouri - 2000 - Left-right ambiguity resolution of a towed array s.pdf},
+  school = {University of Oxford},
+  type = {Master {{Thesis}}}
+}
+
+@phdthesis{kapfer_advanced_2005,
+  title = {An Advanced Specular and Diffuse Bidirectional Reflectance Distribution Function Target Model for a Synthetic Aperture Ground Penetrating Radar},
+  author = {Kapfer, Robert M.},
+  year = {2005},
+  month = jan,
+  address = {{Rochester Institute of Technology}},
+  file = {/home/msca8h/Zotero/storage/KIQLEFKG/Kapfer - 2005 - An advanced specular and diffuse bidirectional ref.pdf},
+  type = {Master {{Thesis}}}
+}
+
 @article{kaplanberkaya_survey_2018,
   title = {A Survey on {{ECG}} Analysis},
   author = {Kaplan Berkaya, Selcan and Uysal, Alper Kursat and Sora Gunal, Efnan and Ergin, Semih and Gunal, Serkan and Gulmezoglu, M. Bilginer},
@@ -4434,6 +5429,29 @@
   pages = {216--235},
   journal = {Biomedical Signal Processing and Control},
   language = {en}
+}
+
+@phdthesis{kapralos_sonel_2006,
+  title = {The Sonel Mapping Acoustical Modeling Method},
+  author = {Kapralos, Bill},
+  year = {2006},
+  month = sep,
+  address = {{Toronto, Ontario, Canada}},
+  file = {/home/msca8h/Zotero/storage/E4HTNDJR/Kapralos - 2006 - The sonel mapping acoustical modeling method.pdf},
+  school = {York University},
+  type = {Doctoral {{Thesis}}}
+}
+
+@article{kapralos_sonel_2008,
+  title = {Sonel Mapping: {{A}} Probabilistic Acoustical Modeling Method},
+  author = {Kapralos, Bill and Jenkin, Michael and Milios, Evangelos},
+  year = {2008},
+  volume = {15},
+  pages = {289--313},
+  abstract = {Sonel mapping is a Monte-Carlo-based acoustical modeling technique that approximates the acoustics of an environment while accounting for diffuse and specular reflections as well as diffraction effects. Through the use of a probabilistic Russian roulette strategy to determine the type of interaction between a sound and any objects/surfaces it may encounter, sonel mapping avoids excessively large running times in contrast to deterministic techniques. Sonel mapping approximates many of the subtle interaction effects required for realistic acoustical modeling yet due to its probabilistic nature, can be incorporated into interactive virtual environments where accuracy is often substituted for efficiency. Experimental results demonstrate the efficacy of the approach.},
+  annotation = {\_eprint: https://doi.org/10.1260/135101008786939973},
+  journal = {Building Acoustics},
+  number = {4}
 }
 
 @article{karagiannis_annealed_2013,
@@ -4458,6 +5476,16 @@
   journal = {Automatica},
   language = {en},
   number = {2-3}
+}
+
+@article{ke_robust_2017,
+  title = {Robust Adaptive {{Beamforming}} Using Noise Reduction Preprocessing-Based Fully Automatic Diagonal Loading and Steering Vector Estimation},
+  author = {Ke, Yuxuan and Zheng, Chengshi and Peng, Renhua and Li, Xiaodong},
+  year = {2017},
+  volume = {5},
+  pages = {12974--12987},
+  file = {/home/msca8h/Zotero/storage/D9SN57QM/Ke et al. - 2017 - Robust Adaptive Beamforming Using Noise Reduction .pdf},
+  journal = {IEEE Access}
 }
 
 @article{keith_adaptive_2008,
@@ -4528,6 +5556,18 @@
   address = {{Berlin, Heidelberg}}
 }
 
+@inproceedings{key_side_2000,
+  title = {Side Scan Sonar Technology},
+  booktitle = {Proceedings of the {{MTS}}/{{IEEE Conference}} and {{Exhibition}}. {{Conference}}},
+  author = {Key, W.H.},
+  year = {2000},
+  volume = {2},
+  pages = {1029--1033},
+  publisher = {{IEEE}},
+  address = {{Providence, RI, USA}},
+  series = {{{OCEANS}}'00}
+}
+
 @article{khan_switchable_2020,
   title = {Switchable {{Deep Beamformer}}},
   author = {Khan, Shujaat and Huh, Jaeyoung and Ye, Jong Chul},
@@ -4559,6 +5599,16 @@
   year = {2020},
   publisher = {{Unpublished}},
   language = {en}
+}
+
+@article{kim_robust_1993,
+  title = {A Robust Adaptive Array Based on Signal Subspace Approach},
+  author = {Kim, J.W. and Un, C.K.},
+  year = {Nov./1993},
+  volume = {41},
+  pages = {3166--3171},
+  journal = {IEEE Transactions on Signal Processing},
+  number = {11}
 }
 
 @inproceedings{kim_robust_2019,
@@ -4657,6 +5707,16 @@
   address = {{Berlin, Heidelberg}}
 }
 
+@article{knight_digital_1981,
+  title = {Digital Signal Processing for Sonar},
+  author = {Knight, W.C. and Pridham, R.G. and Kay, S.M.},
+  year = {1981},
+  volume = {69},
+  pages = {1451--1506},
+  journal = {Proceedings of the IEEE},
+  number = {11}
+}
+
 @article{koblents_population_2015,
   title = {A Population {{Monte Carlo}} Scheme with Transformed Weights and Its Application to Stochastic Kinetic Models},
   author = {Koblents, Eugenia and M{\'i}guez, Joaqu{\'i}n},
@@ -4736,6 +5796,18 @@
   series = {{{SIGGRAPH}}'20}
 }
 
+@article{krim_two_1996,
+  title = {Two Decades of Array Signal Processing Research: The Parametric Approach},
+  shorttitle = {Two Decades of Array Signal Processing Research},
+  author = {Krim, H. and Viberg, M.},
+  year = {1996},
+  month = jul,
+  volume = {13},
+  pages = {67--94},
+  journal = {IEEE Signal Processing Magazine},
+  number = {4}
+}
+
 @article{krissian_oriented_2007,
   title = {Oriented Speckle Reducing Anisotropic Diffusion},
   author = {Krissian, Karl and Westin, Carl-Fredrik and Kikinis, Ron and Vosburgh, Kirby G.},
@@ -4758,6 +5830,17 @@
   series = {{{NIPS}}'12}
 }
 
+@article{kruizinga_planewave_2012,
+  title = {Plane-Wave Ultrasound Beamforming Using a Nonuniform Fast Fourier Transform},
+  author = {Kruizinga, P. and Mastik, F. and {de Jong}, N. and {van der Steen}, A. F. W. and {van Soest}, G.},
+  year = {2012},
+  month = dec,
+  volume = {59},
+  pages = {6373791},
+  journal = {IEEE Transactions on Ultrasonics, Ferroelectrics and Frequency Control},
+  number = {12}
+}
+
 @article{kruskal_allocating_1985,
   title = {Allocating Independent Subtasks on Parallel Processors},
   author = {Kruskal, C. P. and Weiss, A.},
@@ -4778,6 +5861,17 @@
   month = mar,
   pages = {210--214},
   keywords = {associative cache,benchmark testing,cache memory,Cache memory,Cache Performance,cache replacement policy,cache storage,Clocks,Conferences,current generation processors,design parameter,energy consumption,FIFO,hard disk,Hardware,hit rate,Hit rate,LFU,LRU,memory architecture,memory hierarchy,microprocessor chips,Miss rate,Multicore processing,Organizations,performance analysis,performance evaluation,performance improvement,processor performance,RANDOM,registers,Registers,Replacement Policy,virtual memory,virtual storage}
+}
+
+@article{kung_discussions_1994,
+  title = {Discussion: {{Markov}} Chains for Exploring Posterior Distributions},
+  author = {Chan, Kung Sik and Geyer, Charles J.},
+  year = {1994},
+  volume = {22},
+  pages = {1747--1758},
+  publisher = {{Institute of Mathematical Statistics}},
+  journal = {The Annals of Statistics},
+  number = {4}
 }
 
 @inproceedings{kurth_exascale_2018,
@@ -4821,6 +5915,17 @@
   language = {en}
 }
 
+@inproceedings{kwak_development_2015,
+  title = {Development of Acoustic Camera-Imaging Simulator Based on Novel Model},
+  booktitle = {2015 {{IEEE}} 15th {{International Conference}} on {{Environment}} and {{Electrical Engineering}} ({{EEEIC}})},
+  author = {Kwak, Seungchul and Ji, Yonghoon and Yamashita, Atsushi and Asama, Hajime},
+  year = {2015},
+  month = jun,
+  pages = {1719--1724},
+  publisher = {{IEEE}},
+  address = {{Rome, Italy}}
+}
+
 @inproceedings{laberge_scheduling_2019,
   title = {Scheduling {{Optimization}} of {{Parallel Linear Algebra Algorithms Using Supervised Learning}}},
   booktitle = {2019 {{IEEE}}/{{ACM Workshop}} on {{Machine Learning}} in {{High Performance Computing Environments}} ({{MLHPC}})},
@@ -4859,6 +5964,28 @@
   file = {/home/msca8h/Zotero/storage/5TZAVVFE/Lafond et al. - 2016 - D-FW Communication efficient distributed algorith.pdf}
 }
 
+@article{lam_bayesian_2006,
+  title = {Bayesian Beamforming for {{DOA}} Uncertainty: {{Theory}} and Implementation},
+  shorttitle = {Bayesian {{Beamforming}} for {{DOA Uncertainty}}},
+  author = {Lam, C.J. and Singer, A.C.},
+  year = {2006},
+  month = nov,
+  volume = {54},
+  pages = {4435--4445},
+  journal = {IEEE Transactions on Signal Processing},
+  number = {11}
+}
+
+@inproceedings{lam_fast_2003,
+  title = {Fast Adaptive Bayesian Beamforming Using the {{FFT}}},
+  booktitle = {Proceedings of the {{IEEE Workshop}} on {{Statistical Signal Processing}}},
+  author = {Lam, C.J. and Singer, A.C.},
+  year = {2003},
+  pages = {413--416},
+  publisher = {{IEEE}},
+  address = {{St. Louis, MO, USA}}
+}
+
 @article{lamberti_independent_2017,
   title = {Independent {{Resampling Sequential Monte Carlo Algorithms}}},
   author = {Lamberti, Roland and Petetin, Yohan and Desbouvries, Francois and Septier, Francois},
@@ -4883,6 +6010,18 @@
   number = {1}
 }
 
+@inproceedings{larsson_waveform_2004,
+  title = {On Waveform Selection in a Time Varying Sonar Environment},
+  booktitle = {Proceedings of the {{Annual Conference}} of the {{Australian Acoustical Society}}},
+  author = {Larsson, Ashley I. and Gillard, Chris},
+  year = {2004},
+  month = nov,
+  pages = {73--78},
+  address = {{Queensland, Australia}},
+  file = {C\:\\Users\\msca8h\\Projects\\BLUE\\papers\\zotero\\AC040043.PDF},
+  series = {{{ACOUSTICS}}'04}
+}
+
 @article{lartillot_computing_2006,
   title = {Computing {{Bayes}} Factors Using Thermodynamic Integration},
   author = {Lartillot, Nicolas and Philippe, Herv{\'e}},
@@ -4896,6 +6035,18 @@
   number = {2}
 }
 
+@article{leclerc_deep_2019,
+  title = {Deep Learning for Segmentation Using an Open Large-Scale Dataset in {{2D}} Echocardiography},
+  author = {Leclerc, Sarah and Smistad, Erik and Pedrosa, Joao and Ostvik, Andreas and Cervenansky, Frederic and Espinosa, Florian and Espeland, Torvald and Berg, Erik Andreas Rye and Jodoin, Pierre-Marc and Grenier, Thomas and Lartizien, Carole and Dhooge, Jan and Lovstakken, Lasse and Bernard, Olivier},
+  year = {2019},
+  month = sep,
+  volume = {38},
+  pages = {2198--2210},
+  file = {/home/msca8h/Zotero/storage/A43RDL35/Leclerc et al. - 2019 - Deep Learning for Segmentation Using an Open Large.pdf},
+  journal = {IEEE Transactions on Medical Imaging},
+  number = {9}
+}
+
 @incollection{lecun_efficient_2012,
   title = {Efficient {{BackProp}}},
   booktitle = {Neural {{Networks}}: {{Tricks}} of the {{Trade}}},
@@ -4905,6 +6056,40 @@
   pages = {9--48},
   publisher = {{Springer Berlin Heidelberg}},
   address = {{Berlin, Heidelberg}},
+  language = {en}
+}
+
+@article{ledoit_wellconditioned_2004,
+  title = {A Well-Conditioned Estimator for Large-Dimensional Covariance Matrices},
+  author = {Ledoit, Olivier and Wolf, Michael},
+  year = {2004},
+  month = feb,
+  volume = {88},
+  pages = {365--411},
+  file = {/home/msca8h/Zotero/storage/CLJVPUNC/Ledoit and Wolf - 2004 - A well-conditioned estimator for large-dimensional.pdf},
+  journal = {Journal of Multivariate Analysis},
+  language = {en},
+  number = {2}
+}
+
+@inproceedings{lee_automatic_2006,
+  title = {Automatic Time Gain Compensation and Dynamic Range Control in Ultrasound Imaging Systems},
+  booktitle = {Proc. {{SPIE Med}}. {{Imag}}.},
+  author = {Lee, Duhgoon and Kim, Yong Sun and Ra, Jong Beom},
+  year = {2006},
+  month = mar,
+  pages = {614708},
+  address = {{San Diego, CA}}
+}
+
+@article{lee_automatic_2015,
+  title = {Automatic Dynamic Range Adjustment for Ultrasound {{B}}-Mode Imaging},
+  author = {Lee, Yeonhwa and Kang, Jinbum and Yoo, Yangmo},
+  year = {2015},
+  month = feb,
+  volume = {56},
+  pages = {435--443},
+  journal = {Ultrasonics},
   language = {en}
 }
 
@@ -4992,20 +6177,6 @@
   number = {2}
 }
 
-@article{letham_reexamining_2020,
-  title = {Re-{{Examining Linear Embeddings}} for {{High}}-{{Dimensional Bayesian Optimization}}},
-  author = {Letham, Benjamin and Calandra, Roberto and Rai, Akshara and Bakshy, Eytan},
-  year = {2020},
-  month = oct,
-  abstract = {Bayesian optimization (BO) is a popular approach to optimize expensive-to-evaluate black-box functions. A significant challenge in BO is to scale to high-dimensional parameter spaces while retaining sample efficiency. A solution considered in existing literature is to embed the high-dimensional space in a lower-dimensional manifold, often via a random linear embedding. In this paper, we identify several crucial issues and misconceptions about the use of linear embeddings for BO. We study the properties of linear embeddings from the literature and show that some of the design choices in current approaches adversely impact their performance. We show empirically that properly addressing these issues significantly improves the efficacy of linear embeddings for BO on a range of problems, including learning a gait policy for robot locomotion.},
-  archiveprefix = {arXiv},
-  eprint = {2001.11659},
-  eprinttype = {arxiv},
-  file = {/home/msca8h/Zotero/storage/3UPVUJK8/Letham et al. - 2020 - Re-Examining Linear Embeddings for High-Dimensiona.pdf;/home/msca8h/Zotero/storage/Q7JVMEYJ/2001.html},
-  journal = {Advances in NIPS},
-  keywords = {Computer Science - Machine Learning,Statistics - Machine Learning}
-}
-
 @inproceedings{lethunguyen_improving_2014,
   title = {Improving {{SMC}} Sampler Estimate by Recycling All Past Simulated Particles},
   booktitle = {2014 {{IEEE Workshop}} on {{Statistical Signal Processing}} ({{SSP}})},
@@ -5072,6 +6243,17 @@
   pages = {981--992},
   publisher = {{USENIX Association}},
   address = {{Boston, MA}}
+}
+
+@article{li_performance_1998,
+  title = {Performance Analysis of Forward-Backward Matched-Filterbank Spectral Estimators},
+  author = {Li, H. and Li, J. and Stoica, P.},
+  year = {1998},
+  month = jul,
+  volume = {46},
+  pages = {1954--1966},
+  journal = {IEEE Transactions on Signal Processing},
+  number = {7}
 }
 
 @article{li_performance_2015,
@@ -5353,6 +6535,19 @@
   journal = {arXiv preprint arXiv:1807.01065}
 }
 
+@inproceedings{loggins_comparison_2001,
+  title = {A Comparison of Forward-Looking Sonar Design Alternatives},
+  booktitle = {Proceedings of {{MTS}}/{{IEEE Oceans}} 2001},
+  author = {Loggins, C.D.},
+  year = {2001},
+  volume = {3},
+  pages = {1536--1545},
+  publisher = {{Marine Technol. Soc}},
+  address = {{Honolulu, HI, USA}},
+  file = {/home/msca8h/Zotero/storage/EQZK2ACK/Loggins - 2001 - A comparison of forward-looking sonar design alter.pdf},
+  series = {{{OCEANS}}'01}
+}
+
 @article{loizou_comparative_2005,
   title = {Comparative Evaluation of Despeckle Filtering in Ultrasound Imaging of the Carotid Artery},
   author = {Loizou, C.P. and Pattichis, C.S. and Christodoulou, C.I. and Istepanian, R.S.H. and Pantziaris, M. and Nicolaides, A.},
@@ -5458,6 +6653,28 @@
   series = {Proceedings of {{Machine Learning Research}}}
 }
 
+@inproceedings{lyu_multiobjective_2018,
+  title = {Multi-Objective {{Bayesian}} Optimization for Analog/{{RF}} Circuit Synthesis},
+  booktitle = {Proc. {{ACM}}/{{ESDA}}/{{IEEE Des}}. {{Automat}}. {{Conf}}.},
+  author = {Lyu, Wenlong and Yang, Fan and Yan, Changhao and Zhou, Dian and Zeng, Xuan},
+  year = {2018},
+  month = jun,
+  pages = {1--6},
+  publisher = {{IEEE}},
+  address = {{San Francisco, CA}}
+}
+
+@incollection{m._ray_2013,
+  title = {Ray Trace Modeling of Underwater Sound Propagation},
+  booktitle = {Modeling and {{Measurement Methods}} for {{Acoustic Waves}} and for {{Acoustic Microdevices}}},
+  author = {M., Jens},
+  year = {2013},
+  month = aug,
+  publisher = {{InTech}},
+  file = {/home/msca8h/Zotero/storage/6QYC7M2K/M. - 2013 - Ray Trace Modeling of Underwater Sound Propagation.pdf},
+  language = {en}
+}
+
 @techreport{mackay_local_2001,
   title = {Local Minima, Symmetry-Breaking, and Model Pruning in Variational Free Energy Minimization},
   author = {MacKay, David J.C.},
@@ -5536,6 +6753,17 @@
   series = {{{ISMM}} '11}
 }
 
+@article{malik_bayesian_2014,
+  title = {A {{Bayesian}} Framework for Blind Adaptive Beamforming},
+  author = {Malik, Sarmad and Benesty, Jacob and Chen, Jingdong},
+  year = {2014},
+  month = may,
+  volume = {62},
+  pages = {2370--2384},
+  journal = {IEEE Transactions on Signal Processing},
+  number = {9}
+}
+
 @incollection{malkomes_automating_2018,
   title = {Automating {{Bayesian}} Optimization with {{Bayesian}} Optimization},
   booktitle = {Advances in {{Neural Information Processing Systems}} 31},
@@ -5567,6 +6795,18 @@
   journal = {arXiv:1808.03230 [cs, math, stat]},
   keywords = {Computer Science - Machine Learning,Mathematics - Probability,Statistics - Computation,Statistics - Machine Learning,Statistics - Methodology},
   primaryclass = {cs, math, stat}
+}
+
+@article{maranda_efficient_1989,
+  title = {Efficient Digital Beamforming in the Frequency Domain},
+  author = {Maranda, Brian},
+  year = {1989},
+  month = nov,
+  volume = {86},
+  pages = {1813--1819},
+  journal = {The Journal of the Acoustical Society of America},
+  language = {en},
+  number = {5}
 }
 
 @inproceedings{marathe_performance_2017,
@@ -5764,6 +7004,17 @@
   year = {2013}
 }
 
+@techreport{mccammon_literature_2010,
+  title = {A Literature Survey of Reverberation Modeling: With Emphasis on {{Bellhop}} Compatibility for Operational Applications},
+  author = {McCammon, Diana},
+  year = {2010},
+  month = sep,
+  institution = {{Defence Research and Development Canada}},
+  file = {/home/msca8h/Zotero/storage/WCUG9T3E/McCammon - 2010 - A literature survey of reverberation modeling wit.pdf},
+  number = {DRDC Atlantic CR 2010-119},
+  type = {Contract {{Report}}}
+}
+
 @article{mcphail_robustness_2018,
   title = {Robustness {{Metrics}}: {{How Are They Calculated}}, {{When Should They Be Used}} and {{Why Do They Give Different Results}}?},
   shorttitle = {Robustness {{Metrics}}},
@@ -5815,6 +7066,18 @@
   journal = {IEEE Transactions on Image Processing}
 }
 
+@article{meister_survey_2021,
+  title = {A Survey on Bounding Volume Hierarchies for Ray Tracing},
+  author = {Meister, Daniel and Ogaki, Shinji and Benthin, Carsten and Doyle, Michael J. and Guthe, Michael and Bittner, Ji{\v r}{\'i}},
+  year = {2021},
+  month = may,
+  volume = {40},
+  pages = {683--712},
+  journal = {Computer Graphics Forum},
+  language = {en},
+  number = {2}
+}
+
 @inproceedings{Menon2020AutotuningPC,
   title = {Auto-Tuning Parameter Choices in {{HPC}} Applications Using Bayesian Optimization},
   author = {Menon, Harshitha and Bhatele, Abhinav and Gamblin, Todd},
@@ -5834,6 +7097,18 @@
   journal = {arXiv:1903.04556 [cs, stat]},
   keywords = {Computer Science - Machine Learning,Statistics - Machine Learning},
   primaryclass = {cs, stat}
+}
+
+@article{mestre_finite_2006,
+  title = {Finite Sample Size Effect on Minimum Variance Beamformers: Optimum Diagonal Loading Factor for Large Arrays},
+  shorttitle = {Finite Sample Size Effect on Minimum Variance Beamformers},
+  author = {Mestre, X. and Lagunas, M.A.},
+  year = {2006},
+  month = jan,
+  volume = {54},
+  pages = {69--82},
+  journal = {IEEE Transactions on Signal Processing},
+  number = {1}
 }
 
 @article{metropolis_equation_1953,
@@ -5966,6 +7241,18 @@
   series = {Proceedings of {{Machine Learning Research}}}
 }
 
+@article{mo_tracing_2016,
+  title = {Tracing Analytic Ray Curves for Light and Sound Propagation in Non-Linear Media},
+  author = {Mo, Qi and Yeh, Hengchin and Manocha, Dinesh},
+  year = {2016},
+  month = nov,
+  volume = {22},
+  pages = {2493--2506},
+  file = {/home/msca8h/Zotero/storage/BPI5MNB7/Mo et al. - 2016 - Tracing Analytic Ray Curves for Light and Sound Pr.pdf},
+  journal = {IEEE Transactions on Visualization and Computer Graphics},
+  number = {11}
+}
+
 @techreport{moore_metropolishastings_2020,
   title = {Metropolis-{{Hastings}} Forward Proposal},
   author = {Moore, Robert E.},
@@ -6066,6 +7353,14 @@
   year = {2010}
 }
 
+@phdthesis{myers_traitement_2019,
+  title = {Le Traitement, l'interpr\'etation et l'exploitation d'images Sonar \`a Antenne Synth\'etique Obtenues \`a Partir de Trajectoires R\'ep\'etitives},
+  author = {Myers, Vincent},
+  year = {2019},
+  file = {/home/msca8h/Zotero/storage/PKPY879L/Myers - 2019 - Le traitement, l'interprétation et l'exploitation .pdf},
+  school = {\'Ecole nationale sup\'erieure de techniques avanc\'ees Bretagne}
+}
+
 @inproceedings{mytkowicz_producing_2009,
   title = {Producing {{Wrong Data Without Doing Anything Obviously Wrong}}!},
   booktitle = {Proceedings of the 14th {{International Conference}} on {{Architectural Support}} for {{Programming Languages}} and {{Operating Systems}}},
@@ -6113,6 +7408,18 @@
   file = {/home/msca8h/Zotero/storage/2T4DFE2H/Nakarmi et al. - 2017 - A Kernel-Based Low-Rank (KLR) Model for Low-Dimens.pdf},
   journal = {IEEE Transactions on Medical Imaging},
   number = {11}
+}
+
+@article{nannuru_sparse_2018,
+  title = {Sparse {{Bayesian}} Learning for Beamforming Using Sparse Linear Arrays},
+  author = {Nannuru, Santosh and Koochakzadeh, Ali and Gemba, Kay L. and Pal, Piya and Gerstoft, Peter},
+  year = {2018},
+  month = nov,
+  volume = {144},
+  pages = {2719--2729},
+  journal = {The Journal of the Acoustical Society of America},
+  language = {en},
+  number = {5}
 }
 
 @article{neal_annealed_2001,
@@ -6211,6 +7518,18 @@
   number = {CRG-TR-93-1}
 }
 
+@inproceedings{neasham_broadband_2007,
+  title = {Broadband, Ultra-Sparse Array Processing for Low Complexity Multibeam Sonar Imaging},
+  booktitle = {Proceedings of {{OCEANS}} - {{Europe}}},
+  author = {Neasham, Jeffrey A. and Menon, Raghav and Hinton, Oliver R.},
+  year = {2007},
+  month = jun,
+  pages = {1--6},
+  publisher = {{IEEE}},
+  address = {{Aberdeen, Scotland, UK}},
+  series = {{{OCEANS}}'07}
+}
+
 @article{neklyudov_metropolishastings_2019,
   title = {Metropolis-{{Hastings}} View on Variational Inference and Adversarial Training},
   author = {Neklyudov, Kirill and Egorov, Evgenii and Shvechikov, Pavel and Vetrov, Dmitry},
@@ -6224,6 +7543,18 @@
   journal = {arXiv:1810.07151 [cs, stat]},
   keywords = {Computer Science - Artificial Intelligence,Computer Science - Machine Learning,Statistics - Machine Learning},
   primaryclass = {cs, stat}
+}
+
+@article{nelder_simplex_1965,
+  title = {A Simplex Method for Function Minimization},
+  author = {Nelder, J. A. and Mead, R.},
+  year = {1965},
+  month = jan,
+  volume = {7},
+  pages = {308--313},
+  journal = {The Computer Journal},
+  language = {en},
+  number = {4}
 }
 
 @inproceedings{nelson_generating_2015,
@@ -6344,6 +7675,16 @@
   series = {{{NeurIPS}}'20}
 }
 
+@inproceedings{NEURIPS2020_7880d722,
+  title = {Gibbs Sampling with People},
+  booktitle = {Adv. {{Neural Inf}}. {{Process}}. {{Syst}}.},
+  author = {Harrison, Peter and Marjieh, Raja and Adolfi, Federico and {van Rijn}, Pol and {Anglada-Tort}, Manuel and Tchernichovski, Ofer and {Larrouy-Maestri}, Pauline and Jacoby, Nori},
+  year = {2020},
+  volume = {33},
+  pages = {10659--10671},
+  publisher = {{Curran Associates, Inc.}}
+}
+
 @inproceedings{NEURIPS2020_7cac11e2,
   title = {Robust, Accurate Stochastic Optimization for Variational Inference},
   booktitle = {Advances in Neural Information Processing Systems ({{NeurIPS}})},
@@ -6375,9 +7716,18 @@
   number = {5}
 }
 
+@inproceedings{NIPS2007_89d4402d,
+  title = {Markov Chain Monte Carlo with People},
+  booktitle = {Adv. {{Neural Inf}}. {{Process}}. {{Syst}}.},
+  author = {Sanborn, Adam and Griffiths, Thomas},
+  year = {2008},
+  volume = {20},
+  publisher = {{Curran Associates, Inc.}}
+}
+
 @inproceedings{NIPS2007_b6a1085a,
   title = {Active Preference Learning with Discrete Choice Data},
-  booktitle = {Advances in Neural Information Processing Systems},
+  booktitle = {Adv. {{Neural Inf}}. {{Process}}. {{Syst}}.},
   author = {Brochu, Eric and {de Freitas}, Nando and Ghosh, Abhijeet},
   year = {2008},
   volume = {20},
@@ -6399,6 +7749,15 @@
   title = {Non-Strongly-Convex Smooth Stochastic Approximation with Convergence Rate {{O}}(1/n)},
   booktitle = {Advances in Neural Information Processing Systems},
   author = {Bach, Francis and Moulines, Eric},
+  year = {2013},
+  volume = {26},
+  publisher = {{Curran Associates, Inc.}}
+}
+
+@inproceedings{NIPS2013_f33ba15e,
+  title = {Multi-Task Bayesian Optimization},
+  booktitle = {Adv. {{Neural Inf}}. {{Process}}. {{Syst}}.},
+  author = {Swersky, Kevin and Snoek, Jasper and Adams, Ryan P},
   year = {2013},
   volume = {26},
   publisher = {{Curran Associates, Inc.}}
@@ -6438,6 +7797,16 @@
   year = {2015},
   pages = {451--459},
   publisher = {{Curran Associates, Inc.}}
+}
+
+@inproceedings{NIPS2015_8303a79b,
+  title = {Reflection, Refraction, and {{Hamiltonian Monte Carlo}}},
+  booktitle = {Advances in {{Neural Information Processing Systems}}},
+  author = {Mohasel Afshar, Hadi and Domke, Justin},
+  year = {2015},
+  volume = {28},
+  publisher = {{Curran Associates, Inc.}},
+  series = {{{NIPS}}'15}
 }
 
 @inproceedings{NIPS2016_7750ca35,
@@ -6509,9 +7878,19 @@
   author = {Nocedal, Jorge and Wright, Stephen J.},
   year = {2006},
   publisher = {{Springer New York}},
+  abstract = {Springer Series on Operations Research and Financial Engineering},
   file = {/home/msca8h/Zotero/storage/6J42ZVT8/2006 - Numerical Optimization.pdf},
   language = {en},
-  series = {Springer {{Series}} in {{Operations Research}} and {{Financial Engineering}}}
+  series = {Springer {{Ser}}. {{Oper}}. {{Res}}. {{Financial Eng}}.}
+}
+
+@phdthesis{olander_constrained_2020,
+  title = {Constrained Space {{MCMC}} Methods for Nested Sampling {{Bayesian}} Computations},
+  author = {Olander, Jacob},
+  year = {2020},
+  address = {{Gothenburg, Seweden}},
+  school = {Chalmers University of Technology},
+  type = {Master Thesis}
 }
 
 @article{olivier_openmp_2012,
@@ -6522,6 +7901,20 @@
   pages = {110--124},
   file = {/home/msca8h/Zotero/storage/VUXYUD89/OMP_scheduling_NUMA_analysis_2012.pdf},
   journal = {The International Journal of High Performance Computing Applications},
+  number = {2}
+}
+
+@article{olson_scattering_2019,
+  title = {Scattering Statistics of Rock Outcrops: {{Model}}-Data Comparisons and {{Bayesian}} Inference Using Mixture Distributions},
+  shorttitle = {Scattering Statistics of Rock Outcrops},
+  author = {Olson, Derek R. and Lyons, Anthony P. and Abraham, Douglas A. and S{\ae}b{\o}, Torstein O.},
+  year = {2019},
+  month = feb,
+  volume = {145},
+  pages = {761--774},
+  file = {/home/msca8h/Zotero/storage/9INWU7W2/Olson et al. - 2019 - Scattering statistics of rock outcrops Model-data.pdf},
+  journal = {The Journal of the Acoustical Society of America},
+  language = {en},
   number = {2}
 }
 
@@ -6723,6 +8116,19 @@
   number = {7}
 }
 
+@article{perrot_you_2021,
+  title = {So You Think You Can {{DAS}}? {{A}} Viewpoint on Delay-and-Sum Beamforming},
+  shorttitle = {So You Think You Can {{DAS}}?},
+  author = {Perrot, Vincent and Polichetti, Maxime and Varray, Fran{\c c}ois and Garcia, Damien},
+  year = {2021},
+  month = mar,
+  volume = {111},
+  pages = {106309},
+  file = {/home/msca8h/Zotero/storage/ZFSDTGSN/Perrot et al. - 2021 - So you think you can DAS A viewpoint on delay-and.pdf},
+  journal = {Ultrasonics},
+  language = {en}
+}
+
 @article{peskun_optimum_1973,
   title = {Optimum {{Monte}}-{{Carlo}} Sampling Using {{Markov}} Chains},
   author = {Peskun, P. H.},
@@ -6804,6 +8210,20 @@
   number = {6}
 }
 
+@book{pharr_physically_2010,
+  title = {Physically Based Rendering: From Theory to Implementation},
+  shorttitle = {Physically Based Rendering},
+  author = {Pharr, Matt and Humphreys, Greg},
+  year = {2010},
+  edition = {2nd ed},
+  publisher = {{Morgan Kaufmann/Elsevier}},
+  address = {{Burlington, MA}},
+  annotation = {OCLC: ocn620294150},
+  file = {/home/msca8h/Zotero/storage/3BNZHALF/Pharr and Humphreys - 2010 - Physically based rendering from theory to impleme.pdf},
+  keywords = {Computer graphics,Three-dimensional display systems},
+  lccn = {T385 .P4756 2010}
+}
+
 @article{piironen_sparsity_2017,
   title = {Sparsity Information and Regularization in the Horseshoe and Other Shrinkage Priors},
   author = {Piironen, Juho and Vehtari, Aki},
@@ -6814,6 +8234,41 @@
   journal = {Electronic Journal of Statistics},
   language = {en},
   number = {2}
+}
+
+@article{pillai_forward_1989,
+  title = {Forward/Backward Spatial Smoothing Techniques for Coherent Signal Identification},
+  author = {Pillai, S.U. and Kwon, B.H.},
+  year = {1989},
+  month = jan,
+  volume = {37},
+  pages = {8--15},
+  journal = {IEEE Transactions on Acoustics, Speech, and Signal Processing},
+  number = {1}
+}
+
+@article{pinton_sources_2011,
+  title = {Sources of Image Degradation in Fundamental and Harmonic Ultrasound Imaging Using Nonlinear, Full-Wave Simulations},
+  author = {Pinton, Gianmarco F and Trahey, Gregg E and Dahl, Jeremy J},
+  year = {2011},
+  month = apr,
+  volume = {58},
+  pages = {754--765},
+  file = {/home/msca8h/Zotero/storage/CIFQS4TH/Pinton et al. - 2011 - Sources of image degradation in fundamental and ha.pdf},
+  journal = {IEEE Transactions on Ultrasonics, Ferroelectrics and Frequency Control},
+  number = {4}
+}
+
+@article{pizurica_versatile_2003,
+  title = {A Versatile Wavelet Domain Noise Filtration Technique for Medical Imaging},
+  author = {Pizurica, A. and Philips, W. and Lemahieu, I. and Acheroy, M.},
+  year = {2003},
+  month = mar,
+  volume = {22},
+  pages = {323--331},
+  journal = {IEEE Transactions on Medical Imaging},
+  language = {en},
+  number = {3}
 }
 
 @inproceedings{pmlr-v108-lorraine20a,
@@ -6848,7 +8303,7 @@
 
 @inproceedings{pmlr-v119-mikkola20a,
   title = {Projective Preferential {{Bayesian}} Optimization},
-  booktitle = {Proceedings of the 37th International Conference on Machine Learning ({{ICML}})},
+  booktitle = {Proc. {{Int}}. {{Conf}}. {{Mach}}. {{Learn}}.},
   author = {Mikkola, Petrus and Todorovi{\'c}, Milica and J{\"a}rvi, Jari and Rinke, Patrick and Kaski, Samuel},
   year = {2020},
   month = jul,
@@ -6857,7 +8312,7 @@
   publisher = {{ML Research Press}},
   abstract = {Bayesian optimization is an effective method for finding extrema of a black-box function. We propose a new type of Bayesian optimization for learning user preferences in high-dimensional spaces. The central assumption is that the underlying objective function cannot be evaluated directly, but instead a minimizer along a projection can be queried, which we call a projective preferential query. The form of the query allows for feedback that is natural for a human to give, and which enables interaction. This is demonstrated in a user experiment in which the user feedback comes in the form of optimal position and orientation of a molecule adsorbing to a surface. We demonstrate that our framework is able to find a global minimum of a high-dimensional black-box function, which is an infeasible task for existing preferential Bayesian optimization frameworks that are based on pairwise comparisons.},
   pdf = {http://proceedings.mlr.press/v119/mikkola20a/mikkola20a.pdf},
-  series = {Proceedings of Machine Learning Research}
+  series = {Proc. {{Mach}}. {{Learn}}. {{Res}}.}
 }
 
 @inproceedings{pmlr-v124-ou20a,
@@ -6964,7 +8419,7 @@
 
 @inproceedings{pmlr-v51-murray16,
   title = {Pseudo-Marginal Slice Sampling},
-  booktitle = {Proceedings of the 19th International Conference on Artificial Intelligence and Statistics ({{AISTATS}})},
+  booktitle = {Proc. {{Int}}. {{Conf}}. {{Artif}}. {{Intell}}. {{Statist}}.},
   author = {Murray, Iain and Graham, Matthew},
   year = {2016},
   month = may,
@@ -6974,7 +8429,7 @@
   address = {{Cadiz, Spain}},
   abstract = {Markov chain Monte Carlo (MCMC) methods asymptotically sample from complex probability distributions. The pseudo-marginal MCMC framework only requires an unbiased estimator of the unnormalized probability distribution function to construct a Markov chain. However, the resulting chains are harder to tune to a target distribution than conventional MCMC, and the types of updates available are limited. We describe a general way to clamp and update the random numbers used in a pseudo-marginal method's unbiased estimator. In this framework we can use slice sampling and other adaptive methods. We obtain more robust Markov chains, which often mix more quickly.},
   pdf = {http://proceedings.mlr.press/v51/murray16.pdf},
-  series = {Proceedings of Machine Learning Research}
+  series = {Proc. of {{Mach}}. {{Learn}}. {{Res}}.}
 }
 
 @inproceedings{pmlr-v54-gardner17a,
@@ -6993,7 +8448,7 @@
 
 @inproceedings{pmlr-v70-gonzalez17a,
   title = {Preferential {{Bayesian}} Optimization},
-  booktitle = {Proceedings of the 34th International Conference on Machine Learning},
+  booktitle = {Proc. {{Int}}. {{Conf}}. {{Mach}}. {{Learn}}.},
   author = {Gonz{\'a}lez, Javier and Dai, Zhenwen and Damianou, Andreas and Lawrence, Neil D.},
   year = {2017},
   month = aug,
@@ -7002,7 +8457,7 @@
   publisher = {{ML Research Press}},
   abstract = {Bayesian optimization (BO) has emerged during the last few years as an effective approach to optimize black-box functions where direct queries of the objective are expensive. We consider the case where direct access to the function is not possible, but information about user preferences is. Such scenarios arise in problems where human preferences are modeled, such as A/B tests or recommender systems. We present a new framework for this scenario that we call Preferential Bayesian Optimization (PBO) and that allows to find the optimum of a latent function that can only be queried through pairwise comparisons, so-called duels. PBO extend the applicability of standard BO ideas and generalizes previous discrete dueling approaches by modeling the probability of the the winner of each duel by means of Gaussian process model with a Bernoulli likelihood. The latent preference function is used to define a family of acquisition functions that extend usual policies used in BO. We illustrate the benefits of PBO in a variety of experiments in which we show how the way correlations are modeled is the key ingredient to drastically reduce the number of comparisons to find the optimum of the latent function of interest.},
   pdf = {http://proceedings.mlr.press/v70/gonzalez17a/gonzalez17a.pdf},
-  series = {Proceedings of Machine Learning Research}
+  series = {Proc. {{Mach}}. {{Learn}}. {{Res}}.}
 }
 
 @inproceedings{pmlr-v70-hoffman17a,
@@ -7060,6 +8515,19 @@
   abstract = {We develop a method to combine Markov chain Monte Carlo (MCMC) and variational inference (VI), leveraging the advantages of both inference approaches. Specifically, we improve the variational distribution by running a few MCMC steps. To make inference tractable, we introduce the variational contrastive divergence (VCD), a new divergence that replaces the standard Kullback-Leibler (KL) divergence used in VI. The VCD captures a notion of discrepancy between the initial variational distribution and its improved version (obtained after running the MCMC steps), and it converges asymptotically to the symmetrized KL divergence between the variational distribution and the posterior of interest. The VCD objective can be optimized efficiently with respect to the variational parameters via stochastic optimization. We show experimentally that optimizing the VCD leads to better predictive performance on two latent variable models: logistic matrix factorization and variational autoencoders (VAEs).},
   pdf = {http://proceedings.mlr.press/v97/ruiz19a/ruiz19a.pdf},
   series = {Proceedings of Machine Learning Research}
+}
+
+@article{polson_bayesian_2000,
+  title = {Bayesian {{Portfolio Selection}}: {{An Empirical Analysis}} of the {{S}}\&{{P}} 500 {{Index}} 1970\textendash 1996},
+  shorttitle = {Bayesian {{Portfolio Selection}}},
+  author = {Polson, Nicholas G. and Tew, Bernard V.},
+  year = {2000},
+  month = apr,
+  volume = {18},
+  pages = {164--173},
+  journal = {Journal of Business \& Economic Statistics},
+  language = {en},
+  number = {2}
 }
 
 @article{polyak_acceleration_1992,
@@ -7122,6 +8590,28 @@
   journal = {Concurrency and Computation: Practice and Experience},
   language = {en},
   number = {15}
+}
+
+@article{porter_gaussian_1987,
+  title = {Gaussian Beam Tracing for Computing Ocean Acoustic Fields},
+  author = {Porter, Michael B. and Bucker, Homer P.},
+  year = {1987},
+  month = oct,
+  volume = {82},
+  pages = {1349--1359},
+  journal = {The Journal of the Acoustical Society of America},
+  language = {en},
+  number = {4}
+}
+
+@article{pridham_digital_1979,
+  title = {Digital Interpolation Beamforming for Low-Pass and Bandpass Signals},
+  author = {Pridham, R.G. and Mucci, R.A.},
+  year = {1979},
+  volume = {67},
+  pages = {904--919},
+  journal = {Proceedings of the IEEE},
+  number = {6}
 }
 
 @article{PS_2001__5__183_0,
@@ -7480,6 +8970,28 @@
   number = {4}
 }
 
+@article{rubsamen_maximally_2013,
+  title = {Maximally Robust {{Capon}} Beamformer},
+  author = {Rubsamen, Michael and Pesavento, Marius},
+  year = {2013},
+  month = apr,
+  volume = {61},
+  pages = {2030--2041},
+  journal = {IEEE Transactions on Signal Processing},
+  number = {8}
+}
+
+@article{rubsamen_robust_2012,
+  title = {Robust Adaptive Beamforming Using Multidimensional Covariance Fitting},
+  author = {Rubsamen, Michael and Gershman, Alex B.},
+  year = {2012},
+  month = feb,
+  volume = {60},
+  pages = {740--753},
+  journal = {IEEE Transactions on Signal Processing},
+  number = {2}
+}
+
 @article{rudolf_error_2010,
   title = {Error Bounds for Computing the Expectation by {{Markov}} Chain {{Monte Carlo}}},
   author = {Rudolf, Daniel},
@@ -7573,6 +9085,18 @@
   address = {{Orlando, FL, USA}}
 }
 
+@article{sano_application_2020,
+  title = {Application of {{Bayesian}} Optimization for Pharmaceutical Product Development},
+  author = {Sano, Syusuke and Kadowaki, Tadashi and Tsuda, Koji and Kimura, Susumu},
+  year = {2020},
+  month = sep,
+  volume = {15},
+  pages = {333--343},
+  journal = {Journal of Pharmaceutical Innovation},
+  language = {en},
+  number = {3}
+}
+
 @inproceedings{santos_bayesian_2010,
   title = {Bayesian Optimization of Perfusion and Transit Time Estimation in {{PASL}}-{{MRI}}},
   booktitle = {2010 {{Annual International Conference}} of the {{IEEE Engineering}} in {{Medicine}} and {{Biology}}},
@@ -7618,6 +9142,17 @@
   number = {4}
 }
 
+@article{sattar_image_1997,
+  title = {Image Enhancement Based on a Nonlinear Multiscale Method},
+  author = {Sattar, F. and Floreby, L. and Salomonsson, G. and Lovstrom, B.},
+  year = {1997},
+  month = jun,
+  volume = {6},
+  pages = {888--895},
+  journal = {IEEE Transactions on Image Processing},
+  number = {6}
+}
+
 @article{savage_theory_1951,
   title = {The {{Theory}} of {{Statistical Decision}}},
   author = {Savage, L. J.},
@@ -7628,6 +9163,19 @@
   journal = {Journal of the American Statistical Association},
   language = {en},
   number = {253}
+}
+
+@article{savioja_overview_2015,
+  title = {Overview of Geometrical Room Acoustic Modeling Techniques},
+  author = {Savioja, Lauri and Svensson, U. Peter},
+  year = {2015},
+  month = aug,
+  volume = {138},
+  pages = {708--730},
+  file = {/home/msca8h/Zotero/storage/XZ4455FJ/Savioja and Svensson - 2015 - Overview of geometrical room acoustic modeling tec.pdf},
+  journal = {The Journal of the Acoustical Society of America},
+  language = {en},
+  number = {2}
 }
 
 @article{savitsky_variable_2011,
@@ -7653,6 +9201,16 @@
   publisher = {{Omnipress}},
   address = {{Madison, WI, USA}},
   series = {{{ICML}}'11}
+}
+
+@article{schafer_digital_1973,
+  title = {A Digital Signal Processing Approach to Interpolation},
+  author = {Schafer, R.W. and Rabiner, L.R.},
+  year = {1973},
+  volume = {61},
+  pages = {692--702},
+  journal = {Proceedings of the IEEE},
+  number = {6}
 }
 
 @article{schulman_proximal_2017,
@@ -7739,6 +9297,18 @@
   number = {1}
 }
 
+@article{shan_adaptive_1985,
+  title = {Adaptive Beamforming for Coherent Signals and Interference},
+  author = {Shan, Tie-Jun and Kailath, T.},
+  year = {1985},
+  month = jun,
+  volume = {33},
+  pages = {527--536},
+  journal = {IEEE Transactions on Acoustics, Speech, and Signal Processing},
+  language = {en},
+  number = {3}
+}
+
 @article{shang_vrsgd_2018,
   title = {{{VR}}-{{SGD}}: {{A Simple Stochastic Variance Reduction Method}} for {{Machine Learning}}},
   shorttitle = {{{VR}}-{{SGD}}},
@@ -7795,6 +9365,19 @@
   journal = {Johns Hopkins APL Technical Digest}
 }
 
+@article{siltanen_room_2007,
+  title = {The Room Acoustic Rendering Equation},
+  author = {Siltanen, Samuel and Lokki, Tapio and Kiminki, Sami and Savioja, Lauri},
+  year = {2007},
+  month = sep,
+  volume = {122},
+  pages = {1624--1635},
+  file = {/home/msca8h/Zotero/storage/27ACCIM8/Siltanen et al. - 2007 - The room acoustic rendering equation.pdf},
+  journal = {The Journal of the Acoustical Society of America},
+  language = {en},
+  number = {3}
+}
+
 @article{singh_hybrid_2017,
   title = {A Hybrid Algorithm for Speckle Noise Reduction of Ultrasound Images},
   author = {Singh, Karamjeet and Ranade, Sukhjeet Kaur and Singh, Chandan},
@@ -7804,6 +9387,28 @@
   pages = {55--69},
   journal = {Computer Methods and Programs in Biomedicine},
   language = {en}
+}
+
+@inproceedings{sirianunpiboon_hierarchical_2006,
+  title = {A Hierarchical {{Bayesian}} Approach to Direction Finding and Beamforming},
+  booktitle = {Proceedings of the {{IEEE Workshop}} on {{Sensor Array}} and {{Multichannel Processing}}},
+  author = {Sirianunpiboon, S. and Howard, S.D. and Asenstorfer, J.},
+  year = {2006},
+  pages = {21--25},
+  publisher = {{IEEE}},
+  address = {{Waltham, MA}}
+}
+
+@inproceedings{skilling_galilean_2019,
+  title = {Galilean and {{Hamiltonian Monte Carlo}}},
+  booktitle = {Proceedings of the {{International Workshop}} on {{Bayesian Inference}} and {{Maximum Entropy Methods}} in {{Science}} and {{Engineering}}},
+  author = {Skilling, John},
+  year = {2019},
+  month = dec,
+  abstract = {Galilean Monte Carlo (GMC) allows exploration in a big space along systematic trajectories, thus evading the square-root inefficiency of independent steps. Galilean Monte Carlo has greater generality and power than its historical precursor Hamiltonian Monte Carlo because it discards second-order propagation under forces in favour of elementary force-free motion. Nested sampling (for which GMC was originally designed) has similar dominance over simulated annealing, which loses power by imposing an unnecessary thermal blurring over energy.},
+  file = {/home/msca8h/Zotero/storage/V5ZXCG7X/Skilling - 2019 - Galilean and Hamiltonian Monte Carlo.pdf},
+  language = {en},
+  series = {Proceedings}
 }
 
 @article{skilling_nested_2006,
@@ -7860,6 +9465,12 @@
   pages = {261--265}
 }
 
+@techreport{Smith96exacttransition,
+  title = {Exact Transition Probabilities for the Independence Metropolis Sampler},
+  author = {Smith, Richard L. and Tierney, Luke},
+  year = {1996}
+}
+
 @incollection{snoek_can_2019,
   title = {Can {{You Trust Your Model}}'s {{Uncertainty}}? {{Evaluating Predictive Uncertainty Under Dataset Shift}}},
   booktitle = {Advances in {{Neural Information Processing Systems}} 32},
@@ -7871,7 +9482,7 @@
 
 @inproceedings{snoek_practical_2012,
   title = {Practical {{Bayesian}} Optimization of Machine Learning Algorithms},
-  booktitle = {Advances in {{Neural Information Processing Systems}}},
+  booktitle = {Adv. {{Neural Inf}}. {{Process}}. {{Syst}}.},
   author = {Snoek, Jasper and Larochelle, Hugo and Adams, Ryan P.},
   year = {2012},
   volume = {25},
@@ -7879,6 +9490,16 @@
   publisher = {{Curran Associates Inc.}},
   address = {{USA}},
   series = {{{NIPS}}'12}
+}
+
+@phdthesis{soares_underwater_2017,
+  title = {Underwater Simulation and Mapping Using Imaging Sonar through Ray Theory and {{Hilbert}} Maps},
+  author = {Soares, Eduardo Elael de Melo},
+  year = {2017},
+  month = mar,
+  file = {/home/msca8h/Zotero/storage/LM36SMYF/Soares - 2017 - Underwater simulation and mapping using imaging so.pdf},
+  school = {Federal University of Rio de Janeiro},
+  type = {Master {{Thesis}}}
 }
 
 @article{sobol_distribution_1967,
@@ -7891,6 +9512,16 @@
   journal = {USSR Computational Mathematics and Mathematical Physics},
   language = {en},
   number = {4}
+}
+
+@phdthesis{soli_high_2017,
+  title = {High Resolution Continuous Active Sonar},
+  author = {Soli, Jonathan Boyd},
+  year = {2017},
+  address = {{Department of Electrical and Computer Engineering}},
+  file = {/home/msca8h/Zotero/storage/PC7WFRQP/Soli - 2017 - High resolution continuous active sonar.pdf},
+  school = {Duke University},
+  type = {Doctoral {{Thesis}}}
 }
 
 @article{solonen_efficient_2012,
@@ -8002,10 +9633,42 @@
   number = {5}
 }
 
+@inproceedings{stahl_noiseresistant_1999,
+  title = {Noise-Resistant Weak-Structure Enhancement for Digital Radiography},
+  booktitle = {Proc. {{SPIE Med}}. {{Imag}}.},
+  author = {Stahl, Martin and Aach, Til and Buzug, Thorsten M. and Dippel, Sabine and Neitzel, Ulrich},
+  year = {1999},
+  month = may,
+  pages = {1406--1417},
+  address = {{San Diego, CA}}
+}
+
+@article{stahli_bayesian_2021,
+  title = {Bayesian Approach for a Robust Speed-of-Sound Reconstruction Using Pulse-Echo Ultrasound},
+  author = {Stahli, Patrick and Frenz, Martin and Jaeger, Michael},
+  year = {2021},
+  month = feb,
+  volume = {40},
+  pages = {457--467},
+  file = {/home/msca8h/Zotero/storage/KHHFDFM5/Stahli et al. - 2021 - Bayesian Approach for a Robust Speed-of-Sound Reco.pdf},
+  journal = {IEEE Transactions on Medical Imaging},
+  number = {2}
+}
+
 @article{stan2020,
   title = {Stan Modeling Language Users Guide and Reference Manual, Version 2.23.0},
   author = {{Stan Development Team}},
   year = {2020}
+}
+
+@article{stergiopoulos_implementation_1998,
+  title = {Implementation of Adaptive and Synthetic-Aperture Processing Schemes in Integrated Active-Passive Sonar Systems},
+  author = {Stergiopoulos, S.},
+  year = {Feb./1998},
+  volume = {86},
+  pages = {358--398},
+  journal = {Proceedings of the IEEE},
+  number = {2}
 }
 
 @inproceedings{stich_local_2018,
@@ -8021,6 +9684,19 @@
   file = {/home/msca8h/Zotero/storage/W8RQ38CV/Stich - 2018 - Local SGD Converges Fast and Communicates Little.pdf;/home/msca8h/Zotero/storage/WS8MI8Z6/1805.html},
   keywords = {90C06; 68W40; 68W10,Computer Science - Distributed; Parallel; and Cluster Computing,Computer Science - Machine Learning,F.2.1,G.1.6,Mathematics - Optimization and Control},
   primaryclass = {cs, math}
+}
+
+@article{streijl_mean_2016,
+  title = {Mean Opinion Score ({{MOS}}) Revisited: Methods and Applications, Limitations and Alternatives},
+  shorttitle = {Mean Opinion Score ({{MOS}}) Revisited},
+  author = {Streijl, Robert C. and Winkler, Stefan and Hands, David S.},
+  year = {2016},
+  month = mar,
+  volume = {22},
+  pages = {213--227},
+  journal = {Multimedia Systems},
+  language = {en},
+  number = {2}
 }
 
 @inproceedings{strens_evolutionary_2003,
@@ -8150,6 +9826,28 @@
   primaryclass = {cs, stat}
 }
 
+@article{synnes_wideband_2017,
+  title = {Wideband Synthetic Aperture Sonar Backprojection with Maximization of Wave Number Domain Support},
+  author = {Synnes, Stig Asle Vaksvik and Hunter, Alan Joseph and Hansen, Roy Edgar and Sabo, Torstein Olsmo and Callow, Hayden John and {van Vossen}, Robbert and Austeng, Andreas},
+  year = {2017},
+  month = oct,
+  volume = {42},
+  pages = {880--891},
+  file = {/home/msca8h/Zotero/storage/2FUAGWIY/Synnes et al. - 2017 - Wideband Synthetic Aperture Sonar Backprojection W.pdf},
+  journal = {IEEE Journal of Oceanic Engineering},
+  number = {4}
+}
+
+@phdthesis{szasz_advanced_2016,
+  title = {Advanced Beamforming Techniques in Ultrasound Imaging and the Associated Inverse Problems},
+  author = {Szasz, Teodora},
+  year = {2016},
+  month = oct,
+  keywords = {beamforming,formation des voies,Imagerie ultrasonore médicale,inverse problems,problèmes inverses,ultrasound imaging},
+  school = {Universit\'e Toulouse 3 Paul Sabatier (UT3 Paul Sabatier)},
+  type = {Theses}
+}
+
 @article{taasti_automating_2020,
   title = {Automating Proton Treatment Planning with Beam Angle Selection Using {{Bayesian}} Optimization},
   author = {Taasti, Vicki T. and Hong, Linda and Shim, Jin Sup(Andy) and Deasy, Joseph O. and Zarepisheh, Masoud},
@@ -8179,6 +9877,18 @@
   publisher = {{IEEE Comput. Soc}},
   address = {{Valencia, Spain}},
   file = {/home/msca8h/Documents/parallel_scheduling/06882d3232d6c887834fa9027a5cd25055d9.pdf;/home/msca8h/Zotero/storage/4ZVCP797/Tabirca et al. - 2001 - Feedback guided dynamic loop scheduling\; A theoret.pdf}
+}
+
+@article{tan_monte_2006,
+  title = {Monte {{Carlo}} Integration with Acceptance-Rejection},
+  author = {Tan, Zhiqiang},
+  year = {2006},
+  month = sep,
+  volume = {15},
+  pages = {735--752},
+  journal = {Journal of Computational and Graphical Statistics},
+  language = {en},
+  number = {3}
 }
 
 @inproceedings{tang_highthroughput_2020,
@@ -8219,7 +9929,7 @@
 
 @inproceedings{tay_ultrasound_2006,
   title = {Ultrasound Despeckling Using an Adaptive Window Stochastic Approach},
-  booktitle = {International {{Conference}} on {{Image Processing}}},
+  booktitle = {Proc. {{Int}}. {{Conf}}. {{Image Process}}.},
   author = {Tay, Peter C. and Acton, Scott T. and Hossack, John A.},
   year = {2006},
   month = oct,
@@ -8263,6 +9973,15 @@
   number = {4}
 }
 
+@phdthesis{theologitis_bayesian_2016,
+  title = {Bayesian Estimation of Optimal Portfolio: {{Theory}} and Practice},
+  author = {Theologitis, Theodoros},
+  year = {2016},
+  file = {/home/msca8h/Zotero/storage/SZLTBXZM/Theologitis - 2016 - Bayesian estimation of optimal portfolio Theory a.pdf},
+  school = {Stockholm University},
+  type = {Master {{Thesis}}}
+}
+
 @article{thijssen_texture_1990,
   title = {Texture in Tissue Echograms. {{Speckle}} or Information?},
   author = {Thijssen, J. M. and Oosterveld, B. J.},
@@ -8273,6 +9992,23 @@
   journal = {Journal of Ultrasound in Medicine},
   language = {en},
   number = {4}
+}
+
+@article{thomas_coherenceinduced_2021,
+  title = {Coherence-{{Induced Bias Reduction}} in {{Synthetic Aperture Sonar Along}}-{{Track Micronavigation}}},
+  author = {Thomas, Benjamin and Hunter, Alan},
+  year = {2021},
+  pages = {1--17},
+  journal = {IEEE Journal of Oceanic Engineering}
+}
+
+@phdthesis{thomas_phase_2020,
+  title = {Phase Preserving {{3D}} Micro-Navigation for Interferometric Synthetic Aperture Sonar},
+  author = {Thomas, Benjamin},
+  year = {2020},
+  file = {/home/msca8h/Zotero/storage/RI9UDZRE/Thomas - 2020 - Phase preserving 3D micro-navigation for interfero.pdf},
+  school = {University of Bath},
+  type = {Doctoral {{Thesis}}}
 }
 
 @article{thompson_decline_2018,
@@ -8363,6 +10099,21 @@
   author = {Tracey, Brendan D and Wolpert, David},
   year = {2018},
   pages = {1659}
+}
+
+@article{tran_model_2021,
+  title = {Model {{Selection}} for {{Bayesian Autoencoders}}},
+  author = {Tran, Ba-Hien and Rossi, Simone and Milios, Dimitrios and Michiardi, Pietro and Bonilla, Edwin V. and Filippone, Maurizio},
+  year = {2021},
+  month = jun,
+  abstract = {We develop a novel method for carrying out model selection for Bayesian autoencoders (BAEs) by means of prior hyper-parameter optimization. Inspired by the common practice of type-II maximum likelihood optimization and its equivalence to Kullback-Leibler divergence minimization, we propose to optimize the distributional sliced-Wasserstein distance (DSWD) between the output of the autoencoder and the empirical data distribution. The advantages of this formulation are that we can estimate the DSWD based on samples and handle high-dimensional problems. We carry out posterior estimation of the BAE parameters via stochastic gradient Hamiltonian Monte Carlo and turn our BAE into a generative model by fitting a flexible Dirichlet mixture model in the latent space. Consequently, we obtain a powerful alternative to variational autoencoders, which are the preferred choice in modern applications of autoencoders for representation learning with uncertainty. We evaluate our approach qualitatively and quantitatively using a vast experimental campaign on a number of unsupervised learning tasks and show that, in small-data regimes where priors matter, our approach provides state-of-the-art results, outperforming multiple competitive baselines.},
+  archiveprefix = {arXiv},
+  eprint = {2106.06245},
+  eprinttype = {arxiv},
+  file = {/home/msca8h/Zotero/storage/C5PAT2E6/Tran et al. - 2021 - Model Selection for Bayesian Autoencoders.pdf;/home/msca8h/Zotero/storage/I6PPVPIX/2106.html},
+  journal = {arXiv:2106.06245 [cs, stat]},
+  keywords = {Computer Science - Machine Learning,Statistics - Machine Learning},
+  primaryclass = {cs, stat}
 }
 
 @article{tran2016edward,
@@ -8468,6 +10219,15 @@
   number = {5}
 }
 
+@phdthesis{vanderveken_bayesian_2019,
+  title = {Bayesian Approach to Portfolio Selection},
+  author = {Vanderveken, Rodolphe},
+  year = {2019},
+  file = {/home/msca8h/Zotero/storage/EKYV4LJV/Vanderveken - 2019 - Bayesian approach to portfolio selection.pdf},
+  school = {Louvain School of Management},
+  type = {Master {{Thesis}}}
+}
+
 @article{vanderwerken_parallel_2013,
   title = {Parallel {{Markov Chain Monte Carlo}}},
   author = {VanDerwerken, Douglas N. and Schmidler, Scott C.},
@@ -8493,6 +10253,30 @@
   file = {/home/msca8h/Zotero/storage/VWMLH6PX/Vanli et al. - 2018 - Global Convergence Rate of Proximal Incremental Ag.pdf},
   journal = {SIAM Journal on Optimization},
   language = {en},
+  number = {2}
+}
+
+@book{vantrees_optimum_2002a,
+  title = {Optimum Array Processing},
+  shorttitle = {Detection, Estimation, and Modulation Theory. 4},
+  author = {Van Trees, Harry L.},
+  year = {2002},
+  publisher = {{Wiley}},
+  address = {{New York, NY}},
+  language = {eng},
+  number = {4},
+  series = {Detection, Estimation, and Modulation Theory}
+}
+
+@article{vanveen_beamforming_1988,
+  title = {Beamforming: {{A}} Versatile Approach to Spatial Filtering},
+  shorttitle = {Beamforming},
+  author = {Van Veen, B.D. and Buckley, K.M.},
+  year = {1988},
+  month = apr,
+  volume = {5},
+  pages = {4--24},
+  journal = {IEEE ASSP Magazine},
   number = {2}
 }
 
@@ -8522,6 +10306,49 @@
   keywords = {Computer Science - Distributed; Parallel; and Cluster Computing,Statistics - Computation}
 }
 
+@inproceedings{veach_bidirectional_1994,
+  title = {Bidirectional Estimators for Light Transport},
+  booktitle = {Proceedings of the {{Eurographics Rendering Workshop}}},
+  author = {Veach, Eric and Guibas, Leonidas J.},
+  year = {1994},
+  month = jun
+}
+
+@inproceedings{veach_optimally_1995,
+  title = {Optimally Combining Sampling Techniques for {{Monte Carlo}} Rendering},
+  booktitle = {Proceedings of the 22nd Annual Conference on Computer Graphics and Interactive Techniques},
+  author = {Veach, Eric and Guibas, Leonidas J.},
+  year = {1995},
+  pages = {419--428},
+  publisher = {{ACM Press}},
+  address = {{Not Known}},
+  file = {/home/msca8h/Zotero/storage/2MHRQ3TB/Veach and Guibas - 1995 - Optimally combining sampling techniques for Monte .pdf},
+  language = {en},
+  series = {{{SIGGRAPH}}'95}
+}
+
+@phdthesis{veach_robust_1997,
+  title = {Robust {{Monte Carlo}} Methods for Light Transport Simulation},
+  author = {Veach, Eric},
+  year = {1997},
+  file = {/home/msca8h/Zotero/storage/SRLLD79Q/Veach - 1997 - Robust Monte Carlo methods for light transport sim.pdf},
+  school = {Stanford University},
+  type = {Doctoral {{Thesis}}}
+}
+
+@inproceedings{vegas-sanchez-ferrero_probabilisticdriven_2010,
+  title = {Probabilistic-{{Driven Oriented Speckle Reducing Anisotropic Diffusion}} with {{Application}} to {{Cardiac Ultrasonic Images}}},
+  booktitle = {Med. {{Image Comput}}. {{Comput}}.-{{Assisted Intervention}}},
+  author = {{Vegas-Sanchez-Ferrero}, G. and {Aja-Fernandez}, S. and {Martin-Fernandez}, M. and Frangi, A. F. and Palencia, C.},
+  year = {2010},
+  volume = {6361},
+  pages = {518--525},
+  publisher = {{Springer Berlin Heidelberg}},
+  address = {{Berlin, Heidelberg}},
+  file = {/home/msca8h/Zotero/storage/7FCQGGNX/Hutchison et al. - 2010 - Probabilistic-Driven Oriented Speckle Reducing Ani.pdf},
+  series = {{{MICCAI}}'10}
+}
+
 @article{vehtari_pareto_2021,
   title = {Pareto Smoothed Importance Sampling},
   author = {Vehtari, Aki and Simpson, Daniel and Gelman, Andrew and Yao, Yuling and Gabry, Jonah},
@@ -8548,6 +10375,30 @@
   language = {en}
 }
 
+@article{vorobyov_principles_2013,
+  title = {Principles of Minimum Variance Robust Adaptive Beamforming Design},
+  author = {Vorobyov, Sergiy A.},
+  year = {2013},
+  month = dec,
+  volume = {93},
+  pages = {3264--3277},
+  journal = {Signal Processing},
+  language = {en},
+  number = {12}
+}
+
+@article{vu_bayesian_2013,
+  title = {A {{Bayesian}} Approach to {{SAR}} Imaging},
+  author = {Vu, Duc and Xue, Ming and Tan, Xing and Li, Jian},
+  year = {2013},
+  month = may,
+  volume = {23},
+  pages = {852--858},
+  journal = {Digital Signal Processing},
+  language = {en},
+  number = {3}
+}
+
 @article{vu_bf_2012,
   title = {\$\{\textbackslash bf \vphantom\}{{S}}\vphantom\{\}\_\{3\}\$: {{A Spectral}} and {{Spatial Measure}} of {{Local Perceived Sharpness}} in {{Natural Images}}},
   shorttitle = {\$\{\textbackslash bf \vphantom\}{{S}}\vphantom\{\}\_\{3\}\$},
@@ -8570,6 +10421,16 @@
   publisher = {{IOP Publishing}},
   abstract = {The Optimized Sparse Kernel Interface (OSKI) is a collection of low-level primitives that provide automatically tuned computational kernels on sparse matrices, for use by solver libraries and applications. These kernels include sparse matrix-vector multiply and sparse triangular solve, among others. The primary aim of this interface is to hide the complex decisionmaking process needed to tune the performance of a kernel implementation for a particular user's sparse matrix and machine, while also exposing the steps and potentially non-trivial costs of tuning at run-time. This paper provides an overview of OSKI, which is based on our research on automatically tuned sparse kernels for modern cache-based superscalar machines.},
   journal = {Journal of Physics: Conference Series}
+}
+
+@inproceedings{vuylsteke_multiscale_1994,
+  title = {Multiscale Image Contrast Amplification ({{MUSICA}})},
+  booktitle = {Proc. {{SPIE Med}}. {{Imag}}.},
+  author = {Vuylsteke, Pieter and Schoeters, Emile P.},
+  year = {1994},
+  month = may,
+  pages = {551--560},
+  address = {{Newport Beach, CA}}
 }
 
 @article{wai_decentralized_2017,
@@ -8608,6 +10469,17 @@
   journal = {arXiv:1810.08313 [cs, stat]},
   keywords = {Computer Science - Distributed; Parallel; and Cluster Computing,Computer Science - Machine Learning,Statistics - Machine Learning},
   primaryclass = {cs, stat}
+}
+
+@article{wang_analysis_2018,
+  title = {Analysis and Design of Optimum Sparse Array Configurations for Adaptive Beamforming},
+  author = {Wang, Xiangrong and Amin, Moeness and Cao, Xianbin},
+  year = {2018},
+  month = jan,
+  volume = {66},
+  pages = {340--351},
+  journal = {IEEE Transactions on Signal Processing},
+  number = {2}
 }
 
 @article{wang_batched_2017,
@@ -8817,6 +10689,17 @@
   series = {{{ECMI}}}
 }
 
+@article{weickert_coherenceenhancing_1999,
+  title = {{Coherence-enhancing diffusion filtering}},
+  author = {Weickert, Joachim},
+  year = {1999},
+  volume = {31},
+  pages = {111--127},
+  journal = {International Journal of Computer Vision},
+  language = {Int. J. Comput. Vision},
+  number = {2/3}
+}
+
 @article{wenzel_how_2020,
   title = {How {{Good}} Is the {{Bayes Posterior}} in {{Deep Neural Networks Really}}?},
   author = {Wenzel, Florian and Roth, Kevin and Veeling, Bastiaan S. and {\'S}wi{\k{a}}tkowski, Jakub and Tran, Linh and Mandt, Stephan and Snoek, Jasper and Salimans, Tim and Jenatton, Rodolphe and Nowozin, Sebastian},
@@ -8893,6 +10776,17 @@
   series = {{{NIPS}}'18}
 }
 
+@article{winder_ii_1975,
+  title = {{{II}}. {{Sonar System Technology}}},
+  author = {Winder, A.A.},
+  year = {1975},
+  month = sep,
+  volume = {22},
+  pages = {291--332},
+  journal = {IEEE Transactions on Sonics and Ultrasonics},
+  number = {5}
+}
+
 @article{wolberg_multisurface_1990,
   title = {Multisurface Method of Pattern Separation for Medical Diagnosis Applied to Breast Cytology.},
   author = {Wolberg, W. H. and Mangasarian, O. L.},
@@ -8953,6 +10847,28 @@
   number = {1}
 }
 
+@inproceedings{xiang-jian_imaging_2020,
+  title = {An Imaging Algorithm for High-Speed Side-Scan Sonar Based on Multi-Beam Forming Technology},
+  booktitle = {Proceedings of {{Global Oceans}}},
+  author = {{Xiang-jian}, Meng and Wen, Xu and {Bin-jian}, Shen and Xinxin, Guo and {Xin-yu}, Liu and Yushi, Liu},
+  year = {2020},
+  month = oct,
+  pages = {1--6},
+  publisher = {{IEEE}},
+  address = {{Biloxi, MS, USA}},
+  series = {Global {{Oceans}}'20}
+}
+
+@article{xiaohuihao_novel_1999,
+  title = {A Novel Multiscale Nonlinear Thresholding Method for Ultrasonic Speckle Suppressing},
+  author = {{Xiaohui Hao} and {Shangkai Gao} and {Xiaorong Gao}},
+  year = {Sept./1999},
+  volume = {18},
+  pages = {787--794},
+  journal = {IEEE Transactions on Medical Imaging},
+  number = {9}
+}
+
 @inproceedings{xie_lightercommunication_2016,
   title = {Lighter-{{Communication Distributed Machine Learning}} via {{Sufficient Factor Broadcasting}}.},
   booktitle = {{{UAI}}},
@@ -8986,6 +10902,17 @@
   journal = {Statistics and Computing},
   language = {en},
   number = {1}
+}
+
+@article{xulizong_speckle_1998,
+  title = {Speckle Reduction and Contrast Enhancement of Echocardiograms via Multiscale Nonlinear Processing},
+  author = {{Xuli Zong} and Laine, A.F. and Geiser, E.A.},
+  year = {Aug./1998},
+  volume = {17},
+  pages = {532--540},
+  file = {/home/msca8h/Zotero/storage/9VABFKRJ/Xuli Zong et al. - 1998 - Speckle reduction and contrast enhancement of echo.pdf},
+  journal = {IEEE Transactions on Medical Imaging},
+  number = {4}
 }
 
 @article{yan_bayesian_2018,
@@ -9051,14 +10978,26 @@
   number = {1}
 }
 
+@article{yocom_bayesian_2011,
+  title = {A {{Bayesian}} Approach to Passive Sonar Detection and Tracking in the Presence of Interferers},
+  author = {Yocom, Bryan A. and La Cour, Brian R. and Yudichak, Thomas W.},
+  year = {2011},
+  month = jul,
+  volume = {36},
+  pages = {386--405},
+  journal = {IEEE Journal of Oceanic Engineering},
+  number = {3}
+}
+
 @inproceedings{yongjianyu_generalized_2004,
   title = {Generalized Speckle Reducing Anisotropic Diffusion for Ultrasound Imagery},
-  booktitle = {Proceedings. 17th {{IEEE Symposium}} on {{Computer}}-{{Based Medical Systems}}},
+  booktitle = {Proc. {{IEEE Symp}}. {{Comput}}.-{{Based Med}}. {{Syst}}.},
   author = {{Yongjian Yu} and Molloy, J.A. and Acton, S.T.},
   year = {2004},
   pages = {279--284},
   publisher = {{IEEE}},
-  address = {{Bethesda, MD, USA}}
+  address = {{Bethesda, MD, USA}},
+  series = {{{CBMS}}'04}
 }
 
 @article{yongjianyu_speckle_2002,
@@ -9072,6 +11011,17 @@
   journal = {IEEE Transactions on Image Processing},
   language = {en},
   number = {11}
+}
+
+@article{yongyue_nonlinear_2006,
+  title = {Nonlinear Multiscale Wavelet Diffusion for Speckle Suppression and Edge Enhancement in Ultrasound Images},
+  author = {{Yong Yue} and Croitoru, M.M. and Bidani, A. and Zwischenberger, J.B. and Clark, J.W.},
+  year = {2006},
+  month = mar,
+  volume = {25},
+  pages = {297--311},
+  journal = {IEEE Transactions on Medical Imaging},
+  number = {3}
 }
 
 @inproceedings{you_imagenet_2018,
@@ -9229,7 +11179,7 @@
 
 @inproceedings{zhang_multiscale_2006,
   title = {Multiscale Nonlinear Diffusion and Shock Filter for Ultrasound Image Enhancement},
-  booktitle = {Proceedings of the {{IEEE Computer Society Conference}} on {{Computer Vision}} and {{Pattern Recognition}}},
+  booktitle = {Proc. {{IEEE Comput}}. {{Soc}}. {{Conf}}. {{Comput}}. {{Vision Pattern Recognit}}.},
   author = {Zhang, Fan and Yoo, Yang Mo and Kim, Yongmin and Zhang, Lichen and Koh, Liang Mong},
   year = {2006},
   volume = {2},
@@ -9248,6 +11198,18 @@
   pages = {200--211},
   journal = {IEEE Transactions on Medical Imaging},
   number = {2}
+}
+
+@article{zhang_nonparametric_1996,
+  title = {Nonparametric Importance Sampling},
+  author = {Zhang, Ping},
+  year = {1996},
+  month = sep,
+  volume = {91},
+  pages = {1245--1253},
+  journal = {Journal of the American Statistical Association},
+  language = {en},
+  number = {435}
 }
 
 @article{zhang_optimizing_2020,
@@ -9335,7 +11297,7 @@
 
 @inproceedings{zhu_nonlocal_2017,
   title = {A Non-Local Low-Rank Framework for Ultrasound Speckle Reduction},
-  booktitle = {{{IEEE Conference}} on {{Computer Vision}} and {{Pattern Recognition}}},
+  booktitle = {{{IEEE Conf}}. {{Comput}}. {{Vision Pattern Recognit}}.},
   author = {Zhu, Lei and Fu, Chi-Wing and Brown, Michael S. and Heng, Pheng-Ann},
   year = {2017},
   month = jul,

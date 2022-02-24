@@ -1,0 +1,53 @@
+
+\begin{tikzpicture}
+  \begin{semilogyaxis}[
+      tuftelike,
+      xlabel={
+        \footnotesize
+        Iteration
+      },
+      ylabel={
+        \footnotesize
+        KL Divergence
+      },
+      xtick={1,1000,2000,3000,4000,5000},
+      xticklabels={1,1k,2k,3k,4k,5k},
+      ytick={1,10,100,1000},
+      %% ylabel near ticks,
+      %% xlabel near ticks,
+      log basis y=10,
+      minor tick length=1.5pt,
+      major tick length=2.5pt,
+      every tick/.style={
+        black,
+        semithick,
+      },
+      xmin  =1,
+      xmax  =5000,
+      ymin  =0.6,
+      ymax  =1000,
+      % smooth,
+      % enlargelimits = true,
+      % ymajorgrids,
+      % yminorgrids,
+      % xmajorgrids,
+      width =4.5cm,
+      height=3.5cm,
+      % legend pos=north,
+      legend style = { 
+        legend columns = 1,
+        draw           = none,
+        at={(-1.7,0)},
+        anchor=south west,
+        legend cell align={left},
+    }]
+    \input{figures/kl_pimh_16}
+    \addlegendentry{\scriptsize par.-IMH \(N=16\) (ours)}
+    \input{figures/kl_pimh_64}
+    \addlegendentry{\scriptsize par.-IMH \(N=64\) (ours)}
+    \input{figures/kl_simh_16}
+    \addlegendentry{\scriptsize seq.-IMH \(N=16\)}
+    \input{figures/kl_simh_64}
+    \addlegendentry{\scriptsize seq.-IMH \(N=64\)}
+  \end{semilogyaxis}
+\end{tikzpicture}

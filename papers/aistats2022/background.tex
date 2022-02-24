@@ -6,25 +6,25 @@
 \paragraph{Score Function and Variational Inference}
 A typical way to perform VI is to use stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951, bottou_online_1999}), provided that unbiased gradient estimates of the optimization target \(g(\vlambda)\) are available.
 In this case, SGD is performed by repeating the update
-\vspace{-0.02in}
+%\vspace{-0.02in}
 \begin{align}
-  \vlambda_{t} = \vlambda_{t-1} + \gamma_{t} \, g\left(\vlambda_{t-1}\right)
+  \vlambda_{t} = \vlambda_{t-1} + \gamma_{t} \, \vg\left(\vlambda_{t-1}\right)
 \end{align}
 where \(\gamma_1, \ldots, \gamma_T\) is a step-size schedule following the conditions of~\citet{robbins_stochastic_1951, bottou_online_1999}.
-In the case of inclusive KL divergence minimization, obtaining \(g\) corresponds to estimating
+In the case of inclusive KL divergence minimization, obtaining \(\vg\) corresponds to estimating
 %
-\vspace{-0.02in}
+%\vspace{-0.02in}
 \begin{align}
   \nabla_{\vlambda} \DKL{p}{q_{\lambda}}
   &= \Esub{p(\vz\mid\vx)}{ - \nabla_{\vlambda} \log q_{\vlambda}(\vz) } \\
-  &= - \Esub{p(\vz\mid\vx)}{ s\,(\vz; \vlambda) } \\
-  &\approx g(\vlambda)
+  &= - \Esub{p(\vz\mid\vx)}{ \vs\,(\vz; \vlambda) } \\
+  &\approx \vg\left(\vlambda\right)
 \end{align}
 %\vspace{-0.05in}
 %
 where \(s\,(\vz; \vlambda) = \nabla_{\vlambda} \log q_{\vlambda}(\vz)\) is known as the \textit{score function}.
 Evidently, estimating \(\nabla_{\vlambda} \DKL{p}{q_{\lambda}}\) requires integrating the score function over \(p(\vz\mid\vx)\), which is prohibitive.
-Different inclusive variational inference methods form a different estimator \(g\).
+Different inclusive variational inference methods form a different estimator \(\vg\).
 
 \vspace{-0.05in}
 \paragraph{Importance Sampling}
@@ -32,9 +32,9 @@ When it is easy to sample from the variational approximation \(q_{\lambda}(\vz)\
 \vspace{-0.05in}
 \begin{align}
   \Esub{p(\vz\mid\vx)}{ s\,(\vz; \vlambda) } 
-  &\propto \Esub{q_{\vlambda}}{ w\,(\vz) \, s\,(\vz; \vlambda) } \\
-  &\approx \frac{1}{N} \sum^{N}_{i=1} w\,(\vz^{(i)}) \, s\,(\vz^{(i)}; \vlambda) \\
-  &= g_{IS}(\vlambda)
+  &\propto \Esub{q_{\vlambda}}{ w\,(\vz) \, \vs\,(\vz; \vlambda) } \\
+  &\approx \frac{1}{N} \sum^{N}_{i=1} w\,(\vz^{(i)}) \, \vs\,(\vz^{(i)}; \vlambda) \\
+  &= \vg_{IS}(\vlambda)
 \end{align}
 %\vspace{-0.05in}
 where \(w\,(\vz) = p\,(\vz,\vx) / q_{\vlambda}(\vz)\) is known as the \textit{importance weight}, and \(\vz^{(1)},\, \ldots,\, \vz^{(N)}\) are \(N\) independent samples from \(q_{\vlambda}(\vz)\).
