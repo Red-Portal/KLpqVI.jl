@@ -1,0 +1,43 @@
+
+\begin{proposition}\label{thm:imh_tail}
+  Let \(w\left(\vz\right) > 0\), \(\pi\left(\vz\right) > 0\) for all \(\vz \in \mathcal{Z}\), and define \(w^* = \sup_{\vz} w\left(\vz\right)\).
+  The ratio between the \(t\)-step marginal kernel and the invariant distribution is bounded with respect to \(t\) and the initial target value \(\pi\left(\vz\right)\) such as
+  {\small
+  \[
+  \frac{K^t\left(\vz, \vz^*\right)}{\pi\left(\vz^*\right)} \leq
+    \max\left\{\;
+    \frac{t}{w^*} \, {\left(1 - \frac{1}{w^*}\right)}^{t-1},
+    \frac{1}{\pi\left(\vz\right)} \, {\left(1-\frac{1}{w^*}\right)}^t
+    \;\right\},
+  \]
+  }
+  which is finite for all \(t\) if \(w^* < \infty\).
+\end{proposition}
+\begin{proofEnd}
+  \begin{align}
+    \frac{K^t\left(\vz, \vz^*\right)}{\pi\left(\vz^*\right)}
+    &= T_t\left(\,\max\{\, w\left(\vz\right), w\left(\vz^*\right)\,\}\,\right)
+    + \frac{\lambda^t\left(w\left(\vz\right)\right)}{\pi\left(\vz\right)} \, \delta_{\vz}\left(\vz^*\right)
+    \\
+    &\leq
+    \frac{t}{\max\{\, w\left(\vz\right), w\left(\vz^*\right)\,\}} \, {\left(1 - \frac{1}{w^*}\right)}^{t-1} + \frac{\lambda^t\left(w\left(\vz\right)\right)}{\pi\left(\vz\right)} \, \delta_{\vz}\left(\vz^*\right)
+    &\text{(\cref{thm:tn_bound})}
+    \\
+    &\leq
+    \frac{t}{w^*} \, {\left(1 - \frac{1}{w^*}\right)}^{t-1} + \frac{\lambda^t\left(w\left(\vz\right)\right)}{\pi\left(\vz\right)} \, \delta_{\vz}\left(\vz^*\right).
+  \end{align}
+
+  And, since the essential supremum of \(\lambda\left(w\right)\) is \(1 - \frac{1}{w^*}\) as shown by~\citet{Smith96exacttransition},
+  \begin{align}
+    \frac{K^t\left(\vz, \vz^*\right)}{\pi\left(\vz^*\right)}
+    &\leq
+    \max\left\{\;
+    \frac{t}{w^*} \, {\left(1 - \frac{1}{w^*}\right)}^{t-1},
+    \frac{1}{\pi\left(\vz\right)} \, {\left(1-\frac{1}{w^*}\right)}^t
+    \;\right\}.
+  \end{align}
+\end{proofEnd}
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:
