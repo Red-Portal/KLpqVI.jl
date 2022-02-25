@@ -1,17 +1,18 @@
 
-\vspace{-0.1in}
+\vspace{-0.15in}
 \section{Discussions}\label{section:discussion}
 \vspace{-0.1in}
-In this paper, we compared three different MCMC score estimators used for inclusive KL divergence minimization.
-Among the three estimators, the parallel state estimator that we proposed showed substantial variance reduction when increasing the number of samples.
-We demonstrated the performance of the parallel state estimator on general Bayesian inference tasks.
+In this paper, we presented the parallel state estimator for inclusive KL divergence minimization.
+Compared to previously proposed estimation schemes, our estimator enjoys substantially low variance.
+We also showed that the parallel state estimator does not result in higher bias in general.
+We demonstrated empirical evidence of our analysis on Bayesian inference problems.
 
 In our results, minimizing the inclusive KL divergence showed to be competitive against exclusive KL divergence minimization.
-This is not in line with the previous conclusions of~\citet{dhaka_challenges_2021} that inclusive KL divergence does not work in high-dimensional problems (\citeauthor{dhaka_challenges_2021} consider few hundreds of dimensions).
-While it is true that the inclusive KL fails in high dimensional and \textit{correlated} posteriors, it is questionable how correlated posteriors really are in practice.
-Also, as shown in~\cref{fig:logistic} using the parallel estimator for score climbing results in vastly improved performance.
-This suggests that the negative results on realistic problems obtained by~\citet{dhaka_challenges_2021} may be a problem of the inference algorithm rather than the inclusive KL itself.
-Our results motivate the development of inference algorithms for alternative divergence measures, including the inclusive KL. 
+This is against the conclusions of~\citet{dhaka_challenges_2021} that the inclusive KL does not work in high-dimensional problems (\citeauthor{dhaka_challenges_2021} consider few hundreds of dimensions).
+Theoretically, dimensionality becomes a real challenge when the posterior has complex nonlinear correlations.
+A practical question would be how correlated our posteriors really are in practice.
+Also, many of the benefits of alternative divergences are shadowed by the challenges in our inference algorithms.
+Therefore, our results motivate the development of better inference algorithms for alternative divergence measures, including the inclusive KL. 
 
 %An interesting direction for future research would be to invstigate whether such result 
 %This is against the conclusions of~\citet{dhaka_challenges_2021} that exclusive VI should outperform inclusive VI in high-dimensions. 

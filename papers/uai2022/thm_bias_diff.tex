@@ -1,6 +1,6 @@
 
-\begin{theoremEnd}{theorem}
-  When using the IMH kernel, the reduction in bias by using the sequential state estimator \(\vg_{\text{seq.-IMH}}\) instead of the parallel state estimator \(\vg_{\text{par.-IMH}}\) is bounded as
+\begin{theoremEnd}{theorem}\label{thm:thm_bias_diff}
+  Assuming \(\eta\left(\vz\right) < M \, \pi\left(\vz\right)\) for some \(M < \infty\), when using the IMH kernel, the reduction in bias by using the sequential state estimator with \(N\) states instead of the parallel state estimator with \(N\) chains is bounded as
   {\small
   \begin{align*}
     &\abs{
@@ -15,9 +15,10 @@
     C_2 \, \left( 1 - \frac{1}{w^*} \right)
   \end{align*}
   }
-  for some constant \(C_1 > 0\) and \(C_2 > 0\).
+  for some positive constants \(C_1\) and \(C_2\).
 \end{theoremEnd}
 \begin{proofEnd}
+  {\small
   \begin{align}
     &\abs{
       \text{Bias}\left[\vg_{\text{seq.-IMH}}\right]
@@ -27,57 +28,74 @@
     \\
     &\leq
     \norm{
-      \int \eta\left(\vz\right) \int \frac{1}{N} \sum_{n=1}^{N} K^n\left(\vz, \vz^*\right) \vs\left(\vz^*\right) d\vz^* d\vz
+      \int \eta\left(\vz\right) \int \frac{1}{N} \sum_{n=1}^{N} K^n\left(\vz, \vz^*\right) \vs\left(\vlambda;\vz^*\right) d\vz^* \, d\vz
       -
-      \int \eta\left(\vz\right) \int \frac{1}{N} \sum_{n=1}^{N} K\left(\vz, \vz^*\right) \vs\left(\vz^*\right) d\vz^* d\vz
-    }
+      \int \eta\left(\vz\right) \int \frac{1}{N} \sum_{n=1}^{N} K\left(\vz^{(n)}, \vz^*\right) \vs\left(\vlambda;\vz^*\right) d\vz^* \, d\vz_{(1:N)}
+    }&\text{\footnotesize(Triangle Inequality)}
     \\
     &=
     \norm{
-      \int \eta\left(\vz\right) \int \frac{1}{N} \sum_{n=1}^{N} \left(K^n\left(\vz, \vz^*\right) - K\left(\vz, \vz^*\right) \right) \vs\left(\vz^*\right) d\vz^* d\vz
+      \int \eta\left(\vz\right) \int \frac{1}{N} \sum_{n=1}^{N} K^n\left(\vz, \vz^*\right) \vs\left(\vlambda;\vz^*\right) d\vz^* \, d\vz
+      -
+      \int \eta\left(\vz\right) \int \frac{1}{N} \sum_{n=1}^{N} K\left(\vz, \vz^*\right) \vs\left(\vlambda;\vz^*\right) d\vz^* \, d\vz
+    }&\text{\footnotesize(Independence)}
+    \\
+    &=
+    \norm{
+      \int \eta\left(\vz\right) \int \frac{1}{N} \sum_{n=1}^{N} \left(K^n\left(\vz, \vz^*\right) - K\left(\vz, \vz^*\right) \right) \vs\left(\vlambda;\vz^*\right) d\vz^* \, d\vz
     }
     \\
     &\leq
     \frac{1}{N} \sum_{n=1}^{N} 
     \norm{
-      \int \int \eta\left(\vz\right) \left(K^n\left(\vz, \vz^*\right) - K\left(\vz, \vz^*\right) \right) \vs\left(\vz^*\right) d\vz^* d\vz
-    }
+      \int \int \eta\left(\vz\right) \left(K^n\left(\vz, \vz^*\right) - K\left(\vz, \vz^*\right) \right) \vs\left(\vlambda;\vz^*\right) d\vz^* \, d\vz
+    }&\text{\footnotesize(Triangle Inequality)}
     \\
     &=
     \frac{1}{N} \sum_{n=1}^{N}
     \Big\lVert\;
       \int \eta\left(\vz\right) \int \pi\left(\vz^*\right) \, \left(
       T_n\left(w\left(\vz\right) \vee w\left(\vz^*\right) \right) - T_1\left(w\left(\vz\right) \vee w\left(\vz^*\right) \right) \right)
-      \vs\left(\vz^*\right) d\vz^* d\vz
+      \vs\left(\vlambda;\vz^*\right) d\vz^* \, d\vz
+      \nonumber
       \\
       &\quad\qquad\qquad +
-      \int \eta\left(\vz\right) \left(\lambda^{n}\left( w\left(\vz\right) \right) - \lambda\left( w\left(\vz\right) \right)\right) \vs\left(\vz\right) d\vz
+      \int \eta\left(\vz\right) \left(\lambda^{n}\left( w\left(\vz\right) \right) - \lambda\left( w\left(\vz\right) \right)\right) \vs\left(\vlambda;\vz\right) \, d\vz
     \;\Big\rVert
+    &\text{\footnotesize(\cref{thm:imh_exact_kernel})}
     \\
     &\leq
     \frac{1}{N} \sum_{n=1}^{N}
     \norm{
       \int \eta\left(\vz\right) \int \pi\left(\vz^*\right) \,
       \left( T_n\left(w\left(\vz\right) \vee w\left(\vz^*\right) \right) - T_1\left(w\left(\vz\right) \vee w\left(\vz^*\right) \right)\right)
-      \vs\left(\vz^*\right) d\vz^* d\vz
+      \vs\left(\vlambda;\vz^*\right) d\vz^* \, d\vz
     }
+      \nonumber
       \\
       &\qquad +
       \frac{1}{N} \sum_{n=1}^{N}
       \norm{
-        \int \eta\left(\vz\right) \left(\lambda^{n}\left( w\left(\vz\right) \right) - \lambda\left( w\left(\vz\right) \right)\right) \vs\left(\vz\right) d\vz
+        \int \eta\left(\vz\right) \left(\lambda^{n}\left( w\left(\vz\right) \right) - \lambda\left( w\left(\vz\right) \right)\right) \vs\left(\vlambda;\vz\right) \, d\vz
       }
+      &\text{\footnotesize(Triangle Inequality)}
     \\
     &\leq
     \frac{1}{N} \sum_{n=1}^{N}
+    \underbrace{
       \int \eta\left(\vz\right) \int \pi\left(\vz^*\right) \,
       \abs{ T_n\left(w\left(\vz\right) \vee w\left(\vz^*\right) \right) - T_1\left(w\left(\vz\right) \vee w\left(\vz^*\right) \right) } \;
-      \norm{ \vs\left(\vz^*\right)} \, d\vz^* d\vz
+      \norm{ \vs\left(\vlambda;\vz^*\right)} \, d\vz^* \, d\vz
+    }_{T1}
+      \nonumber
       \\
       &\qquad +
       \frac{1}{N} \sum_{n=1}^{N}
-        \int \eta\left(\vz\right) \abs{ \lambda^{n}\left( w\left(\vz\right) \right) - \lambda\left( w\left(\vz\right) \right)} \; \norm{\vs\left(\vz\right)} d\vz
+    \underbrace{
+        \int \eta\left(\vz\right) \abs{ \lambda^{n}\left( w\left(\vz\right) \right) - \lambda\left( w\left(\vz\right) \right)} \; \norm{\vs\left(\vlambda;\vz\right)} \, d\vz
+    }_{T2}\label{eq:bias_diff_bound_master}
   \end{align}
+  }
 
   Now, denoting \(w^{\prime} = w\left(\vz\right) \vee w\left(\vz^*\right)\),
   \begin{align}
@@ -89,12 +107,12 @@
     \abs{ \int_{w^{\prime}}^{\infty}  \frac{1}{v^2} \left( n \, \lambda^{n-1}\left(w\left(\vz\right)\right) - 1 \right) \, dv }
     \\
     &\leq
-    \int_{w^{\prime}}^{\infty}  \frac{1}{v^2} \, \abs{ n \, \lambda^{n-1}\left(w\left(\vz\right)\right) - 1 } \, dv.
+    \int_{w^{\prime}}^{\infty}  \frac{1}{v^2} \, \abs{ n \, \lambda^{n-1}\left(w\left(\vz\right)\right) - 1 } \, dv.\label{eq:diff_T}
   \end{align}
 
   Since
   \[
-  1 - \frac{1}{w\left(\vz\right)} \leq \lambda\left(w\left(\vz\right)\right) \leq 1 - \frac{1}{w^*} \leq 1,
+  0 \leq \lambda\left(w\left(\vz\right)\right) \leq 1 - \frac{1}{w^*} \leq 1,
   \]
   if follows that
   \[
@@ -105,6 +123,7 @@
   \abs{ n \, \lambda^{n-1}\left(w\left(\vz\right)\right) - 1 } \leq \max\left\{\; n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} - 1, 1\;\right\}.
   \]
 
+Then, we can bound~\cref{eq:diff_T} as
   \begin{align}
     \int_{w^{\prime}}^{\infty}  \frac{1}{v^2} \, \abs{ n \, \lambda^{n-1}\left(w\left(\vz\right)\right) - 1 } \, dv
     &\leq
@@ -120,63 +139,30 @@
     \max\left\{\, n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} - 1, 1 \,\right\} \frac{1}{w\left(\vz\right) \vee w\left(\vz^*\right)}.
   \end{align}
   
+  Now, back to~\cref{eq:bias_diff_bound_master}, T1 can be bounded as
   \begin{align}
     &\int \eta\left(\vz\right) \int \pi\left(\vz^*\right) \,
     \abs{ T_n\left(w\left(\vz\right) \vee w\left(\vz^*\right) \right) - T_1\left(w\left(\vz\right) \vee w\left(\vz^*\right) \right) } \;
-    \norm{ \vs\left(\vz^*\right)} \, d\vz^* d\vz
+    \norm{ \vs\left(\vlambda;\vz^*\right)} \, d\vz^* \, d\vz
     \\
     &\leq
     \int \eta\left(\vz\right) \int \pi\left(\vz^*\right) \,
     \max\left\{\, n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} - 1, 1 \,\right\}\,\frac{1}{w\left(\vz\right) \vee w\left(\vz^*\right)}\,
-    \norm{ \vs\left(\vz^*\right)} \, d\vz^* d\vz
+    \norm{ \vs\left(\vlambda;\vz^*\right)} \, d\vz^* \, d\vz
     \\
     &= \max\left\{\, n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} - 1, 1 \,\right\}  \nonumber
     \\ &\qquad
     \times
     \int \eta\left(\vz\right) \,
     \left\{\;
-    \int_{A} \pi\left(\vz^*\right) \,
+    \int_{A\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right) \,
     \frac{1}{w\left(\vz^*\right)} \;
-    \norm{ \vs\left(\vz^*\right)} \, d\vz^* 
+    \norm{ \vs\left(\vlambda;\vz^*\right)} \, d\vz^*
     +
-    \int_{R} \pi\left(\vz^*\right) \,
+    \int_{R\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right) \,
     \frac{1}{w\left(\vz\right)} \;
-    \norm{ \vs\left(\vz^*\right)} \, d\vz^*
-    \;\right\}
-    d\vz
-    \\
-    &=
-    \max\left\{\, n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} - 1, 1 \,\right\}  \nonumber
-    \\
-    &\qquad
-    \times
-    \left(n-1\right) \,
-    \left\{\;
-    \int_{A} \pi\left(\vz^*\right) \,
-    \frac{1}{w\left(\vz^*\right)} \;
-    \norm{ \vs\left(\vz^*\right)} \, d\vz^* 
-    +
-    \int \eta\left(\vz\right) \,
-    \frac{1}{w\left(\vz\right)} \, d\vz \,
-    \int_{R} \pi\left(\vz^*\right) \,
-    \norm{ \vs\left(\vz^*\right)} \, d\vz^*
-    \;\right\}
-    \\
-    &\leq
-    \max\left\{\, n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} - 1, 1 \,\right\}  \nonumber
-    \\
-    &\qquad
-    \times
-    \left\{\;
-    \int \pi\left(\vz^*\right) \,
-    \frac{1}{w\left(\vz^*\right)} \;
-    \norm{ \vs\left(\vz^*\right)} \, d\vz^* 
-    +
-    \int \eta\left(\vz\right) \,
-    \frac{1}{w\left(\vz\right)} \, d\vz \,
-    \int \pi\left(\vz^*\right) \,
-    \norm{ \vs\left(\vz^*\right)} \, d\vz^*
-    \;\right\}
+    \norm{ \vs\left(\vlambda;\vz^*\right)} \, d\vz^*
+    \;\right\}  \, d\vz
     \\
     &=
     \max\left\{\, n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} - 1, 1 \,\right\}  \nonumber
@@ -184,62 +170,119 @@
     &\qquad
     \times
     \left\{\;
-    \int q\left(\vz^*\right) \,
-    \norm{ \vs\left(\vz^*\right)} \, d\vz^* 
+    \underbrace{
+    \int \eta\left(\vz\right) \int_{A\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right) \,
+    \frac{1}{w\left(\vz^*\right)} \;
+    \norm{ \vs\left(\vlambda;\vz^*\right)} \, d\vz^* \, d\vz
+    }_{T3}
     +
+    \underbrace{
     \int \eta\left(\vz\right) \,
-    \frac{q\left(\vz\right)}{\pi\left(\vz\right)} \, d\vz \,
-    \int \pi\left(\vz^*\right) \,
-    \norm{ \vs\left(\vz^*\right)} \, d\vz^*
-    \;\right\}
-    \\
-    &\leq
-    \max\left\{\, n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} - 1, 1 \,\right\}
-    \,
-    \left\{\;
-    \sqrt{ q\left(\vs^2\right) }
-    +
-    \sqrt{ \pi\left(\vs^2\right) }
-    \int \eta\left(\vz\right) \,
-    \frac{q\left(\vz\right)}{\pi\left(\vz\right)} \, d\vz \,
-    \;\right\}
-    \\
-    &\leq
-    \max\left\{\, n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} - 1, 1 \,\right\}
-    \,
-    \left(\;
-    \sqrt{ q\left(\vs^2\right) }
-    +
-    M \, \sqrt{ \pi\left(\vs^2\right) }
-    \right).
+    \frac{1}{w\left(\vz\right)} \, d\vz \,
+    \int_{R\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right) \,
+    \norm{ \vs\left(\vlambda;\vz^*\right)} \, d\vz^* \, d\vz
+    }_{T4}
+    \;\right\}.
   \end{align}
 
-  For the rejection term,
+  T3 reduces to
   \begin{align}
-      &\frac{1}{N} \sum_{n=1}^{N}
-        \int \eta\left(\vz\right) \abs{ \lambda^{n}\left( w\left(\vz\right) \right) - \lambda\left( w\left(\vz\right) \right)} \; \norm{\vs\left(\vz\right)} \, d\vz
-      \\
-      &=
-      \frac{1}{N} \sum_{n=1}^{N}
-        \int \eta\left(\vz\right) \lambda\left( w\left(\vz\right) \right) \, \abs{\lambda^{n-1}\left( w\left(\vz\right) \right) - 1} \; \norm{\vs\left(\vz\right)} \, d\vz
-      \\
-      &\leq
-      \frac{1}{N} \sum_{n=1}^{N}
-        \int \eta\left(\vz\right) \lambda\left( w\left(\vz\right) \right) \, \norm{\vs\left(\vz\right)} \, d\vz
-      \\
-      &\leq
-      \left( 1 - \frac{1}{w^*} \right) \,
-      \frac{1}{N} \sum_{n=1}^{N}
-        \int \eta\left(\vz\right) \, \norm{\vs\left(\vz\right)} \, d\vz
-      \\
-      &\leq
-      \left( 1 - \frac{1}{w^*} \right) \,
-      \frac{1}{N} \sum_{n=1}^{N} \sqrt{ \eta\left(\vs^2\right) }
-      \\
-      &=
-      \left( 1 - \frac{1}{w^*} \right) \sqrt{ \eta\left(\vs^2\right) },
+    \int \eta\left(\vz\right) \int_{A\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right) \,
+    \frac{1}{w\left(\vz^*\right)} \;
+    \norm{ \vs\left(\vlambda;\vz^*\right)} \, d\vz^* \, d\vz
+    &\leq
+    \int \eta\left(\vz\right) \int \pi\left(\vz^*\right) \,
+    \frac{1}{w\left(\vz^*\right)} \;
+    \norm{ \vs\left(\vlambda;\vz^*\right)} \, d\vz^* \, d\vz
+    \\
+    &=
+    \int \eta\left(\vz\right) \, d\vz \, \int \pi\left(\vz^*\right) \,
+    \frac{1}{w\left(\vz^*\right)} \;
+    \norm{ \vs\left(\vlambda;\vz^*\right)} \, d\vz^* 
+    \\
+    &=
+    \int \pi\left(\vz^*\right) \,
+    \frac{1}{w\left(\vz^*\right)} \;
+    \norm{ \vs\left(\vlambda;\vz^*\right)} \, d\vz^* 
+    \\
+    &=
+    \int q\left(\vz^*\right) \, \norm{ \vs\left(\vlambda;\vz^*\right)} \, d\vz^* 
+    \\
+    &=
+    \Esub{q}{\norm{ \vs\left(\vlambda;\vz^*\right)}},
   \end{align}
-  which completes our proof.
+  which is a positive constant.
+
+  On the other hand, T4 becomes
+  \begin{align}
+    \int \eta\left(\vz\right) \,
+    \frac{1}{w\left(\vz\right)} \, d\vz \,
+    \int_{R\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right) \,
+    \norm{ \vs\left(\vlambda;\vz^*\right)} \, d\vz^*
+    &\leq
+    \int \eta\left(\vz\right) \,
+    \frac{q\left(\vz\right)}{\pi\left(\vz\right)} \, d\vz \,
+    \int \pi\left(\vz^*\right) \,
+    \norm{ \vs\left(\vlambda;\vz^*\right)} \, d\vz^*
+    \\
+    &=
+    \Esub{\pi}{\norm{ \vs\left(\vlambda;\vz^*\right)}} \,
+    \int \eta\left(\vz\right) \,
+    \frac{q\left(\vz\right)}{\pi\left(\vz\right)} \, d\vz \,
+    \\
+    &=
+    \Esub{\pi}{\norm{ \vs\left(\vlambda;\vz^*\right)}} \,
+    \int q\left(\vz\right) \, 
+    \frac{\eta\left(\vz\right)}{\pi\left(\vz\right)} \, d\vz \,
+    \\
+    &\leq
+    M \,
+    \Esub{\pi}{\norm{ \vs\left(\vlambda;\vz^*\right)}}
+    \int q\left(\vz\right) \, d\vz \,
+    \\
+    &=
+    M \,
+    \Esub{\pi}{\norm{ \vs\left(\vlambda;\vz^*\right)}}.
+  \end{align}
+
+  Meanwhile, for T2,
+  \begin{align}
+      \frac{1}{N} \sum_{n=1}^{N}
+        \int \eta\left(\vz\right) \abs{ \lambda^{n}\left( w\left(\vz\right) \right) - \lambda\left( w\left(\vz\right) \right)} \; \norm{\vs\left(\vlambda;\vz\right)} \, d\vz
+      &=
+      \frac{1}{N} \sum_{n=1}^{N}
+        \int \eta\left(\vz\right) \lambda\left( w\left(\vz\right) \right) \, \abs{\lambda^{n-1}\left( w\left(\vz\right) \right) - 1} \; \norm{\vs\left(\vlambda;\vz\right)} \, d\vz
+      \\
+      &\leq
+      \frac{1}{N} \sum_{n=1}^{N}
+        \int \eta\left(\vz\right) \lambda\left( w\left(\vz\right) \right) \, \norm{\vs\left(\vlambda;\vz\right)} \, d\vz
+      \\
+      &=
+      \int \eta\left(\vz\right) \lambda\left( w\left(\vz\right) \right) \, \norm{\vs\left(\vlambda;\vz\right)} \, d\vz
+      \\
+      &\leq
+      \left( 1 - \frac{1}{w^*} \right) \,
+      \int \eta\left(\vz\right) \, \norm{\vs\left(\vlambda;\vz\right)} \, d\vz
+      \\
+      &\leq
+      \left( 1 - \frac{1}{w^*} \right) \,
+      \Esub{\eta}{\norm{\vs\left(\vlambda;\vz\right)}}.
+  \end{align}
+  Combining T1, T2, T3, and T4, we conclude by
+  \begin{align}
+    &\abs{
+      \text{Bias}\left[\vg_{\text{seq.-IMH}}\right]
+      -
+      \text{Bias}\left[\vg_{\text{par.-IMH}}\right]
+    }   
+    \\
+    &\leq
+    \max\left\{\, n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} - 1, 1 \,\right\} \,
+    \left(\Esub{q}{\norm{\vs\left(\vlambda;\vz\right)}} +  M \, \Esub{\pi}{\norm{ \vs\left(\vlambda;\vz^*\right)}}\right)
+    +
+      \left( 1 - \frac{1}{w^*} \right) \,
+      \Esub{\eta}{\norm{\vs\left(\vlambda;\vz\right)}}.
+  \end{align}
 \end{proofEnd}
 
 %%% Local Variables:

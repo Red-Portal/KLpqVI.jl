@@ -1,41 +1,67 @@
 
-\begin{proposition}\label{thm:imh_tail}
-  Let \(w\left(\vz\right) > 0\), \(\pi\left(\vz\right) > 0\) for all \(\vz \in \mathcal{Z}\), and define \(w^* = \sup_{\vz} w\left(\vz\right)\).
-  The ratio between the \(t\)-step marginal kernel and the invariant distribution is bounded with respect to \(t\) and the initial target value \(\pi\left(\vz\right)\) such as
+\begin{theoremEnd}{proposition}\label{thm:imh_tail}
+  For the initial state \(\vz \in \mathcal{Z}\), let \(w\left(\vz\right) > \epsilon\) and \(\pi\left(\vz\right) > \epsilon\) for some constant \(\epsilon > 0\) and define \(w^* = \sup_{\vz} w\left(\vz\right)\).
+  Then, the ratio between the \(t\)-step marginal kernel and the invariant distribution is bounded as
   {\small
   \[
   \frac{K^t\left(\vz, \vz^*\right)}{\pi\left(\vz^*\right)} \leq
-    \max\left\{\;
-    \frac{t}{w^*} \, {\left(1 - \frac{1}{w^*}\right)}^{t-1},
-    \frac{1}{\pi\left(\vz\right)} \, {\left(1-\frac{1}{w^*}\right)}^t
-    \;\right\},
+  \frac{t}{\epsilon} \, {\left(1 - \frac{1}{w^*}\right)}^{t-1}.
+    %% \max\left\{\;
+    %% \frac{t}{w^*} \, {\left(1 - \frac{1}{w^*}\right)}^{t-1},
+    %% \frac{1}{\pi\left(\vz\right)} \, {\left(1-\frac{1}{w^*}\right)}^t
+    %% \;\right\},
   \]
   }
   which is finite for all \(t\) if \(w^* < \infty\).
-\end{proposition}
+\end{theoremEnd}
 \begin{proofEnd}
+  Since the kernel \(K\) is a mixture of the accept and reject cases, 
   \begin{align}
     \frac{K^t\left(\vz, \vz^*\right)}{\pi\left(\vz^*\right)}
-    &= T_t\left(\,\max\{\, w\left(\vz\right), w\left(\vz^*\right)\,\}\,\right)
-    + \frac{\lambda^t\left(w\left(\vz\right)\right)}{\pi\left(\vz\right)} \, \delta_{\vz}\left(\vz^*\right)
-    \\
     &\leq
-    \frac{t}{\max\{\, w\left(\vz\right), w\left(\vz^*\right)\,\}} \, {\left(1 - \frac{1}{w^*}\right)}^{t-1} + \frac{\lambda^t\left(w\left(\vz\right)\right)}{\pi\left(\vz\right)} \, \delta_{\vz}\left(\vz^*\right)
+    \max\Bigg\{
+    \underbrace{
+      \frac{T_t\left(w\left(\vz\right) \vee w\left(\vz^*\right)\right)}{\pi\left(\vz^*\right)}
+    }_{\text{accept}},
+    \underbrace{
+    \frac{\lambda^t\left(w\left(\vz\right)\right)}{\pi\left(\vz\right)}
+    }_{\text{accept}}
+    \Bigg\}
+    &\text{(\cref{thm:imh_exact_kernel})}.\label{eq:prop_assumption_ratio}
+  \end{align}
+  For the accept case,
+  \begin{align}
+    \frac{T_t\left(w\left(\vz\right) \vee w\left(\vz^*\right)\right)}{\pi\left(\vz^*\right)}
+    &\leq
+    \frac{t}{w\left(\vz\right) \vee w\left(\vz^*\right)} \, {\left(1 - \frac{1}{w^*}\right)}^{t-1}
     &\text{(\cref{thm:tn_bound})}
     \\
     &\leq
-    \frac{t}{w^*} \, {\left(1 - \frac{1}{w^*}\right)}^{t-1} + \frac{\lambda^t\left(w\left(\vz\right)\right)}{\pi\left(\vz\right)} \, \delta_{\vz}\left(\vz^*\right).
+    \frac{t}{\epsilon} \, {\left(1 - \frac{1}{w^*}\right)}^{t-1} .
   \end{align}
-
-  And, since the essential supremum of \(\lambda\left(w\right)\) is \(1 - \frac{1}{w^*}\) as shown by~\citet{Smith96exacttransition},
+  and for the reject case,
+  \begin{align}
+    \frac{\lambda^t\left(w\left(\vz\right)\right)}{\pi\left(\vz\right)}
+    \leq
+    \frac{\lambda^t\left(w\left(\vz\right)\right)}{\pi\left(\vz\right)}
+    \leq
+    \frac{1}{\pi\left(\vz\right)} {\left(1 - \frac{1}{w^*}\right)}^{t}
+    \leq
+    \frac{1}{\epsilon}
+    {\left(1 - \frac{1}{w^*}\right)}^{t}.
+  \end{align}
+  Therefore,~\cref{eq:prop_assumption_ratio} becomes
   \begin{align}
     \frac{K^t\left(\vz, \vz^*\right)}{\pi\left(\vz^*\right)}
-    &\leq
+    \leq
     \max\left\{\;
-    \frac{t}{w^*} \, {\left(1 - \frac{1}{w^*}\right)}^{t-1},
-    \frac{1}{\pi\left(\vz\right)} \, {\left(1-\frac{1}{w^*}\right)}^t
-    \;\right\}.
+    \frac{t}{\epsilon} \, {\left(1 - \frac{1}{w^*}\right)}^{t-1},
+    \frac{1}{\epsilon} \, {\left(1-\frac{1}{w^*}\right)}^t
+    \;\right\}
+    &\leq
+    \frac{t}{\epsilon} \, {\left(1 - \frac{1}{w^*}\right)}^{t-1},
   \end{align}
+  where the last inequality follows from \(1 - \frac{1}{w^*} \leq 1\)
 \end{proofEnd}
 
 %%% Local Variables:

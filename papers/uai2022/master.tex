@@ -1,16 +1,29 @@
 
-\documentclass[twoside]{article} % For LaTeX2e
-\usepackage[accepted]{aistats2022}
+\documentclass{uai2022} % for initial submission
+%\documentclass[accepted]{uai2022} % after acceptance, for a revised
+                                    % version; also before submission to
+                                    % see how the non-anonymous paper
+                                    % would look like
+%% There is a class option to choose the math font
+% \documentclass[mathfont=ptmx]{uai2022} % ptmx math instead of Computer
+                                         % Modern (has noticable issues)
+% \documentclass[mathfont=newtx]{uai2022} % newtx fonts (improves upon
+                                          % ptmx; less tested, no support)
+% NOTE: Only keep *one* line above as appropriate, as it will be replaced
+%       automatically for papers to be published. Do not make any other
+%       change above this note for an accepted version.
 
-\usepackage[round]{natbib}
-%\renewcommand{\bibname}{References}
-%\renewcommand{\bibsection}{\subsubsection*{\bibname}}
+%% Choose your variant of English; be consistent
+\usepackage[american]{babel}
+% \usepackage[british]{babel}
 
-% If you use BibTeX in apalike style, activate the following line:
-\bibliographystyle{apalike}
+%% Some suggested packages, as needed:
+\usepackage[]{natbib} % has a nice set of citation styles and commands
+    \bibliographystyle{abbrvnat}
+    \renewcommand{\bibsection}{\subsubsection*{References}}
+\usepackage{mathtools} % amsmath with fixes and additions
+% \usepackage{siunitx} % for proper typesetting of numbers and units
 
-% Optional math commands from https://github.com/goodfeli/dlbook_notation.
-%\input{math_commands.tex}
 \input{krkmath.tex}
 
 \usepackage{xcolor}         % hyperlinks
@@ -23,12 +36,6 @@
 \usepackage{caption}     
 \usepackage{subcaption}     
 \usepackage{float}     
-%\usepackage[-11]{pagesel}
-%\usepackage[12-]{pagesel}
-
-\usepackage{minted}
-%\usepackage{newunicodechar}
-%\setmonofont{DejaVu Sans Mono}[Scale=MatchLowercase]
 
 \allowdisplaybreaks
 
@@ -37,7 +44,6 @@
 \usepackage{pgf}
 \usepackage{pgfplots}
 \usepackage{pgfplotstable}
-
 \pgfplotsset{compat=1.18}
 \usetikzlibrary{patterns}
 \usetikzlibrary{fit, calc}
@@ -54,26 +60,36 @@
 
 \tikzset{external/system call={lualatex -shell-escape -halt-on-error -interaction=batchmode -jobname "\image" "\texsource"}}
 
-\begin{document}
+%% Provided macros
+% \smaller: Because the class footnote size is essentially LaTeX's \small,
+%           redefining \footnotesize, we provide the original \footnotesize
+%           using this macro.
+%           (Use only sparingly, e.g., in drawings, as it is quite small.)
 
-% If your paper is accepted and the title of your paper is very long,
-% the style will print as headings an error message. Use the following
-% command to supply a shorter title of your paper so that it can be
-% used as headings.
+%% Self-defined macros
+%\newcommand{\swap}[3][-]{#3#1#2} % just an example
+
+\title{Markov-Chain Monte Carlo Score Estimators for \\ Variational Inference with Score Climbing}
+
+% The standard author block has changed for UAI 2022 to provide
+% more space for long author lists and allow for complex affiliations
 %
-\runningtitle{Markov-Chain Monte Carlo Estimators for Variational Inference with Score Climbing}
-
-% If your paper is accepted and the number of authors is large, the
-% style will print as headings an error message. Use the following
-% command to supply a shorter version of the authors names so that
-% they can be used as headings (for example, use only the surnames)
+% All author information is authomatically removed by the class for the
+% anonymous submission version of your paper, so you can already add your
+% information below.
 %
-%\runningauthor{Surname 1, Surname 2, Surname 3, ...., Surname n}
-
-\twocolumn[
-\aistatstitle{Markov-Chain Monte Carlo Score Estimators for \\ Variational Inference with Score Climbing}
-\aistatsauthor{Kyurae Kim, \; Jisu Oh, \; Hongseok Kim }
-\aistatsaddress{Sogang University} ]
+% Add authors
+\author[1]{\href{mailto:<msca8h@sogang.ac.kr>}{Kyurae Kim}{}}
+\author[1]{Jisu Oh}
+\author[1]{Hongseok Kim}
+% Add affiliations after the authors
+\affil[1]{%
+    Sogang University\\
+    Seoul, South Korea, Republic of
+}
+  
+  \begin{document}
+\maketitle
 
 \begin{abstract}
   \input{abstract.tex}
@@ -86,11 +102,26 @@
 \input{relatedworks.tex}
 \input{conclusions.tex}
 
-%% \subsubsection*{Acknowledgments}
-%%   This work initially started in the process of understanding the performance of the Markovian score climbing algorithm by~\citet{NEURIPS2020_b2070693}.
-%%   We thank Hongseok Yang for pointing us to a relevant related work by~\citet{kim2021adaptive}, Guanyang Wang for insightful discussions about the independent Metropolis-Hastings algorithm, Geon Park and Kwanghee Choi for constructive comments that enriched this paper.
-%%   We also aknowledge the Computer Science Department of Sogang University for providing computational resources.
+%% \begin{contributions} % will be removed in pdf for initial submission,
+%%                       % so you can already fill it to test with the
+%%                       % ‘accepted’ class option
+%%     Briefly list author contributions.
+%%     This is a nice way of making clear who did what and to give proper credit.
 
+%%     H.~Q.~Bovik conceived the idea and wrote the paper.
+%%     Coauthor One created the code.
+%%     Coauthor Two created the figures.
+%% \end{contributions}
+
+\begin{acknowledgements} % will be removed in pdf for initial submission,
+                         % so you can already fill it to test with the
+                         % ‘accepted’ class option
+    %% Briefly acknowledge people and organizations here.
+
+    %% \emph{All} acknowledgements go in this section.
+\end{acknowledgements}
+
+\vspace{-0.1in}
 \bibliography{references}
 
 \newpage

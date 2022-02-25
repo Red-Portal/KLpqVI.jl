@@ -5,18 +5,17 @@
   {\small
     \[
     K^t\left(\vz, d\vz^*\right) 
-    = T_t\left(\, w\left(\vz\right) \vee w\left(\vz^*\right)\,\right) \, \pi\left(d\vz^*\right)
+    = T_t\left(\, w\left(\vz\right) \vee w\left(\vz^*\right)\,\right) \, \pi\left(\vz^*\right) \, d\vz^*
     + \lambda^t\left(w\left(\vz\right)\right) \, \delta_{\vz}\left(d\vz^*\right)
     \]
   %\end{align*}
   }%
-  where \(x \vee y = \max\left(x, y\right)\),
+  where {\small\(x \vee y = \max\left(x, y\right)\)}, and for {\small\(R\left(w\right) = \{\, \vz^* \mid w\,\left(\vz^*\right) \leq w \,\}\)},
   {\small%
   \begin{align*}
-  T_t\left(w\right)     &= \int_w^{\infty} \frac{t}{v^2} \, \lambda^{t-1}\left(v\right)\,dv, \; \\
-  \lambda\left(w\right) &= \int_{R\left(w\right)} \left( 1 - \frac{w\left(\vz^*\right)}{w}  \right) \pi\left(d\vz^*\right),
+  T_t\left(w\right)      = \int_w^{\infty} \frac{t}{v^2} \, \lambda^{t-1}\left(v\right)\,dv,\;\;
+  \lambda\left(w\right) = \int_{R\left(w\right)} \left( 1 - \frac{w\left(\vz^*\right)}{w}  \right) \pi\left(d\vz^*\right).
   \end{align*}
-  and \(R\left(w\right) = \{\, \vz^* \mid w\,\left(\vz^*\right) \leq w \,\}\).
   }
 \end{theoremEnd}
 

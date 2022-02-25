@@ -1,14 +1,18 @@
 
 \begin{theoremEnd}{theorem}\label{thm:var}
   Assuming that the Markov-chains have achieved stationarity and \(N \geq 2\), the variance of the single state estimator (\(\vg_{\text{single}}\)), sequential state estimator with \(N\) states of the IMH kernel (\(\vg_{\text{seq.-IMH}}\)), and parallel state estimator (\(\vg_{\text{par.}}\)) with \(N\) chains are given as 
+  \vspace{-0.08in}
+  {\small
   \begin{align*}
-    \V{\vg_{\text{single}}}   &= \sigma^2  \\
-    \V{\vg_{\text{seq.-IMH}}} &= \frac{\sigma^2}{N} + C_{\text{gap}} \\
-    \V{\vg_{\text{par.}}}    &= \frac{\sigma^2}{N}
+    \V{\vg_{\text{single}}}   = \sigma^2,\;\;
+    \V{\vg_{\text{seq.-IMH}}}  = \frac{\sigma^2}{N} + C_{\text{gap}},\;\;
+    \V{\vg_{\text{par.}}}    = \frac{\sigma^2}{N}
   \end{align*}
+  }%
   where \(\sigma^2 = \Vsub{\pi}{\vs\left(\vlambda; \vz\right)} \) and \(C_{\text{gap}} \geq 0\).
   The variance gap \(C_{\text{gap}}\) is bounded below as
-  {
+  \vspace{-0.05in}
+  {\small
   \begin{align*}
     C_{\text{gap}}
     \geq
@@ -32,6 +36,7 @@
   }%
   where \(q\) is the proposal distribution, \(C\) is a positive constant, \(\Delta\left(\vz\right) = \vs\left(\vlambda;\vz\right) - \Esub{\pi}{\vs\left(\vlambda;\vz\right)}\),
   and, as \(N \rightarrow \infty\), the bound converges to
+  \vspace{-0.05in}
   {\small
   \begin{align*}
     C_{\text{gap}}
@@ -91,18 +96,18 @@ Then, the variance is given as
   }  \\
   &= \frac{1}{N^2} \sum_{i=1}^N \Vsub{K\left(\vz_{T}, \vz\right)}{ \E{  \vs\left(\vlambda; \vz_{T+i}\right) \mid \vz_T } } \nonumber \\
    &\qquad+ \frac{1}{N^2} \sum_{i=1}^N   \Esub{K\left(\vz_{T}, \vz\right)}{ \V{ \vs\left(\vlambda; \vz_{T+i}\right)  \mid  \vz_T } } \nonumber\\
-   &\qquad+ \frac{2}{N^2}  \sum_{i < j}^N \E{ \Cov{ \vs\left(\vlambda; \vz_{T+i}\right), \vs\left(\vlambda; \vz_{T+j}\right) \mid  \vz_T }
+   &\qquad+ \frac{2}{N^2}  \sum_{i < j} \E{ \Cov{ \vs\left(\vlambda; \vz_{T+i}\right), \vs\left(\vlambda; \vz_{T+j}\right) \mid  \vz_T }
   },
 \intertext{\text{where, by assuming stationarity such that \(\vz_{T} \sim \pi\left(\vz\right)\),}}
   &= \frac{1}{N^2} \sum_{i=1}^N \Vsub{\pi}{ \E{  \vs\left(\vlambda; \vz_{T+i}\right) \mid \vz_T } } 
    \qquad+ \frac{1}{N^2} \sum_{i=1}^N   \Esub{\pi}{ \V{ \vs\left(\vlambda; \vz_{T+i}\right)  \mid  \vz_T } } \nonumber \\
- &\qquad+ \frac{2}{N^2}  \sum_{i < j}^N \Esub{\pi}{ \Cov{ \vs\left(\vlambda; \vz_{T+i}\right), \vs\left(\vlambda; \vz_{T+j}\right) \mid  \vz_T }
+ &\qquad+ \frac{2}{N^2}  \sum_{i < j} \Esub{\pi}{ \Cov{ \vs\left(\vlambda; \vz_{T+i}\right), \vs\left(\vlambda; \vz_{T+j}\right) \mid  \vz_T }
   } \\
   &= \frac{1}{N^2} \sum_{i=1}^N \Vsub{\pi}{ \vs\left(\vlambda; \vz\right) } 
- + \frac{2}{N^2}  \sum_{i < j}^N \Esub{\pi}{ \Cov{ \vs\left(\vlambda; \vz_{T+i}\right), \vs\left(\vlambda; \vz_{T+j}\right) \mid  \vz_T }
+ + \frac{2}{N^2}  \sum_{i < j} \Esub{\pi}{ \Cov{ \vs\left(\vlambda; \vz_{T+i}\right), \vs\left(\vlambda; \vz_{T+j}\right) \mid  \vz_T }
   }&\text{(Total Variance)} \\
   &= \frac{1}{N} \Vsub{\pi}{ \vs\left(\vlambda; \vz\right) } 
- + \frac{2}{N^2}  \sum_{i < j}^N \Esub{\pi}{ \Cov{ \vs\left(\vlambda; \vz_{T+i}\right), \vs\left(\vlambda; \vz_{T+j}\right) \mid  \vz_T }
+ + \frac{2}{N^2}  \sum_{i < j} \Esub{\pi}{ \Cov{ \vs\left(\vlambda; \vz_{T+i}\right), \vs\left(\vlambda; \vz_{T+j}\right) \mid  \vz_T }
   } \\
   &= \frac{\sigma^2}{N}
  + \frac{2}{N^2}  \sum_{i < j}^N \Esub{\pi}{ \Cov{ \vs\left(\vlambda; \vz_{T+i}\right), \vs\left(\vlambda; \vz_{T+j}\right) \mid  \vz_T }
