@@ -34,22 +34,22 @@
 \vspace{-0.05in}
 \paragraph{Score Climbing with MCMC}
 Recently,~\citet{NEURIPS2020_b2070693} and~\citet{pmlr-v124-ou20a} proposed two similar but independent score climbing method that minimize the inclusive KL with SGD.
-Both methods estimate the score function gradient by operating a Markov-chain in parallel with the VI optimization sequence.
-They notably use MCMC kernels that can effectively utilize the variational approximation \(q_{\vlambda_t}(\vz)\).
+Both methods estimate the score function gradient by operating a Markov chain in parallel with the VI optimization sequence.
+They notably use MCMC kernels that can effectively utilize the variational approximation in hand \(q_{\vlambda_t}(\vz)\).
 Because of this, both methods are computationally more efficient than previous VI approaches~\citep{pmlr-v97-ruiz19a, pmlr-v70-hoffman17a} that used expensive MCMC kernels such as Hamiltonian Monte Carlo.
 
 \vspace{-0.05in}
 \paragraph{Single State Estimator}
-In Markovian score climbing (MSC),~\citet{NEURIPS2020_b2070693} estimate the score gradient by performing an MCMC transition and estimate the score function gradient as
+In Markovian score climbing (MSC),~\citet{NEURIPS2020_b2070693} estimate the score gradient by performing a single MCMC transition such as
 \vspace{-0.05in}
 \begin{align*}
   &\vz_t \sim K_{\vlambda_{t-1}}\left(\vz_{t-1}, \cdot \right),
-  &\vg_{\text{single-CIS}}(\vlambda) = \vs\,(\vlambda; \vz_t),
+  &\vg_{\text{single-CIS}}(\vlambda) \triangleq \vs\,(\vlambda; \vz_t),
 \end{align*}
-where \(K_{\vlambda_{t-1}}\left(\vz_{t-1}, \cdot\right)\) is a MCMC kernel leaving \(p\,(\vz\mid\vx)\) invariant and \(g_{\text{single}}\left(\vlambda\right)\) denotes the score estimator.
+where \(K_{\vlambda_{t-1}}\left(\vz_{t-1}, \cdot\right)\) is a MCMC kernel leaving \(\pi\,(\vz)\) invariant and \(g_{\text{single-CIS}}\left(\vlambda\right)\) denotes the estimator.
 For the MCMC kernel, they propose to use what they call the conditional importance sampling (CIS, previously called iterated sampling importance resampling by~\citet{andrieu_uniform_2018}).
 Since the estimator uses \textit{a single state} created by the CIS kernel, we call it the single state estimator with the CIS kernel (\textbf{single-CIS}).
-The CIS kernel internally uses \(N\) samples from the \(q_{\vlambda_{t-1}}(\vz)\), hence the dependence on \(\vlambda_{t-1}\).
+The CIS kernel internally uses \(N\) samples from \(q_{\vlambda_{t-1}}(\vz)\), hence the dependence on \(\vlambda_{t-1}\).
 When compared to MCMC kernels that only use a single sample from \(q_{\vlambda_{t-1}}(\vz)\), it is \(N\) times more expensive, but hopefully, statistically superior.
 
 \vspace{-0.08in}
@@ -58,15 +58,15 @@ On the other hand, at each SGD iteration \(t\),~\citet{pmlr-v124-ou20a} perform 
 That is, for the transition number \(n \in \{1, \ldots, N\}\),
 \vspace{-0.05in}
 \begin{align*}
-  &\vz_{T+i} \sim K_{\vlambda_{t-1}}^i\left(\vz_{T}, \cdot \right),
-  &\vg_{\text{seq.-IMH}}(\vlambda) = \frac{1}{N} \sum_{n=1}^N \vs\,(\vlambda; \vz_{T+n}),
+  &\vz_{T+n} \sim K_{\vlambda_{t-1}}^n\left(\vz_{T}, \cdot \right),
+  &\vg_{\text{seq.-IMH}}(\vlambda) \triangleq \frac{1}{N} \sum_{n=1}^N \vs\,(\vlambda; \vz_{T+n}),
 \end{align*}
 where \(\vz_T\) is the last Markov-chain state of the previous SGD iteration 
 \(t-1\).
 \(K^{n}_{\vlambda_{t-1}}(\vz_{T}, \cdot)\) denotes the MCMC kernel sequentially applied \(n\) times.
 For the MCMC kernel, they use the independent Metropolis-Hastings (IMH,~\citealt[Algorithm 25]{robert_monte_2004}~\citealt{hastings_monte_1970}) algorithm, which uses only a single sample from \(q_{\vlambda_{t-1}}(\vz)\) (notice the dependence on \(\vlambda_{t-1}\)).
 Therefore, the cost of \(N\) state transitions with IMH is similar to a single transition with CIS.
-Since the estimator uses sequential states, we call it the sequential state estimator with the IMH kernel (\textbf{seq.-IMH})
+Since the estimator uses sequential states, we call it the sequential state estimator with the IMH kernel (\textbf{seq.-IMH}).
 
 \begin{figure*}
     \vspace{-0.3in}
@@ -82,7 +82,7 @@ Since the estimator uses sequential states, we call it the sequential state esti
 
 \vspace{-0.08in}
 \paragraph{Parallel State Estimator}
-In this work, we propose a new scheme into the mix: \textit{the parallel state estimator}.
+This work throws a new scheme into the mix: \textit{the parallel state estimator}.
 Like the sequential state estimator, we use the cheaper IMH kernel, but instead of applying the MCMC kernel \(N\) times to a single chain, we apply the MCMC kernel a single time to \(N\) \textit{parallel Markov-chains} (\textbf{par.-IMH}).
 That is, for each Markov-chain indexed by \(i \in \{1, \ldots, N\}\),
 %
@@ -93,7 +93,7 @@ That is, for each Markov-chain indexed by \(i \in \{1, \ldots, N\}\),
 \end{align*}
 %
 where \(\vz_{t-1}^{(i)}\) is the state of the \(i\)th chain at the previous SGD step.
-Computationally speaking, we are still applying \(K\) \(N\) times in total, so the cost is similar to the sequential state estimator.
+Computationally speaking, we are still applying the kernel \(N\) times in total, so the cost is similar to the sequential state estimator.
 However, the Markov-chains are \(N\) times shorter, which, in a traditional MCMC view, might seem to result in worse statistical performance.
 
 %\subsection{The Parallel State Estimator}\label{section:overview}
@@ -121,16 +121,16 @@ However, this added cost is minimal since the overall computational cost is domi
 \paragraph{Cost of Estimating the Score}
 When estimating the score, the single state estimator computes \(\nabla_{\vlambda} \log q_{\vlambda}(\vz)\) only once, while for the sequential and parallel state estimators compute it \(N\) times.
 However,~\cite{NEURIPS2020_b2070693} also discuss a Rao-Blackwellized version of the CIS kernel, which also computes the gradient \(N\) times.
-Lastly, notice that score climbing does not need to differentiate through the likelihood, unlike ELBO maximization, making it's base computational cost significantly cheaper.
+Lastly, notice that score climbing does not need to differentiate through the likelihood, unlike ELBO maximization, making its base computational cost significantly cheaper.
 
 \vspace{-0.05in}
 \subsection{Motivation and Overview}\label{section:motivation}
 \vspace{-0.05in}
 \paragraph{Motivating Example}
-According to traditional MCMC theory, multiple short Markov-chains will be more biased than a single long Markov-chain.
-Therefore, the parallel estimator will surely be more biased than the sequential estimator.
-However, we show an example where this intuition is wrong: As shown in~\cref{fig:gaussian}, in this example, the parallel state estimator enjoys not only low variance, but also low bias.
-We ran score climbing VI with the three different estimators and compared the bias and variance of the estimators.
+According to traditional MCMC theory, multiple short Markov chains will be more biased than a single long Markov chain.
+Therefore, it is natural to expect the parallel estimator to be more biased than the sequential estimator.
+However, we show an example where this intuition is wrong: As shown in~\cref{fig:gaussian}, in this example, the parallel state estimator enjoys not only low variance but also low bias.
+%We ran score climbing VI with the three different estimators and compared the bias and variance of the estimators.
 The target distribution was a 10 dimensional multivariate Gaussian where the covariance was sampled from a Wishart distribution with \(\nu = 50\) degrees of freedom.
 The variational family was a mean-field Gaussian.
 The bias and variance was estimated from \(512\) independent replications.
@@ -156,8 +156,8 @@ In the following sections, we will show that
 \paragraph{Stationarity Assumption}
 First, we compare the variance of the three estimators.
 We generally assume that the Markov-chains have achieved stationarity, which does \textit{not} require \(N \rightarrow \infty\).
-Instead, it only requires use to have run SGD sufficiently enough so that the chains have landed near the typical set at least once.
-This is realistic even if the MCMC kernels are not mixing properly.
+Instead, it only requires us to have run SGD sufficiently enough so that the chains have landed near the typical set at least once.
+This is orthogonal to whether VI has converged or whether the MCMC kernels are mixing properly.
 %% Even if \(q_{\vlambda}\) is poor, stationary can be achieved; it only amounts to the MCMC kernels will mix slowly resulting in the chains being stuck in the typical set for a long time.
 
 In addition, to closely understand the performance of the estimators relying on the IMH kernel, we utilize the following result by~\citet{Smith96exacttransition}.
@@ -172,10 +172,10 @@ In addition, to closely understand the performance of the estimators relying on 
 %\paragraph{Variance of the Sequential State Estimator}
 As stated in~\cref{thm:var}, the variance of the single state estimator is as good as a \textit{single} sample for the posterior.
 In contrast, the variance of the sequential and parallel state estimator can be reduced by increasing \(N\).
-Because of the noticable limitation of the single state estimator, from now on, we will restrict our discussion to the other two estimators.
-For the sequential state estimator, it is difficult to discuss the covariance term in the lower bound of \(C_{\text{gap}}\) without compromising generality, which is the limitation of our analysis.
-However, if we are able to assume neglect the covariance term, the KL divergence terms imply that the variance of the sequential estimator will be substantially higher during VI.
-This is in accordance with the empirical results in~\cref{section:motivation,section:eval}.
+Because of the noticeable limitation of the single state estimator, from now on, we will restrict our discussion to the later two estimators.
+For the sequential state estimator, it is difficult to discuss the covariance term in the lower bound of \(C_{\text{gap}}\), which is the limitation of our analysis.
+However, suppose we are able to assume neglect the covariance term. In that case, the KL divergence terms imply that the variance of the sequential estimator will be exponentially higher with respect to the KL.
+%This is in accordance with the empirical results in~\cref{section:motivation,section:eval}.
 
 \vspace{-0.05in}
 \paragraph{Variance of the Parallel State Estimator}
@@ -191,7 +191,7 @@ Now, we will formally show that the convergence speed of VI affects the bias of 
 
 \vspace{-0.05in}
 \paragraph{Relaxing Geometric Ergodicity}
-Previously, the non-asymptotic bias of MCMC kernels have been established throught their geometric convergence rates~\citep{jiang_mcmc_2021}.
+Previously, the non-asymptotic bias of MCMC kernels has been established through their geometric convergence rates~\citep{jiang_mcmc_2021}.
 For IMH kernels, this requires the rather strong assumption of \(\sup_{\vz} w\left(\vz\right) < \infty\)~\citep{10.2307/2242610, wang_exact_2020}.
 We instead use a weaker, more general assumption that uses \(\eta\), the distribution of the previous states of the parallel chains (such that \(\vz^{(i)}_{t-1} \sim \eta\left(\cdot\right)\)).
 Our key assumption is that \(\eta\left(\vz\right) < M\,\pi\left(\vz\right)\) for some constant \(M < \infty\).
@@ -208,7 +208,7 @@ Now, the following bound shows that the bias of the parallel state estimator is 
 \input{thm_imh_bias}
 %
 Therefore, the VI convergence rate determines how quickly the bias goes down.
-Note that it is also possible to derive a bound without assuming \(\norm{\vs\left(\vlambda; \vz\right)} \leq L\), but this unfortunately results in a weaker relationship between the KL and the bias.
+Note that it is also possible to derive a bound without assuming \(\norm{\vs\left(\vlambda; \vz\right)} \leq L\), but this, unfortunately, results in a weaker relationship between the KL and the bias.
 In addition, this bound is slightly weaker than geometric ergodicity since the bias does not go down to 0 with \(w^* < \infty\), but is more practical in the large \(\DKL{\pi}{q}\) regime.
 
 %% For bounded functions, an upper bound on the bias of MCMC estimators can be easily derived from the convergence rates of MCMC kernels.
@@ -244,10 +244,10 @@ The following bound shows that this is not likely in general.
   \end{align*}
 \end{proofEnd}
 
-Combined with~\cref{thm:kl_bound}, our bound suggests that, when the KL is large, using the sequential state estimator is not beneficial even with a large \(N\).
-Even worse, the bias could actually \textit{increase} with \(N\).
+Combined with~\cref{thm:kl_bound}, our bound suggests that when the KL is large, using the sequential state estimator is not beneficial even with a large \(N\).
+Even worse, the bias could \textit{increase} with \(N\).
 Therefore, using the sequential state estimator does not guarantee lower bias, especially in the early stages of VI.
-Given that the parallel state estimator has signifiacantly better variance guarentees, our result suggests that there is close to no practical benefit of using the sequential state estimator.
+Given that the parallel state estimator has significantly better variance guarantees, our result suggests that there is close to no practical benefit of using the sequential state estimator.
 
 %% \vspace{-0.05in}
 %% \paragraph{Summary}
