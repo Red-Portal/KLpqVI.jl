@@ -1,0 +1,183 @@
+
+\begin{tikzpicture}
+  \begin{groupplot}[
+      group style = {
+        group size = 3 by 1,
+        horizontal sep = 45pt
+      },
+      width = 8.0cm,
+      height = 5.0cm
+    ]
+    \nextgroupplot[
+      title={(a) KL\label{fig:gaussian_kl}},
+      title style={at={(0.5,-0.9)}},
+      ymode=log,
+      tuftelike,
+      xlabel={
+        \footnotesize
+        Iteration
+      },
+      ylabel={
+        \footnotesize
+        KL 
+      },
+      xtick={1,1000,2000,3000,4000,5000},
+      xticklabels={1,1k,2k,3k,4k,5k},
+      ytick={1,10,100,1000},
+      %% ylabel near ticks,
+      %% xlabel near ticks,
+      log basis y=10,
+      minor tick length=1.5pt,
+      major tick length=2.5pt,
+      every tick/.style={
+        black,
+        semithick,
+      },
+      xmin  =1,
+      xmax  =5000,
+      ymin  =0.6,
+      ymax  =1000,
+      % smooth,
+      % enlargelimits = true,
+      % ymajorgrids,
+      % yminorgrids,
+      % xmajorgrids,
+      width =4.0cm,
+      height=3.5cm,
+      % legend pos=north,
+      legend style = { 
+        legend columns = 1,
+        draw           = none,
+        at={(-1.5,0)},
+        anchor=south west,
+        legend cell align={left},
+      }
+    ]
+    \input{figures/kl_pimh_16}
+    \addlegendentry{\scriptsize ours \(N=16\)}
+    \input{figures/kl_pimh_64}
+    \addlegendentry{\scriptsize ours \(N=64\)}
+    \input{figures/kl_simh_16}
+    \addlegendentry{\scriptsize JSA \(N=16\)}
+    \input{figures/kl_simh_64}
+    \addlegendentry{\scriptsize JSA \(N=64\)}
+    \input{figures/kl_cis_16}
+    \addlegendentry{\scriptsize MSC \(N=16\)}
+    \input{figures/kl_cis_64}
+    \addlegendentry{\scriptsize MSC \(N=64\)}
+
+    \nextgroupplot[
+      title={(b) Bias\label{fig:gaussian_bias}},
+      title style={at={(0.5,-0.9)}},
+      ymode=log,
+      tuftelike,
+      xlabel={
+        \footnotesize
+        Iteration
+      },
+      ylabel={
+        \footnotesize
+        Score Bias
+      },
+      xtick={1,1000,2000,3000,4000,5000},
+      xticklabels={1,1k,2k,3k,4k,5k},
+      ytick={0.01,1,100},
+      %% ylabel near ticks,
+      %% xlabel near ticks,
+      log basis y=10,
+      minor tick length=1.5pt,
+      major tick length=2.5pt,
+      every tick/.style={
+        black,
+        semithick,
+      },
+      xmin  =1,
+      xmax  =5000,
+      ymin  =0.01,
+      ymax  =100,
+      % smooth,
+      % enlargelimits = true,
+      % ymajorgrids,
+      % yminorgrids,
+      % xmajorgrids,
+      width =4.0cm,
+      height=3.5cm,
+      % legend pos=north,
+      legend style = { 
+        legend columns = 2,
+        draw           = none,
+        at={(0,1)},
+        anchor=south west,
+        legend cell align={left},
+    }]
+    \input{figures/bias_pimh_16}
+    \input{figures/bias_pimh_64}
+    \input{figures/bias_simh_16}
+    \input{figures/bias_simh_64}
+    \input{figures/bias_cis_16}
+    \input{figures/bias_cis_64}
+
+    \nextgroupplot[
+      title={(c) Variance\label{fig:gaussian_var}},
+      title style={at={(0.5,-0.9)}},
+      ymode=log,
+      tuftelike,
+      xlabel={
+        \footnotesize
+        Iteration
+      },
+      ylabel={
+        \footnotesize
+        Score Variance
+      },
+      xtick={1,1000,2000,3000,4000,5000},
+      xticklabels={1,1k,2k,3k,4k,5k},
+      ytick={0.01,0.1,1,10},
+      %% ylabel near ticks,
+      %% xlabel near ticks,
+      log basis y=10,
+      minor tick length=1.5pt,
+      major tick length=2.5pt,
+      every tick/.style={
+        black,
+        semithick,
+      },
+      xmin  =1,
+      xmax  =5000,
+      ymin  =0.006,
+      ymax  =10,
+      % smooth,
+      % enlargelimits = true,
+      % ymajorgrids,
+      % yminorgrids,
+      % xmajorgrids,
+      width =4cm,
+      height=3.5cm,
+      % legend pos=north,
+      legend style = { 
+        legend columns = 2,
+        draw           = none,
+        at={(0,1)},
+        anchor=south west,
+        legend cell align={left},
+    }]
+    \input{figures/var_pimh_16}
+    \input{figures/var_pimh_64}
+    \input{figures/var_simh_16}
+    \input{figures/var_simh_64}
+    \input{figures/var_cis_16}
+    \input{figures/var_cis_64}
+    %% \addplot[] coordinates {
+    %%    (0,    0.2662314842632471)
+    %%    (5001, 0.2662314842632471)
+    %% };
+    %% \addplot[] coordinates {
+    %%    (0,    0.016639467766452944)
+    %%    (5001, 0.016639467766452944)
+    %% };
+    %% \addplot[] coordinates {
+    %%    (0,    0.004159866941613236)
+    %%    (5001, 0.004159866941613236)
+    %% };
+  \end{groupplot}
+\end{tikzpicture}

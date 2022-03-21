@@ -1,0 +1,192 @@
+
+%\vspace{-0.05in}
+\section{Practical Convergence Analysis of Markov Chain Score Ascent}
+\subsection{Convergence of General Markov Chain Score Ascent}\label{section:convergence}
+
+The basic ingredients of MCGD are the target function \(f\left(\vlambda, \eta\right)\), the gradient estimator \(g\left(\vlambda, \eta\right)\), and the Markov chain kernel \(P_{\vlambda}\left(\eta, \cdot\right)\).
+Obtaining MCSA through MCGD boils down to designing \(g\) and \(P_{\vlambda}\) such that \(f\left(\vlambda\right) = \DKL{\pi}{q\left(\cdot; \vlambda\right)} \).
+In the following theorem, we provide practical conditions for setting \(g\) and \(P_{\vlambda}\) such that MCGD results in MCSA.
+
+\begin{condition}{\textbf{(Markov chain kernel)}}\label{thm:kernel_conditions}
+  Let \(\veta = \left[ \vz_1, \vz_2, \ldots, \vz_N \right]\).
+  A Markov chain kernel \(P_{\vlambda}\left(\veta, \cdot\right)\) is \(\Pi\)-invariant and geometrically ergodic as
+  \[
+  \DTV{P_{\vlambda}^{n}\left(\veta, \cdot\right)}{ \Pi } \leq C \, \rho^{n}
+  \]
+  for some positive constant \(C\) where its invariant distribution is defined as
+  \[
+  \Pi\left(\veta\right) = \pi\left(\vz_1\right) \, \pi\left(\vz_2\right) \times \ldots \times \pi\left(\vz_N\right).
+  \]
+\end{condition}
+
+\begin{condition}{\textbf{(Gradient estimator)}}\label{thm:gradient_estimator}
+  The target function \(f\) and the gradient estimator \(g\) are of the form of
+  \begin{align*}
+    f\left(\vlambda, \veta\right) =  \frac{1}{N} \sum^{N}_{n=1} \log q\left(\vz_n; \vlambda\right) + \mathbb{H}\left[\,\pi\,\right], 
+    \quad\text{and}\quad
+    g\left(\vlambda, \veta\right) =  \frac{1}{N} \sum^{N}_{n=1} s\left(\vz_n; \vlambda\right)
+  \end{align*}
+  where \(\mathbb{H}\left[\,\pi\,\right]\) is the entropy of \(\pi\).
+\end{condition}
+
+\input{thm_product_kernel}
+
+This framework includes JSA of~\citet{pmlr-v124-ou20a} while MSC of~\citet{pmlr-v124-ou20a} is a special case where \(N=1\).
+We will later propose a third novel scheme that conforms to~\cref{thm:product_kernel}.
+
+\begin{assumption}{\textbf{(Compactness)}}\label{thm:compact}
+  The space of the variational parameters \(\Lambda\) is compact with a finite diameter \(R\) such that \(\norm{\vlambda - \vlambda\prime} \leq R \) for all \(\vlambda, \vlambda\prime \in \Lambda\).
+\end{assumption}
+This assumption is common for proving non-asymptotic convergence of convex optimization and MCGD~\citep{duchi_ergodic_2012, NEURIPS2018_1371bcce, doan_convergence_2020}.
+Furthermore,~\citeauthor{NEURIPS2020_b2070693} state that the assumptions previously used for proving asymptotic convergence of MCSA~\citep{NEURIPS2020_b2070693} are difficult to check without assuming compactness.
+
+\begin{assumption}{\textbf{(Log-concavity)}}\label{thm:logconcave}
+  \(\mathcal{Q}\) is a location-scale log-concave variational family.
+\end{assumption}
+%
+\input{thm_log_concave}
+%
+\cref{thm:logconcave} includes many of the commonly used variational families such as the normal, exponential, and uniform, to name a few.
+Also, combined with \cref{thm:logconcave_parameter},~\cref{thm:logconcave} results in MCSA becoming a convex optimization problem, which is surprising since exclusive KL minimization is not convex in general even with log-concave families.
+Note that it is possible to establish convergence without log-concavity with the recent non-convex MCGD results of~\citet{NEURIPS2018_1371bcce, pmlr-v99-karimi19a, doan_convergence_2020}, but in this work, we focus on the stronger convex results.
+
+\begin{assumption}{\textbf{(Bounded variance)}}\label{thm:bounded_variance}
+  Let \(\vlambda \in \Lambda\) be measurable with respect to the \(\sigma\)-field \(\mathcal{F}_{t-1}\).
+  The  gradient estimator \(g\) is bounded a constant \(G < \infty\) such that
+  \(
+  \E{ {\lVert\, g\left(\cdot, \rvveta_{t}\right) \,\rVert}^2_{*} \;\middle|\; \mathcal{F}_{t-1}} < G^2.
+  \)
+\end{assumption}
+This assumption is similar to the bounded variance assumption commonly used in vanilla SGD.
+
+Under the stated conditions, the non-asymptotic convergence rate of MCSA is a special case of the ergodic mirror descent algorithm of~\citet{duchi_ergodic_2012}.
+
+\input{thm_convergence_rate}
+
+%% This result is a direct adaptation of the ergodic mirror descent algorithm by~\cite{duchi_ergodic_2012}.
+%% For accelerated variants of MCGD,~\citet{doan_convergence_2020} provide non-asymptotic convergence results.
+%% However, their bound for the convex case is independent of the kernel mixing rate, which leaves out the practical effects of the mixing rate.
+
+\subsection{Comparing Markov Chain Score Ascent Methods}\label{section:comparison}
+From now on, we will show that previous MCSA schemes our framework in \cref{section:general}.
+comparing these algorithms require a few additional assumptions related to their specific implementation details.
+We also analyze the practical performance of these algorithms using~\cref{thm:convergence_rate} and suggest a simple but effective variant of MCSA.
+
+First, we use the following assumptions.
+%
+\begin{assumption}{(Bounded score)}\label{thm:bounded_score}
+  The score function is bounded for all \(\vz \in \mathcal{Z}\) as \(\norm{s\left(\cdot; \vz\right)}_{*} \leq L \).
+\end{assumption}
+Admidttedly, this assumption is very strong, but is required by most recent non-asymptotic results on the general convergence of MCGD~\citep{NEURIPS2018_1371bcce, doan_convergence_2020, pmlr-v99-karimi19a, Xiong_Xu_Liang_Zhang_2021}.
+While it is possible to physically realize this assumption by using gradient clipping, empirical experience suggests that this is unnecessary in practice.
+In our analysis, we use the constant \(L\) to bound the gradient variance.
+Practically speaking, this enables us to compare the gradient variance of different MCSA designs relative to \(L\).
+
+\begin{assumption}{(Bounded importance weight)}\label{thm:bounded_weight}
+  The importance weight ratio \(w\left(\vz\right) = \pi\left(\vz\right) / q\left(\vz; \vlambda\right)\) is bounded by some finite constant as \(w^* < \infty\) for all \(\vlambda \in \Lambda\) such that \(\rho = \left(1 - 1/w^*\right) < 1\).
+\end{assumption}
+The fact that \(w^*\) exists for all \(\vlambda \in \Lambda\) is restrictive and appears to be unnecessary for convergence in practice.
+However, this assumption is important for the theory of MCGD to work by satisfying~\cref{thm:kernel_conditions}.
+Although previous works did not take specific measures to enable \cref{thm:bounded_weight}, it can be done by using a variational family with heavy tails~\citep{NEURIPS2018_25db67c5} or using a defensive mixture~\citep{hesterberg_weighted_1995, holden_adaptive_2009} 
+\begin{align*}
+  q_{\text{def.}}\left(\vz; \vlambda \right) = w \, q\left(\vz; \vlambda\right) + (1 - w) \, \nu\left(\vz\right)
+\end{align*}
+where \(0 < w < 1\) and \(\nu\left(\cdot\right)\) is a heavy tailed distribution that satisfies \(\sup_{\vz \in \mathcal{Z}} \pi\left(\vz\right) / \nu\left(\vz\right) < \infty\).
+It is possible to only use \(q_{\text{def.}}\) within the Markov chain kernels, which therefore does not restrict our choice of the variational family.
+
+First, we show that MSC~\citep{NEURIPS2020_b2070693} satisfies \cref{thm:kernel_conditions,thm:gradient_estimator}.
+MSC uses the conditional importance sampling (CIS) MCMC kernel.
+This kernel is identical to the iterated sequential importance resampling (i-SIR) kernel by~\citet{andrieu_uniform_2018}, by which the geometric convergence has been established.
+
+\input{lemmas_previous_mcsa}
+\input{thm_previous_msc}
+
+Now, we provide our result on JSA~\citep{pmlr-v124-ou20a}.
+JSA specifically assumes that the target distribution is formed with independently, identically distributed (\textit{i.i.d}) data.
+However, we interpret JSA into a more general setup that does not assume \textit{i.i.d.} data similar to MSC.
+Since JSA~\citep{pmlr-v124-ou20a} uses the independent Metropolis-Hastings (IMH) kernel, we utilize the geometric convergence rate provided by~\citet[Theorem 2.1]{10.2307/2242610} and~\citet{wang_exact_2020}.
+Furthermore, to establish an upper bound on the conditional variance, we use the exact multi-transition IMH kernel derived by~\cite{Smith96exacttransition} as
+{%\small
+  \begin{align}
+  K^n_{\vlambda}\left(\vz, d\vz\prime\right) 
+  = T_n\left(\, w\left(\vz\right) \vee w\left(\vz\prime\right)\,\right) \, \pi\left(\vz\prime\right) \, d\vz\prime
+  + \lambda^t\left(w\left(\vz\right)\right) \, \delta_{\vz}\left(d\vz\prime\right)
+  \label{eq:imh_exact_kernel}
+  \end{align}
+}%
+where {\(w\left(\vz\right) = \pi\left(\vz\right)/q_{def.}\left(\vz; \vlambda\right)\), \(x \vee y = \max\left(x, y\right)\)},
+{%\small%
+  \begin{align}
+    T_t\left(w\right)      = \int_w^{\infty} \frac{t}{v^2} \, \lambda^{t-1}\left(v\right)\,dv,
+    \quad\text{and}\quad
+    \lambda\left(w\right) = \int_{R\left(w\right)} \left( 1 - \frac{w\left(\vz\prime\right)}{w}  \right) \pi\left(d\vz\prime\right)\label{eq:T_lambda}
+  \end{align}
+}
+for {\(R\left(w\right) = \{\, \vz\prime \mid w\,\left(\vz\prime\right) \leq w \,\}\)}.
+%
+\input{lemmas_imh}
+\input{thm_previous_jsa}
+%
+The gradient bound suggests that, in realistic settings where \(w^*\) is large, increasing \(N\) does not improve variance.
+To fix this problem, we propose a new MCSA scheme that achieves \(\mathcal{O}\left(\nicefrac{1}{N}\right)\) variance reduction.
+In particular, instead of using \(N\) \textit{sequential} Markov-chain states, as we operate \(N\) parallel Markov-chains.
+To obtain a similar per-SGD-iteration cost, we perform only a single Markov-chain transition for each chain.
+We will later discuss the computational costs in detail.
+A visual illustration can be found in~\cref{section:illustration}.
+
+\input{thm_parallel_estimator}
+
+\paragraph{Bias v.s. Variance}
+While our proposed scheme achievs superior variance reduction, the mixing rate is worse.
+In a MCMC estimation perspective, this translates into higher bias.
+However, we note that
+\begin{enumerate*}[label=\textbf{(\roman*)}]
+  \item the constant \(C\left(\rho, N\right)\) depends on \(\rho\), 
+  \item all of the ergodic convergence rate are close to 1 as \(w^* \rightarrow \infty\), and
+  \item the mixing rate is a conservative global bound with respect to \(\vlambda\).
+\end{enumerate*}
+Therefore, in general, the superior ergodic convergence rate of JSA does not translate into faster convergence of MCSA.
+In fact, as MCSA converges, \(w^*\) also decreases, dramatically improving the mixing rate.
+In contrast, the relative variance does not improve too much with \(w^*\).
+Therefore, reducing the variance is much more effective for accelerating convergence.
+We empirically show this fact on the bias and variance in~\cref{section:simulation}.
+
+\begin{wraptable}{r}{0.6\textwidth}
+  \vspace{-0.5in}
+  \input{table_cost}
+  \vspace{-0.2in}
+\end{wraptable}
+%
+\subsection{Computational Cost}
+The three schemes using the CIS kernel and the IMH kernel can have different computational costs depending on the parameter \(N\).
+The computational costs of each scheme are organized in~\cref{table:cost} while detailed pseudocodes of the considered schemes are provided in the \textit{supplementary material}.
+
+\vspace{-0.05in}
+\paragraph{Cost of Sampling Proposals}
+For the CIS kernel used by MSC, \(N\) controls the number of internal proposals sampled from \(q_{\vlambda}(\vz)\).
+For JSA and our proposed scheme, the IMH kernel only uses a single sample from \(q_{\vlambda}(\vz)\), but applies the kernel \(N\) times.
+Assuming caching is done as much as possible, the parallel state estimator needs twice the density evaluations of \(q_{\vlambda}(\vz)\) compared to other methods.
+However, this added cost is minimal since the overall computational cost is dominated by  \(p(\vz,\vx)\).
+
+\vspace{-0.05in}
+\paragraph{Cost of Estimating the Score}
+When estimating the score, MSC computes \(\nabla_{\vlambda} \log q_{\vlambda}(\vz)\) only once, while JSA and our proposed scheme compute it \(N\) times.
+However,~\cite{NEURIPS2020_b2070693} also discuss a Rao-Blackwellized version of the CIS kernel, which also computes the gradient \(N\) times.
+Lastly, notice that score climbing does not need to differentiate through the likelihood, unlike ELBO maximization, making its base computational cost significantly cheaper.
+
+%% \vspace{-0.05in}
+%% \subsection{Motivation and Overview}\label{section:motivation}
+%% \vspace{-0.05in}
+%% \paragraph{Motivating Example}
+%% According to traditional MCMC theory, multiple short Markov chains will be more biased than a single long Markov chain.
+%% Therefore, it is natural to expect the parallel estimator to be more biased than the sequential estimator.
+%% However, we show an example where this intuition is wrong: As shown in~\cref{fig:gaussian}, in this example, the parallel state estimator enjoys not only low variance but also low bias.
+%% %We ran score climbing VI with the three different estimators and compared the bias and variance of the estimators.
+%% The target distribution was a 10 dimensional multivariate Gaussian where the covariance was sampled from a Wishart distribution with \(\nu = 50\) degrees of freedom.
+%% The variational family was a mean-field Gaussian.
+%% The bias and variance was estimated from \(512\) independent replications.
+
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:

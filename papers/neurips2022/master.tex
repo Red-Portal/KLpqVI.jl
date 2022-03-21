@@ -1,0 +1,166 @@
+
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2020
+
+% ready for submission
+% \usepackage{neurips_2020}
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2020}
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2020}
+
+% to avoid loading the natbib package, add option nonatbib:
+%\usepackage[nonatbib]{neurips_2021}
+\usepackage[nonatbib]{neurips_2020}
+\usepackage[sort&compress,round]{natbib}
+\bibliographystyle{authordate1}
+
+\input{krkmath}
+
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{url}            % simple URL typesetting
+\usepackage{hyperref}       % hyperlinks
+\usepackage[utf8]{inputenc} % allow utf-8 input
+\usepackage{xcolor}         % hyperlinks
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{setspace}
+\usepackage{wrapfig}
+\usepackage[inline]{enumitem}
+\usepackage{caption}     
+\usepackage{subcaption}     
+\usepackage{float}     
+\usepackage{pifont}     
+\usepackage{pgfplots}     
+
+\allowdisplaybreaks
+
+%% Tikz corner
+\usepackage{tikz}
+\usepackage{pgf}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+\pgfplotsset{compat=1.18}
+\usetikzlibrary{patterns}
+\usetikzlibrary{fit, calc}
+\usetikzlibrary{pgfplots.groupplots}
+\usepgfplotslibrary{fillbetween}
+\usepgfplotslibrary{groupplots}
+\usepgfplotslibrary{statistics}
+\usepgfplotslibrary{external} 
+
+\usepackage{pifont}
+\usepackage{xcolor}
+\newcommand{\cmark}{\textcolor{green!80!black}{\ding{51}}}
+\newcommand{\xmark}{\textcolor{red}{\ding{55}}}
+
+\tikzset{external/system call={lualatex -shell-escape -halt-on-error -interaction=batchmode -jobname "\image" "\texsource"}}
+
+\title{Pratical Convergence Analysis of \\ Variational Inference by Score Ascent}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+\author{%
+  Kyurae Kim \\
+  Sogang University \\
+  \texttt{msca8h@sogang.ac.kr} \\
+}
+
+%% \author{%
+%%   David S.~Hippocampus\thanks{Use footnote for providing further information
+%%     about author (webpage, alternative address)---\emph{not} for acknowledging
+%%     funding agencies.} \\
+%%   Department of Computer Science\\
+%%   Cranberry-Lemon University\\
+%%   Pittsburgh, PA 15213 \\
+%%   \texttt{hippo@cs.cranberry-lemon.edu} \\
+%%   % examples of more authors
+%%   % \And
+%%   % Coauthor \\
+%%   % Affiliation \\
+%%   % Address \\
+%%   % \texttt{email} \\
+%%   % \AND
+%%   % Coauthor \\
+%%   % Affiliation \\
+%%   % Address \\
+%%   % \texttt{email} \\
+%%   % \And
+%%   % Coauthor \\
+%%   % Affiliation \\
+%%   % Address \\
+%%   % \texttt{email} \\
+%%   % \And
+%%   % Coauthor \\
+%%   % Affiliation \\
+%%   % Address \\
+%%   % \texttt{email} \\
+%% }
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+  \input{abstract.tex}
+\end{abstract}
+
+\input{introduction.tex}
+\input{background.tex}
+\input{method.tex}
+\input{evaluation.tex}
+\input{relatedworks.tex}
+\input{conclusions.tex}
+
+\section*{Broader Impact}
+
+\begin{ack}
+\end{ack}
+
+\bibliography{references}
+
+\newpage
+\appendix
+
+\begin{center}
+  \LARGE\bf
+  Markov-Chain Monte Carlo Score Estimators for \\
+  Variational Inference with Score Climbing \\
+  \textit{Appendix}
+\end{center}
+%% \begin{center}
+%%   \bf
+%%   Markov-Chain Monte Carlo Score Estimators for \\ Variational Inference with Score Climbing
+%%   \textit{Appendix}
+%% \end{center}
+
+%\section{Additional Experimental Results}
+\section{Computational Resources}\label{section:resources}
+ All of our experiments presented in this paper were executed on a server with 20 Intel Xeon E5--2640 CPUs and 64GB RAM.
+Each of the CPUs has 20 logical threads with 32k L1 cache, 256k L2 cache, and 25MB L3 cache.
+All of our experiments can be executed within 12 hours on a system with similar computational capabilities.
+
+\input{pseudocode}
+\input{illustration}
+\input{prob_models}
+
+%\newpage
+\section{Proofs}\label{section:proofs}
+%\input{var_seq}
+%\input{lemmas}
+\printProofs
+
+\end{document}

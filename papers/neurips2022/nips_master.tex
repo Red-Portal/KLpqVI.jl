@@ -1,0 +1,143 @@
+
+\documentclass{article}
+
+% if you need to pass options to natbib, use, e.g.:
+%     \PassOptionsToPackage{numbers, compress}{natbib}
+% before loading neurips_2020
+
+% ready for submission
+% \usepackage{neurips_2020}
+
+% to compile a preprint version, e.g., for submission to arXiv, add add the
+% [preprint] option:
+%     \usepackage[preprint]{neurips_2020}
+
+% to compile a camera-ready version, add the [final] option, e.g.:
+%     \usepackage[final]{neurips_2020}
+
+% to avoid loading the natbib package, add option nonatbib:
+%\usepackage[preprint]{neurips_2021}
+\usepackage[preprint]{neurips_2021}
+\bibliographystyle{authordate1}
+
+\usepackage{xcolor}         % hyperlinks
+\usepackage[algo2e, ruled]{algorithm2e}    % hyperlinks
+%\usepackage[utf8]{inputenc} % allow utf-8 input
+%\usepackage[T1]{fontenc}    % use 8-bit T1 fonts
+\usepackage{fontspec}
+\usepackage{hyperref}
+\usepackage{url}
+\usepackage{booktabs,threeparttable}
+\usepackage{amsfonts}       % blackboard math symbols
+\usepackage{nicefrac}       % compact symbols for 1/2, etc.
+\usepackage{microtype}      % microtypography
+\usepackage{setspace}
+\usepackage{wrapfig}
+\usepackage[inline]{enumitem}
+\usepackage{caption}     
+\usepackage{subcaption}     
+\usepackage{float}     
+%\usepackage[15-]{pagesel}
+
+\usepackage{minted}
+%\usepackage{newunicodechar}
+%\setmonofont{DejaVu Sans Mono}[Scale=MatchLowercase]
+
+\input{krkmath.tex}
+\setmainfont{Times New Roman}
+
+%% Tikz corner
+\usepackage{tikz}
+\usepackage{pgf}
+\usepackage{pgfplots}
+\usepackage{pgfplotstable}
+
+\usetikzlibrary{patterns}
+\usetikzlibrary{fit, calc}
+\usepgfplotslibrary{fillbetween}
+\usepgfplotslibrary{groupplots}
+\usepgfplotslibrary{statistics}
+\usepgfplotslibrary{external} 
+
+\usepackage{pifont}
+\usepackage{xcolor}
+\newcommand{\cmark}{\textcolor{green!80!black}{\ding{51}}}
+\newcommand{\xmark}{\textcolor{red}{\ding{55}}}
+
+\tikzset{external/system call={lualatex -shell-escape -halt-on-error -interaction=batchmode -jobname "\image" "\texsource"}}
+
+\title{Inclusive Variational Inference with \\ Independent Metropolis-Hastings}
+
+% The \author macro works with any number of authors. There are two commands
+% used to separate the names and addresses of multiple authors: \And and \AND.
+%
+% Using \And between authors leaves it to LaTeX to determine where to break the
+% lines. Using \AND forces a line break at that point. So, if LaTeX puts 3 of 4
+% authors names on the first line, and the last on the second line, try using
+% \AND instead of \And before the third author name.
+
+\author{%
+  Kyurae Kim \\
+  %Dept. of Electronics Eng.\\
+  Sogang University\\
+  Seoul, Republic of Korea \\
+  \texttt{msca8h@sogang.ac.kr} \\
+  \And
+  Jisu Oh \\
+  %Dept. of Mathematics\\
+  Sogang University\\
+  Seoul, Republic of Korea \\
+  \texttt{kokokim798@sogang.ac.kr} \\
+  \And
+  Hongseok Kim \\
+  %Dept. of Electronics Eng. \\
+  Sogang University\\
+  Seoul, Republic of Korea \\
+  \texttt{hongseok@sogang.ac.kr} \\
+}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+  \input{abstract.tex}
+\end{abstract}
+
+\input{introduction.tex}
+\input{background.tex}
+\input{method.tex}
+\input{evaluation.tex}
+\input{relatedworks.tex}
+\input{conclusions.tex}
+\newpage
+
+\begin{ack}
+  This work initially started in the process of understanding the performance of the Markovian score climbing algorithm by~\citet{NEURIPS2020_b2070693}.
+  We sincerely thank Hongseok Yang for pointing us to a relevant related work by~\citet{kim2021adaptive}, Guanyang Wang for insightful discussions about the independent Metropolis-Hastings algorithm, Geon Park and Kwanghee Choi for constructive comments that enriched this paper.
+  We also aknowledge the Computer Science Department of Sogang University for providing computational resources.
+\end{ack}
+
+\bibliography{references}
+\input{checklist.tex}
+
+\newpage
+\appendix
+\input{relationship}
+
+\section{Additional Experimental Results}
+\subsection{Experimental Environment}\label{section:resources}
+All of our experiments presented in this paper were executed on a server with 20 Intel Xeon E5--2640 CPUs and 64GB RAM.
+Each of the CPUs has 20 logical threads with 32k L1 cache, 256k L2 cache, and 25MB L3 cache.
+All of our experiments can be executed within a few days on a system with similar computational capabilities.
+
+\input{paretok_additional}
+\input{simulations}
+\input{prob_models}
+
+%\newpage
+\section{Proofs}
+\input{cis_kernel}
+\printProofs
+
+\end{document}

@@ -1,0 +1,28 @@
+
+
+\begin{theoremEnd}{theorem}
+  The gradient upper bounds of Markov chain score ascent methods can be found as follows:
+  \begin{itemize}
+    \item MSC~\citep{NEURIPS2020_b2070693}:
+    \item JSA~\citep{pmlr-v124-ou20a}:
+    \begin{align}
+      G_{\text{JSA}}^2 = 
+      L^2 \left[\;
+      \frac{1}{2} 
+      +
+      \frac{1}{2 \, N} 
+      +
+      \frac{1}{N^2} 
+      {\left(1 - \frac{1}{w^*}\right)}
+      \;\right]
+    \end{align}
+    \item This work:
+      \begin{align}
+        G^2_{\text{ours}} = L^2 \left[\; \frac{1}{N} + \frac{1}{N}\,\left(1 - \frac{1}{w^*}\right) \;\right]
+      \end{align}
+  \end{itemize}
+\end{theoremEnd}
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:

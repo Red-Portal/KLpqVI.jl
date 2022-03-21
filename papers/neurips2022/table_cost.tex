@@ -1,0 +1,73 @@
+
+% Second version of table, with booktabs.
+%\begin{table}
+%\centering
+\caption{Computational Costs of MCSA Schemes}\label{table:cost}
+  \vspace{-0.05in}
+\setlength{\tabcolsep}{2pt}
+  \begin{threeparttable}
+\begin{tabular}{lccccc}\toprule
+& \multicolumn{3}{c}{\footnotesize Posterior Sampling} & \multicolumn{2}{c}{\footnotesize Stochastic gradient} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-6}
+  & \(\footnotesize p\left( \vz, \vx \right)\)
+  & \(\footnotesize q_{\vlambda}(\vz)\)
+  & \(\footnotesize q_{\vlambda}(\vz)\)
+  & \(\footnotesize p\left( \vz, \vx \right)\)
+  & \(\footnotesize q_{\vlambda}(\vz)\)
+  \\
+  & {\footnotesize\# Eval.  }
+  & {\footnotesize\# Eval.  }
+  & {\footnotesize\# Samples}
+  & {\footnotesize\# Grad.  }
+  & {\footnotesize\# Grad.  }
+%
+\\\midrule
+%
+{\footnotesize
+ELBO
+}
+& \(0\)
+& \(0\)
+& \(N\)
+& \(N\)
+& \(N\)
+\\\arrayrulecolor{black!30}\midrule
+%
+{\footnotesize
+MSC
+}
+& \(N-1\)
+& \(N\)
+& \(N-1\)
+& \(0\)
+& \(1\)\tnote{1}\;\;{\footnotesize or}\;\(N\)\tnote{2}
+\\
+%
+{\footnotesize
+JSA
+}
+& \(N\)
+& \(N+1\)
+& \(N\)
+& \(0\)
+& \(N\)
+\\
+%
+{\footnotesize
+\textit{proposed}
+}
+& \(N\)
+& \(2 \, N\)
+& \(N\)
+& \(0\)
+& \(N\)
+\\\bottomrule
+\end{tabular}
+  \begin{tablenotes}
+    \item[*]{\footnotesize We assume that the parameters are cached as much as possible}.
+    \item[*]{\footnotesize \(N\) is the number of samples used in each method}.
+    \item[1]{\footnotesize Vanilla CIS kernel}.
+    \item[2]{\footnotesize Rao-Blackwellized CIS kernel}.
+  \end{tablenotes}
+  \end{threeparttable}
+%\end{table}

@@ -1,0 +1,110 @@
+
+\begin{theoremEnd}[all end]{lemma}\label{thm:lambda_bound}
+  For \(w^* = \sup_{\vz} w\left(\vz\right) \), \(\lambda\left(\cdot\right)\) in~\cref{eq:T_lambda} is bounded as
+  \[
+   \max\left(1 - \frac{1}{w}, 0\right) \leq \lambda\left(w\right) \leq 1 - \frac{1}{w^*}.
+  \]
+\end{theoremEnd}
+\begin{proofEnd}
+  The proof can be found in the proof of Theorem 3 of \citet{Smith96exacttransition}.
+\end{proofEnd}
+
+\begin{theoremEnd}[all end]{lemma}\label{thm:tn_bound}
+  For \(w^* = \sup_{\vz} w\left(\vz\right) \), \(T_t\left(\cdot\right)\) in~\cref{eq:T_lambda} is bounded as
+  \[
+  T_n\left( w \right) \leq \frac{n}{w} \, {\left(1 - \frac{1}{w^*}\right)}^{n-1}.
+  \]
+\end{theoremEnd}
+\begin{proofEnd}
+  \begin{alignat*}{2}
+    T_n\left(w\right) 
+    &= \int_w^{\infty} \frac{n}{v^2} \, \lambda^{n-1}\left(v\right)\,dv
+    &&\quad\text{\textit{\cref{eq:T_lambda}}}
+    \\
+    &\leq \int_w^{\infty} \frac{n}{v^2} \, {\left(1 - \frac{1}{w^*}\right)}^{n-1}\,dv
+    &&\quad\text{\textit{\cref{thm:lambda_bound}}}
+    \\
+    &= n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1}  \int_w^{\infty} \frac{1}{v^2} \,dv
+    &&\quad\text{\textit{Pulled out constant}}
+    \\
+    &= n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1}  \left( {-\left.\frac{1}{v}\right\rvert^{\infty}_{w}} \right)
+    &&\quad\text{\textit{Solved indefinite integral}}
+    \\
+    &= \frac{n}{w} \, {\left(1 - \frac{1}{w^*}\right)}^{n-1}.
+  \end{alignat*}
+  This upper bound is in general difficult to improve unless we impose stronger assumptions on \(\pi\) and \(q\).
+\end{proofEnd}
+
+\begin{theoremEnd}[all end]{lemma}\label{thm:imh_expecation}
+  For a positive test function \(f : \mathcal{Z} \rightarrow \mathbb{R}^{+}\), the estimate of a \(\pi\)-invariant independent Metropolis-Hastings kernel with a proposal \(q\) is bounded as
+  \begin{align*}
+    \Esub{K^n\left(\vz, \cdot\right)}{ f \,\middle|\, \vz }
+    \leq
+    n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} 
+    \Esub{q}{f}
+    +
+    {\left(1 - \frac{1}{w^*}\right)}^n \, f\left(\vz\right)
+    %% \leq
+    %% n \, \left(
+    %% \Esub{q}{f}
+    %% +
+    %% \frac{1}{n} \, f\left(\vz\right)
+    %% \right) 
+  \end{align*}
+  where \(w\left(\vz\right) = \pi\left(\vz\right) / q\left(\vz\right)\) and \(w^* = \sup_{\vz} w\left(\vz\right) \).
+\end{theoremEnd}
+\begin{proofEnd}
+  \begin{alignat*}{2}
+    &\Esub{K^n\left(\vz, \cdot\right)}{ f \,\middle|\, \vz }
+    \\
+    &\quad=
+    \int T_n\left(w\left(\vz\right) \vee w\left(\vz\prime\right)\right) \, f\left(\vz\prime\right) \, \pi\left(\vz\prime\right) d\vz\prime
+    +
+    \lambda^{n}\left(w\left(\vz\right)\right) \, f\left(\vz\right)
+    &&\quad{\text{\textit{\cref{eq:imh_exact_kernel}}}}
+    \\
+    &\quad\leq
+    \int \frac{n}{w\left(\vz\right) \vee w\left(\vz\prime\right)} \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} \, f\left(\vz\prime\right) \, \pi\left(\vz\prime\right) d\vz\prime
+    +
+    \lambda^{n}\left(w\left(\vz\right)\right) \, f\left(\vz\right)
+    &&\quad{\text{\textit{\cref{thm:tn_bound}}}}
+    \\
+    &\quad\leq
+    \int \frac{n}{w\left(\vz\prime\right)} \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} \, f\left(\vz\prime\right) \, \pi\left(\vz\prime\right) d\vz\prime
+    +
+    \lambda^{n}\left(w\left(\vz\right)\right) \, f\left(\vz\right)
+    &&\quad{\frac{1}{w\left(\vz\right) \vee w\left(\vz\prime\right)} \leq \frac{1}{w\left(\vz\prime\right)}}
+    \\
+    &\quad=
+    n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} \, 
+    \int \frac{1}{w\left(\vz\prime\right)} \, f\left(\vz\prime\right) \, \pi\left(\vz\prime\right) d\vz\prime
+    +
+    \lambda^{n}\left(w\left(\vz\right)\right) \, f\left(\vz\right)
+    &&\quad{\text{\textit{Pulled out constant}}}
+    \\
+    &\quad=
+    n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} \, 
+    \int f\left(\vz\prime\right) \, q\left(\vz\prime\right) d\vz\prime
+    +
+    \lambda^{n}\left(w\left(\vz\right)\right) \, f\left(\vz\right)
+    &&\quad{\text{\textit{Definition of \(w\left(\vz\right)\)}}}
+    \\
+    &\quad\leq
+    n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} \, 
+    \int f\left(\vz\prime\right) \, q\left(\vz\prime\right) d\vz\prime
+    +
+    {\left(1 - \frac{1}{w^*}\right)}^{n} \, f\left(\vz\right)
+    &&\quad{\text{\textit{\cref{thm:lambda_bound}}}}
+    \\
+    &\quad=
+    n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} 
+    \Esub{q}{f}
+    +
+    {\left(1 - \frac{1}{w^*}\right)}^n \, f\left(\vz\right).
+  \end{alignat*}
+\end{proofEnd}
+
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:

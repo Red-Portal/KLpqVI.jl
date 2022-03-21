@@ -1,0 +1,222 @@
+
+\begin{theoremEnd}[all end]{lemma}\label{thm:mixing_time}
+  Assuming the kernel \(P_{\vlambda}\left(\veta, \cdot\right)\) satisfies \cref{thm:ergodicity}, the Hellinger mixing time \(\tau_{\text{Hel.}}\) is bounded as
+  \begin{align*}
+    \tau_{\text{Hel.}}\left(K_{\vlambda}, \epsilon\right) \leq  \frac{2}{\log \rho^{-1}} \log \frac{1}{\epsilon}
+  \end{align*}
+\end{theoremEnd}
+\begin{proofEnd}
+  The following two inequalities are equivalent.
+  \begin{align*}
+    d_{\text{Hel.}}\left(\, P^t_{\vlambda}\left(\veta, \cdot \right), \Pi \,\right)
+    &\leq \sqrt{\DTV{ P^t_{\vlambda}\left(\veta, \cdot \right)}{\Pi}}
+    \leq \rho^{t / 2}
+    \\
+    \log d_{\text{Hel.}}\left(\, P^t_{\vlambda}\left(\veta, \cdot \right), \Pi \,\right)
+    &\leq \frac{t}{2} \log \rho
+  \end{align*}
+
+  The Hellinger mixing time \(\tau_{\text{Hel.}}\left(K_{\vlambda}, \epsilon\right)\) is the smallest \(t\) that statisfies the inequality
+  \begin{align*}
+    d_{\text{Hel.}}\left(\, P^t_{\vlambda}\left(\veta, \cdot \right), \Pi \,\right)
+    &\leq 
+    \epsilon.
+  \end{align*}
+  Instead, we can find the \(t\prime > t\) that satisfies
+  \begin{align*}
+    \log d_{\text{Hel.}}\left(\, P^t_{\vlambda}\left(\veta, \cdot \right), \Pi \,\right)
+    \leq 
+    \frac{t\prime}{2} \log \rho
+    \leq 
+    \log \epsilon
+ \end{align*}
+  by solving the inequalities
+  \begin{alignat*}{2}
+    \frac{t\prime}{2} \log \rho
+    &\leq 
+    \log \epsilon
+    \\
+    t\prime 
+    &\geq 
+    \frac{2}{\log \rho} \log \epsilon
+    &&\quad\text{\textit{Inequality flipped since \(\log \rho \leq 1\)}}
+    \\
+    t\prime 
+    &\geq 
+    \frac{2}{\log \rho^{-1}} \log \frac{1}{\epsilon}
+ \end{alignat*}
+\end{proofEnd}
+
+\begin{theoremEnd}{theorem}{(\textbf{Convergence rate})}\label{thm:convergence_rate}
+  Assuming~\cref{thm:kernel_conditions,thm:gradient_estimator,thm:logconcave,thm:compact,thm:bounded_variance} hold, with a diminishing stepsize of \(\alpha_t = R / \left( G \sqrt{\kappa_1 \log \kappa_2 T} \right)\), the average iterates {\small\(\overline{\vlambda}_T = \sum^{T}_{t=1} \vlambda_{t} / T\)} of Markov chain score ascent achieve a convergence rate of
+  {%\small
+  \begin{align*}
+    \E{ \DKL{\pi}{q\,(\cdot; {\overline{\vlambda}_{T}})} - \DKL{\pi}{q\left(\cdot; {\vlambda^*}_{T}\right)}}
+    =
+    \mathcal{O}\left(
+    \frac{
+      G \, \sqrt{\log T}
+    }{
+      \log \rho^{-1} \, \sqrt{T}
+    } \right)  
+  \end{align*}
+  }
+\end{theoremEnd}
+\begin{proofEnd}
+  \citet[Corollary 3.5]{duchi_ergodic_2012} provide a non-asymptotic convergence rate for the \textit{ergodic mirror descent} algorithm which computes the parameter update as
+  \begin{align}
+    \vlambda_{t+1} &= \argmin_{\vlambda \in \Lambda} \left\{\,
+    \iprod{\,\vg\left(\vlambda, \veta_t\right)}{\vlambda\,} 
+    +
+    \frac{1}{\alpha_t} D_{\psi}\left(\vlambda, \vlambda_{t}\right)
+    \,\right\}\label{eq:ergodic_mirror_descent}
+    \\
+    \rvveta_{t+1} &\sim P_{\vlambda_{t}}\left(\veta_t, \cdot\right)
+    \nonumber
+  \end{align}
+  where \(D_{\psi}\) is the Bregman divergence defined as
+  \begin{align*}
+    D_{\psi}\left(\vlambda, \vlambda\prime\right)
+    \triangleq
+    \psi\left(\vlambda\right)
+    - \psi\left(\vlambda\prime\right)
+    - \iprod{ \nabla \psi\left(\vlambda\prime\right)}{\vlambda - \vlambda\prime}
+  \end{align*}
+  for some convex function \(\psi\).
+  Our result is based on the fact that MCGD is a special case of the ergodic mirror descent algorithm.
+  Specifically, by choosing \(\psi\left(\vlambda\right) = \frac{1}{2} \norm{\vlambda}^2_2 \), we obtain
+  \begin{alignat}{2}
+    D_{\psi}\left(\vlambda, \vlambda\prime\right) = \frac{1}{2} \norm{\vlambda - \vlambda\prime}_2^2 \leq \frac{1}{2} \, R^2.\label{eq:bregman}
+    &&\quad\text{\textit{\cref{thm:compact}}}
+  \end{alignat}
+  This reduces the update in \cref{eq:ergodic_mirror_descent} into projected gradient descent which is the form used for Markov chain score climbing.
+
+  Under our assumptions, \citet[Corollary 3.5]{duchi_ergodic_2012} show that, by assuming that the Hellinger mixing time is bounded as
+  \begin{align}
+    \tau_{\text{Hel.}}\left(K_{\vlambda}, \epsilon\right) \leq \kappa_1 \log\left( \kappa_2 /\epsilon \right) \label{eq:hellinger_mixing}
+  \end{align}
+  for any \(\epsilon > 0\), and setting a decreasing stepsize \(\alpha_t = \alpha / \sqrt{t}\),
+  it follows that
+  \begin{align}
+    &\E{ \DKL{\pi}{q\,(\cdot; {\overline{\vlambda}_{T}})} - \DKL{\pi}{q\left(\cdot; {\vlambda^*}_{T}\right)}}
+    \nonumber
+    \\
+    &\quad\leq
+    \frac{R^2}{2 \, \alpha \, \sqrt{T}}
+    +
+    \frac{2 \, \alpha \, G^2}{\sqrt{T}}\left( \kappa_1 \, \log \frac{\kappa_2}{\epsilon} \right)
+    +
+    3 \, \epsilon \, G \, R
+    +
+    \frac{R \, G \, \kappa_1 \, \log \frac{\kappa_2}{\epsilon}}{T}.\label{eq:original_bound}
+  \end{align}
+
+  From this, by setting the initial stepsize as \(\alpha = R / \left(G \sqrt{\kappa_1 \log \left(\kappa_2 \, T\right) }\right)\) and \(\epsilon = 1/ \sqrt{T}\),
+  \begin{alignat*}{2}
+    &\E{ \DKL{q\,(\cdot; {\overline{\vlambda}_{T}})}{\pi} - \DKL{q\left(\cdot; {\vlambda^*}_{T}\right)}{\pi}}
+    \\
+    &\leq
+    \frac{R}{2 \, \alpha \, \sqrt{T}}
+    +
+    \frac{2 \, \alpha \, G^2}{\sqrt{T}}\left( \kappa_1 \, \log \frac{\kappa_2}{\epsilon} \right)
+    +
+    3 \, \epsilon \, G \, R
+    +
+    \frac{R \, G \, \kappa_1 \, \log \frac{\kappa_2}{\epsilon}}{T}.
+    &&\quad\text{\textit{\cref{eq:original_bound}}}
+    \\
+    &=
+    \frac{R \, G \, \sqrt{\kappa_1 \, \log \left(\kappa_2 \, T\right) } }{2 \, \sqrt{T}}
+    +
+    \frac{2 \, R \, G}{\sqrt{T}}
+    \frac{ \kappa_1 \, \log \kappa_2 \, \sqrt{T} }{ \sqrt{\kappa_1 \log \left(\kappa_2 \, T\right)}}
+    +
+    \frac{3 \, G \, R}{\sqrt{T}}
+    +
+    \frac{R \, G \, \kappa_1 \, \log \left(\kappa_2 \, \sqrt{T}\right)}{T}
+    &&\quad\text{\textit{Plugged value of \(\epsilon\) and \(\alpha\)}}
+    \\
+    &\leq
+    \frac{R \, G \, \sqrt{\kappa_1 \, \log \left(\kappa_2 \, T\right) } }{2 \, \sqrt{T}}
+    +
+    \frac{2 \, R \, G}{\sqrt{T}}
+    \frac{ \kappa_1 \, \log \kappa_2 \, T }{ \sqrt{\kappa_1 \log \left(\kappa_2 \, T\right)}}
+    +
+    \frac{3 \, G \, R}{\sqrt{T}}
+    +
+    \frac{R \, G \, \kappa_1 \, \log \left(\kappa_2 \, T\right)}{T}
+    &&\quad\text{\textit{Applied \(\log \sqrt{T} < \log T\)}}
+    \\
+    &=
+    \frac{R \, G \, \sqrt{\kappa_1 \, \log \left(\kappa_2 \, T\right) } }{2 \, \sqrt{T}}
+    +
+    \frac{2 \, R \, G}{\sqrt{T}}
+    \sqrt{\kappa_1 \, \log \left( \kappa_2 \, T\right) }
+    +
+    \frac{3 \, G \, R}{\sqrt{T}}
+    +
+    \frac{R \, G \, \kappa_1 \, \log \left(\kappa_2 \, T\right)}{T}
+    &&\quad\text{\textit{Solved fraction}}
+    \\
+    &=
+    \frac{5 \, R \, G \, \sqrt{\kappa_1 \, \log \left(\kappa_2 \, T\right) } }{2 \, \sqrt{T}}
+    +
+    \frac{3 \, G \, R}{\sqrt{T}}
+    +
+    \frac{R \, G \, \kappa_1 \, \log \left(\kappa_2 \, T\right)}{T}.
+    &&\quad\text{\textit{Combined fractions}}
+  \end{alignat*}
+
+  From \cref{thm:mixing_time}, we retrieve the constants of \cref{eq:hellinger_mixing} as
+  \(
+  \kappa_1=\frac{2}{\log \rho^{-1} },\;  \kappa_2 = 1
+  \), which follows our result
+  \begin{alignat*}{2}
+    &\frac{
+      5 \, R \, G \, \sqrt{\kappa_1 \, \log \left(\kappa_2 \, T\right) }
+    }{
+      2 \, \sqrt{T}
+    }
+    +
+    \frac{3 \, G \, R}{\sqrt{T}}
+    +
+    \frac{R \, G \, \kappa_1 \, \log \left(\kappa_2 \, T\right)}{T}
+    \\
+    &\quad=
+    \frac{
+      5 \, R \, G \, \sqrt{ \frac{2}{\log \rho^{-1}} \, \log T }
+    }{
+      2 \, \sqrt{T}
+    }
+    +
+    \frac{3 \, G \, R}{\sqrt{T}}
+    +
+    \frac{R \, G \, \frac{2}{\log \rho^{-1}} \, \log T}{T}
+    &&\quad\text{\textit{Plugged values of \(\kappa_1\) and \(\kappa_2\)}}
+    \\
+    &\quad=
+    \frac{
+      5 \, \sqrt{2} \, R \, 
+    }{
+      2
+    }
+    \,
+    \frac{
+      G \, \sqrt{\log T}
+    }{
+      \log \rho^{-1} \, \sqrt{T} \, 
+    }
+    +
+    3 \, R \,
+    \frac{G \, R}{\sqrt{T}}
+    +
+    2 \, R
+    \,
+    \frac{G \, \log T}{ \log \rho^{-1} \, T}
+    &&\quad\text{\textit{Pulled constants forward}}
+  \end{alignat*}
+\end{proofEnd}
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:

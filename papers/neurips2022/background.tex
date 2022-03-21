@@ -1,0 +1,60 @@
+
+\section{Background}
+\subsection{Variational Inference with Stochastic Gradients}\label{section:ivi_previous}
+The goal of VI is to find the optimal variational parameter \(\vlambda\) identifying \(q_{\vlambda} \in \mathcal{Q}\) that minimizes some discrepancy measure \(D\left(\pi, q_{\vlambda}\right)\).
+A typical way to perform VI is to use stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951}), provided that gradient estimates of the optimization target \(g\,(\vlambda)\) are available.
+In this case, SGD is performed by repeating the update
+%\vspace{-0.05in}
+\begin{align*}
+  \vlambda_{t} = \vlambda_{t-1} + \gamma_{t} \, g\left(\vlambda_{t-1}\right)
+\end{align*}
+where \(\gamma_1, \ldots, \gamma_T\) is a step-size schedule following the conditions of~\citet{robbins_stochastic_1951, bottou_online_1999}.
+In the case of inclusive KL divergence minimization, \(g\) estimates
+%
+{
+\begin{align*}
+  \nabla_{\vlambda} \DKL{\pi}{q_{\lambda}}
+  = -\Esub{\pi}{ s\,(\vlambda; \rvvz) } 
+  \approx g\left(\vlambda\right)
+\end{align*}
+}%
+%\vspace{-0.05in}
+%
+where \(s\,(\vlambda;\vz) = \nabla_{\vlambda} \log q\,(\vz; \vlambda)\) is known as the \textit{score}.
+
+Since the optimization target is equivalent to ascending towards the direction of the score, \citet{NEURIPS2020_b2070693} coined the term score climbing.
+To better conform to the optimization literature, we instead call this approach \textit{score ascent} (as in gradient ascent).
+
+%\vspace{-0.05in}
+\subsection{Estimating the Score with Importance Sampling}\label{section:is}
+When it is easy to sample from the variational approximation \(q_{\lambda}(\vz)\), one can use importance sampling (IS, \citealt{robert_monte_2004}) for estimating the score following
+%\vspace{-0.05in}
+\begin{align*}
+  \Esub{\pi}{ s\,(\vlambda;\rvvz) } 
+  \propto Z\,\Esub{\pi}{ s\,(\vlambda; \rvvz) } %\label{eq:is_est} \\
+  \approx \frac{1}{N} \sum^{N}_{i=1} \widetilde{w}\,(\rvvz^{(i)}) \, s\,(\vlambda; \rvvz^{(i)}) 
+  \triangleq g_{IS}(\vlambda)
+\end{align*}
+%\vspace{-0.05in}
+where \(\widetilde{w}\,(\vz) = p\,(\vz,\vx) / q_{\vlambda}(\vz)\) is known as the unnormalized importance weight, \(Z\) is the marginal \(p\left(\vx\right) = \int p\left(\vx, \vz\right) \, d\vz\), and \(\rvvz^{(1)},\, \ldots,\, \rvvz^{(N)}\) are \(N\) independent samples from \(q_{\vlambda}(\vz)\).
+This scheme is equivalent to adaptive IS methods~\citep{bugallo_adaptive_2017} since the IS proposal \(q_{\vlambda}(\vz)\) is iteratively optimized based on the current samples.
+Although IS is unbiased, it is numerically unstable because of \(Z\). %in \cref{eq:is_est}.
+A more stable alternative is to use the normalized weight, which results in the self-normalized IS (SNIS) approximation.
+Unfortunately, SNIS still fails to converge even on moderate dimensional objectives and unlike IS, it is no longer unbiased~\citep{robert_monte_2004}.
+
+\subsection{Markov Chain Gradient Descent}\label{section:mcgd}
+Markov Chain Gradient Descent (MCGD, \citealt{duchi_ergodic_2012, NEURIPS2018_1371bcce}) is a family of algorithm that minimize (or maximize) a function \(f\) defined as \(f\left(\vlambda\right) = \int f\left(\vlambda, \veta\right) \, \Pi\left(d\veta\right)\) where \(\Pi\left(d\veta\right)\) is a probability measure.
+MCGD repeats the steps 
+\begin{align*}
+  \vlambda_{t+1}    = \mathcal{P}\left( \vlambda_{t} + \gamma_t \, g\left(\vlambda_t, \veta_{t}\right)\right),\quad 
+  \rvveta_{t+1}  \sim P_{\vlambda_{t}}\left( \veta_{t}, \cdot \right)
+\end{align*}
+where \(\mathcal{P}\) is a projection operator onto the feasible set \(\Lambda\), \(P_{\vlambda_{t}}\) is a \(\Pi\)-invariant Markov chain kernel that is possibly dependent on \(\vlambda_t\).
+
+The simple description of the MCGD problem setting encompasses an extremely wide range of problems including distributed optimization~\citep{ram_incremental_2009}, reinforcement learning~\citep{tadic_asymptotic_2017, doan_convergence_2020, Xiong_Xu_Liang_Zhang_2021}, and expectation-minimization~\citep{pmlr-v99-karimi19a}, to name a few.
+Non-asymptotic convergence analysis of the general MCGD setting have been recently presented by~\citet{duchi_ergodic_2012, pmlr-v99-karimi19a, doan_convergence_2020, Xiong_Xu_Liang_Zhang_2021}.
+In this paper, we show that the MCSA setting is part of the MCGD framework, which provides some practical practical insights into MSCA.
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:

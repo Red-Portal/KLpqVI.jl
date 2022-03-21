@@ -1,0 +1,226 @@
+
+\begin{theoremEnd}{theorem}{\textbf{(MSC,~\citealt{NEURIPS2020_b2070693})}}
+  MSC is obtained by defining 
+  \begin{align*}
+  P_{\lambda}\left(\veta, d\veta\prime\right)
+  = 
+  K_{\lambda}\left(\vz, d\vz\prime\right)
+  \end{align*}
+  with  \(\veta = \vz\) where \(K_{\vlambda}\left(\vz, \cdot\right)\) is the conditional importance sampling (CIS) kernel~\citep{NEURIPS2020_b2070693} with \(q_{def.}\left(\cdot, \vlambda\right)\) as its proposal distribution.
+  Then, given~\cref{thm:bounded_weight,thm:bounded_score}, the mixing rate and the gradient variance bounds are
+  \begin{align*}
+  \DTV{P_{\vlambda}^k\left(\veta, \cdot\right)}{\Pi} \leq  {\left(1 - \frac{N - 1}{2 w^* + N - 2}\right)}^k,\quad \text{and}\quad
+  \E{ \norm{ g\left(\cdot, \rvveta\right) }^2_{*} \,\middle|\, \mathcal{F}_{t} } \leq  L^2.
+  \end{align*}
+\end{theoremEnd}
+\begin{proofEnd}
+  the ergodic convergence rate of the i-SIR kernel is given by \citet{andrieu_uniform_2018}.
+  \begin{alignat*}{2}
+    \DTV{P^{k}\left(\veta, \cdot\right)}{\Pi}
+    =
+    \DTV{K^{k}\left(\vz, \cdot\right)}{\pi}
+    \leq
+    {\left(1 - \frac{N - 1}{2 w^* + N - 2}\right)}^k
+  \end{alignat*}
+
+  \begin{alignat}{2}
+    &\E{ \norm{ g\left(\cdot, \rvveta\right) }^2_{*} \,\middle|\, \mathcal{F}_{t} }
+    \nonumber
+    \\
+    &\quad=
+    \E{ \norm{ g\left(\cdot, \rvveta\right) }^2 \,\middle|\, \vz_{t-1},\, \vlambda_{t-1} }
+    \nonumber
+    \\
+    &\quad=
+    \Esub{\rvvz \sim K\left(\vz_{t-1}, \cdot\right)}{
+      \norm{ s\left(\cdot; \rvvz\right) }^2_{*} \,\middle|\, \vz_{t-1},\, \vlambda_{t-1}
+    }
+    \nonumber
+    \\
+    &\quad=
+    \int
+    \sum^{N}_{n=1} \frac{
+      w\left(\vz_n\right)
+    }{
+      \sum^{N}_{m=1} w\left(\vz_m\right)
+    }
+    \norm{ s\left(\cdot; \vz_n\right) }^2_{*}
+    \prod^{N}_{n=2}
+    q\left(d\vz_n\right)
+    \nonumber
+    \\
+    &\quad\leq
+    L^2 \,
+    \int
+    \sum^{N}_{n=1} \frac{
+      w\left(\vz_n\right)
+    }{
+      \sum^{N}_{m=1} w\left(\vz_m\right)
+    }
+    \prod^{N}_{n=2}
+    q_{\text{def.}}\left(d\vz_n; \vlambda\right)
+    \nonumber
+    \\
+    &\quad=
+    L^2
+    &&\quad\text{\textit{Sum of weights is always 1}}
+    \nonumber
+  \end{alignat}
+
+  %% This form coincides with solving the expectation of the self-normalized importance sampling estimator, which is well known to be challenging~\citep{robert_monte_2004}.
+  %% We instead approximate the expectation by defining the random variables
+  %% \(
+  %% X = \sum^{N}_{n=1} w\left(\vz_n\right) \norm{ s\left(\cdot; \vz_n\right) }^2_{*}
+  %% \)
+  %% and
+  %% \(
+  %% Y = \sum^{N}_{m=1} w\left(\vz_m\right)
+  %% \),
+  %% use the delta method as
+  %% \begin{alignat*}{2}
+  %%   \E{\frac{\rvX}{\rvY} \;\middle|\; Z} &\approx \frac{\E{\rvX \mid Z }}{\E{\rvY \mid Z}} + \mathcal{O}\left(\frac{1}{{\E{\rvX \mid Z}}^2}\right).
+  %% \end{alignat*}
+  %% The required expectations are obtained as
+  %% \begin{alignat}{2}
+  %%   &\E{\rvX \mid \lambda_{t-1}, \vz_{t-1}}
+  %%   \\
+  %%   &\quad=
+  %%   \int \sum^{N}_{n=1} w\left(\vz_n\right) \norm{ s\left(\cdot; \vz_n\right) }^2_{*}
+  %%   \prod^{N}_{n=2}
+  %%   q\left(d\rvvz_n\right)
+  %%   \nonumber
+  %%   \\
+  %%   &\quad=
+  %%   \sum^{N}_{n=1} \int w\left(\vz_n\right) \norm{ s\left(\cdot; \vz_n\right) }^2_{*}
+  %%   \prod^{N}_{n=2}
+  %%   q\left(d\rvvz_n\right)
+  %%   &&\quad\text{\textit{Swapped integral and sum}}
+  %%   \nonumber
+  %%   \\
+  %%   &\quad=
+  %%   \left\{\;
+  %%   \sum^{N}_{n=2} \int w\left(\vz_n\right) \norm{ s\left(\cdot; \vz_n\right) }^2_{*}
+  %%   \prod^{N}_{n=2} q\left(d\rvvz_n\right)
+  %%   \right\}
+  %%   +
+  %%   w\left(\vz_1\right) \norm{ s\left(\cdot; \vz_1\right) }^2_{*}
+  %%   &&\quad\text{\textit{Pulled out rejection state}}
+  %%   \nonumber
+  %%   \\
+  %%   &\quad=
+  %%   \left\{\;
+  %%   \sum^{N}_{n=2} \int \frac{\pi\left(\vz_n\right)}{q\left(\vz_n\right)} \norm{ s\left(\cdot; \vz_n\right) }^2_{*}
+  %%   \prod^{N}_{n=2}
+  %%   q\left(d\rvvz_n\right)
+  %%   \right\}
+  %%   +
+  %%   w\left(\vz_1\right) \norm{ s\left(\cdot; \vz_1\right) }^2_{*}
+  %%   &&\quad\text{\textit{Definition of \(w\left(\vz\right)\)}}
+  %%   \nonumber
+  %%   \\
+  %%   &\quad=
+  %%   \sum^{N}_{n=2} \int \pi\left(d\vz_n\right) \norm{ s\left(\cdot; \vz_n\right) }^2_{*}
+  %%   +
+  %%   w\left(\vz_1\right) \norm{ s\left(\cdot; \vz_1\right) }^2_{*}
+  %%   &&\quad\text{\textit{Cancelled out \(q\left(\cdot\right)\)}}
+  %%   \nonumber
+  %%   \\
+  %%   &\quad=
+  %%   \left(N-1\right) \, \Esub{\pi}{\norm{ s\left(\cdot; \rvvz\right) }^2_{*} }
+  %%   +
+  %%   w\left(\vz_1\right) \norm{ s\left(\cdot; \vz_1\right) }^2_{*}
+  %%   \nonumber
+  %%   \\
+  %%   &\quad=
+  %%   \left(N-1\right) \, \Esub{\pi}{\norm{ s\left(\cdot; \rvvz\right) }^2_{*} }
+  %%   +
+  %%   w\left(\vz_{t-1}\right) \norm{ s\left(\cdot; \vz_{t-1}\right) }^2_{*}
+  %%   \nonumber
+  %% \end{alignat}
+  %% and similarly,
+  %% \begin{alignat}{2}
+  %%   \E{\rvY \mid \lambda_{t-1}, \vz_{t-1}}
+  %%   &\quad= 
+  %%   \int \sum^{N}_{n=1} w\left(\vz_n\right) \prod^{N}_{n=2} q\left(d\vz_n\right) 
+  %%   \nonumber
+  %%   \\
+  %%   &\quad= 
+  %%   \left\{\; \int \sum^{N}_{n=2} w\left(\vz_n\right) \prod^{N}_{n=2} q\left(d\vz_n\right) \;\right\} + w\left(\vz_1\right)
+  %%   &&\quad\text{\textit{Pulled out rejection state}}
+  %%   \nonumber
+  %%   \\
+  %%   &\quad= 
+  %%   \left\{\; \sum^{N}_{n=2} \int w\left(\vz_n\right) \prod^{N}_{n=2} q\left(d\vz_n\right) \;\right\} + w\left(\vz_1\right)
+  %%   &&\quad\text{\textit{Swapped integral and sum}}
+  %%   \nonumber
+  %%   \\
+  %%   &\quad= 
+  %%   \left\{\; \sum^{N}_{n=2} \int \frac{\pi\left(\vz_n\right)}{q\left(\vz_n\right)} \prod^{N}_{n=2} q\left(d\vz_n\right) \;\right\} + w\left(\vz_1\right)
+  %%   &&\quad\text{\textit{Definition of \(w\left(\vz\right)\)}}
+  %%   \nonumber
+  %%   \\
+  %%   &\quad= 
+  %%   \left\{\; \sum^{N}_{n=2} \int \pi\left(d\vz_n\right) \;\right\} + w\left(\vz_1\right)
+  %%   &&\quad\text{\textit{Cancelled out \(q\left(\cdot\right)\)}}
+  %%   \nonumber
+  %%   \\
+  %%   &\quad= 
+  %%   N - 1 + w\left(\vz_{t-1}\right)
+  %%   \nonumber
+  %% \end{alignat}
+  %% Therefore, 
+  %% \begin{alignat}{2}
+  %%   \E{\frac{\rvX}{\rvY} \;\middle|\; Z}
+  %%   &\approx
+  %%   \frac{
+  %%     \left(N-1\right) \, \Esub{\pi}{\norm{ s\left(\cdot; \rvvz\right) }^2_{*} }
+  %%     +
+  %%     w\left(\vz_1\right) \norm{ s\left(\cdot; \vz_1\right) }^2_{*}
+  %%   }{
+  %%     N-1 + w\left(\vz_1\right)
+  %%   }
+  %%   + \mathcal{O}\left(\frac{1}{{\left(N-1\right)}^2}\right)
+  %%   \nonumber
+  %%   \\
+  %%   &\leq
+  %%   \frac{
+  %%     \left(N-1\right) \, \Esub{\pi}{\norm{ s\left(\cdot; \rvvz\right) }^2_{*} }
+  %%     +
+  %%     w^* \norm{ s\left(\cdot; \vz_1\right) }^2_{*}
+  %%   }{
+  %%     N-1
+  %%   }
+  %%   + \mathcal{O}\left(\frac{1}{{\left(N-1\right)}^2}\right)
+  %%   &&\quad\text{\textit{\(w\left(\cdot\right) \leq w^*\)}}
+  %%   \nonumber
+  %%   \\
+  %%   &\leq
+  %%   \frac{
+  %%     \left(N-1\right) \, L^2
+  %%     +
+  %%     w^* L^2
+  %%   }{
+  %%     N-1
+  %%   }
+  %%   + \mathcal{O}\left(\frac{1}{{\left(N-1\right)}^2}\right)
+  %%   \nonumber
+  %%   \\
+  %%   &=
+  %%   L^2
+  %%   \left[
+  %%   1
+  %%   +
+  %%   \frac{
+  %%     w^*
+  %%   }{
+  %%     N-1
+  %%   }
+  %%   \right]
+  %%   + \mathcal{O}\left(\frac{1}{{\left(N-1\right)}^2}\right)
+  %%   \nonumber
+  %% \end{alignat}
+\end{proofEnd}
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:

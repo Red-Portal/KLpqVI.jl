@@ -1,0 +1,68 @@
+
+
+\begin{theoremEnd}[all end]{lemma}\label{thm:additive}
+  The bivariate function location and scale reparameterization function
+  \(
+    t\left(\vu, \vlambda\right) = \mC\,\vu + \vm
+  \)
+  is additive with respect to \(\vlambda =\left[\mC, \vm\right]\) such that
+  \[
+    t\left(\vu, \alpha\,\vlambda + \beta\,\vmu\right) 
+    = \alpha\,t\left(\vu, \vlambda\right) + \beta\,t\left(\vu, \vmu\right)
+  \]
+  for any \(\alpha\), \(\beta\).
+\end{theoremEnd}
+\begin{proofEnd}
+  Let us denote \(\vlambda =\left[\mC_{\vlambda}, \vm_{\vlambda}\right]\) and \(\vmu = \left[\mC_{\vmu}, \vm_{\vmu}\right]\).
+  Then,
+  \begin{alignat}{2}
+    t\left(\vu, \alpha\,\vlambda + \beta\,\vmu\right) 
+    &= 
+    \left(\alpha\,\mC_{\vlambda} + \beta\,\mC_{\vmu}\right)\,\vu + \left(\alpha\,\vm_{\vlambda} + \beta\,\vm_{\vmu}\right)
+    \nonumber
+    \\
+    &= 
+    \alpha\,\left(\mC_{\vlambda}\vu + \vm_{\vlambda}\right) + \beta\,\left(\mC_{\vmu}\,\vu + \vm_{\vmu}\right)
+    \nonumber
+    \\
+    &= 
+    \alpha\,t\left(\vu, \vlambda\right) + \beta\,t\left(\vu, \vmu\right).
+    \nonumber
+  \end{alignat}
+\end{proofEnd}
+
+\begin{theoremEnd}{proposition}\label{thm:logconcave_parameter}
+  Any location-scale log-concave family is log-concave with respect to its location and scale parameters.
+\end{theoremEnd}
+\begin{proofEnd}
+  A distribution \(q\left(\cdot\right) \in \mathcal{Q}\) in a location-scale family \(\mathcal{Q}\) is defined as
+  \begin{align*}
+    \rvvz \sim q\left(\cdot\right) \iff \rvvz = t\left(\rvvu, \vlambda\right),\; \rvvu \sim \phi\left(\cdot\right).
+  \end{align*}
+  The reparameterization function \(t\) is defined as an affine transformation
+  \begin{align*}
+    t\left(\vu, \vlambda\right) = \mC\,\vu + \vm
+  \end{align*}
+  for the location \(\vm\) and scale \(\mC\) parameters and their concatenation \(\vlambda = \left[\mC, \vm\right]\).
+
+  Furthermore, the base density \(\phi\left(\vz\right)\) of any location-scale log-concave family is log-concave.
+  Therefore, it follows that
+  \begin{alignat}{2}
+    &\phi\left(t\left(\vu, \alpha \vlambda + (1 - \alpha)\,\vmu\right)\right)
+    \nonumber
+    \\
+    &\quad=
+    \phi\left( \alpha\,t\left(\vu, \vlambda\right) + (1 - \alpha)\,t\left(\vu, \vmu\right)\right)
+    &&\quad\text{\textit{\cref{thm:additive}}}
+    \nonumber
+    \\
+    &\quad=
+    \alpha\,\phi\left(t\left(\vu, \vlambda\right)\right) + (1 - \alpha)\,\phi\left(t\left(\vu, \vmu\right)\right)
+    &&\quad\text{\textit{Log-concavity of \(\phi\)}}.
+    \nonumber
+  \end{alignat}
+\end{proofEnd}
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:

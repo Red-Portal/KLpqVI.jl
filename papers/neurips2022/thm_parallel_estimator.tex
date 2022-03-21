@@ -1,0 +1,134 @@
+
+\begin{theoremEnd}{theorem}{\textbf{(Proposed)}}
+  For our proposed scheme,
+  \begin{align*}
+    P_{\vlambda}\left(\veta, d\veta\prime\right)
+    = 
+    K_{\vlambda}\left(\vz_1, d\vz\prime_1\right)
+    \,
+    K_{\vlambda}\left(\vz_2, d\vz\prime_2\right)
+    \cdot
+    \ldots 
+    \cdot
+    K_{\vlambda}\left(\vz_N, d\vz\prime_N\right)
+  \end{align*}
+  with \(\veta = \left[\vz_1, \vz_2, \ldots, \vz_N\right]\)
+  Then, given~\cref{thm:bounded_weight,thm:bounded_score}, the mixing rate and the gradient variance bounds are
+  \begin{align*}
+    \DTV{P_{\vlambda}^k\left(\veta, \cdot\right)}{\Pi}
+    \leq
+    C\left(N\right)\,{\rho^k},
+    \quad\text{and}\quad
+    \E{ \norm{ g\left(\cdot, \rvveta\right) }^2_{*} \,\middle|\, \mathcal{F}_{t} }
+    \leq
+    L^2 \left[\; \frac{1}{N} + \frac{1}{N}\,\left(1 - \frac{1}{w^*}\right) \;\right]
+  \end{align*}
+  for some positive constant \(C\) depending on \(N\).
+\end{theoremEnd}
+\begin{proofEnd}
+  For our new scheme,
+  \begin{alignat}{2}
+    &\DTV{K^{k}\left(\veta, \cdot\right)}{\Pi}
+    \nonumber
+    \\
+    &\quad=
+    \sup_{A}
+    \abs{
+      \Pi\left(A\right)
+      -
+      P^{k}\left(\veta, A\right)
+    }
+    &&\quad\text{\textit{Definition of \(d_{\text{TV}}\)}}
+    \nonumber
+    \\
+    &\quad\leq
+    \sup_{A}
+    \big|\;
+    \int_{A}
+      \pi\left(d\vz\prime_1\right) \cdot \ldots \cdot \pi\left(d\vz\prime_N\right)
+    \nonumber
+      \\
+      &\qquad\qquad\qquad-
+      K^k\left(\vz_1, d\vz\prime_1\right) \cdot \ldots \cdot K^k\left(\vz_N, d\vz\prime_N\right)
+    \;\big|
+    \nonumber
+    \\
+    &\quad\leq
+    \sup_{A}
+    \sum_{n=1}^N
+    \abs{
+    \int_{A}
+      \pi\left(d\vz\prime_k\right) - K^{k}\left(\vz_n, d\vz\prime_n\right) 
+    }
+    &&\quad\text{\textit{\cref{thm:product_measure_bound}}}
+    \nonumber
+    \\
+    &\quad=
+    \sum_{n=1}^N
+    \DTV{K^k\left(\vz_n, \cdot\right)}{\pi}
+    &&\quad\text{\textit{Definition of TV distance}}
+    \nonumber
+    \\
+    &\quad\leq
+    \sum_{n=1}^N
+    \rho^{k}
+    &&\quad\text{\textit{Geometric ergodicity}}
+    \nonumber
+    \\
+    &\quad=
+    N\,\rho^{k}
+    &&\quad\text{\textit{Solved sum}}
+    \nonumber
+  \end{alignat}
+
+  \begin{alignat}{2}
+    &\E{ \norm{ g\left(\cdot, \rvveta\right) }^2_{*} \,\middle|\, \mathcal{F}_{t} }
+    \nonumber
+    \\
+    &\quad=
+    \E{ \norm{ g\left(\cdot, \rvveta\right) }^2 \,\middle|\, \vz_{t-1}^{(1:N)},\, \vlambda_{t-1} }
+    \nonumber
+    \\
+    &\quad=
+    \E{ \norm{ \frac{1}{N}\sum^{N}_{n=1} s\left(\cdot; \rvvz_{n}\right) }^2_{*} \,\middle|\, \vz_{t-1}^{(1:N)},\, \vlambda_{t-1} }
+    \nonumber
+    \\
+    &\quad\leq
+    \E{  \frac{1}{N^2} \sum^{N}_{n=1} \norm{s\left(\cdot; \rvvz_{n}\right) }^2_{*} \,\middle|\, \vz_{t-1}^{(1:N)},\, \vlambda_{t-1} }
+    &&\quad\text{\textit{Triangle inequality}}
+    \nonumber
+    \\
+    &\quad=
+    \frac{1}{N^2}\sum^{N}_{n=1} \Esub{\rvvz_{n} \sim K\left(\vz_{t-1}^{(n)}, \cdot\right)}{ \norm{s\left(\cdot; \rvvz_{n}\right) }^2_{*} \,\middle|\,  \vz_{t-1}^{(1:N)},\, \vlambda_{t-1} }
+    &&\quad\text{\textit{Linearity of expectation}}
+    \nonumber
+    \\
+    &\quad\leq
+    \frac{1}{N^2}\sum^{N}_{n=1}
+      \Esub{\rvvz_n \sim q_{\text{def.}}\left(\cdot;\vlambda\right)}{ \norm{s\left(\cdot; \rvvz_n \right)}_{*}^2 }
+      +
+      {\left(1 - \frac{1}{w^*}\right)} \, \norm{s\left(\cdot; \vz_{t-1}^{(n)} \right)}_{*}^2
+    &&\quad\text{\textit{\cref{thm:imh_expecation}}}
+    \nonumber
+    \\
+    &\quad\leq
+    \frac{1}{N^2}\sum^{N}_{n=1}
+        L^2 + {\left(1 - \frac{1}{w^*}\right)} \, L^2
+    \nonumber
+    \\
+    &\quad=
+    \frac{L^2}{N^2} \sum^{N}_{n=1}
+      1 + {\left(1 - \frac{1}{w^*}\right)}
+    \nonumber
+    &&\quad\text{\textit{Moved constant forward}}
+    \\
+    &\quad=
+    L^2 \left[ \frac{1}{N} + \frac{1}{N}\,{\left(1 - \frac{1}{w^*}\right)} \right].
+    \nonumber
+    &&\quad\text{\textit{Solved sum}}
+  \end{alignat}
+\end{proofEnd}
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:

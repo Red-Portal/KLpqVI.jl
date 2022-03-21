@@ -1,0 +1,118 @@
+
+\begin{theoremEnd}[all end]{lemma}\label{thm:product_measure_bound}
+  For the probability measures \(p_1, \ldots, p_N\) and \(q_1, \ldots, q_N\) defined on a measurable space \((\mathsf{X}, \mathcal{A})\) and an arbitrary set \(A \in \mathcal{A}\),
+  \begin{align*}
+    &\abs{
+    \int_{A^N}
+    p_1\left(dx_1\right)
+    p_2\left(dx_2\right)
+    \times
+    \ldots
+    \times
+    p_N\left(dx_N\right)
+    -
+    q_1\left(dx_1\right)
+    q_2\left(dx_2\right)
+    \times
+    \ldots
+    \times
+    q_N\left(dx_N\right)
+  }
+    \\
+  &\qquad\leq
+  \sum_{n=1}^N
+  \abs{
+    \int_{A}
+    p_n\left(dx_n\right)
+    -
+    q_n\left(dx_n\right)
+  }
+  \end{align*}
+\end{theoremEnd}
+\begin{proofEnd}
+  By using the following shorthand notations
+  \begin{alignat*}{2}
+    p_{(1:N)}\left(dx_{(1:N)}\right)
+    &= 
+    p_1\left(dx_1\right)
+    p_2\left(dx_2\right)
+    \times
+    \ldots
+    \times
+    p_N\left(dx_N\right)
+    \\
+    q_{(1:N)}\left(dx_{(1:N)}\right)
+    &= 
+    q_1\left(dx_1\right)
+    q_2\left(dx_2\right)
+    \times
+    \ldots
+    \times
+    q_N\left(dx_N\right),
+  \end{alignat*}
+  the result follows from induction as
+  \begin{alignat}{2}
+    &\abs{
+      \int_{A^N}
+      p_{(1:N)}\left(dx_{(1:N)}\right)
+      -
+      q_{(1:N)}\left(dx_{(1:N)}\right)
+    }
+    \nonumber
+    \\
+    &\quad=
+    \Bigg|\;
+    \left( \int_{A} p_1\left(dx_1\right) - q_1\left(dx_1\right) \right) \,
+    \int_{A^{N-1}} p_{(2:N)}\left(dx_{(2:N)}\right)
+    \nonumber
+    \\
+    &\qquad\quad+
+    \int_{A} q_1\left(dx_1\right) \,
+    {\left(
+      \int_{A^{N-1}}
+      p_{(2:N)}\left(dx_{(2:N)}\right)
+      -
+      q_{(2:N)}\left(dx_{(2:N)}\right)
+    \right)}
+    \;\Bigg|
+    \nonumber
+    \\
+    &\quad\leq
+    \Bigg|
+    \int_{A} p_1\left(dx_1\right) - q_1\left(dx_1\right)
+    \Bigg|\;
+    \int_{A^{N-1}} p_{(2:N)}\left(dx_{(2:N)}\right)
+    \nonumber
+    \\
+    &\qquad\quad+
+    \int_{A} q_1\left(dx_1\right) \,
+    {
+    \Bigg|\;
+      \int_{A^{N-1}}
+      p_{(2:N)}\left(dx_{(2:N)}\right)
+      -
+      q_{(2:N)}\left(dx_{(2:N)}\right)
+    }
+    \;\Bigg|
+    &&\quad\text{\textit{Triangle inequality}}
+    \nonumber
+    \\
+    &\quad\leq
+    \Bigg|
+    \int_{A} p_1\left(dx_1\right) - q_1\left(dx_1\right)
+    \Bigg|\;
+    \nonumber
+    \\
+    &\qquad\quad+
+    {
+    \Bigg|\;
+      \int_{A^{N-1}}
+      p_{(2:N)}\left(dx_{(2:N)}\right)
+      -
+      q_{(2:N)}\left(dx_{(2:N)}\right)
+    }
+    \;\Bigg|.
+    &&\quad\text{\textit{Applied \(p_n\left(A\right), q_n\left(A\right) \leq 1 \)}}
+    \nonumber
+  \end{alignat}
+\end{proofEnd}

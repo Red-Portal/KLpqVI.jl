@@ -1,0 +1,66 @@
+
+\begin{theoremEnd}{proposition}\label{thm:product_kernel}
+  Let \cref{thm:kernel_conditions,thm:gradient_estimator} hold.
+  Then,
+  \begin{align*}
+    \Esub{\Pi}{ f\left(\vlambda, \rvveta\right) } = \DKL{\pi}{q\left(\cdot; \vlambda\right)},
+    \quad\text{and}\quad
+    \Esub{\Pi}{ g\left(\vlambda, \rvveta\right) } = \nabla_{\vlambda} \DKL{\pi}{q\left(\cdot; \vlambda\right)}.
+  \end{align*}
+\end{theoremEnd}
+\begin{proofEnd}
+  For notational convenience, we define the shorthand
+  \begin{align*}
+    \pi\left(\vz_{(1:N)}\right) = \pi\left(\vz_1\right) \, \pi\left(\vz_2\right) \times \ldots \times \pi\left(\vz_N\right).
+  \end{align*}
+  Then,
+  \begin{alignat}{2}
+    &\Esub{\Pi}{ f\left(\vlambda, \veta\right) }
+    \nonumber
+    \\
+    &\quad=
+    \int \left( \frac{1}{N} \sum^{N}_{n=1} \log q\left(\vz_n; \vlambda\right) + \mathbb{H}\left[\,\pi\,\right]\right) \, \pi\left(\vz_{(1:N)}\right) \, d\vz_{(1:N)}
+    \nonumber
+    \\
+    &\quad=
+     \frac{1}{N} \sum^{N}_{n=1} \left\{ \int \big(\, \log q\,(\,\vz_n; \vlambda\,) + \mathbb{H}\,[\,\pi\,] \,\big) \, \pi\left(\vz_{(1:N)}\right) \, d\vz_{(1:N)} \right\}
+     &&\quad{\text{\textit{Swapped integral and sum}}}
+    \nonumber
+    \\
+    &\quad=
+    \frac{1}{N} \sum^{N}_{n=1} \int \big(\, \log q\,(\,\vz_n; \vlambda\,) + \mathbb{H}\,[\,\pi\,] \,\big) \, \pi\left(\vz_n\right) \, d\vz_{n}
+    &&\quad{\text{\textit{Marginalized \(\vz_m\) for all \(m \neq n\)}}}
+    \nonumber
+    \\
+    &\quad=
+    \frac{1}{N} \sum^{N}_{n=1} \DKL{\pi}{q\left(\cdot; \vlambda\right)}
+    \nonumber
+    &&\quad{\text{\textit{Definition of \(D_{\text{KL}}\)}}}
+    \\
+    &\quad=
+    \DKL{\pi}{q\left(\cdot; \vlambda\right)}\label{eq:F_KL}
+  \end{alignat}
+  For \(\Esub{\Pi}{ g\left(\vlambda, \rvveta\right) }\), note that 
+  \begin{align}
+    \nabla_{\vlambda} f\left(\vlambda, \veta\right) = \frac{1}{N} \sum^{N}_{n=1} s\left(\vz_n; \vlambda\right) = g\left(\vlambda, \veta\right).\label{eq:F_grad_G}
+  \end{align}
+  Therefore, it suffices to show that
+  \begin{align*}
+    \nabla_{\vlambda} \DKL{\pi}{q\left(\cdot; \vlambda\right)}
+    &=
+    \nabla_{\vlambda} \Esub{\Pi}{ f\left(\vlambda, \rvveta\right) }
+    &&\text{\textit{\cref{eq:F_KL}}}
+    \\
+    &=
+    \Esub{\Pi}{ \nabla_{\vlambda}  f\left(\vlambda, \rvveta\right) }
+    &&\text{\textit{{Leibniz derivative rule}}}
+    \\
+    &=
+    \Esub{\Pi}{ g\left(\vlambda, \rvveta\right) }.
+    &&\text{\textit{\cref{eq:F_grad_G}}}
+  \end{align*}
+\end{proofEnd}
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:
