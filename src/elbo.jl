@@ -1,48 +1,38 @@
 
 struct ELBO <: AdvancedVI.VariationalObjective end
 
-init_state!(::ELBO, ::Random.AbstractRNG, q, logπ, n_mc) = nothing
+init_state!(::ELBO, ::Random.AbstractRNG, rand_q, λ0, ℓπ, n_mc) = nothing
 
 function grad!(
     rng::Random.AbstractRNG,
     vo::ELBO,
-    alg::AdvancedVI.VariationalInference,
-    q,
-    logπ,
-    ∇logπ,
-    θ::AbstractVector{<:Real},
+    ℓq,
+    rand_q,
+    ℓjac,
+    ℓπ,
+    λ::AbstractVector{<:Real},
+    n_mc::Int,
     out::DiffResults.MutableDiffResult)
 
-    n_samples = alg.samples_per_step
+    λ_stop = deepcopy(λ)
+    f(λ′) = begin
+        mapreduce(+, 1:n_mc) do _
+            zᵢ = rand_q(rng, λ′)
+            -ℓπ(zᵢ) + ℓq(λ_stop, zᵢ)
+        end / n_mc
+    end
 
-    q_stop = if (q isa Distribution)
-        AdvancedVI.update(q, θ)
+    if (Turing.ADBackend() <: Turing.Core.ForwardDiffAD)
+        ForwardDiff.gradient!(out, f, λ)
+    elseif (Turing.ADBackend() <: Turing.Core.ReverseDiffAD)
+        ReverseDiff.gradient!(out, f, λ)
     else
-        q(θ)
+        elbo, back = Zygote.pullback(f, λ)
+        ∇elbo      = back(one(elbo))[1]
+        DiffResults.gradient!(out, ∇elbo)
+        DiffResults.value!(   out, elbo)
     end
 
-    f(θ_) = begin
-        q′ = if (q isa Distribution)
-            AdvancedVI.update(q, θ_)
-        else
-            q(θ_)
-        end
-        _, z, logjac, _ = Bijectors.forward(rng, q′)
-        res = (logπ(z) + logjac - logpdf(q_stop, z)) / n_samples
-        
-        # if q′ isa Bijectors.TransformedDistribution
-        #     res += entropy(q′.dist)
-        # else
-        #     res += entropy(q′)
-        # end
-
-        for i = 2:n_samples
-            _, z, logjac, _ = Bijectors.forward(rng, q′)
-            res += (logπ(z) + logjac - logpdf(q_stop, z)) / n_samples
-        end
-        -res
-    end
-    gradient!(alg, f, θ, out)
     nelbo = DiffResults.value(out)
     (elbo=-nelbo,)
 end

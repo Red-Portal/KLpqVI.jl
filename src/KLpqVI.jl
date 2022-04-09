@@ -5,7 +5,7 @@ using StatsBase
 using StatsFuns
 using Zygote
 using LinearAlgebra
-using Memoization
+using ProgressMeter
 
 import Base.Iterators
 import SpecialFunctions
@@ -18,7 +18,9 @@ import DistributionsAD
 import DynamicPPL
 import ForwardDiff
 import PyCall
+import Pandas
 import Random
+import RDatasets
 import Turing
 
 import HDF5
@@ -30,7 +32,7 @@ import AbstractGPs
 #end
 
 # function DynamicPPL.dot_observe(
-#     spl::Union{DynamicPPL.SampleFromPrior,
+#     spl::Union{DynamicPPL.rior,
 #                DynamicPPL.SampleFromUniform},
 #     dists::AbstractArray{<:Distribution},
 #     value::AbstractArray,

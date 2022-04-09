@@ -7,6 +7,7 @@ function sgd_step!(optimizer, θ::AbstractVector, ∇_buf)
     ∇ = DiffResults.gradient(∇_buf)
     Δ = AdvancedVI.apply!(optimizer, θ, ∇)
     @. θ = θ - Δ
+    (grad_norm=norm(∇),)
 end
 
 function make_logjoint(rng, model::DynamicPPL.Model, weight::Real=1.0)
@@ -30,20 +31,16 @@ function make_logjoint(rng, model::DynamicPPL.Model, weight::Real=1.0)
     logπ, ∇logπ
 end
 
-function vi(model,
+function vi(model::DynamicPPL.Model,
             q_init=nothing;
             n_mc,
             n_iter,
-            tol,
             objective=AdvancedVI.ELBO(),
-            optimizer,
+            optimizer=Flux.ADAM(),
             rng=Random.GLOBAL_RNG,
+            defensive_weight=nothing,
+            defensive_dist=nothing,
             callback=nothing,
-            sleep_interval=0,
-            sleep_params=nothing,
-            rhat_interval=0,
-            paretok_samples=0,
-            paretok_interval=10,
             show_progress::Bool=false)
     varinfo     = DynamicPPL.VarInfo(model)
     varsyms     = keys(varinfo.metadata)
@@ -62,83 +59,87 @@ function vi(model,
         θ = StatsBase.params(q_init)
         vcat(θ...), q_init
     end
-    ∇_buf    = DiffResults.GradientResult(θ)
 
-    pimh_rhat_win = if(objective isa MSC_PIMH)
-        Array{Float64}(undef, rhat_interval, n_params, n_mc)
+    b        = Bijectors.bijector(q)
+    b⁻¹      = inv(b)
+    ℓjac(z_) = Bijectors.logabsdetjac(b⁻¹, b(z_))
+
+    ℓq, rand_q = if isnothing(defensive_dist) || isnothing(defensive_weight)
+        ℓq(λ_, z_)        = logpdf(AdvancedVI.update(q, λ_), z_)
+        rand_q(prng_, λ_) = rand(prng_, AdvancedVI.update(q, λ_))
+        ℓq, rand_q
     else
-        nothing
+        make_defensive(q, defensive_dist, defensive_weight)
     end
 
-    rhat_win = if(rhat_interval > 0)
-        Array{Float64}(undef, rhat_interval, length(θ))
-    else
-        nothing
-    end
+    vi(logπ, ℓq, rand_q, θ;
+       objective     = objective,
+       n_mc          = n_mc,
+       n_iter        = n_iter,
+       optimizer     = optimizer,
+       rng           = rng,
+       ℓjac          = ℓjac,
+       show_progress = show_progress,
+       callback      = callback)
+end
 
-    ws_aug = if (sleep_interval > 0)
-        z0_ws = rand(rng, q)
-        WakeSleep(RV(z0_ws, logπ(z0_ws)), sleep_params)
-    else
-        nothing
-    end
-
-    init_state!(objective, rng, q, logπ, n_mc)
-
-    prog = if(show_progress)
+function vi(ℓπ,
+            ℓq::Function,
+            rand_q::Function,
+            λ0::AbstractVector;
+            n_mc::Int           = 10,
+            n_iter::Int         = 10000,
+            optimizer           = Flux.ADAM(),
+            objective           = AdvancedVI.ELBO(),
+            rng                 = Random.GLOBAL_RNG,
+            callback            = nothing,
+            show_progress::Bool = false,
+            ℓjac                = z′ -> 0)
+    n_dims = length(λ0)
+    prog   = if(show_progress)
         ProgressMeter.Progress(n_iter)
     else
         nothing
     end
-    
+    stats   = Vector{NamedTuple}(undef, n_iter)
+    ∇KL_buf = DiffResults.GradientResult(λ0)
+
+    ∂ℓq∂λ(λ_, z_) = begin
+        Zygote.gradient(λ′ -> ℓq(λ′, z_), λ_)[1]
+    end
+
+    init_state!(objective, rng, rand_q, λ0, ℓπ, n_mc)
+
+    λ     = λ0
+    # λ_avg = zeros(length(λ))
+    # n_avg = 1
+
     elapsed_total = 0
     for t = 1:n_iter
         start_time = Dates.now()
+        stat       = (iteration=t,)
 
-        stat  = (iteration=t,)
-        stat′ = grad!(rng, objective, alg, q, logπ, ∇logπ, θ, ∇_buf)
+        stat′ = grad!(rng, objective, ℓq, rand_q, ℓjac, ℓπ, λ, n_mc, ∇KL_buf)
         stat  = merge(stat, stat′)
-        sgd_step!(optimizer, θ, ∇_buf)
 
-        if(sleep_interval > 0 && mod(t-1, sleep_interval) == 0)
-            stat′ = sleep_phase!(rng, ws_aug, alg, q, logπ, ∇logπ, θ, ∇_buf)
-            stat  = merge(stat, stat′)
-            sgd_step!(optimizer, θ, ∇_buf)
-        end
-        q′ = (q isa Distribution) ?  AdvancedVI.update(q, θ) : q(θ)
+        stat′ = sgd_step!(optimizer, λ, ∇KL_buf)
+        stat  = merge(stat, stat′)
 
         elapsed        = Dates.now() - start_time
         elapsed_total += elapsed.value
         stat           = merge(stat, (elapsed=elapsed_total,))
 
+        # λ[div(length(λ), 2)+1:end] = max.(λ[div(length(λ), 2)+1:end], -6)
+        # if t == T_polyak
+        #     λ_avg  = deepcopy(λ0) 
+        # elseif t > T_polyak
+        #     n_avg  = t - T_polyak
+        #     λ_avg  = λ_avg*n_avg/(n_avg+1) + λ/(n_avg+1)
+        # end
+
         if(!isnothing(callback))
-            stat′ = callback(logπ, q′, objective, DiffResults.value(∇_buf))
+            stat′ = callback(ℓπ, λ)
             stat  = merge(stat, stat′)
-        end
-
-        if(rhat_interval > 0)
-            rhat_idx = mod(t-1, rhat_interval) + 1
-            rhat_win[rhat_idx,:] = θ
-
-            if(objective isa MSC_PIMH)
-                zs = hcat([z.val for z ∈ objective.zs]...)
-                pimh_rhat_win[rhat_idx,:,:] = zs
-            end
-
-            if(rhat_idx == rhat_interval)
-                R̂    = split_rhat(rhat_win)
-                stat = merge(stat, (rhat=maximum(R̂),))
-
-                if(objective isa MSC_PIMH)
-                    pimh_R̂ = split_rhat(pimh_rhat_win)
-                    stat   = merge(stat, (pimh_rhat=maximum(pimh_R̂),))
-                end
-            end
-        end
-
-        if(paretok_samples > 0 && mod(t-1, paretok_interval) == 0)
-            k    = paretok(rng, q′, logπ, paretok_samples)
-            stat = merge(stat, (paretok=k,))
         end
 
         if(show_progress)
@@ -146,7 +147,5 @@ function vi(model,
         end
         stats[t] = stat
     end
-    q = (q isa Distribution) ?  AdvancedVI.update(q, θ) : q(θ)
-    return θ, q, stats
+    λ, stats
 end
-

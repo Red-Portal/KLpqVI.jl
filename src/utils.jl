@@ -87,3 +87,21 @@ function get_variational_mean_var(q, model, varsym)
     Σ = vi.metadata[varsym].vals
     μ, Σ
 end
+
+function make_defensive(q, ν, ϵ)
+    n_params = length(q)
+    q0       = Bijectors.TransformedDistribution(ν, q.transform)
+
+    ℓq(λ_, z_) = begin
+        q′ = AdvancedVI.update(q, λ_)
+        logaddexp(log(1 - ϵ) + logpdf(q′, z_), log(ϵ) + logpdf(q0, z_))
+    end
+    rand_q(prng_, λ_) = begin
+        if rand(prng_, Bernoulli(ϵ))
+            rand(prng_, q0)
+        else
+            rand(prng_, AdvancedVI.update(q, λ_))
+        end
+    end
+    ℓq, rand_q
+end

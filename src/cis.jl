@@ -2,7 +2,9 @@
 function cis(rng::Random.AbstractRNG,
              z0::RV,
              ℓπ::Function,
-             q,
+             λ::AbstractVector,
+             ℓq,
+             rand_q,
              n_samples::Int)
     n_dims = length(z0.val)
     zs     = Matrix{Float64}(undef, n_dims, n_samples+1)
@@ -11,11 +13,11 @@ function cis(rng::Random.AbstractRNG,
 
     zs[:,1] = z0.val 
     ℓps[1]  = z0.prob
-    ℓqs[1]  = logpdf(q, z0.val)
+    ℓqs[1]  = ℓq(λ, z0.val)
     for i = 2:n_samples+1
-        _, z, _, logq = Bijectors.forward(rng, q)
+        z       = rand_q(rng, λ)
         zs[:,i] = z
-        ℓqs[i]  = logq
+        ℓqs[i]  = ℓq(λ, z)
         ℓps[i]  = ℓπ(z)
     end
     ℓw = ℓps - ℓqs
