@@ -62,6 +62,35 @@ function load_dataset(::Val{:yacht})
     X, y
 end
 
+function load_dataset(::Val{:naval})
+    fname = datadir(joinpath("dataset", "naval_propulsion.txt"))
+    s     = open(fname, "r") do io
+        s = read(io, String)
+        s = replace(s, "   " => " ")
+    end
+
+    io   = IOBuffer(s)
+    vals = readdlm(io, ' ', '\n', header=false)
+    vals = vals[:,2:end]
+
+    X = Array{Float32}(vals[:, 1:end-2])
+    y = Array{Float32}(vals[:, end-1])
+
+    feature_idx = 1:size(X,2)
+    X = Float64.(X[:, setdiff(feature_idx, (9, 12))])
+
+    X, y
+end
+
+function load_dataset(::Val{:energy})
+    fname= datadir(joinpath("dataset", "Concrete_Data.xls"))
+    data = FileIO.load(fname, "Sheet1")  |> DataFrame |> Matrix
+    
+    X = Array{Float32}(data[:, 1:end-2])
+    y = Array{Float32}(data[:, end])
+    X, y
+end
+
 function propagate_linear(M, V, m_prev, v_prev)
     scaling = size(m_prev, 1)
     m_α     = M * m_prev / sqrt(scaling)
@@ -130,12 +159,15 @@ end
 # end
 
 function run_task(prng::Random.AbstractRNG,
-                  task::Union{Val{:wine}, Val{:concrete}, Val{:yacht}, Val{:boston}, Val{:toy}},
+                  task::Union{Val{:wine},
+                              Val{:concrete},
+                              Val{:yacht},
+                              Val{:naval},
+                              Val{:boston},
+                              Val{:toy}},
                   objective,
-                  n_mc,
-                  sleep_interval,
-                  sleep_ϵ,
-                  sleep_L;
+                  n_mc;
+                  defensive_weight=nothing,
                   show_progress=true)
     X, y = load_dataset(task)
     X_train, y_train, X_test, y_test = prepare_dataset(prng, X, y)
@@ -167,12 +199,20 @@ function run_task(prng::Random.AbstractRNG,
     #AdvancedVI.setadbackend(:zygote)
     #Turing.Core._setadbackend(Val(:zygote))
 
+    varinfo  = DynamicPPL.VarInfo(model)
+    varsyms  = keys(varinfo.metadata)
+    n_params = sum([size(varinfo.metadata[sym].vals, 1) for sym ∈ varsyms])
+    θ        = randn(prng, 2*n_params)*0.1
+    q        = Turing.Variational.meanfield(model)
+    q        = AdvancedVI.update(q, θ)
+
     i      = 1
     #k_hist = []
-    function plot_callback(ℓπ, q, objective_, klpq)
-        W1_μ, W1_Σ = get_variational_mean_var(q, model, Symbol("W1"))
-        W2_μ, W2_Σ = get_variational_mean_var(q, model, Symbol("W2"))
-        γ_μ, γ_Σ   = get_variational_mean_var(q, model, Symbol("γ"))
+    function plot_callback(ℓπ, λ)
+        q′         = AdvancedVI.update(q, λ)
+        W1_μ, W1_Σ = get_variational_mean_var(q′, model, Symbol("W1"))
+        W2_μ, W2_Σ = get_variational_mean_var(q′, model, Symbol("W2"))
+        γ_μ, γ_Σ   = get_variational_mean_var(q′, model, Symbol("γ"))
 
         γ_μ  = γ_μ[1]
         γ_σ² = γ_Σ[1]
@@ -196,41 +236,34 @@ function run_task(prng::Random.AbstractRNG,
         v_y      = v_2*σ_y.*σ_y
         m_y      = m_y[1,:]
         v_y      = v_y[1,:]
+        v_noise  = γ_β/γ_α.*σ_y.*σ_y
 
         # ∫ Normal(y, σ²_y) ∫ Normal(0, 1/γ) × LogNormal(1/γ; μ, σ) dγ
         # ≈ ∫ Normal(y, σ²_y) ∫ Normal(0, 1/γ) × Gamma(γ; α, β)
         # = ∫ Normal(y, σ²_y) × TDist(ν=2α, μ=0, σ²=β/α)
         # ≈ ∫ Normal(y, σ²_y) × Normal(0, β/α)
         # = Normal(y, σ²_y+β/α)
-        lpd  = mean(logpdf.(Normal.(m_y, sqrt.(v_y .+ γ_β/γ_α)), y_test))
+        lpd  = mean(logpdf.(Normal.(m_y, sqrt.(v_y .+ v_noise)), y_test))
         rmse = sqrt(Flux.Losses.mse(m_y, y_test, agg=mean))
 
         (rmse=rmse, lpd=lpd, σ=γ_β/γ_α)
     end
 
-    varinfo     = DynamicPPL.VarInfo(model)
-    varsyms     = keys(varinfo.metadata)
-    n_params    = sum([size(varinfo.metadata[sym].vals, 1) for sym ∈ varsyms])
-    θ           = randn(prng, 2*n_params)*0.1
-    q_init      = Turing.Variational.meanfield(model)
-    q_init      = AdvancedVI.update(q_init, θ)
-
-    n_iter      = 10000
-    θ, q, stats = vi(model, q_init;
-                     objective       = objective,
-                     n_mc            = n_mc,
-                     n_iter          = n_iter,
-                     tol             = 0.0005,
-                     callback        = plot_callback,
-                     rng             = prng,
-                     rhat_interval   = 0,
-                     paretok_samples = 0,
-                     sleep_interval  = sleep_interval,
-                     sleep_params    = (ϵ=sleep_ϵ, L=sleep_L,),
-                     #optimizer       = AdvancedVI.TruncatedADAGrad(),
-                     optimizer       = Flux.ADAM(1e-2),
-                     show_progress   = show_progress
-                     )
+    ν        = Distributions.Product(fill(Cauchy(), n_params))
+    n_iter   = 10000
+    θ, stats = vi(model, q;
+                  objective        = objective,
+                  n_mc             = n_mc,
+                  n_iter           = n_iter,
+                  callback         = plot_callback,
+                  rng              = prng,
+                  #optimizer       = AdvancedVI.TruncatedADAGrad(),
+                  defensive_dist   = ν,
+                  defensive_weight = defensive_weight,
+                  optimizer        = Flux.ADAM(1e-2),
+                  # optimizer        = Flux.Nesterov(1e-2),
+                  show_progress    = show_progress
+                  )
     Dict.(pairs.(stats))
 end
 

@@ -1,6 +1,4 @@
 
-import Tracker
-
 ard_kernel(α², logℓ) =
     α²*(KernelFunctions.Matern52Kernel() ∘ KernelFunctions.ARDTransform(@. exp(-logℓ)))
 
@@ -15,17 +13,33 @@ Turing.@model function logisticgp(X, y, jitter=1e-6)
     σ²     = exp(logσ*2)
     kernel = ard_kernel(α², logℓ) 
     K      = KernelFunctions.kernelmatrix(kernel, X)
+    K_ϵ    = K + (σ² + jitter)*I
+    K_chol = cholesky(K_ϵ, check=false)
 
-    f  ~ MvNormal(zeros(size(X,2)), K + (σ² + jitter)*I)
+    if !LinearAlgebra.issuccess(K_chol)
+        Turing.@addlogprob! -Inf
+        return
+    end
+
+    f  ~ MvNormal(zeros(size(X,2)), PDMats.PDMat(K_ϵ, K_chol))
     y .~ Turing.BernoulliLogit.(f)
+end
+
+function load_dataset(::Val{:heart})
+    dataset = DelimitedFiles.readdlm(
+        datadir("dataset", "heart-disease.csv"), ',', skipstart=1)
+    data_x  = dataset[:, 1:end-1,]
+    data_y  = dataset[:, end]
+    data_x, data_y
 end
 
 function load_dataset(::Val{:sonar})
     dataset = DelimitedFiles.readdlm(
         datadir("dataset", "sonar.csv"), ',', skipstart=1)
-    data_x  = Float64.(dataset[:, 1:end-1,])
-    data_y  = dataset[:, end]
-    data_y  = map(data_y) do s
+    feature_idx = 1:size(dataset, 2)-1
+    data_x      = Float64.(dataset[:, setdiff(feature_idx, 2),])
+    data_y      = dataset[:, end]
+    data_y      = map(data_y) do s
         if(s == "Rock")
             1.0
         else
@@ -62,24 +76,33 @@ function load_dataset(::Val{:breast})
     data_x, data_y
 end
 
+function load_dataset(::Val{:australian})
+    dataset = DelimitedFiles.readdlm(datadir("dataset", "australian.dat"), ' ')
+    data_x  = dataset[:, 1:end-1]
+    data_y  = dataset[:, end]
+    data_x, data_y
+end
+
 function run_task(prng::Random.AbstractRNG,
-                  task::Union{Val{:sonar}, Val{:ionosphere}, Val{:breast}},
+                  task::Union{Val{:sonar},
+                              Val{:ionosphere},
+                              Val{:australian},
+                              Val{:breast},
+                              Val{:heart}},
                   objective,
-                  n_mc,
-                  sleep_interval,
-                  sleep_ϵ,
-                  sleep_L;
+                  n_mc;
+                  defensive_weight=nothing,
                   show_progress=true)
     data_x, data_y = load_dataset(task)
     X_train, y_train, X_test, y_test = prepare_dataset(prng, data_x, data_y, ratio=0.9)
     X_train = Array(X_train')
     X_test  = Array(X_test')
-    jitter  = 1e-4
+    jitter  = 1e-6
     model   = logisticgp(X_train, y_train, jitter)
 
-    if task isa Val{:breast}
+    if task == Val(:breast) || task == Val(:heart) || task == Val(:australian)
         μ = mean(X_train, dims=2)
-        σ = std(X_train, dims=2)
+        σ = std( X_train, dims=2)
 
         X_train .-= μ
         X_train ./= σ
@@ -89,35 +112,56 @@ function run_task(prng::Random.AbstractRNG,
 
     #AdvancedVI.setadbackend(:forwarddiff)
     #Turing.Core._setadbackend(Val(:forwarddiff))
-    #AdvancedVI.setadbackend(:reversediff)
-    #Turing.Core._setadbackend(Val(:reversediff))
-    AdvancedVI.setadbackend(:zygote) 
-    Turing.Core._setadbackend(Val(:zygote))
+    AdvancedVI.setadbackend(:reversediff)
+    Turing.Core._setadbackend(Val(:reversediff))
+    # AdvancedVI.setadbackend(:zygote) 
+    # Turing.Core._setadbackend(Val(:zygote))
+
+    varinfo     = DynamicPPL.VarInfo(model)
+    varsyms     = keys(varinfo.metadata)
+    n_params    = sum([size(varinfo.metadata[sym].vals, 1) for sym ∈ varsyms])
+    θ           = 0.1*randn(prng, n_params*2)
+
+    @info("Logistic Gaussian process $(task)",
+          train_data=size(X_train),
+          test_data=size(X_test),
+          n_params=n_params)
+
+    q = Turing.Variational.meanfield(model)
+    q = AdvancedVI.update(q, θ)
 
     i      = 1
     #k_hist = []
-    function plot_callback(ℓπ, q, objective_, klpq)
-        f    = get_variational_mode(q, model, Symbol("f"))
-        logσ = get_variational_mode(q, model, Symbol("logσ"))
-        logℓ = get_variational_mode(q, model, Symbol("logℓ"))
-        logα = get_variational_mode(q, model, Symbol("logα"))
-        σ²_n = exp(logσ[1]*2)
-        α²  = exp(logα[1]*2)
-        ℓ   = exp.(logℓ)
+    function callback(ℓπ, λ)
+        q′      = AdvancedVI.update(q, λ)
+        f, Σ_f  = get_variational_mean_var(q′, model, Symbol("f"))
+        logσ, _ = get_variational_mean_var(q′, model, Symbol("logσ"))
+        logℓ, _ = get_variational_mean_var(q′, model, Symbol("logℓ"))
+        logα, _ = get_variational_mean_var(q′, model, Symbol("logα"))
+        σ²_n    = exp(logσ[1]*2)
+        α²      = exp(logα[1]*2)
+        ℓ       = exp.(logℓ)
 
-        stat = if(mod(i-1, 1) == 0)
-            kernel  = ard_kernel(α², logℓ) 
-            gp      = AbstractGPs.GP(kernel)
-            gp_post = AbstractGPs.posterior(gp(X_train, jitter), f)
-            μ, σ²   = mean_and_var(gp_post(X_test))
+        stat = if(mod(i-1, 10) == 0)
+            kernel       = ard_kernel(α², logℓ) 
+            K            = KernelFunctions.kernelmatrix(kernel, X_train, obsdim=2)
+            K_ϵ          = K + (σ²_n + jitter)*I
+            K_test_train = KernelFunctions.kernelmatrix(kernel, X_test, X_train; obsdim=2)
+            k_test       = KernelFunctions.kernelmatrix_diag(kernel, X_test; obsdim=2)
 
-            s       = μ ./ sqrt.(1 .+ π*(σ².+σ²_n)/8)
-            p       = StatsFuns.logistic.(s)
-            y_pred  = p .> 0.5
-            nlpd    = mean(logpdf.(Turing.BernoulliLogit.(s), y_test))
-            acc     = mean(y_pred .== y_test)
+            K_pd   = PDMats.PDMat(K_ϵ)
+            W⁻¹    = diagm(1 ./ Σ_f)
+            KpW⁻¹  = PDMats.PDMat(K_ϵ + W⁻¹)
+            μ      = K_test_train * (K_pd \ f)
+            σ²     = (k_test .+ σ²_n) - PDMats.invquad.(Ref(KpW⁻¹), eachrow(K_test_train))
 
-            (acc = acc, nlpd = nlpd)
+            s      = μ ./ sqrt.(1 .+ π*σ²/8)
+            p      = StatsFuns.logistic.(s)
+            y_pred = p .> 0.5
+            lpd    = mean(logpdf.(Turing.BernoulliLogit.(s), y_test))
+            acc    = mean(y_pred .== y_test)
+
+            (acc = acc, lpd = lpd)
         else
             NamedTuple()
         end
@@ -125,156 +169,20 @@ function run_task(prng::Random.AbstractRNG,
         stat
     end
 
-    varinfo     = DynamicPPL.VarInfo(model)
-    varsyms     = keys(varinfo.metadata)
-    n_params    = sum([size(varinfo.metadata[sym].vals, 1) for sym ∈ varsyms])
-    θ           = 0.1*randn(prng, n_params*2)
-    #θ[n_params+1:end] .+= 1.0
-
-    q_init      = Turing.Variational.meanfield(model)
-    q_init      = AdvancedVI.update(q_init, θ)
-
-    n_iter      = 10000
-    θ, q, stats = vi(model, q_init;
-                     objective       = objective,
-                     n_mc            = n_mc,
-                     n_iter          = n_iter,
-                     tol             = 0.0005,
-                     callback        = plot_callback,
-                     rng             = prng,
-                     rhat_interval   = 0,
-                     #paretok_samples = 10,
-                     sleep_interval  = sleep_interval,
-                     sleep_params    = (ϵ=sleep_ϵ, L=sleep_L,),
-                     #optimizer      = AdvancedVI.TruncatedADAGrad(),
-                     optimizer       = Flux.ADAM(0.01),
-                     show_progress   = show_progress
-                     )
+    n_iter   = 3000
+    n_params = length(q)
+    ν        = Distributions.Product(fill(Cauchy(), n_params))
+    θ, stats = vi(model, q;
+                  objective        = objective,
+                  n_mc             = n_mc,
+                  n_iter           = n_iter,
+                  callback         = callback,
+                  rng              = prng,
+                  defensive_dist   = ν,
+                  defensive_weight = defensive_weight,
+                  optimizer        = Flux.ADAM(0.01),
+                  show_progress    = show_progress
+                  )
     Dict.(pairs.(stats))
 end
 
-
-function run_task(prng::Random.AbstractRNG,
-                  task::Union{Val{:sonar}, Val{:ionosphere}, Val{:breast}},
-                  ::ELBO,
-                  n_mc,
-                  sleep_interval,
-                  sleep_ϵ,
-                  sleep_L;
-                  show_progress=true)
-    data_x, data_y = load_dataset(task)
-    X_train, y_train, X_test, y_test = prepare_dataset(prng, data_x, data_y, ratio=0.9)
-    X_train = Array(X_train')
-    X_test  = Array(X_test')
-
-    if task isa Val{:breast}
-        μ = mean(X_train, dims=2)
-        σ = std(X_train, dims=2)
-
-        X_train .-= μ
-        X_train ./= σ
-        X_test  .-= μ
-        X_test  ./= σ
-    end
-
-    jitter     = 1e-4
-    n_features = size(X_train, 1)
-    n_data     = size(X_train, 2)
-    n_samples  = n_mc
-    n_params   = 2+n_features+n_data
-    n_iter     = 10000
-    opt        = Flux.ADAM(0.01)
-
-    function joint_likelihood(z::AbstractVector)
-        logα = z[1]
-        logσ = z[2]
-        logℓ = view(z, 3:2+n_features)
-        f    = view(z, 3+n_features:length(z))
-
-        p_logα = logpdf(Normal(0, 1), logα)
-        p_logσ = logpdf(Normal(0, 1), logσ)
-        p_logℓ = logpdf(MvNormal(zeros(n_features), 1), logℓ)
-
-        α²     = exp(logα*2)
-        σ²     = exp(logσ*2)
-        kernel = ard_kernel(α², logℓ) 
-        K      = KernelFunctions.kernelmatrix(kernel, X_train)
-        p_f    = logpdf(MvNormal(zeros(n_data), K + (σ² + jitter)*I), f)
-        
-        loglike = mapreduce(+, 1:n_data) do i
-            logpdf(Turing.BernoulliLogit(f[i]), y_train[i])
-        end 
-        p_logα + p_logσ + p_logℓ + p_f + loglike
-    end
-
-    # function joint_likelihood(z::AbstractVector)
-    #     logpdf(MvNormal(ones(length(z)), ones(length(z))), z)
-    # end
-
-    function nelbo(λ, ϵ)
-        μ = view(λ, 1:n_params)
-        σ = exp.(view(λ, n_params+1:2*n_params))
-        z = ϵ.*σ .+ μ
-
-        λ_stop = Zygote.dropgrad(λ)
-        μ_stop = view(λ_stop, 1:n_params)
-        σ_stop = exp.(view(λ_stop, n_params+1:2*n_params))
-
-        mapreduce(+, eachcol(z)) do zᵢ
-            -joint_likelihood(zᵢ) + logpdf(MvNormal(μ_stop, σ_stop), zᵢ)
-        end / n_samples
-    end
-
-    function performance(λ)
-        logα = λ[1] 
-        logσ = λ[2]
-        logℓ = view(λ, 3:2+n_features)
-        f    = view(λ, 3+n_features:2+n_features+n_data)
-        α²   = exp(2*logα)
-        σ²_n = exp(2*logσ)
-        
-        kernel  = ard_kernel(α², logℓ) 
-        gp      = AbstractGPs.GP(kernel)
-        gp_post = AbstractGPs.posterior(gp(X_train, jitter), f)
-        μ, σ²   = mean_and_var(gp_post(X_test))
-
-        s       = μ ./ sqrt.(1 .+ π*(σ².+σ²_n)/8)
-        p       = StatsFuns.logistic.(s)
-        y_pred  = p .> 0.5
-        nlpd    = mean(logpdf.(Turing.BernoulliLogit.(s), y_test))
-        acc     = mean(y_pred .== y_test)
-        (nlpd=nlpd, acc=acc)
-    end
-
-    λₜ          = randn(prng, n_params*2)*0.1
-    λₜ[n_params+1:end] .+= 1.0
-
-    diff_result = DiffResults.GradientResult(λₜ)
-    stats       = Vector{NamedTuple}(undef, n_iter)
-    elapsed_total = 0
-    ProgressMeter.@showprogress for t = 1:n_iter
-        start_time = Dates.now()
-        
-        # sample gradient
-        ϵ = randn(prng, n_params, n_samples)
-        y, back = Zygote.pullback(λ -> nelbo(λ, ϵ), λₜ)
-        g       = last(back(1.0))
-        DiffResults.gradient!(diff_result, g)
-        DiffResults.value!(   diff_result, y)
-
-        # update parameter
-        Δ  = DiffResults.gradient(diff_result)
-        Flux.Optimise.apply!(opt, λₜ, Δ)
-        λₜ -= Δ
-
-        # metrics
-        stat           = (iteration=t,)
-        stat           = merge(stat, performance(λₜ))
-
-        elapsed        = Dates.now() - start_time
-        elapsed_total += elapsed.value
-        stat           = merge(stat, (elapsed=elapsed_total,))
-        stats[t] = stat
-    end
-    Dict.(pairs.(stats))
-end
