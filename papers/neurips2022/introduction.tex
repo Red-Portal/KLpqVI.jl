@@ -1,12 +1,11 @@
 
 \section{Introduction}
-Given an observed data \(\vx\) and a latent variable \(\vz\), Bayesian inference aims to analyze the posterior distribution \(p\,(\vz\,|\,\vx)\) given an unnormalized joint density \(p\,(\vz,\,\vx)\) where the relationship is given by Bayes' rule such that \(p\,(\vz\,|\,\vx) = {p\,(\vz,\,\vx)}/{p\,(\vx)} \propto p\,(\vz,\,\vx)\).
-For clarity, we will denote the posterior distribution as \(\pi\left(\vz\right) = p\,(\vz\mid\vx)\).
-Instead of working directly with the target distribution \(\pi\), variational inference (VI,~\citealt{blei_variational_2017}) searches for a variational approximation \(q_{\lambda}(\vz)\) that is similar to \(\pi\) according to a discrepancy measure \(D\,(\pi,\, q_{\vlambda})\).
+Given an observed data \(\vx\) and a latent variable \(\vz\), Bayesian inference aims to analyze the posterior distribution  given an unnormalized joint density \(p\,(\vz,\,\vx)\) where the relationship is given by Bayes' rule such that \(\pi\,(\vz) = {p\,(\vz,\,\vx)}/{p\,(\vx)} \propto p\,(\vz,\,\vx)\).
+Instead of working directly with the target distribution \(\pi\), variational inference (VI,~\citealt{blei_variational_2017}) methods seek a \textit{variational approximation} \(q(\vz; \vlambda)\) that is the most similar to \(\pi\) according to a discrepancy measure \(D\,(\pi,\, q(\cdot; \vlambda))\).
 
 Naturally, choosing a discrepancy measure is critical to the problem.
 This fact had led to a quest for suitable divergence measures~\citep{pmlr-v37-salimans15, NIPS2016_7750ca35, NIPS2017_35464c84, NEURIPS2018_1cd138d0, pmlr-v97-ruiz19a}.
-So far, the exclusive KL divergence \(\DKL{q_{\lambda}}{\pi}\) (or reverse KL divergence) has been used ``exclusively'' among various discrepancy measures.
+So far, the exclusive (or reverse, backward)  KL divergence \(\DKL{q\left(\cdot; \vlambda\right)}{\pi}\) has been used ``exclusively'' among various discrepancy measures.
 This is partly because the exclusive KL is defined as an average over \(q_{\lambda}(\vz)\), which can be estimated efficiently.
 By contrast, the inclusive KL is defined as
 %
@@ -15,9 +14,9 @@ By contrast, the inclusive KL is defined as
 \begin{align}
   %% \DKL{p}{q_{\lambda}} = \int p\,(\vz\mid\vx) \log\big(\, p\,(\vz\mid\vx)/q_{\lambda}(\vz) \,\big)\,d\vz
   %% = \Esub{p(\vz\mid\vx)}{\log\big(\, p\,(\vz\mid\vx)/q_{\lambda}(\vz) \,\big) } \label{eq:klpq}
-  \DKL{\pi}{q_{\lambda}}
-  = \int \pi\,(\vz) \log \frac{\pi\left(\vz\right)}{\,q_{\lambda}(\vz)} \,d\vz
-  = \Esub{\pi}{\log \frac{\pi\left(\rvvz\right)}{\,q_{\lambda}(\rvvz)} } \label{eq:klpq}
+  \DKL{\pi}{q\left(\cdot; \vlambda\right)}
+  = \int \pi\,(\vz) \log \frac{\pi\left(\vz\right)}{\,q(\vz; \vlambda)} \,d\vz
+  = \Esub{\pi}{\log \frac{\pi\left(\rvvz\right)}{\,q(\rvvz; \vlambda)} } \label{eq:klpq}
 \end{align}
 %\vspace{-0.05in}
 }%
@@ -26,38 +25,30 @@ where the average is taken over \(\pi\).
 This is a chicken-and-egg problem as our goal is to obtain \(\pi\) in the first place.
 Despite this challenge, minimizing~\eqref{eq:klpq} has drawn the attention of researchers because it is believed to result in favorable properties~\citep{minka2005divergence, mackay_local_2001}.
 
-For minimizing the inclusive KL divergence,~\citet{NEURIPS2020_b2070693} and~\citet{pmlr-v124-ou20a} have recently proposed  methods that perform stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951}) with the score function estimated using Markov-chain Monte Carlo (MCMC).
-These MCMC score climbing schemes operate a Markov chain in conjunction with the VI optimizer.
-In addition, within the MCMC kernel, they both use Metropolis-Hastings proposals generated from the variational approximation \(\rvvz \sim q_{\vlambda}\left(\cdot\right)\).
-The MCMC kernel itself benefits from VI, enjoying better proposals over time without the need for computationally expensive proposals as in Hamiltonian Monte Carlo~\citep{duane_hybrid_1987, neal_mcmc_2011, betancourt_conceptual_2017}.
-Also, in terms of computational cost, score climbing is efficient compared to other divergences since we do not need to differentiate through the likelihood.
+For minimizing the inclusive KL divergence,~\citet{NEURIPS2020_b2070693} have recently introduced Markovian score climbing (MSC) while~\citet{pmlr-v124-ou20a} have introduced joint stochastic approximation (JSA).
+Both methods use stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951}) where the stochastic gradients are estimated using Markov chain Monte Carlo (MCMC).
+Also, they are designed such that the MCMC kernel \(K_{\vlambda_t}\) can directly take advantage of the current variational approximation \(q\left(\cdot; \vlambda_t\right)\).
 
-While the convergence of score climbing VI has been established by~\citet{NEURIPS2020_b2070693, gu_stochastic_1998}, the practical performance implications of the design choices have yet to be understood.
-For example, the methods by~\citeauthor{NEURIPS2020_b2070693} and~\citet{pmlr-v124-ou20a} are conceptually similar, but they utilize MCMC kernels in different ways.
-At each SGD iteration, for estimating the score function, \citeauthor{NEURIPS2020_b2070693} use a single sample generated from a relatively expansive MCMC kernel, while~\citeauthor{pmlr-v124-ou20a} average multiple samples generated from a cheaper MCMC kernel.
-We call the former scheme the \textit{single state estimator} and the later the \textit{sequential state estimator}.
-Given the two options, it is natural to ask, ``which is better? An estimator with multiple cheap samples? or one with a single expensive sample?''.
+In this paper, we cast MSC and JSA into the same framework we call Markov chain score ascent (MCSA).
+MCSA is radically different from vanilla SGD as the gradient noise is Markovian instead of being independently, identically distributed (\textit{i.i.d.}).
+While convergence of MCSA has been shown by~\citet{NEURIPS2020_b2070693} through the work of~\citet{gu_stochastic_1998}, this result is asymptotic, and does not provide insight into the practical performance of MCSA.
+We instead utilize the Markov chain gradient descent framework~\citet{duchi_ergodic_2012, NEURIPS2018_1371bcce, pmlr-v99-karimi19a, doan_convergence_2020}.
+Although most of the current results in MCGD require strong assumptions such as boundedness of the score function, they provide a practical relationship between the convergence rate, the mixing rate of the MCMC kernel, and the gradient variance.
+In particular, we obtain non-asymptotic convergence rates based on the result of~\citet{duchi_ergodic_2012}.
+%% The general SGD setting where noise is Markovian have been previously considered by.
+%% These Markov chain gradient descent (MCGD) methods encompasses an extremely wide range of problems including distributed optimization~\citep{ram_incremental_2009}, reinforcement learning~\citep{tadic_asymptotic_2017, doan_convergence_2020, Xiong_Xu_Liang_Zhang_2021}, and expectation-minimization~\citep{pmlr-v99-karimi19a}, to name a few.
+%% Despite the apparent resemblance between MCGD and MCSA, MCSA has yet to be framed into the MCGD framework.
+%% Furthermore, the design of JSA~\citep[Algorithm 3]{pmlr-v124-ou20a} is slightly more complicated to directly apply MCGD.
+%% In this work, we provide a general condition for MCSA to become a special case of MCGD.
+%% Under the discussed assumptions, we establish the non-asymptotic convergence of both JSA and MSC as a special case of ergodic mirror descent by~\citet{duchi_ergodic_2012}.
+Our result enables comparing the practical performance of JSA and MSC through their gradient variance.
+Furthermore, we provide a new simple variant of MCSA that achieves lower variance than both MCGD and MCSA.
 
-This paper proposes a third scheme, the \textit{parallel state estimator}.
-The parallel state estimator operates \(N\) parallel Markov-chains parallel, where only a single state transition is performed on each chain.
-The variance of this estimator linearly decreases with the computational budget \(N\), unlike the single and sequential state estimators.
-However, according to the traditional MCMC intuition, this improvement would come at the cost of increased bias.
-In the example in~\cref{section:motivation}, we show that this intuition can be wrong in the score climbing setting, occasionally resulting in \textit{lower} bias than the longer Markov-chains of the sequential state estimator.
-%This is because the much lower variance of the parallel estimator results in the VI procedure converging faster compared to other estimators.
-
-To explain the unintuitive performance benefit of the parallel state estimator, we theoretically analyze the variance of the considered estimators.
-Then, we show that the KL objective bounds the bias of the parallel state estimator, which means bias decreases as VI converges.
-The low variance of the parallel state estimator results in fast convergence and thus a fast decrease in bias.
-This suggests that, given a similar computational budget, the parallel state estimator is overall better than the alternative estimators.
-We also provide experimental evidence on general Bayesian inference problems.
-Also, our experiments show that score climbing VI with the parallel state estimator is competitive against evidence lower-bound (ELBO) maximization.
+We verify our theoretical analysis through numerical simulations.
+Furthermore, we compare MSC, JSA, and our proposed method on general Bayesian inference problems.
+Our experiments show that our proposed method is superior than all previous approaches.
+Furthermore, within our experiments, MSCA is competitive against evidence lower-bound (ELBO) maximization.
 We further discuss this result in relation with the conclusions of~\citet{dhaka_challenges_2021} in~\cref{section:discussion}.
-
-%% generated by the conditional importance sampling (CIS,~\citealt{NEURIPS2020_b2070693, andrieu_particle_2010, andrieu_uniform_2018}) kernel, which uses \(N\) samples from \(q_{\vlambda}(\cdot)\) per transition.
-%% \citeauthor{pmlr-v124-ou20a}, on the other hand, use multiple sequentially generated states from independent Metropolis-Hastings (IMH,~\citealt[Algorithm 25]{hastings_monte_1970}), which only uses 1 sample from \(q_{\vlambda}(\cdot)\).
-%% Therfore, \citeauthor{pmlr-v124-ou20a} use multiple cheaply generated samples, while \citeauthor{NEURIPS2020_b2070693} use a single expensively generated samples.
-
-%Finally, some interesting connections with adaptive MCMC methods~\citep{10.1007/s11222-008-9110-y} are discussed.
 
 %\vspace{-0.05in}
 %\paragraph{Contribution Summary}

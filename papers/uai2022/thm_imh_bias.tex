@@ -1,6 +1,7 @@
 
 \begin{theoremEnd}{theorem}\label{thm:par_bias}
-  Assuming \(\eta\left(\vz\right) < M \, \pi\left(\vz\right)\) for some \(M < \infty\) and \(\norm{\vs\left(\vlambda; \vz\right)} \leq L\), the bias of the parallel state estimator with an IMH kernel is bounded as
+  Let \(w\left(\vz\right) = \pi\left(\vz\right) / q\left(\vz\right)\) and assume \(\eta\left(\vz\right) < M \, \pi\left(\vz\right)\) for some \(M < \infty\) and \(\norm{\vs\left(\vlambda; \vz\right)} \leq L\).
+  Then, the bias of the parallel state estimator with an IMH kernel is bounded as
   {\small
   \[
   \mathrm{Bias}\left[ \vg_{\text{par.-IMH}} \right] \leq 
@@ -11,7 +12,7 @@
   L \, \left( 1 - \frac{1}{w^*} \right)
   \]
   }
-  for some positive constant \(C\).
+  for some positive constant \(C\) and \(w^* = \sup_{\vz} w\left(\vz\right)\).
 \end{theoremEnd}
 \begin{proofEnd}
   The bias of a the parallel state estimator kernel is bounded as
@@ -127,6 +128,7 @@
       \right)
       d\vz
     }
+    \nonumber
     \\
     &=
     \norm{
@@ -142,7 +144,7 @@
     \underbrace{
     \norm{
       \int \eta\left(\vz\right)
-      \int_{A\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \left(\frac{1}{w\left(\vz^*\right)} - 1\right) \vs\left(\vlambda;\vz^*\right) d\vz^*
+      \int_{A\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \left(\frac{1}{w\left(\vz^*\right)} - 1\right) \vs\left(\vlambda;\vz^*\right) d\vz^* \,
       d\vz
     }
     }_{\text{T3}}
@@ -150,30 +152,21 @@
     \underbrace{
     \norm{
       \int \eta\left(\vz\right)
-      \int_{R\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \left(\frac{1}{w\left(\vz\right)} - 1\right) \vs\left(\vlambda;\vz^*\right) d\vz^*
+      \int_{R\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \left(\frac{1}{w\left(\vz\right)} - 1\right) \vs\left(\vlambda;\vz^*\right) d\vz^* \,
       d\vz
     }
     }_{\text{T4}}
   \end{align}
   For T3, 
   \begin{align}
-    \norm{
+    &\norm{
       \int \eta\left(\vz\right)
-      \int_{A\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \left(\frac{1}{w\left(\vz^*\right)} - 1\right) \vs\left(\vlambda;\vz^*\right) d\vz^*
+      \int_{A\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \left(\frac{1}{w\left(\vz^*\right)} - 1\right) \vs\left(\vlambda;\vz^*\right) d\vz^* \,
       d\vz
-    }
-    &=
-    \norm{
-      \int \eta\left(\vz\right)\,d\vz \;
-      \int_{A\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \left(\frac{1}{w\left(\vz^*\right)} - 1\right) \vs\left(\vlambda;\vz^*\right) d\vz^*
-    }
-    \\
-    &=
-    \norm{
-      \int_{A\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \left(\frac{1}{w\left(\vz^*\right)} - 1\right) \vs\left(\vlambda;\vz^*\right) d\vz^*
     }
     \\
     &\leq
+    \int \eta\left(\vz\right) \,
     \int_{A\left(w\left(\vz\right)\right)}
     \pi\left(\vz^*\right)\,
     \abs{
@@ -182,7 +175,20 @@
     \norm{
       \vs\left(\vlambda;\vz^*\right)
     } \,
-    d\vz^*
+    d\vz^* \, d\vz
+    &\text{(Jensen's Inequality)}
+    \\
+    &\leq
+    \int \eta\left(\vz\right) \,
+    \int
+    \pi\left(\vz^*\right)\,
+    \abs{
+     \frac{1}{w\left(\vz^*\right)} - 1
+    } \,
+    \norm{
+      \vs\left(\vlambda;\vz^*\right)
+    } \,
+    d\vz^* \, d\vz
     \\
     &\leq
     \int
@@ -195,7 +201,7 @@
     } \,
     d\vz^*
     \\
-    &\leq
+    &=
     \int
     \abs{
       \pi\left(\vz^*\right) - q\left(\vz^*\right)
@@ -212,6 +218,7 @@
       \pi\left(\vz^*\right) - q\left(\vz^*\right)
     } \,
     d\vz^*
+    &\text{(Assumption)}
     \\
     &\leq
     2 \, L \, \DTV{\pi}{q}.\label{eq:imh_bias_left}
@@ -297,19 +304,29 @@
   %% \end{align}
 
   Now, for T4,
+  \textcolor{red}{Fix This Part!}
   \begin{align}
-    \norm{
+    &\norm{
       \int \eta\left(\vz\right)
       \int_{R\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \left(\frac{1}{w\left(\vz\right)} - 1\right) \vs\left(\vlambda;\vz^*\right) d\vz^*
       d\vz
     }
-    &=
+    \\
+    &\leq
+      \int \eta\left(\vz\right)
+      \int_{R\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \abs{ \frac{1}{w\left(\vz\right)} - 1 } \,
+      \norm{
+        \vs\left(\vlambda;\vz^*\right) d\vz^*
+      }
+      d\vz
     \norm{
       \int \eta\left(\vz\right) \,
       \left(\frac{1}{w\left(\vz\right)} - 1\right)
  \,
+      d\vz \;
+      \int \eta\left(\vz\right) \,
+      \int_{R\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \vs\left(\vz^*\right) d\vz^* \,
       d\vz
-      \int_{R\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \vs\left(\vz^*\right) d\vz^*
     }
     \\
     &=
@@ -323,7 +340,8 @@
     \,
     \underbrace{
     \norm{
-      \int_{R\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \vs\left(\vz^*\right) d\vz^*,
+      \int \eta\left(\vz\right)
+      \int_{R\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \vs\left(\vz^*\right) d\vz^* \, d\vz
     }
     }_{\text{T6}},
   \end{align}
@@ -335,15 +353,16 @@
       \,
       d\vz
     }
-    &=
+    &\leq
     \int \eta\left(\vz\right) \,
     \abs{\frac{q\left(\vz\right)}{\pi\left(\vz\right)} - 1}
     \,
     d\vz
+    &\text{(Jensen's Inequality)}
     \\
     &=
     \int \frac{\eta\left(\vz\right)}{\pi\left(\vz\right)} \,
-    \abs{\left(q\left(\vz\right) - \pi\left(\vz\right)\right)}
+    \abs{q\left(\vz\right) - \pi\left(\vz\right)}
     \,
     d\vz
     \\
@@ -352,6 +371,7 @@
     \abs{q\left(\vz\right) - \pi\left(\vz\right)}
     \,
     d\vz
+    &\text{(Assumption)}
     \\
     &=
     2 \, M \, \DTV{\pi}{q}
@@ -359,16 +379,26 @@
   and T6 is bounded as
   \begin{align}
     \norm{
-      \int_{R\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \vs\left(\vlambda;\vz^*\right) d\vz^*
+      \int \eta\left(\vz\right)
+      \int_{R\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \vs\left(\vlambda;\vz^*\right) d\vz^*\,
+      d\vz
     }
     &\leq
-    \int_{R\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \norm{\vs\left(\vlambda;\vz^*\right)} d\vz^*
+    \int \eta\left(\vz\right)
+    \int_{R\left(w\left(\vz\right)\right)} \pi\left(\vz^*\right)\, \norm{\vs\left(\vlambda;\vz^*\right)} d\vz^* \,
+    d\vz
+    &\text{(Jensen's Inequality)}
+    \\
+    &\leq
+    \int \eta\left(\vz\right)
+    \int \pi\left(\vz^*\right)\, \norm{\vs\left(\vlambda;\vz^*\right)} \, d\vz^*  \, d\vz
     \\
     &\leq
     \int \pi\left(\vz^*\right)\, \norm{\vs\left(\vlambda;\vz^*\right)} \, d\vz^*
     \\
     &\leq
     L \, \int \pi\left(\vz^*\right)\, \, d\vz^*
+    &\text{(Assumption)}
     \\
     &\leq
     L.
@@ -401,6 +431,7 @@
       \vs\left(\vlambda;\vz\right)
     }\,
     d\vz
+    &\text{(Jensen's Inequality)}
     \\
     &\leq
     \int
@@ -429,6 +460,7 @@
     \int
     \eta\left(\vz\right)
     \, d\vz
+    &\text{(Assumption)}
     \\
     &=
     L

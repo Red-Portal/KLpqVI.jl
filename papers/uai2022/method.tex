@@ -141,13 +141,14 @@ The traditional MCMC intuition fails because the MCMC kernel depends on the vari
 If we fix \(q_{\vlambda}\), the traditional MCMC intuition holds: given the same proposal \(q_{\vlambda}\), the parallel estimator is more biased than the sequential estimator.
 However, in our case, \(q_{\vlambda}\) is being updated every step.
 Therefore, if the parallel state estimator somehow results in faster and more stable VI convergence, the intuition obtained with a fixed \(q_{\vlambda}\) completely breaks.
-In the following sections, we will show that 
+In the following sections, we show that 
 \vspace{-0.05in}
 \begin{enumerate}[noitemsep]
-  \item[\ding{182}] the parallel state estimator results in substantially low variance (\cref{thm:var}) and that
+  \item[\ding{182}] the parallel state estimator results in the lowest variance (\cref{thm:var}) and that
   \item[\ding{183}] its bias decreases as VI converges (\cref{thm:par_bias}).
-  \item[\ding{184}] The substantially low variance enables VI to converge faster, leading to a faster decrease of bias.
-  \item[\ding{185}] Even if we compare the bias of the parallel and sequential state estimator with fixed a \(q_{\vlambda}\), when the KL objective is large, the sequential state estimator does not guarentee lower bias (\cref{thm:thm_bias_diff}).
+  %\item[\ding{184}] Empirical conjecture that the low variance enables VI to converge faster, leading to a faster decrease of bias.
+  \item[\ding{184}] %% Even if we compare the bias of the parallel and sequential state estimator with fixed a \(q_{\vlambda}\),
+    Furthermore, when the KL objective is large, the sequential state estimator does not guarentee lower bias (\cref{thm:thm_bias_diff}).
 \end{enumerate}
 \vspace{-0.05in}
 
@@ -173,8 +174,10 @@ In addition, to closely understand the performance of the estimators relying on 
 As stated in~\cref{thm:var}, the variance of the single state estimator is as good as a \textit{single} sample for the posterior.
 In contrast, the variance of the sequential and parallel state estimator can be reduced by increasing \(N\).
 Because of the noticeable limitation of the single state estimator, from now on, we will restrict our discussion to the later two estimators.
-For the sequential state estimator, it is difficult to discuss the covariance term in the lower bound of \(C_{\text{gap}}\), which is the limitation of our analysis.
-However, suppose we are able to assume neglect the covariance term. In that case, the KL divergence terms imply that the variance of the sequential estimator will be exponentially higher with respect to the KL.
+When comparing the sequential and parallel estimators, the sequential estimator always has larger or equal variance.
+Discussing the difference \(C_{\text{gap}}\) is more difficult without additional assumptions.
+But, our limited analysis suggests that it has a weak trend of exponentially increasing with the KL.
+
 %This is in accordance with the empirical results in~\cref{section:motivation,section:eval}.
 
 \vspace{-0.05in}
@@ -192,7 +195,7 @@ Now, we will formally show that the convergence speed of VI affects the bias of 
 \vspace{-0.05in}
 \paragraph{Relaxing Geometric Ergodicity}
 Previously, the non-asymptotic bias of MCMC kernels has been established through their geometric convergence rates~\citep{jiang_mcmc_2021}.
-For IMH kernels, this requires the rather strong assumption of \(\sup_{\vz} w\left(\vz\right) < \infty\)~\citep{10.2307/2242610, wang_exact_2020}.
+For IMH kernels, this requires the rather strong assumption of \(w^* < \infty\)~\citep{10.2307/2242610, wang_exact_2020} for \(w^* = \sup_{\vz} w\left(\vz\right)\), the supremum of the normalized importance weight \(w\left(\vz\right) = \pi\left(\vz\right) / q\left(\vz\right)\).
 We instead use a weaker, more general assumption that uses \(\eta\), the distribution of the previous states of the parallel chains (such that \(\vz^{(i)}_{t-1} \sim \eta\left(\cdot\right)\)).
 Our key assumption is that \(\eta\left(\vz\right) < M\,\pi\left(\vz\right)\) for some constant \(M < \infty\).
 Since \(\eta\) is the marginal distribution of the MCMC kernel applied \(t-1\) times, the following proposition shows a practical condition where our assumption is satisfied.
@@ -229,16 +232,16 @@ The following bound shows that this is not likely in general.
 \input{thm_bias_diff}
 
 \begin{theoremEnd}{proposition}\label{thm:kl_bound}
-  \(w^* = \sup_{\vz} w\left(\vz\right) \) is bounded below exponentially by the KL divergence such that
+  For \(w\left(\vz\right) = \pi\left(\vz\right) / q\left(\vz\right)\), \(w^* = \sup_{\vz} w\left(\vz\right) \) is bounded below by the KL divergence such that
   \[
-  \exp\left(\DKL{\pi}{ q_{\vlambda}}\right) \leq w^*.
+  \exp\left(\DKL{\pi}{q}\right) \leq w^*.
   \]
 \end{theoremEnd}
 \vspace{-0.1in}
 \begin{proofEnd}
   \begin{align*}
-    \DKL{\pi}{ q_{\vlambda} }
-    = \int \pi\left(\vz\right) \log \frac{\pi\left(\vz\right)}{q_{\vlambda}\left(\vz\right)}\,d\vz 
+    \DKL{\pi}{ q}
+    = \int \pi\left(\vz\right) \log \frac{\pi\left(\vz\right)}{q\left(\vz\right)}\,d\vz 
     \leq \int \pi\left(\vz\right) \log w^* \, d\vz 
     = \log w^*
   \end{align*}

@@ -55,7 +55,7 @@
 \vspace{-0.05in}
 \paragraph{Implementation}
 For the realistic experiments, we implemented score climbing VI on top of the Turing~\citep{ge2018t} probabilistic programming framework.
-Our implementation works with any model described in Turing, which automatically handles distributions with constrained support~\citep{JMLR:v18:16-107}.
+For the variational family, we use diagonal Gaussians with the support transformation of~\citet{JMLR:v18:16-107}.
 We use the ADAM optimizer by~\citet{kingma_adam_2015} with a learning rate of 0.01 in all of the experiments.
 The computational budget is set to \(N=10\) and \(T=10^4\) for all experiments unless specified.
 

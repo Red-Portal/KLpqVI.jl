@@ -17,7 +17,7 @@
 
 % to avoid loading the natbib package, add option nonatbib:
 %\usepackage[nonatbib]{neurips_2021}
-\usepackage[nonatbib]{neurips_2020}
+\usepackage[nonatbib]{neurips_2022}
 \usepackage[sort&compress,round]{natbib}
 \bibliographystyle{authordate1}
 
@@ -74,9 +74,9 @@
 % \AND instead of \And before the third author name.
 
 \author{%
-  Kyurae Kim \\
+  Kyurae Kim, Jisu Oh, Hongseok Kim \\
   Sogang University \\
-  \texttt{msca8h@sogang.ac.kr} \\
+  \texttt{\{msca8h, \}@sogang.ac.kr} \\
 }
 
 %% \author{%
@@ -127,8 +127,8 @@
 
 \section*{Broader Impact}
 
-\begin{ack}
-\end{ack}
+%% \begin{ack}
+%% \end{ack}
 
 \bibliography{references}
 
@@ -137,8 +137,8 @@
 
 \begin{center}
   \LARGE\bf
-  Markov-Chain Monte Carlo Score Estimators for \\
-  Variational Inference with Score Climbing \\
+  Pratical Convergence Analysis of \\
+  Variational Inference by Score Ascent \\
   \textit{Appendix}
 \end{center}
 %% \begin{center}
@@ -148,10 +148,10 @@
 %% \end{center}
 
 %\section{Additional Experimental Results}
-\section{Computational Resources}\label{section:resources}
- All of our experiments presented in this paper were executed on a server with 20 Intel Xeon E5--2640 CPUs and 64GB RAM.
-Each of the CPUs has 20 logical threads with 32k L1 cache, 256k L2 cache, and 25MB L3 cache.
-All of our experiments can be executed within 12 hours on a system with similar computational capabilities.
+%% \section{Computational Resources}\label{section:resources}
+%%  All of our experiments presented in this paper were executed on a server with 20 Intel Xeon E5--2640 CPUs and 64GB RAM.
+%% Each of the CPUs has 20 logical threads with 32k L1 cache, 256k L2 cache, and 25MB L3 cache.
+%% All of our experiments can be executed within 12 hours on a system with similar computational capabilities.
 
 \input{pseudocode}
 \input{illustration}

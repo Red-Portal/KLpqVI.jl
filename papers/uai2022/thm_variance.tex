@@ -19,7 +19,7 @@
     \frac{2}{N} \, \Big[\,
     &2\,\sigma^2
     +
-    C \, \big\{\,
+    \Esub{q}{\Delta^2} \, \big\{\,
     \exp\,(\,
     \DKL{q}{\pi}
     \,)\,
@@ -34,7 +34,7 @@
     \mathcal{O}\left(N^{-2}\right)
   \end{align*}
   }%
-  where \(q\) is the proposal distribution, \(C\) is a positive constant, \(\Delta\left(\vz\right) = \vs\left(\vlambda;\vz\right) - \Esub{\pi}{\vs\left(\vlambda;\vz\right)}\),
+  where \(q\) is the proposal distribution, \(w\left(\vz\right)=\pi\left(\vz\right)/q\left(\vz\right)\), \(C\) is a positive constant, \(\Delta\left(\vz\right) = \vs\left(\vlambda;\vz\right) - \Esub{\pi}{\vs\left(\vlambda;\vz\right)}\),
   and, as \(N \rightarrow \infty\), the bound converges to
   \vspace{-0.05in}
   {\small
@@ -60,16 +60,21 @@
 
   \textit{\textbf{Variance of the Single State Estimator}}\quad
   For the single state estimator,  
-  \begin{align}
+  \begin{alignat}{2}
     \V{\vg_{\text{single}}\left(\vlambda\right)} 
     &= \E{ \Vsub{K_{\vlambda_{t-1}}\left(\vz_{t-1}, \vz\right)}{ \vs\left(\vz; \vlambda\right) \mid \vz_{t-1} }}  \nonumber \\
-    &\quad + \V{ \Esub{K_{\vlambda_{t-1}}\left(\vz_{t-1}, \vz\right)}{ \vs\left(\vz; \vlambda\right) \mid \vz_{t-1} } },  \\
+    &\quad + \V{ \Esub{K_{\vlambda_{t-1}}\left(\vz_{t-1}, \vz\right)}{ \vs\left(\vz; \vlambda\right) \mid \vz_{t-1} } },
+    &&\qquad\text{(Total Variance)}
+    \\
     \intertext{and assuming stationarity such that \(\vz_{t-1} \sim \pi\left(\vz\right)\),}
-    &= \Esub{\pi}{ \Vsub{K_{\vlambda_{t-1}}\left(\vz_{t-1}, \vz\right)}{ \vs\left(\vz; \vlambda\right) \mid \vz_{t-1} }} \nonumber \\
-    &\quad + \Vsub{\pi}{ \Esub{K_{\vlambda_{t-1}}\left(\vz_{t-1}, \vz\right)}{ \vs\left(\vz; \vlambda\right) \mid \vz_{t-1} } }  \\
+    &=
+    \Esub{\pi}{ \Vsub{K_{\vlambda_{t-1}}\left(\vz_{t-1}, \vz\right)}{ \vs\left(\vz; \vlambda\right) \mid \vz_{t-1} }} \nonumber \\
+    &\quad + \Vsub{\pi}{ \Esub{K_{\vlambda_{t-1}}\left(\vz_{t-1}, \vz\right)}{ \vs\left(\vz; \vlambda\right) \mid \vz_{t-1} } }
+    &&\qquad\text{(Total Variance)}
+    \\
     &= \Vsub{\pi}{\vs\left(\vz; \vlambda\right)}  \\
     &= \sigma^2.\label{eq:var_single}
-  \end{align}
+  \end{alignat}
 
   \textit{\textbf{Variance of the Parallel State Estimator}}\quad
   Meanwhile, the parallel state estimator is an average of idenpendent and identically distributed (\textit{i.i.d.}) since the parallel chains are independent.
@@ -86,81 +91,105 @@
   \end{align}
 where \( \vz_{T+i} \sim K_{\vlambda_{t-1}}^i\left( \vz_{T}, \cdot \right) \) and \(\vz_T\) is the last Markov-chain state at the previous SGD iteration \(t-1\).
 Then, the variance is given as
-\begin{align}
+\begin{alignat}{2}
   \V{\vg_{\text{seq.}}}
   &= \V{ \Esub{K\left(\vz_{T}, \vz\right)}{ \frac{1}{N} \sum_{i=1}^N \vs\left(\vlambda; \vz_{T+i}\right)  \,\Bigg\vert\, \vz_T } }
-  + \E{ \Vsub{K\left(\vz_{T}, \vz\right)}{ \frac{1}{N} \sum_{i=1}^N \vs\left(\vlambda; \vz_{T+i}\right) \,\Bigg\vert\,  \vz_T } } &\text{(Total Variance)}  \\
-  &= \frac{1}{N^2} \sum_{i=1}^N \Vsub{K\left(\vz_{T}, \vz\right)}{ \E{  \vs\left(\vlambda; \vz_{T+i}\right) \mid \vz_T } } \nonumber  \\
+  + \E{ \Vsub{K\left(\vz_{T}, \vz\right)}{ \frac{1}{N} \sum_{i=1}^N \vs\left(\vlambda; \vz_{T+i}\right) \,\Bigg\vert\,  \vz_T } }
+  &&\quad\text{(Total Variance)}
+  \nonumber
+  \\
+  &= \frac{1}{N^2} \sum_{i=1}^N \Vsub{K\left(\vz_{T}, \vz\right)}{ \E{  \vs\left(\vlambda; \vz_{T+i}\right) \mid \vz_T } }
+  \nonumber
+  \\
   &\qquad + \E{ \frac{1}{N^2}  \sum_{i=1}^N  \Vsub{K\left(\vz_{T}, \vz\right)}{ \vs\left(\vlambda; \vz_{T+i}\right)  \mid  \vz_T } 
 + \frac{2}{N^2}  \sum_{i < j}^N \Cov{ s\left(\vlambda; \vz_{T+i}\right), \vs\left(\vlambda; \vz_{T+j}\right) \mid  \vz_T }
-  }  \\
-  &= \frac{1}{N^2} \sum_{i=1}^N \Vsub{K\left(\vz_{T}, \vz\right)}{ \E{  \vs\left(\vlambda; \vz_{T+i}\right) \mid \vz_T } } \nonumber \\
-   &\qquad+ \frac{1}{N^2} \sum_{i=1}^N   \Esub{K\left(\vz_{T}, \vz\right)}{ \V{ \vs\left(\vlambda; \vz_{T+i}\right)  \mid  \vz_T } } \nonumber\\
+  }
+  \nonumber
+  \\
+  &= \frac{1}{N^2} \sum_{i=1}^N \Vsub{K\left(\vz_{T}, \vz\right)}{ \E{  \vs\left(\vlambda; \vz_{T+i}\right) \mid \vz_T } }
+  \nonumber
+  \\
+  &\qquad+ \frac{1}{N^2} \sum_{i=1}^N   \Esub{K\left(\vz_{T}, \vz\right)}{ \V{ \vs\left(\vlambda; \vz_{T+i}\right)  \mid  \vz_T } }
+  \nonumber
+  \\
    &\qquad+ \frac{2}{N^2}  \sum_{i < j} \E{ \Cov{ \vs\left(\vlambda; \vz_{T+i}\right), \vs\left(\vlambda; \vz_{T+j}\right) \mid  \vz_T }
   },
+  \nonumber
 \intertext{\text{where, by assuming stationarity such that \(\vz_{T} \sim \pi\left(\vz\right)\),}}
   &= \frac{1}{N^2} \sum_{i=1}^N \Vsub{\pi}{ \E{  \vs\left(\vlambda; \vz_{T+i}\right) \mid \vz_T } } 
-   \qquad+ \frac{1}{N^2} \sum_{i=1}^N   \Esub{\pi}{ \V{ \vs\left(\vlambda; \vz_{T+i}\right)  \mid  \vz_T } } \nonumber \\
+\qquad+ \frac{1}{N^2} \sum_{i=1}^N   \Esub{\pi}{ \V{ \vs\left(\vlambda; \vz_{T+i}\right)  \mid  \vz_T } }
+\nonumber
+\\
  &\qquad+ \frac{2}{N^2}  \sum_{i < j} \Esub{\pi}{ \Cov{ \vs\left(\vlambda; \vz_{T+i}\right), \vs\left(\vlambda; \vz_{T+j}\right) \mid  \vz_T }
-  } \\
+}
+\nonumber
+\\
   &= \frac{1}{N^2} \sum_{i=1}^N \Vsub{\pi}{ \vs\left(\vlambda; \vz\right) } 
  + \frac{2}{N^2}  \sum_{i < j} \Esub{\pi}{ \Cov{ \vs\left(\vlambda; \vz_{T+i}\right), \vs\left(\vlambda; \vz_{T+j}\right) \mid  \vz_T }
-  }&\text{(Total Variance)} \\
+ }
+\nonumber
+ &&\quad\text{(Total Variance)}
+ \\
   &= \frac{1}{N} \Vsub{\pi}{ \vs\left(\vlambda; \vz\right) } 
  + \frac{2}{N^2}  \sum_{i < j} \Esub{\pi}{ \Cov{ \vs\left(\vlambda; \vz_{T+i}\right), \vs\left(\vlambda; \vz_{T+j}\right) \mid  \vz_T }
-  } \\
+ }
+ \nonumber
+ \\
   &= \frac{\sigma^2}{N}
  + \frac{2}{N^2}  \sum_{i < j}^N \Esub{\pi}{ \Cov{ \vs\left(\vlambda; \vz_{T+i}\right), \vs\left(\vlambda; \vz_{T+j}\right) \mid  \vz_T }
-  } \\
+ }
+ \nonumber
+ \\
   &= \frac{\sigma^2}{N}
  + \frac{2}{N} \sum_{k=1}^{N-1} \left(1 - \frac{k}{N}\right) \gamma_k \label{eq:seq_cov}
-\end{align}
+\end{alignat}
 where \(\gamma_k\) is the \(k\)-lag autocovariance.
 
-Specifically for the IMH kernel,~\citet{tan_monte_2006} has analyzed \(\gamma_k\) based on the results of~\citet{Smith96exacttransition}.
+ Specifically for the IMH kernel,~\citet{tan_monte_2006} has analyzed \(\gamma_k\) based on the results of~\citet{Smith96exacttransition}.
 We extend his analysis to obtain our desired conclusion.
 Let us denote \(\gamma_k\) as the covariance between a state \(\vz\) and its \(k\)th lagged counterpart \(\vz_k\), and \(\Delta \left(\vz\right) = \vs\left(\vz\right) - \Esub{\pi}{\vs}\).
 Then,
-\begin{align}
+\begin{align*}
   \gamma_k
   &= \int \Delta\left(\vz\right) \left(
   \int K^k\left(\vz, \vz_k \right) \, \Delta\left(\vz_k\right) \, d\vz_k
-  \right) \pi\left(d\vz\right) 
+  \right) \, \pi\left(\vz\right) \, d\vz
   \\
   &=
   \int \Delta\left(\vz\right)
   \left(
   \int \Delta\left(\vz_k\right) \,
-  T_k\left(w\left(\vz\right) \vee w\left(\vz_k\right) \right) \, \pi\left(d\vz_k\right)
+  T_k\left(w\left(\vz\right) \vee w\left(\vz_k\right) \right) \, \pi\left(\vz_k\right) \, d\vz_k
   + \Delta\left(\vz\right) \, \lambda^k\left(w\left(\vz\right)\right)
-  \right) \pi\left(d\vz\right)
+  \right) \, \pi\left(\vz\right) \, d\vz
   \\
   &=
   \int \int
   \Delta\left(\vz\right) \,
   \Delta\left(\vz_k\right) \,
-  T_k\left(w\left(\vz\right) \vee w\left(\vz_k\right) \right) \, \pi\left(d\vz_k\right) \, \pi\left(d\vz\right)
+  T_k\left(w\left(\vz\right) \vee w\left(\vz_k\right) \right) \, \pi\left(\vz_k\right) \, \pi\left(\vz\right) \,  d\vz_k \, d\vz
   +
   \int
-  \Delta^2\left(\vz\right) \, \lambda^k\left(w\left(\vz\right)\right) \, \pi\left(d\vz\right).
-\end{align}
+  \Delta^2\left(\vz\right) \, \lambda^k\left(w\left(\vz\right)\right) \, \pi\left(\vz\right) \, d\vz.
+\end{align*}
 
 For the first term,~\citet[Theorem 3]{tan_monte_2006} have shown that
-\begin{align}
+\begin{align*}
   \int \int
   \Delta\left(\vz\right) \,
   \Delta\left(\vz_k\right) \,
-  T_k\left(w\left(\vz\right) \vee w\left(\vz_k\right) \right) \, \pi\left(d\vz_k\right) \, \pi\left(d\vz\right)
+  T_k\left(w\left(\vz\right) \vee w\left(\vz_k\right) \right) \, \pi\left(\vz_k\right) \, \pi\left(\vz\right)  \, d\vz_k  \, d\vz
   \geq
   0.
-\end{align}
+\end{align*}
 And for the second term,
 \begin{align}
   \frac{2}{N} \sum_{k=1}^{N-1} \left(1 - \frac{k}{N}\right) \gamma_k
   &\geq
   \frac{2}{N} \sum_{k=1}^{N-1} \left(1 - \frac{k}{N}\right)
   \int
-  \Delta^2\left(\vz\right) \, \lambda^k\left(w\left(\vz\right)\right) \, \pi\left(d\vz\right)
+  \Delta^2\left(\vz\right) \, \lambda^k\left(w\left(\vz\right)\right) \, \pi\left(\vz\right) \, d\vz
+  \nonumber
   \\
   &=
   \frac{2}{N}
@@ -168,8 +197,9 @@ And for the second term,
   \Delta^2\left(\vz\right) \,
    \sum_{k=1}^{N-1} 
   \left(1 - \frac{k}{N}\right) \, \lambda^k\left(w\left(\vz\right)\right)
-  \, \pi\left(d\vz\right)\label{eq:autocov_bound}  \\
+  \, \pi\left(\vz\right) \, d\vz \label{eq:autocov_bound}  \\
   &\geq 0,
+  \nonumber
 \end{align}
 which proves \(\V{\vg_{\text{seq.-IMH}}} - \V{\vg_{\text{par.}}} = C_{\text{gap}} \geq 0\).
 
@@ -184,6 +214,7 @@ Then,
  \sum_{k=1}^{N-1} \, r^k
  -
  \frac{1}{N}\,\sum_{k=1}^{N-1} \,k\, r^k
+  \nonumber
  \\
  &=
  \frac{r \, \left( 1 - r^{N-1} \right) }{1 - r} 
@@ -191,6 +222,7 @@ Then,
  \frac{r}{N}
  \,
  \frac{1 - N\,r^{N-1} + \left(N-1\right)\,r^{N} }{{\left(1 - r\right)}^2} 
+  \nonumber
  \\
  &=
  \frac{
@@ -198,6 +230,7 @@ Then,
  }{
    N\,{\left(1-r\right)}^2
  }
+  \nonumber
  \\
  &=
  \frac{
@@ -205,6 +238,7 @@ Then,
  }{
    N\,{\left(1-r\right)}^2
  }
+ \nonumber
  \\
  &=
  \frac{r}{1-r} -
@@ -214,19 +248,19 @@ which is monotonically increasing with respect to \(r\).
 
 There are several ways to analyze the behavior of this function.
 For example, the upper bound 
-\begin{align}
+\begin{align*}
  \frac{r}{1-r} -
  \frac{r}{N}\,\frac{\left(1-r^N\right)}{{\left(1-r\right)}^2}
  &\leq
- \frac{r}{1-r}\label{eq:r_approx}
-\end{align}
+ \frac{r}{1-r}
+\end{align*}
 becomes a good approximation for large \(N\).
 For small \(N\), it is still accurate for small values of \(r\).
 In the limit \(N \rightarrow \infty\), the upper bound becomes exact where we retrieve the result of~\citet[Theorem 3]{tan_monte_2006}.
 
 \textit{\textbf{Lower Bound of \(C_{\text{gap}}\)}}\quad
 On the other hand, it is also possible to derive a lower bound using the formula of geometric sums as
-\begin{align}
+\begin{align*}
   -\frac{\left(1-r^N\right)}{{\left(1-r\right)}}
   &=
   -\frac{\left(1-r\right)\,\left(r^{N-1} + r^{N-2} + \ldots + r + 1\right)}{{\left(1-r\right)}}
@@ -239,7 +273,7 @@ On the other hand, it is also possible to derive a lower bound using the formula
   \\
   &=
   -\left((N-2)\,r^2 + r + 1\right)
-\end{align}
+\end{align*}
 where we have used the fact that \(0 \leq r \leq 1\) and \(N \geq 2\).
 By applying this to \cref{eq:r_exact},
 \begin{align}
@@ -248,6 +282,7 @@ By applying this to \cref{eq:r_exact},
  &\geq 
  \frac{r}{1-r} -
  \frac{r}{N}\,\frac{(N-2)\,r^2 + r + 1}{\left(1-r\right)}
+ \nonumber
  \\
  &=
  \left(1 - \frac{1}{N}\right) \frac{r}{1-r}
@@ -394,7 +429,7 @@ Since the lower bound in \cref{eq:r_lowerbound} is monotonically increasing, app
 
 For clarity, we temporarily set \(\alpha = 1 - \frac{1}{N}\), \(\beta = \frac{1}{N}\), \(\gamma = 1 - \frac{2}{N}\).
 Then, \cref{eq:w_init} becomes
-\begin{align}
+\begin{align*}
   &\alpha \, w\left(\vz\right) \, \left(1 - \frac{1}{w\left(\vz\right)}\right)
   -
   \beta \, w\left(\vz\right) \, {\left(1 - \frac{1}{w\left(\vz\right)}\right)}^2
@@ -423,10 +458,10 @@ Then, \cref{eq:w_init} becomes
   \left(-3 + \frac{5}{N}\right) \frac{1}{w\left(\vz\right)}
   +
   \left(1 - \frac{2}{N}\right)  \frac{1}{w^2\left(\vz\right)}.
-\end{align}
+\end{align*}
 
 Applying this to~\cref{eq:autocov_bound},
-\begin{align}
+\begin{align*}
   &\frac{2}{N}
   \int
   \Delta^2\left(\vz\right) \,
@@ -473,6 +508,24 @@ Applying this to~\cref{eq:autocov_bound},
   \left(-3 + \frac{5}{N}\right) 
   \int
   \Delta^2\left(\vz\right) \,
+  \frac{q\left(\vz\right)}{\pi\left(\vz\right)}
+  \, \pi\left(d\vz\right)
+  +
+  \frac{2}{N}\,
+  \left(1 - \frac{2}{N}\right)
+  \int
+  \Delta^2\left(\vz\right) \,
+  \frac{q^2\left(\vz\right)}{\pi^2\left(\vz\right)}
+  \, \pi\left(d\vz\right)
+  \\
+  &=
+  \frac{2}{N}\,
+  \left(2 - \frac{3}{N}\right) \, \sigma^2
+  +
+  \frac{2}{N}\,
+  \left(-3 + \frac{5}{N}\right) 
+  \int
+  \Delta^2\left(\vz\right) \,
   q\left(\vz\right)\,d\vz
   +
   \frac{2}{N}\,
@@ -481,10 +534,10 @@ Applying this to~\cref{eq:autocov_bound},
   \Delta^2\left(\vz\right) \,
   \frac{q^2\left(\vz\right)}{\pi\left(\vz\right)}\,
   d\vz.
-\end{align}
+\end{align*}
 
 For the last term,
-\begin{align}
+\begin{align*}
   \int
   \Delta^2\left(\vz\right) \,
   \frac{q^2\left(\vz\right)}{\pi\left(\vz\right)}\,
@@ -516,10 +569,10 @@ For the last term,
   \right)
   +
   \text{Cov}_{q}\left(\Delta^2\left(\vz\right),\, w^{-1}\left(\vz\right)\right).
-\end{align}
+\end{align*}
 
 After some algebra, we obtain our result
-\begin{align}
+\begin{align*}
   &\frac{2}{N} \,
   \left(2 - \frac{3}{N}\right)
   \, \sigma^2
@@ -606,22 +659,22 @@ After some algebra, we obtain our result
   \text{Cov}_{q}\left(\Delta^2\left(\vz\right),\, w^{-1}\left(\vz\right)\right)
   +
   \mathcal{O}\left(\frac{1}{N^2}\right).
-\end{align}
+\end{align*}
 
 \textit{\textbf{Asymptotic Approximation of \(C_{\text{gap}}\)}}\quad
 Before concluding, we discuss the case where \(N\) is large such that
-\begin{align}
+\begin{align*}
  \frac{r}{1-r} -
  \frac{r}{N}\,\frac{\left(1-r^N\right)}{{\left(1-r\right)}^2}
  \xrightarrow{N \rightarrow \infty}
  \frac{r}{1-r}.
-\end{align}
+\end{align*}
 Using the lower bound \(r \geq 1 - \frac{1}{w\left(\vz\right)}\),
-\begin{align}
+\begin{align*}
   \frac{r}{1-r} \geq w\left(\vz\right) - 1.
-\end{align}
+\end{align*}
 Therefore,
-\begin{align}
+\begin{align*}
   \int
   \Delta^2\left(\vz\right) \,
   \sum_{k=1}^{N-1} 
@@ -666,7 +719,7 @@ Therefore,
   \sigma^2 \, \left( \exp\left(\DKL{\pi}{q}\right) - 1\right)
   +
   \text{Cov}_{\pi}\left(\Delta^2\left(\vz\right), w\left(\vz\right) \right).
-\end{align}
+\end{align*}
 \end{proofEnd}
 
 %%% Local Variables:

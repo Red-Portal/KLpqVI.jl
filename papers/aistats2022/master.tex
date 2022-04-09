@@ -1,6 +1,6 @@
 
 \documentclass[twoside]{article} % For LaTeX2e
-\usepackage{aistats2022}
+\usepackage[accepted]{aistats2022}
 
 \usepackage[round]{natbib}
 %\renewcommand{\bibname}{References}
@@ -29,6 +29,8 @@
 \usepackage{minted}
 %\usepackage{newunicodechar}
 %\setmonofont{DejaVu Sans Mono}[Scale=MatchLowercase]
+
+\allowdisplaybreaks
 
 %% Tikz corner
 \usepackage{tikz}
@@ -115,8 +117,9 @@ All of our experiments can be executed within 12 hours on a system with similar 
 \input{prob_models}
 
 %\newpage
-\section{Proofs}
+\section{Proofs}\label{section:proofs}
 \input{var_seq}
+%\input{score_bound}
 \printProofs
 
 \end{document}

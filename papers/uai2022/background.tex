@@ -34,16 +34,16 @@ When it is easy to sample from the variational approximation \(q_{\lambda}(\vz)\
 \vspace{-0.05in}
 \begin{align}
   \Esub{\pi}{ \vs\,(\vlambda;\vz) } 
-  &\propto Z\,\Esub{\pi}{ \vs\,(\vz; \vlambda) } \label{eq:is_est} \\
+  &\propto Z\,\Esub{\pi}{ \vs\,(\vlambda; \vz) } \label{eq:is_est} \\
   %&= \Esub{q_{\vlambda}}{ w\,(\vz) \, \vs\,(\vz; \vlambda) } \\
-  &\approx \frac{1}{N} \sum^{N}_{i=1} w\,(\vz^{(i)}) \, \vs\,(\vlambda; \vz^{(i)}) \\
+  &\approx \frac{1}{N} \sum^{N}_{i=1} \widetilde{w}\,(\vz^{(i)}) \, \vs\,(\vlambda; \vz^{(i)}) \\
   &\triangleq \vg_{IS}(\vlambda)
 \end{align}
 %\vspace{-0.05in}
-where \(w\,(\vz) = p\,(\vz,\vx) / q_{\vlambda}(\vz)\) is known as the \textit{importance weight}, \(Z\) is the marginal \(p\left(\vx\right) = \int p\left(\vx, \vz\right) \, d\vz\), and \(\vz^{(1)},\, \ldots,\, \vz^{(N)}\) are \(N\) independent samples from \(q_{\vlambda}(\vz)\).
+where \(\widetilde{w}\,(\vz) = p\,(\vz,\vx) / q_{\vlambda}(\vz)\) is known as the unnormalized importance weight, \(Z\) is the marginal \(p\left(\vx\right) = \int p\left(\vx, \vz\right) \, d\vz\), and \(\vz^{(1)},\, \ldots,\, \vz^{(N)}\) are \(N\) independent samples from \(q_{\vlambda}(\vz)\).
 This scheme is equivalent to adaptive IS methods~\citep{bugallo_adaptive_2017} since the IS proposal \(q_{\vlambda}(\vz)\) is iteratively optimized based on the current samples.
 Although IS is unbiased, it is numerically unstable because of \(Z\) in \cref{eq:is_est}.
-A more stable alternative is to use the \textit{normalized weight} \(\widetilde{w}^{(i)} = \nicefrac{w\,(\vz^{(i)})}{\sum_{i=1}^N w\,(\vz^{(i)}) }\), which results in the self-normalized IS (SNIS) approximation.
+A more stable alternative is to use the normalized weight \(\overline{w}^{(i)} = \nicefrac{\widetilde{w}\,(\vz^{(i)})}{\sum_{i=1}^N \widetilde{w}\,(\vz^{(i)}) }\), which results in the self-normalized IS (SNIS) approximation.
 Unfortunately, SNIS still fails to converge even on moderate dimensional objectives and unlike IS, it is no longer unbiased~\citep{robert_monte_2004}.
 
 %

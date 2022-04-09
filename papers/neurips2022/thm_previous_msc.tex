@@ -39,31 +39,116 @@
     \\
     &\quad=
     \int
-    \sum^{N}_{n=1} \frac{
+    \sum^{N}_{n=1}
+    \frac{
       w\left(\vz_n\right)
     }{
       \sum^{N}_{m=1} w\left(\vz_m\right)
     }
     \norm{ s\left(\cdot; \vz_n\right) }^2_{*}
     \prod^{N}_{n=2}
-    q\left(d\vz_n\right)
-    \nonumber
-    \\
-    &\quad\leq
-    L^2 \,
-    \int
-    \sum^{N}_{n=1} \frac{
-      w\left(\vz_n\right)
-    }{
-      \sum^{N}_{m=1} w\left(\vz_m\right)
-    }
-    \prod^{N}_{n=2}
-    q_{\text{def.}}\left(d\vz_n; \vlambda\right)
+    q\left(d\vz_n; \vlambda_{t-1}\right)
     \nonumber
     \\
     &\quad=
-    L^2
-    &&\quad\text{\textit{Sum of weights is always 1}}
+    \int
+    \sum^{N}_{n=1}
+    \overline{w}\left(\vz_n\right)
+    \norm{ s\left(\cdot; \vz_n\right) }^2_{*}
+    \prod^{N}_{n=2}
+    q\left(d\vz_n\right)
+    \nonumber
+    &&\quad\text{\textit{
+        Define
+        {\small
+          \(
+            {\overline{w}}\left(\vz_n\right) =
+            \frac{
+              w\left(\vz_n\right)
+            }{
+              \sum^{N}_{m=1} w\left(\vz_m\right)
+            }
+            \)
+        }%
+    }}
+    \\
+    &\quad=
+    \int
+    \left(
+    \vw^{\top}\,
+    \vf\,
+    \right)
+    \prod^{N}_{n=2}
+    q\left(d\vz_n; \vlambda_{t-1}\right)
+    \nonumber
+    &&\quad\text{\textit{
+        Define vectors
+        {\small
+          \(
+          {\left[\vw\right]}_n = \overline{w}\left(\vz_n\right)
+          \)
+        }%
+        and
+        {\small
+          \(
+          {\left[\,\vf\,\right]}_n = \norm{ s\left(\cdot; \vz_n\right) }^2_{*}
+          \)
+        }%
+    }}
+    \\
+    &\quad\leq
+    \sqrt{
+    \Esub{
+      q\left(\cdot, \vlambda_{t-1}\right)
+    }{
+      \vw^{\top} \vw
+    }
+    \Esub{
+      q\left(\cdot, \vlambda_{t-1}\right)
+    }{
+      \,\vf^{\top}\vf\,
+    }
+    }
+    \nonumber
+    &&\quad\text{\textit{Cauchy-Schwarz inequality}}
+    \\
+    &\quad=
+    \sqrt{
+    \Esub{
+      \rvvz_n \sim q\left(\cdot, \vlambda_{t-1}\right)
+    }{
+      \sum^{N}_{n=1}
+      {\left(
+        \overline{w}\left(\rvvz_n\right)
+      \right)}^2
+    }
+    \Esub{
+      \rvvz_n \sim q\left(\cdot, \vlambda_{t-1}\right)
+    }{
+      \norm{ s\left(\cdot; \vz_n\right) }^4_{*}
+    }
+    }
+    \nonumber
+    \\
+    &\quad\leq
+    \sqrt{
+    \Esub{
+      \rvvz_n \sim q\left(\cdot, \vlambda_{t-1}\right)
+    }{
+      \norm{ s\left(\cdot; \vz_n\right) }^4_{*}
+    }
+    }
+    \nonumber
+    &&\quad\text{\textit{Applied \(\sum^N_{n=1} {\left(\overline{w}\left(\vz_n\right)\right)}^2 \leq \sum^N_{n=1} \overline{w}\left(\vz_n\right) = 1\)}}
+    \\
+    &\quad\leq
+    \sqrt{
+      \sigma^4
+    }
+    \nonumber
+    \\
+    &\quad=
+    \sigma^2
     \nonumber
   \end{alignat}
 

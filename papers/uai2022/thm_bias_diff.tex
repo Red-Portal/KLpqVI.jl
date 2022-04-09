@@ -1,6 +1,7 @@
 
 \begin{theoremEnd}{theorem}\label{thm:thm_bias_diff}
-  Assuming \(\eta\left(\vz\right) < M \, \pi\left(\vz\right)\) for some \(M < \infty\), when using the IMH kernel, the reduction in bias by using the sequential state estimator with \(N\) states instead of the parallel state estimator with \(N\) chains is bounded as
+  Let \(w\left(\vz\right) = \pi\left(\vz\right) / q\left(\vz\right)\) and assume \(\eta\left(\vz\right) < M \, \pi\left(\vz\right)\) for some \(M < \infty\).
+  Then, when using the IMH kernel, the reduction in bias by using the sequential state estimator with \(N\) states instead of the parallel state estimator with \(N\) chains is bounded as
   {\small
   \begin{align*}
     &\abs{
@@ -15,7 +16,7 @@
     C_2 \, \left( 1 - \frac{1}{w^*} \right)
   \end{align*}
   }
-  for some positive constants \(C_1\) and \(C_2\).
+  for the positive constants \(C_1, C_2\) and \(w^* = \sup_{\vz} w\left(\vz\right)\).
 \end{theoremEnd}
 \begin{proofEnd}
   {\small
@@ -94,6 +95,7 @@
     \underbrace{
         \int \eta\left(\vz\right) \abs{ \lambda^{n}\left( w\left(\vz\right) \right) - \lambda\left( w\left(\vz\right) \right)} \; \norm{\vs\left(\vlambda;\vz\right)} \, d\vz
     }_{T2}\label{eq:bias_diff_bound_master}
+    &\text{(Jensen's Inequality)}
   \end{align}
   }
 
@@ -108,6 +110,7 @@
     \\
     &\leq
     \int_{w^{\prime}}^{\infty}  \frac{1}{v^2} \, \abs{ n \, \lambda^{n-1}\left(w\left(\vz\right)\right) - 1 } \, dv.\label{eq:diff_T}
+    &\text{(Jensen's Inequality)}
   \end{align}
 
   Since

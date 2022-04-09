@@ -40,11 +40,18 @@ We will later propose a third novel scheme that conforms to~\cref{thm:product_ke
 This assumption is common for proving non-asymptotic convergence of convex optimization and MCGD~\citep{duchi_ergodic_2012, NEURIPS2018_1371bcce, doan_convergence_2020}.
 Furthermore,~\citeauthor{NEURIPS2020_b2070693} state that the assumptions previously used for proving asymptotic convergence of MCSA~\citep{NEURIPS2020_b2070693} are difficult to check without assuming compactness.
 
-\begin{assumption}{\textbf{(Log-concavity)}}\label{thm:logconcave}
-  \(\mathcal{Q}\) is a location-scale log-concave variational family.
+\begin{assumption}{\textbf{(Strong log-concavity)}}\label{thm:logconcave}
+  For all variational parameters \(\vlambda, \vmu \in \Lambda_{M}\), the resulting variational density is \(\mu\)-strongly log-concave as
+  \[
+  \log q\left(\vz; \alpha \, \vlambda + (1 - \alpha) \, \vmu\right)
+  \geq 
+  \alpha \, \log q\left(\vz; \vlambda\right)
+  + (1 - \alpha) \log q\left(\vz; \vmu\right) - \frac{\alpha \, (1 - \alpha)}{2}\, \mu\,\norm{\vlambda - \vmu}^2_2
+  \]
+  where \(0 < \alpha < 1\) and some \(\mu > 0\).
 \end{assumption}
 %
-\input{thm_log_concave}
+\input{thm_strongly_log_concave}
 %
 \cref{thm:logconcave} includes many of the commonly used variational families such as the normal, exponential, and uniform, to name a few.
 Also, combined with \cref{thm:logconcave_parameter},~\cref{thm:logconcave} results in MCSA becoming a convex optimization problem, which is surprising since exclusive KL minimization is not convex in general even with log-concave families.
@@ -73,15 +80,6 @@ comparing these algorithms require a few additional assumptions related to their
 We also analyze the practical performance of these algorithms using~\cref{thm:convergence_rate} and suggest a simple but effective variant of MCSA.
 
 First, we use the following assumptions.
-%
-\begin{assumption}{(Bounded score)}\label{thm:bounded_score}
-  The score function is bounded for all \(\vz \in \mathcal{Z}\) as \(\norm{s\left(\cdot; \vz\right)}_{*} \leq L \).
-\end{assumption}
-Admidttedly, this assumption is very strong, but is required by most recent non-asymptotic results on the general convergence of MCGD~\citep{NEURIPS2018_1371bcce, doan_convergence_2020, pmlr-v99-karimi19a, Xiong_Xu_Liang_Zhang_2021}.
-While it is possible to physically realize this assumption by using gradient clipping, empirical experience suggests that this is unnecessary in practice.
-In our analysis, we use the constant \(L\) to bound the gradient variance.
-Practically speaking, this enables us to compare the gradient variance of different MCSA designs relative to \(L\).
-
 \begin{assumption}{(Bounded importance weight)}\label{thm:bounded_weight}
   The importance weight ratio \(w\left(\vz\right) = \pi\left(\vz\right) / q\left(\vz; \vlambda\right)\) is bounded by some finite constant as \(w^* < \infty\) for all \(\vlambda \in \Lambda\) such that \(\rho = \left(1 - 1/w^*\right) < 1\).
 \end{assumption}
@@ -93,6 +91,30 @@ Although previous works did not take specific measures to enable \cref{thm:bound
 \end{align*}
 where \(0 < w < 1\) and \(\nu\left(\cdot\right)\) is a heavy tailed distribution that satisfies \(\sup_{\vz \in \mathcal{Z}} \pi\left(\vz\right) / \nu\left(\vz\right) < \infty\).
 It is possible to only use \(q_{\text{def.}}\) within the Markov chain kernels, which therefore does not restrict our choice of the variational family.
+%
+\begin{assumption}{(Bounded variance)}\label{thm:bounded_score}
+  %There exists a finite constant \(\sigma^2\) for all \(\vlambda \in \Lambda\) such that
+  The score function is bounded for all \(\vz \in \mathcal{Z}\) as
+  {%
+  %% \begin{align*}
+  %%   \Esub{\rvvz \sim q_{\text{def.}}\left(\cdot; \vlambda\right)}{ \norm{s\left(\cdot; \rvvz\right)}_{*}^2 } < \sigma^2,
+  %%   \;\;
+  %%   \Esub{\rvvz \sim q_{\text{def.}}\left(\cdot; \vlambda\right)}{ \norm{s\left(\cdot; \rvvz\right)}_{*}^4 } < \sigma^4, 
+  %%   \;\;\text{and}\;\;
+  %%   \Esub{\rvveta \sim P\left(\veta_t, \cdot\right)}{\norm{s\left(\cdot; \rvveta_n\right)}_{*}^2  \;\middle|\; \mathcal{F}_t } < \sigma^2
+  %% \end{align*}
+  \(
+    \norm{s\left(\cdot; \vz\right)}_{*}^2 < L^2
+  \)
+  }%
+  %% where \(\rvveta_n\) is the \(n\)th element of a Markov chain sample generated during MCSA.
+\end{assumption}
+%% The later is guarenteed to hold for any geometrically ergodic Markov chain kernel~\citet{10.2307/25442663}.
+In our analysis, we use the constant \(L\) to bound the gradient variance.
+Practically speaking, this enables us to compare the gradient variance of different MCSA designs relative to \(L\).
+
+%% These assumptions are weaker than the bounded score assumption (\(\norm{s\left(\cdot; \vz\right)}_{*} < L < \infty\)) imposed by most recent non-asymptotic results on the general convergence of MCGD~\citep{NEURIPS2018_1371bcce, doan_convergence_2020, pmlr-v99-karimi19a, Xiong_Xu_Liang_Zhang_2021}.
+
 
 First, we show that MSC~\citep{NEURIPS2020_b2070693} satisfies \cref{thm:kernel_conditions,thm:gradient_estimator}.
 MSC uses the conditional importance sampling (CIS) MCMC kernel.

@@ -23,11 +23,11 @@ The latent Gaussian process model used in~\cref{section:bgp} is
 \end{align*}
 The covariance \(\mSigma\) is computed using a kernel \(k\left(\cdot, \cdot\right)\) such that \({[\mSigma]}_{i,j} = k\left( \vx_{i}, \vx_{j} \right) \) where \(\vx_i\) and \(\vx_j\) are data points in the dataset.
 For the kernel, we use the Matern 5/2 kernel with automatic relevance determination~\citep{neal_bayesian_1996} defined as
-\begin{align}
+\begin{align*}
   &k\left(\vx, \vx' ;\; \alpha^2, \sigma^2, \mathbf{\ell} \right) =
-  \alpha \left( 1 + \sqrt{5} r + \frac{5}{3} r^2 \right) \exp\left( - \sqrt{5} r \right) \\
-  &\text{where}\;\; r = \sum^{D}_{i=1} \frac{ {\left(\vx_i - \vx'_i\right)}^2 }{\ell^2_i}
-\end{align}
+  \alpha \left( 1 + \sqrt{5} r + \frac{5}{3} r^2 \right) \exp\left( - \sqrt{5} r \right)  \quad
+  \text{where}\;\; r = \sum^{D}_{i=1} \frac{ {\left(\vx_i - \vx'_i\right)}^2 }{\ell^2_i}
+\end{align*}
 where \(D\) is the number of dimensions.
 The jitter term \(\delta\) is used for numerical stability.
 We set a small value of \(\delta = 1\times10^{-6}\).
