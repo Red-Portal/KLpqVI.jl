@@ -7,8 +7,8 @@ Turing.@model bnn(X, y, hidden_dim) = begin
     λ ~ Gamma(6, 1/6)
     γ ~ Gamma(6, 1/6)
 
-    λ⁻¹ = 1 ./ λ
-    γ⁻¹ = 1 ./ γ
+    λ⁻¹ = 1 ./ max(λ, 1e-6)
+    γ⁻¹ = 1 ./ max(γ, 1e-6)
 
     W1 ~ MvNormal(hidden_dim*size(X,1), sqrt(λ⁻¹))
     W2 ~ MvNormal(hidden_dim+1,         sqrt(λ⁻¹))
@@ -164,6 +164,7 @@ function run_task(prng::Random.AbstractRNG,
                               Val{:yacht},
                               Val{:naval},
                               Val{:boston},
+                              Val{:energy},
                               Val{:toy}},
                   optimizer,
                   objective,
