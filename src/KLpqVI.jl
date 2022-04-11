@@ -27,7 +27,6 @@ import HDF5
 import KernelFunctions
 import AbstractGPs
 
-
 #@eval Zygote begin
 #end
 
@@ -57,5 +56,4 @@ include("msc_parimh.jl")
 include("msc_seqimh.jl")
 include("rws.jl")
 include("psis.jl")
-include("lda_svi.jl")
 include("diagnostics.jl")

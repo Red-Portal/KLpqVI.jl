@@ -105,3 +105,4 @@ function make_defensive(q, ν, ϵ)
     end
     ℓq, rand_q
 end
+

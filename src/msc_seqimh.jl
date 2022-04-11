@@ -17,7 +17,9 @@ function grad!(
     rng::Random.AbstractRNG,
     vo::MSC_SIMH,
     ℓq,
+    ℓq_def,
     rand_q,
+    rand_q_def,
     ℓjac,
     ℓπ,
     λ::AbstractVector{<:Real},
@@ -29,7 +31,7 @@ function grad!(
     ℓws = Vector{Float64}(    undef, n_mc)
     zs  = Vector{RV{Float64}}(undef, n_mc)
     for i = 1:n_mc
-        vo.z, α, ℓw, acc = imh_kernel(rng, vo.z, ℓπ, λ, rand_q, ℓq)
+        vo.z, α, ℓw, acc = imh_kernel(rng, vo.z, ℓπ, λ, rand_q_def, ℓq_def)
         ℓws[i] = ℓw
         zs[i]  = vo.z 
         rs[i]  = 1-α

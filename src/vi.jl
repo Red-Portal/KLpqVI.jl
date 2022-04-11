@@ -60,19 +60,21 @@ function vi(model::DynamicPPL.Model,
         vcat(θ...), q_init
     end
 
-    b        = Bijectors.bijector(q)
-    b⁻¹      = inv(b)
-    ℓjac(z_) = Bijectors.logabsdetjac(b⁻¹, b(z_))
+    b   = Bijectors.bijector(q)
+    b⁻¹ = inv(b)
+    ℓjac(z_)          = Bijectors.logabsdetjac(b⁻¹, b(z_))
+    ℓq(λ_, z_)        = logpdf(AdvancedVI.update(q, λ_), z_)
+    rand_q(prng_, λ_) = rand(prng_, AdvancedVI.update(q, λ_))
 
-    ℓq, rand_q = if isnothing(defensive_dist) || isnothing(defensive_weight)
-        ℓq(λ_, z_)        = logpdf(AdvancedVI.update(q, λ_), z_)
-        rand_q(prng_, λ_) = rand(prng_, AdvancedVI.update(q, λ_))
+    ℓq_def, rand_q_def = if isnothing(defensive_dist) || isnothing(defensive_weight)
         ℓq, rand_q
     else
         make_defensive(q, defensive_dist, defensive_weight)
     end
 
     vi(logπ, ℓq, rand_q, θ;
+       ℓq_def        = ℓq_def,
+       rand_q_def    = rand_q_def,
        objective     = objective,
        n_mc          = n_mc,
        n_iter        = n_iter,
@@ -87,12 +89,15 @@ function vi(ℓπ,
             ℓq::Function,
             rand_q::Function,
             λ0::AbstractVector;
+            ℓq_def              = ℓq,
+            rand_q_def          = rand_q,
             n_mc::Int           = 10,
             n_iter::Int         = 10000,
             optimizer           = Flux.ADAM(),
             objective           = AdvancedVI.ELBO(),
             rng                 = Random.GLOBAL_RNG,
             callback            = nothing,
+            T_polyak            = n_iter+1,#round(Int, 0.5*n_iter),
             show_progress::Bool = false,
             ℓjac                = z′ -> 0)
     n_dims = length(λ0)
@@ -111,15 +116,15 @@ function vi(ℓπ,
     init_state!(objective, rng, rand_q, λ0, ℓπ, n_mc)
 
     λ     = λ0
-    # λ_avg = zeros(length(λ))
-    # n_avg = 1
+    λ_avg = zeros(length(λ))
+    n_avg = 0
 
     elapsed_total = 0
     for t = 1:n_iter
         start_time = Dates.now()
         stat       = (iteration=t,)
 
-        stat′ = grad!(rng, objective, ℓq, rand_q, ℓjac, ℓπ, λ, n_mc, ∇KL_buf)
+        stat′ = grad!(rng, objective, ℓq, ℓq_def, rand_q, rand_q_def, ℓjac, ℓπ, λ, n_mc, ∇KL_buf)
         stat  = merge(stat, stat′)
 
         stat′ = sgd_step!(optimizer, λ, ∇KL_buf)
@@ -129,16 +134,17 @@ function vi(ℓπ,
         elapsed_total += elapsed.value
         stat           = merge(stat, (elapsed=elapsed_total,))
 
-        # λ[div(length(λ), 2)+1:end] = max.(λ[div(length(λ), 2)+1:end], -6)
-        # if t == T_polyak
-        #     λ_avg  = deepcopy(λ0) 
-        # elseif t > T_polyak
-        #     n_avg  = t - T_polyak
-        #     λ_avg  = λ_avg*n_avg/(n_avg+1) + λ/(n_avg+1)
-        # end
+        # λ[div(length(λ), 2)+1:end] = max.(λ[div(length(λ), 2)+1:end], -3)
+        if t == T_polyak
+            λ_avg  = deepcopy(λ0) 
+        elseif t > T_polyak
+            n_avg  = t - T_polyak
+            λ_avg  = λ_avg*n_avg/(n_avg+1) + λ/(n_avg+1)
+        end
 
         if(!isnothing(callback))
-            stat′ = callback(ℓπ, λ)
+            #stat′ = callback(ℓπ, λ)
+            stat′ = callback(ℓπ,  t > T_polyak ? λ_avg : λ)
             stat  = merge(stat, stat′)
         end
 
