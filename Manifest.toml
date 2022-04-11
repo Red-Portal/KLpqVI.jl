@@ -908,6 +908,17 @@ git-tree-sha1 = "012e604e1c7458645cb8b436f8fba789a51b257f"
 uuid = "9b13fd28-a010-5f03-acff-a1bbcff69959"
 version = "1.0.0"
 
+[[deps.InfiniteArrays]]
+deps = ["ArrayLayouts", "FillArrays", "Infinities", "LazyArrays", "LinearAlgebra", "Statistics"]
+git-tree-sha1 = "e84e4ea66ca02755eaf7063e07169bf22370ee2c"
+uuid = "4858937d-0d70-526a-a4dd-2d5cb5dd786c"
+version = "0.12.6"
+
+[[deps.Infinities]]
+git-tree-sha1 = "b2732e2076cd50639d827f9ae9fc4ea913c927fe"
+uuid = "e1ba4f0e-776d-440f-acd9-e1d2e9742647"
+version = "0.1.4"
+
 [[deps.Inflate]]
 git-tree-sha1 = "f5fc07d4e706b84f72d54eedcc1c13d92fb0871c"
 uuid = "d25df0c9-e2be-5dd7-82c8-3ad0b3e990b9"
@@ -1533,6 +1544,12 @@ deps = ["ChainRulesCore", "Compat", "InverseFunctions", "IterTools", "LinearAlge
 git-tree-sha1 = "1e38f118bf4c0428b64f39a0722446f17e95f82a"
 uuid = "2412ca09-6db7-441c-8e3a-88d5709968c5"
 version = "0.4.2"
+
+[[deps.ParameterSchedulers]]
+deps = ["Flux", "InfiniteArrays"]
+git-tree-sha1 = "68f63744d5d3e1714f989a9b4f38182275d3f348"
+uuid = "d7d3b36b-41b8-4d0d-a2bf-768c6151755e"
+version = "0.3.3"
 
 [[deps.Parameters]]
 deps = ["OrderedCollections", "UnPack"]
