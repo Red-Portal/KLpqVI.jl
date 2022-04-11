@@ -9,9 +9,13 @@ Turing.@model function logisticgp(X, y, jitter=1e-6)
     logσ  ~ Normal(0, 1)
     logℓ  ~ MvNormal(zeros(n_features), 1)
 
-    α²     = exp(logα*2)
-    σ²     = exp(logσ*2)
-    kernel = ard_kernel(α², logℓ) 
+    logα_finite = clamp(logα, -1e-2, 1e+2)
+    logσ_finite = clamp(logσ, -1e-2, 1e+2)
+    logℓ_finite  = clamp.(logℓ, -1e-2, 1e+2)
+
+    α²     = exp(logα_finite*2)
+    σ²     = exp(logσ_finite*2)
+    kernel = ard_kernel(α², logℓ_finite) 
     K      = KernelFunctions.kernelmatrix(kernel, X)
     K_ϵ    = K + (σ² + jitter)*I
     K_chol = cholesky(K_ϵ, check=false)
@@ -89,9 +93,11 @@ function run_task(prng::Random.AbstractRNG,
                               Val{:australian},
                               Val{:breast},
                               Val{:heart}},
+                  optimizer,
                   objective,
-                  n_mc;
-                  defensive_weight=nothing,
+                  n_iter,
+                  n_mc,
+                  defensive_weight;
                   show_progress=true)
     data_x, data_y = load_dataset(task)
     X_train, y_train, X_test, y_test = prepare_dataset(prng, data_x, data_y, ratio=0.9)
@@ -142,7 +148,7 @@ function run_task(prng::Random.AbstractRNG,
         α²      = exp(logα[1]*2)
         ℓ       = exp.(logℓ)
 
-        stat = if(mod(i-1, 10) == 0)
+        stat = if(mod(i-1, 1) == 0)
             kernel       = ard_kernel(α², logℓ) 
             K            = KernelFunctions.kernelmatrix(kernel, X_train, obsdim=2)
             K_ϵ          = K + (σ²_n + jitter)*I
@@ -169,7 +175,6 @@ function run_task(prng::Random.AbstractRNG,
         stat
     end
 
-    n_iter   = 3000
     n_params = length(q)
     ν        = Distributions.Product(fill(Cauchy(), n_params))
     θ, stats = vi(model, q;
@@ -180,7 +185,7 @@ function run_task(prng::Random.AbstractRNG,
                   rng              = prng,
                   defensive_dist   = ν,
                   defensive_weight = defensive_weight,
-                  optimizer        = Flux.ADAM(0.01),
+                  optimizer        = optimizer,
                   show_progress    = show_progress
                   )
     Dict.(pairs.(stats))

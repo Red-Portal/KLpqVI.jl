@@ -165,9 +165,11 @@ function run_task(prng::Random.AbstractRNG,
                               Val{:naval},
                               Val{:boston},
                               Val{:toy}},
+                  optimizer,
                   objective,
-                  n_mc;
-                  defensive_weight=nothing,
+                  n_iter,
+                  n_mc,
+                  defensive_weight;
                   show_progress=true)
     X, y = load_dataset(task)
     X_train, y_train, X_test, y_test = prepare_dataset(prng, X, y)
@@ -250,18 +252,15 @@ function run_task(prng::Random.AbstractRNG,
     end
 
     ν        = Distributions.Product(fill(Cauchy(), n_params))
-    n_iter   = 10000
     θ, stats = vi(model, q;
                   objective        = objective,
                   n_mc             = n_mc,
                   n_iter           = n_iter,
                   callback         = plot_callback,
                   rng              = prng,
-                  #optimizer       = AdvancedVI.TruncatedADAGrad(),
                   defensive_dist   = ν,
                   defensive_weight = defensive_weight,
-                  optimizer        = Flux.ADAM(1e-2),
-                  # optimizer        = Flux.Nesterov(1e-2),
+                  optimizer        = optimizer,
                   show_progress    = show_progress
                   )
     Dict.(pairs.(stats))

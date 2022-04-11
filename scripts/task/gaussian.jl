@@ -5,29 +5,27 @@ function create_gaussian(prng::Random.AbstractRNG,
                          correlated::Bool=false)
     Σ = if correlated
         n     = n_dims + ν
-        Σdist = Wishart(n, diagm(fill(1/n, n_dims)))
+        Σdist = Wishart(n, diagm(1/n_dims:1/n_dims:1))
         rand(prng, Σdist)
     else
         diagm(exp.(randn(prng, n_dims)))
     end
-    μ = [-5.0, 2.0]
+    # μ = [-5.0, 2.0]
+    μ = randn(prng, n_dims)
     MvNormal(μ, Σ)
 end
 
-function load_dataset(task::Val{:gaussian})
+function load_dataset(task::Val{:gaussian}, n_dims)
     seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
     prng = Random123.Philox4x(UInt64, seed, 8);
-
-    n_dims = 2
     create_gaussian(prng, 0.0, n_dims; correlated=false)
 end
 
-function load_dataset(task::Val{:gaussian_correlated})
+function load_dataset(task::Val{:gaussian_correlated}, n_dims)
     seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
     prng = Random123.Philox4x(UInt64, seed, 8);
 
-    ν      = 100.0
-    n_dims = 100
+    ν = 3
     create_gaussian(prng, ν, n_dims; correlated=true)
 end
 
@@ -38,12 +36,13 @@ end
 function run_task(prng::Random.AbstractRNG,
                   task::Union{Val{:gaussian},Val{:gaussian_correlated}},
                   objective,
+                  stepsize,
+                  n_iter,
                   n_mc,
-                  sleep_interval,
-                  sleep_ϵ,
-                  sleep_L;
+                  defensive;
+                  n_dims=100,
                   show_progress=true)
-    p     = load_dataset(task)
+    p     = load_dataset(task, n_dims)
     model = gaussian(p.μ, p.Σ)
 
     #AdvancedVI.setadbackend(:zygote)
@@ -51,56 +50,40 @@ function run_task(prng::Random.AbstractRNG,
     AdvancedVI.setadbackend(:reversediff)
     Turing.Core._setadbackend(Val(:reversediff))
 
-    k_hist  = []
-    function plot_callback(logπ, q, objective_, klpq)
-        μ  = mean(q.dist)
-        Σ  = cov(q.dist)
+    varinfo  = DynamicPPL.VarInfo(model)
+    varsyms  = keys(varinfo.metadata)
+    n_params = sum([size(varinfo.metadata[sym].vals, 1) for sym ∈ varsyms])
+    θ        = randn(prng, 2*n_params)*0.1
+    q        = Turing.Variational.meanfield(model)
+    q        = AdvancedVI.update(q, θ)
+
+    kl_hist  = []
+    function callback(logπ, λ)
+        q′ = AdvancedVI.update(q, λ)
+        μ  = mean(q′.dist)
+        Σ  = cov(q′.dist)
         kl = kl_divergence(p, MvNormal(μ, Σ))
-        z  = objective_.z.val
-        (kl=kl, z=z)
+        #push!(kl_hist, kl)
+        # display(Plots.plot(kl_hist))
+        (kl=kl,)
     end
 
-    n_iter      = 10000
-    θ, q, stats = vi(model;
-                     objective       = objective,
-                     n_mc            = n_mc,
-                     n_iter          = n_iter,
-                     tol             = 0.0005,
-                     callback        = plot_callback,
-                     rng             = prng,
-                     sleep_interval  = sleep_interval,
-                     sleep_params    = (ϵ=sleep_ϵ, L=sleep_L,),
-                     rhat_interval   = 100,
-                     paretok_samples = 128,
-                     optimizer       = Flux.ADAM(0.01),
-                     show_progress   = show_progress
-                     )
+    ν        = Distributions.Product(fill(Cauchy(), n_params))
+    θ, stats = vi(model;
+                  objective        = objective,
+                  n_mc             = n_mc,
+                  n_iter           = n_iter,
+                  callback         = callback,
+                  rng              = prng,
+                  defensive_dist   = ν,
+                  defensive_weight = defensive,
+                  #optimizer        = Flux.ADAM(stepsize),
+                  #optimizer        = Flux.ADAGrad(stepsize),
+                  #optimizer        = Flux.RMSProp(stepsize),
+                  optimizer        = Flux.Nesterov(stepsize),
+                  #optimizer        = Flux.Descent(stepsize),
+                  show_progress    = show_progress
+                  )
     Dict.(pairs.(stats))
 end
 
-function hmc_params(task::Val{:gaussian_correlated})
-     ϵ = 0.2
-     L = 32
-     ϵ, L
-end
-
-function hmc_params(task::Val{:gaussian})
-     ϵ = 0.4
-     L = 16
-     ϵ, L
-end
-
-function sample_posterior(prng::Random.AbstractRNG,
-                          task::Union{Val{:gaussian},
-                                      Val{:gaussian_correlated},})
-    p     = load_dataset(task)
-    model = gaussian(p.μ, p.Σ)
-
-    sampler = Turing.NUTS(1000, 0.8;
-                          max_depth=8,
-                          metricT=AdvancedHMC.UnitEuclideanMetric)
-    chain   = Turing.sample(model, sampler, 1000)
-    L       = median(chain[:n_steps][:,1])
-    ϵ       = mean(chain[:step_size][:,1])
-    @info "HMC Tuning Result on $(task)" ϵ=ϵ L=L
-end
