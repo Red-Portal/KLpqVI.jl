@@ -221,7 +221,7 @@ function run_task(prng::Random.AbstractRNG,
         γ_σ² = γ_Σ[1]
 
         # Moment matching of Log-normal with Gamma
-        γ_α = 1 / (exp(γ_σ²) - 1)
+        γ_α = max.(1 / (exp(γ_σ²) - 1), 1e-6)
         γ_β = γ_α / exp(γ_μ + γ_σ²/2)
 
         W1′_μ = reshape(W1_μ, (n_hidden, size(X_test, 1)))
