@@ -144,12 +144,16 @@ function run_task(prng::Random.AbstractRNG,
         logσ, _ = get_variational_mean_var(q′, model, Symbol("logσ"))
         logℓ, _ = get_variational_mean_var(q′, model, Symbol("logℓ"))
         logα, _ = get_variational_mean_var(q′, model, Symbol("logα"))
-        σ²_n    = exp(logσ[1]*2)
-        α²      = exp(logα[1]*2)
-        ℓ       = exp.(logℓ)
+
+        logα_finite = clamp(logα[1], -1e-2, 1e+2)
+        logσ_finite = clamp(logσ[1], -1e-2, 1e+2)
+        logℓ_finite  = clamp.(logℓ, -1e-2, 1e+2)
+
+        σ²_n    = exp(logσ_finite*2)
+        α²      = exp(logα_finite*2)
 
         stat = if(mod(i-1, 1) == 0)
-            kernel       = ard_kernel(α², logℓ) 
+            kernel       = ard_kernel(α², logℓ_finite) 
             K            = KernelFunctions.kernelmatrix(kernel, X_train, obsdim=2)
             K_ϵ          = K + (σ²_n + jitter)*I
             K_test_train = KernelFunctions.kernelmatrix(kernel, X_test, X_train; obsdim=2)
