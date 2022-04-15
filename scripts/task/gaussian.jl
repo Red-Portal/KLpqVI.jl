@@ -15,17 +15,15 @@ function create_gaussian(prng::Random.AbstractRNG,
     MvNormal(μ, Σ)
 end
 
-function load_dataset(task::Val{:gaussian}, n_dims)
+function load_dataset(task::Val{:gaussian}, n_dims, ν)
     seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
     prng = Random123.Philox4x(UInt64, seed, 8);
     create_gaussian(prng, 0.0, n_dims; correlated=false)
 end
 
-function load_dataset(task::Val{:gaussian_correlated}, n_dims)
+function load_dataset(task::Val{:gaussian_correlated}, n_dims, ν)
     seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
     prng = Random123.Philox4x(UInt64, seed, 8);
-
-    ν = 3
     create_gaussian(prng, ν, n_dims; correlated=true)
 end
 
@@ -35,14 +33,15 @@ end
 
 function run_task(prng::Random.AbstractRNG,
                   task::Union{Val{:gaussian},Val{:gaussian_correlated}},
+                  optimizer,
                   objective,
-                  stepsize,
                   n_iter,
                   n_mc,
                   defensive;
                   n_dims=100,
+                  ν=50,
                   show_progress=true)
-    p     = load_dataset(task, n_dims)
+    p     = load_dataset(task, n_dims, ν)
     model = gaussian(p.μ, p.Σ)
 
     #AdvancedVI.setadbackend(:zygote)
@@ -77,11 +76,7 @@ function run_task(prng::Random.AbstractRNG,
                   rng              = prng,
                   defensive_dist   = ν,
                   defensive_weight = defensive,
-                  #optimizer        = Flux.ADAM(stepsize),
-                  #optimizer        = Flux.ADAGrad(stepsize),
-                  #optimizer        = Flux.RMSProp(stepsize),
-                  optimizer        = Flux.Nesterov(stepsize),
-                  #optimizer        = Flux.Descent(stepsize),
+                  optimizer        = optimizer,
                   show_progress    = show_progress
                   )
     Dict.(pairs.(stats))
