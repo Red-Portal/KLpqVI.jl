@@ -18,7 +18,9 @@ function grad!(
     rng::Random.AbstractRNG,
     vo::MSC_RB,
     ℓq,
+    ℓq_def,
     rand_q,
+    rand_q_def,
     ℓjac,
     ℓπ,
     λ::AbstractVector{<:Real},
@@ -33,7 +35,7 @@ function grad!(
     ess      = 0
     rej_rate = 0 
 
-    z, w, ℓw, ℓp = cis(rng, vo.z, ℓπ, λ, ℓq, rand_q, n_mc)
+    z, w, ℓw, ℓp = cis(rng, vo.z, ℓπ, λ, ℓq_def, rand_q_def, n_mc)
     acc_idx  = rand(rng, Categorical(w))
     vo.z     = RV(z[:,acc_idx], ℓp[acc_idx])
     ess      = 1/sum(w.^2)

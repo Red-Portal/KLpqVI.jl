@@ -18,7 +18,9 @@ function grad!(
     rng::Random.AbstractRNG,
     vo::MSC,
     ℓq,
+    ℓq_def,
     rand_q,
+    rand_q_def,
     ℓjac,
     ℓπ,
     λ::AbstractVector{<:Real},
@@ -33,7 +35,7 @@ function grad!(
     rejected = false
     rej_rate = 0 
 
-    z, w, _, ℓp = cis(rng, vo.z, ℓπ, λ, ℓq, rand_q, n_mc)
+    z, w, _, ℓp = cis(rng, vo.z, ℓπ, λ, ℓq_def, rand_q_def, n_mc)
     ess         = 1/sum(w.^2)
     acc_idx     = rand(rng, Categorical(w))
     rejected    = (acc_idx == 1)

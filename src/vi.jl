@@ -134,7 +134,7 @@ function vi(ℓπ,
         elapsed_total += elapsed.value
         stat           = merge(stat, (elapsed=elapsed_total,))
 
-        # λ[div(length(λ), 2)+1:end] = max.(λ[div(length(λ), 2)+1:end], -3)
+        #λ[div(length(λ), 2)+1:end] = max.(λ[div(length(λ), 2)+1:end], -6)
         if t == T_polyak
             λ_avg  = deepcopy(λ0) 
         elseif t > T_polyak
