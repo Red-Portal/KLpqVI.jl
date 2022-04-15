@@ -61,6 +61,8 @@ end
         RMSProp(stepsize)
     elseif(optimizer == "ADAGrad")
         ADAGrad(stepsize)
+    elseif(optimizer == "SGD")
+        Descent(stepsize)
     end
 
     optimizer = if(decay)
@@ -251,6 +253,76 @@ function hyperparameter_tuning()
         end
     end
 end
+
+function gaussian_stepsize()
+    ν = 200
+    for ϵ ∈ exp10.(range(log10(0.005), log10(1.0); length=20))
+        for defensive ∈ [0.0, 0.001]
+            for method ∈ ["MSC_SIMH", "MSC_PIMH", "MSC_CISRB", "MSC_CIS"]
+                for decay ∈ [true, false]
+                    for optimizer ∈ ["ADAM", "NADAM", "Momentum", "Nesterov", "Descent", "RMSProp"]
+                        seed      = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
+                        prng      = Random123.Philox4x(UInt64, seed, 8)
+                        n_iter    = 20000
+                        n_mc      = 10
+
+                        settings             = Dict{Symbol,Any}()
+                        @info "starting epxeriment" settings=settings
+                        settings[:defensive] = defensive
+                        settings[:stepsize]  = ϵ
+                        settings[:method]    = method
+                        settings[:task]      = "gaussian_correlated"
+                        settings[:decay]     = decay
+                        settings[:optimizer] = optimizer
+                        settings[:n_samples] = 10
+                        settings[:n_reps]    = 20
+                        settings[:n_iter]    = 20000
+                        produce_or_load(datadir("exp_raw"),
+                                        settings,
+                                        run_experiment,
+                                        suffix="jld2",
+                                        loadfile=false,
+                                        tag=false)
+                    end
+                end
+            end
+        end
+    end
+end
+
+
+# function stepsize(name)
+#     ν      = 200
+#     stats  = mapreduce(vcat, [nothing, 0.001]) do defensive
+#         mapreduce(vcat, exp10.(range(log10(0.005), log10(1.0); length=20))) do stepsize
+#             mapreduce(vcat, exp10.(range(log10(0.005), log10(1.0); length=20))) do stepsize
+#                 optimizer = ParameterSchedulers.Scheduler(Sqrt(stepsize), Momentum())
+#                 seed      = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
+#                 prng      = Random123.Philox4x(UInt64, seed, 8)
+#                 n_iter    = 20000
+#                 n_mc      = 10
+#                 stats = run_task(prng,
+#                                  Val(:gaussian_correlated),
+#                                  optimizer,
+#                                  method,
+#                                  n_iter,
+#                                  n_mc,
+#                                  defensive;
+#                                  n_dims=100,
+#                                  ν=ν,
+#                                  show_progress=true)
+#                 kls = [stat[:kl] for stat ∈ stats]
+#                 Dict(:defensive=> defensive,
+#                      :stepsize => stepsize,
+#                      :kl       => last(kls),
+#                      :kl_best  => minimum(kls),
+#                      :freedom  => ν
+#                      )
+#             end
+#         end
+#     end
+# end
+
 
 # function main()
 #     seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
