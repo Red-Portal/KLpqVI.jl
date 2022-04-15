@@ -63,6 +63,8 @@ end
         ADAGrad(stepsize)
     elseif(optimizer == "SGD")
         Descent(stepsize)
+    elseif(optimizer == "Momentum")
+        Momentum(stepsize)
     end
 
     optimizer = if(decay)
