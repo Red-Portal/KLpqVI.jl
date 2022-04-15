@@ -262,7 +262,7 @@ function gaussian_stepsize()
         for defensive ∈ [0.0, 0.001]
             for method ∈ ["MSC_SIMH", "MSC_PIMH", "MSC_CISRB", "MSC_CIS"]
                 for decay ∈ [true, false]
-                    for optimizer ∈ ["ADAM", "NADAM", "Momentum", "Nesterov", "Descent", "RMSProp"]
+                    for optimizer ∈ ["ADAM", "NADAM", "Momentum", "Nesterov", "SGD", "RMSProp"]
                         seed      = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
                         prng      = Random123.Philox4x(UInt64, seed, 8)
                         n_iter    = 20000
