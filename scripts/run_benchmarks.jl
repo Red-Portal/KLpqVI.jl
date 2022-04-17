@@ -257,12 +257,12 @@ function hyperparameter_tuning()
 end
 
 function gaussian_stepsize()
-    ν = 200
-    for ϵ ∈ exp10.(range(log10(0.005), log10(1.0); length=20))
-        for defensive ∈ [0.0, 0.001]
-            for method ∈ ["MSC_SIMH", "MSC_PIMH", "MSC_CISRB", "MSC_CIS"]
-                for decay ∈ [true, false]
-                    for optimizer ∈ ["ADAM", "NADAM", "Momentum", "Nesterov"]
+    ν = 400
+    for ϵ ∈ exp10.(range(log10(0.001), log10(1.0); length=20))
+        for decay ∈ [true, false]
+            for defensive ∈ [0.0, 0.001]
+                for method ∈ ["MSC_SIMH", "MSC_PIMH", "MSC_CIS"]
+                    for optimizer ∈ ["ADAM", "RMSProp", "Momentum", "Nesterov", "SGD"]
                         seed      = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
                         prng      = Random123.Philox4x(UInt64, seed, 8)
                         n_iter    = 20000
@@ -278,7 +278,7 @@ function gaussian_stepsize()
                         settings[:optimizer] = optimizer
                         settings[:n_samples] = 10
                         settings[:n_reps]    = 20
-                        settings[:n_iter]    = 20000
+                        settings[:n_iter]    = 10000
                         produce_or_load(datadir("exp_raw"),
                                         settings,
                                         run_experiment,

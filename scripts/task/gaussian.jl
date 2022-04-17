@@ -39,7 +39,7 @@ function run_task(prng::Random.AbstractRNG,
                   n_mc,
                   defensive;
                   n_dims=100,
-                  ν=50,
+                  ν=400,
                   show_progress=true)
     p     = load_dataset(task, n_dims, ν)
     model = gaussian(p.μ, p.Σ)
