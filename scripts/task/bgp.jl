@@ -5,9 +5,9 @@ ard_kernel(α², logℓ) =
 Turing.@model function logisticgp(X, y, jitter=1e-6)
     n_features = size(X, 1)
 
-    logα  ~ Normal(0, 1)
-    logσ  ~ Normal(0, 1)
-    logℓ  ~ MvNormal(zeros(n_features), 1)
+    logα  ~ Normal(0, 4)
+    logσ  ~ Normal(0, 4)
+    logℓ  ~ MvNormal(zeros(n_features), 4)
 
     logα_finite = clamp(logα, -1e-2, 1e+2)
     logσ_finite = clamp(logσ, -1e-2, 1e+2)
@@ -106,7 +106,7 @@ function run_task(prng::Random.AbstractRNG,
     jitter  = 1e-6
     model   = logisticgp(X_train, y_train, jitter)
 
-    if task == Val(:breast) || task == Val(:heart) || task == Val(:australian)
+    if task == Val(:breast) || task == Val(:heart) || task == Val(:australian) || task == Val(:sonar)
         μ = mean(X_train, dims=2)
         σ = std( X_train, dims=2)
 
@@ -171,7 +171,7 @@ function run_task(prng::Random.AbstractRNG,
             lpd    = mean(logpdf.(Turing.BernoulliLogit.(s), y_test))
             acc    = mean(y_pred .== y_test)
 
-            (acc = acc, lpd = lpd)
+            (iter = i, acc = acc, lpd = lpd)
         else
             NamedTuple()
         end

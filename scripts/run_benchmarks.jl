@@ -96,44 +96,92 @@ end
     Dict("result"=>df, "settings"=>settings)
 end
 
-# function general_benchmarks()
-#     for task ∈ ["pima",
-#                 "heart",
-#                 "german"]
-#         for settings ∈ [Dict(:method=>"MSC_PIMH",
-#                              :task  =>task,
-#                              :n_samples=>10),
+function gaussian_stepsize()
+    ν = 400
+    for ϵ ∈ exp10.(range(log10(0.001), log10(1.0); length=20))
+        for decay ∈ [true, false]
+            for defensive ∈ [0.0, 0.001]
+                for method ∈ ["MSC_SIMH", "MSC_PIMH", "MSC_CIS"]
+                    for optimizer ∈ ["ADAM", "RMSProp", "Momentum", "Nesterov", "SGD"]
+                        seed      = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
+                        prng      = Random123.Philox4x(UInt64, seed, 8)
+                        n_iter    = 20000
+                        n_mc      = 10
 
-#                         Dict(:method=>"MSC_CIS",
-#                              :task  =>task,
-#                              :n_samples=>10),
+                        settings             = Dict{Symbol,Any}()
+                        @info "starting epxeriment" settings=settings
+                        produce_or_load(datadir("exp_raw"),
+                                        settings,
+                                        run_experiment,
+                                        suffix="jld2",
+                                        loadfile=false,
+                                        tag=false)
+                    end
+                end
+            end
+        end
+    end
+end
 
-#                         Dict(:method=>"MSC_CISRB",
-#                              :task  =>task,
-#                              :n_samples=>10),
+function general_benchmarks()
+    defensive = nothing
+    stepsize  = 0.01
+    decay     = false
+    optimizer = "ADAM"
+    n_samples = 10
+    n_reps    = 100
+    n_iter    = 5
 
-#                         Dict(:method=>"MSC_SIMH",
-#                              :task  =>task,
-#                              :n_samples=>10),
-
-#                         Dict(:method=>"SNIS",
-#                              :task  =>task,
-#                              :n_samples=>10),
-
-#                         Dict(:method=>"ELBO",
-#                              :task  =>task,
-#                              :n_samples=>10),
-#                         ]
-#             @info "starting epxeriment" settings=settings
-#             settings[:n_reps] = 100
-#             produce_or_load(datadir("exp_raw"),
-#                             settings,
-#                             run_experiment,
-#                             suffix="jld2",
-#                             loadfile=false,
-#                             tag=false)
-#         end
-#     end
+    for task ∈ ["wine",
+                "concrete",
+                "yacht",
+                "naval",
+                "boston",
+                "toy",
+                "sonar",
+                "ionosphere",
+                "australian",
+                "breast",
+                "heart",
+                ]
+        for settings ∈ [
+            Dict(:method    => "MSC_PIMH",
+                 :task      => task,
+                 :n_samples => 10),
+            Dict(:method    => "MSC_CIS",
+                 :task      => task,
+                 :n_samples => 10),
+            Dict(:method    => "MSC_CISRB",
+                 :task      => task,
+                 :n_samples => 10),
+            Dict(:method    => "MSC_SIMH",
+                 :task      => task,
+                 :n_samples => 10),
+            Dict(:method    => "SNIS",
+                 :task      => task,
+                 :n_samples => 10),
+            Dict(:method    => "ELBO",
+                 :task      => task,
+                 :n_samples => 10)
+            ]
+            @info "starting epxeriment" settings = settings
+            settings[:defensive] = defensive
+            settings[:stepsize]  = stepsize
+            settings[:task]      = "gaussian_correlated"
+            settings[:decay]     = decay
+            settings[:optimizer] = optimizer
+            settings[:n_samples] = n_samples
+            settings[:n_reps]    = n_reps
+            settings[:n_iter]    = n_iter
+            produce_or_load(datadir("exp_raw"),
+                settings,
+                run_experiment,
+                suffix = "jld2",
+                loadfile = false,
+                tag = false)
+        end
+    end
+end
 
 #     n_samples = 10
 #     for task ∈ ["sonar", "ionosphere", "breast"]
