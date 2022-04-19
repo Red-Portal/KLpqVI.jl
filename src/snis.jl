@@ -1,43 +1,33 @@
 
 struct SNIS <: AdvancedVI.VariationalObjective end
 
-init_state!(::SNIS, rng, q, logπ, n_mc) = nothing
+init_state!(::SNIS, rng, rand_q, λ0, ℓπ, n_mc) = nothing
 
 function grad!(
     rng::Random.AbstractRNG,
-    snis::SNIS,
-    alg::AdvancedVI.VariationalInference,
-    q,
-    logπ,
-    ∇logπ,
-    θ::AbstractVector{<:Real},
-    out::DiffResults.MutableDiffResult,
-)
-    n_samples = alg.samples_per_step
-    q′        = if (q isa Distribution)
-        AdvancedVI.update(q, θ)
-    else
-        q(θ)
+    vo::SNIS,
+    ℓq,
+    ℓq_def,
+    rand_q,
+    rand_q_def,
+    ℓjac,
+    ℓπ,
+    λ::AbstractVector{<:Real},
+    n_mc::Int,
+    out::DiffResults.MutableDiffResult
+    )
+    zs  = [rand_q_def(rng, λ) for i = 1:n_mc]
+    ℓws = map(zs) do zᵢ
+        ℓπ(zᵢ) - ℓq(λ, zᵢ)
     end
-    z_tups = [Bijectors.forward(rng, q′) for i = 1:n_samples]
-    z      = [z_tup[2] for z_tup ∈ z_tups]
-    logws  = map(z_tups) do z_tup
-        logqᵢ = z_tup[4]
-        logπ(z_tup[2]) - logqᵢ
-    end
-    logZ = StatsFuns.logsumexp(logws)
-    w    = exp.(logws .- logZ)
-    ess  = 1/sum(w.^2)
+    ℓZ   = StatsFuns.logsumexp(ℓws)
+    w   = exp.(ℓws .- ℓZ)
+    ess = 1/sum(w.^2)
 
-    f(θ_) = if (q isa Distribution)
-        q′      = AdvancedVI.update(q, θ_)
-        nlogqs′ = [-logpdf(q′, z_tup[2]) for z_tup ∈ z_tups] 
-        dot(w, nlogqs′)
-    else
-        q′      = q(θ_) 
-        nlogqs′ = [-logpdf(q′, z_tup[2]) for z_tup ∈ z_tups] 
-        dot(w, nlogqs′)
+    f(λ_) = begin
+        ∇ℓqs = [ℓq(λ_, zᵢ) for zᵢ ∈ zs] 
+        -dot(w, ∇ℓqs)
     end
-    gradient!(alg, f, θ, out)
+    turing_gradient!(f, λ, out)
     (ess=ess,)
 end
