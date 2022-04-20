@@ -5,7 +5,7 @@ By assuming a model \(p\,(\vx\,|\,\vz)\), the posterior \(\pi\,(\vz)\) is given 
 Instead of working directly with the target distribution \(\pi\), variational inference (VI,~\citealt{blei_variational_2017}) seeks a \textit{variational approximation} \(q\,(\vz; \vlambda)\) that is the most similar to \(\pi\) according to a discrepancy measure \(D\,(\pi,\, q(\cdot; \vlambda))\).
 
 Naturally, choosing an appropriate discrepancy measure is key to the quality of the solution.
-This fact had led to a quest for suitable divergence measures~\citep{pmlr-v37-salimans15, NIPS2016_7750ca35, NIPS2017_35464c84, NEURIPS2018_1cd138d0, pmlr-v97-ruiz19a}.
+This fact has led to a quest for suitable divergence measures~\citep{pmlr-v37-salimans15, NIPS2016_7750ca35, NIPS2017_35464c84, NEURIPS2018_1cd138d0, pmlr-v97-ruiz19a}.
 So far, the exclusive (or reverse, backward)  KL divergence \(\DKL{q\left(\cdot; \vlambda\right)}{\pi}\) has been used ``exclusively'' among various discrepancy measures.
 This is partly because the exclusive KL is defined as an average over \(q_{\lambda}(\vz)\), which can be estimated efficiently.
 In contrast, the inclusive KL is defined as
@@ -27,23 +27,23 @@ Despite this challenge, the inclusive KL has consistently drawn attention due to
 Recently,~\citet{NEURIPS2020_b2070693,pmlr-v124-ou20a} have respectively proposed Markovian score climbing (MSC) and joint stochastic approximation (JSA).
 These methods minimize the inclusive KL using stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951}) where the gradients are estimated using Markov chain Monte Carlo (MCMC).
 The MCMC kernel \(K_{\vlambda_t}\left(\vz_t, \cdot\right)\) is chosen such that it directly takes advantage of the current variational approximation \(q\left(\cdot; \vlambda_t\right)\).
-Thus, the quality of the gradients improve over time as the KL divergence decreases.
+Thus, the quality of the gradients improves over time as the KL divergence decreases.
 
 MSC and JSA are radically different from the classical black-box VI with vanilla SGD~\citep{pmlr-v33-ranganath14, JMLR:v18:16-107} setting.
 In particular, vanilla SGD assumes the gradient noise to be independent across iterations, whereas the gradient noise in MSC and JSA is Markovian.
-While~\citet{NEURIPS2020_b2070693} have shown convergence of MSC through the work of~\citet{gu_stochastic_1998}, this result only asymptotic, and does not provide insight into the practical performance of MSC.
+While~\citet{NEURIPS2020_b2070693} has shown convergence of MSC through the work of~\citet{gu_stochastic_1998}, this result is only asymptotic and does not provide insight into the practical performance of MSC.
 Fortunately, we show that the Markov chain gradient descent (MCGD,~\citealt{duchi_ergodic_2012, NEURIPS2018_1371bcce, pmlr-v99-karimi19a, doan_convergence_2020}) setting provides a practical framework.
 
-In this paper, we first cast MSC and JSA into a general framework we call Markov chain score ascent (MCSA).
-Then, we show that MCSA is a special cases of MCGD, enabling the application of its non-asymptotic convergence results.
-The key properties affecting the convergence rate of MCGD are the ergodic convergence rate (\(\rho\)) of the MCMC kernel and the gradient variance (\(G\)).
+This paper first casts MSC and JSA into a general framework we call Markov chain score ascent (MCSA).
+Then, we show that MCSA is a special case of MCGD, enabling the application of its non-asymptotic convergence results.
+The fundamental properties affecting the convergence rate of MCGD are the ergodic convergence rate (\(\rho\)) of the MCMC kernel and the gradient variance (\(G\)).
 We analyze these properties (\(\rho, G\)) of MSC and JSA, enabling their practical comparison given a fixed computational budget (\(N\)).
 Furthermore, based on the recent insight that the mixing rate does not affect the convergence rate of MCGD~\citet{doan_convergence_2020,doan_finitetime_2020}, we propose a novel scheme, parallel MCSA (pMCSA), which achieves lower variance by trading off the mixing rate.
 
 We verify our theoretical analysis through numerical simulations.
 Furthermore, we compare MSC, JSA, and our proposed method on general Bayesian inference problems.
 Our experiments show that our proposed method is superior to previous MCSA approaches.
-Furthermore, within our experiments, MSCA is competitive against evidence lower-bound (ELBO) maximization.
+Furthermore, MSCA is competitive against evidence lower-bound (ELBO) maximization within our experiments.
 We further discuss this result in relation with the conclusions of~\citet{dhaka_challenges_2021} in~\cref{section:discussion}.
 
 \vspace{-0.05in}
