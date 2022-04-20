@@ -23,15 +23,15 @@
   \begin{minipage}{.5\textwidth}
     \centering
     \includegraphics[scale=1.1]{figures/stepsize_01.pdf}
-    \caption{\textbf{pMCSA is the least sensitive to optimizer hyperparameters and results in stable convergence.}
-      The final KL is the KL value after \(10^4\) iterations.
+    \caption{\textbf{Optimizer stepsize (\(\gamma\)) versus final KL. pMCSA is the least sensitive to optimizer hyperparameters and results in stable convergence.}
+      The final KL is the value obtained at the \(10^4\)th iteration.
       The target distribution is a 100 dimensional Gaussian with \(\nu = 500\) degress of freedom.
       The confidence intervals are the 80\% empirical quantiles while the solid lines are the median of 20 replications.}
   \end{minipage}\hspace{0.1in}
   \begin{minipage}{0.45\textwidth}
     \centering
     \includegraphics[scale=1.1]{figures/gaussian_01.pdf}
-    \caption{\textbf{Results on the 100-D Gaussian. pMCSA achieves the lowest variance, which also scales better with \(N\).}
+    \caption{\textbf{Convergence on the 100-D Gaussian. pMCSA achieves the lowest variance, which also scales better with \(N\).}
       The target distribution is a 100 dimensional Gaussian with \(\nu = 500\) degress of freedom.
       The confidence intervals are the 80\% empirical quantiles while the solid lines are the median of 20 replications.}\label{fig:gaussian}
   \end{minipage}
