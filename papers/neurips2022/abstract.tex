@@ -1,10 +1,10 @@
 
 Recently, variational inference (VI) methods that minimize the inclusive Kullback-Leibler (KL) divergence by stochastic gradient descent (SGD) have been developed.
-These methods we call Markov chain score ascent (MCSA) obtain noisy estimates of the gradient by running Markov chains in conjuction with SGD iterations.
-In this paper, we show that these MCSA methods are a special case of the Markov chain gradient descent (MCGD) framework.
+These methods, we call Markov chain score ascent (MCSA), obtain noisy estimates of the gradient by running Markov chains in conjunction with SGD iterations.
+This paper shows that these MCSA methods are a special case of the Markov chain gradient descent (MCGD) framework.
 Based on the non-asymptotic convergence results of MCGD, we analyze the practical performance of previously developed MCSA algorithms.
 Furthermore, we propose a novel MCSA scheme, parallel MCSA (pMCSA), that achieves a tighter bound on the gradient variance.
-We evaluate pMCSA against previously developed MCSA methods on general Bayesian inference benchmarks, and demonstrate its performance.
+We evaluate pMCSA against previously developed MCSA methods on general Bayesian inference benchmarks and demonstrate its performance.
 
 %Our experiments show that, when using our proposed scheme, inclusive KL divergence minimization is competitive against evidence lower bound minimization.
 %Our results motivate the use of the inclusive KL divergence for VI.
