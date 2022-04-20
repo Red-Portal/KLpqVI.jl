@@ -20,8 +20,21 @@
 %% \end{figure*}
 
 \begin{figure*}
-  \input{figures/stepsize_plot}
-  \caption{100 dimensional Gaussian, \(\nu = 500\)}
+  \begin{minipage}{.5\textwidth}
+    \centering
+    \includegraphics[scale=1.1]{figures/stepsize_01.pdf}
+    \caption{\textbf{pMCSA is the least sensitive to optimizer hyperparameters and results in stable convergence.}
+      The final KL is the KL value after \(10^4\) iterations.
+      The target distribution is a 100 dimensional Gaussian with \(\nu = 500\) degress of freedom.
+      The confidence intervals are the 80\% empirical quantiles while the solid lines are the median of 20 replications.}
+  \end{minipage}\hspace{0.1in}
+  \begin{minipage}{0.45\textwidth}
+    \centering
+    \includegraphics[scale=1.1]{figures/gaussian_01.pdf}
+    \caption{\textbf{Results on the 100-D Gaussian. pMCSA achieves the lowest variance, which also scales better with \(N\).}
+      The target distribution is a 100 dimensional Gaussian with \(\nu = 500\) degress of freedom.
+      The confidence intervals are the 80\% empirical quantiles while the solid lines are the median of 20 replications.}\label{fig:gaussian}
+  \end{minipage}
 \end{figure*}
 
 \vspace{-0.05in}
@@ -50,22 +63,11 @@ This also ensures a fair comparison against inclusive KL minimization methods si
 Also, we only use single-HMC in the logistic regression experiment due to its high computational demands, 
 
 \subsection{Numerical Simulation}\label{section:simulation}
-\begin{figure*}
-    \vspace{-0.2in}
-    \centering
-    \input{figures/gaussian_plot}
-    %\vspace{-0.2in}
-    \caption{\(\nu = 150\), Visualization of the bias and variance during score climbing.
-      We can see that the parallel state estimator achieves both the lowest bias and the lowest variance.
-      See the main text for details about the experimental setup.
-    }\label{fig:gaussian}
-\end{figure*}
-
 \paragraph{Simulation Setup}
 First, we visualize the variance and bias convergence of the considered schemes on a toy problem.
-We run MCSA methods against a 10 dimensional correlated multivariate Gaussian where the covariance was sampled from a Wishart distribution with \(\nu = 50\) degrees of freedom.
-The variational family was a mean-field Gaussian.
-The bias and variance was estimated from \(512\) independent replications.
+We run MCSA methods against a 10 dimensional correlated multivariate Gaussian where the covariance was sampled from a Wishart distribution with \(\nu = 500\) degrees of freedom.
+The variational family is a mean-field Gaussian.
+The gradient variance is estimated using \(512\) Markov chains generated independently of the chains used in MCSA.
 
 \paragraph{Simulation Result}
 The results are shown in~\cref{fig:gaussian}.
@@ -81,20 +83,6 @@ Surprisingly, this also leads to lower bias that JSA which operates longer per-i
 
 \input{gp_table.tex}
 %% %
-
-%% \vspace{-0.1in}
-%% \paragraph{Probabilistic Model}
-%% Instead of the usual single-level probit/logistic regression models, we choose a more complex hierarchical logistic regression model shown in~\cref{section:linear_logistic}
-%% %% %
-%% %% \begin{align*}
-%% %% \sigma_{\beta}, \sigma_{\alpha} &\sim \mathcal{N}^{+}(0, 1.0) \\
-%% %% \symbf{\beta} &\sim \mathcal{N}(\symbf{0},\, \sigma_{\beta}^2 \mI) \\
-%% %% p &\sim \mathcal{N}(\vx_i^{\top}\symbf{\beta} + \alpha,\, \sigma_{\alpha}^2) \\
-%% %% y_i &\sim \text{Bernoulli-Logit}\,(p)
-%% %% \end{align*}
-%% %% %
-%% %% where \(\mathcal{N}^+(\mu, \sigma)\) is a positive constrained normal distribution with mean \(\mu\) and standard deviation \(\sigma\), \(\vx_i\) and \(y_i\) are the feature vector and target variable of the \(i\)th datapoint.
-%% %% The extra degrees of freedom \(\sigma_{\beta}\) and \(\sigma_{\alpha}\) make this model relatively more challenging.
 
 %% %
 %% \begin{wrapfigure}{r}{0.6\textwidth}

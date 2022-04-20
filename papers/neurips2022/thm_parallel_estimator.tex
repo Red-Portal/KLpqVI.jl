@@ -22,7 +22,7 @@
     \leq
     C\left(N\right)\,{\rho^n}
     \quad\text{and}\quad
-    \E{ \norm{ \vg\left(\cdot, \rvveta\right) }^2_{*} \,\middle|\, \mathcal{F}_{t} }
+    \E{ \norm{ \vg\left(\vlambda, \rvveta\right) }^2_{*} \,\middle|\, \mathcal{F}_{t} }
     \leq
     L^2 \left[\; \frac{1}{N} + \frac{1}{N}\,\left(1 - \frac{1}{w^*}\right) \;\right],
   \end{align*}
@@ -106,32 +106,32 @@
   \paragraph{\textbf{Bound on the Gradient Variance}}
   The bound on the gradient variance can be derived in similar manner to JSA as
   \begin{alignat}{2}
-    &\E{ \norm{ g\left(\cdot, \rvveta\right) }^2_{*} \,\middle|\, \mathcal{F}_{t} }
+    &\E{ \norm{ \vg\left(\vlambda, \rvveta\right) }^2_{*} \,\middle|\, \mathcal{F}_{t} }
     \nonumber
     \\
     &\quad=
-    \E{ \norm{ g\left(\cdot, \rvveta\right) }^2 \,\middle|\, \vz_{t-1}^{(1:N)},\, \vlambda_{t-1} }
+    \E{ \norm{ \vg\left(\vlambda, \rvveta\right) }^2 \,\middle|\, \vz_{t-1}^{(1:N)},\, \vlambda_{t-1} }
     \nonumber
     \\
     &\quad=
-    \E{ \norm{ \frac{1}{N}\sum^{N}_{n=1} s\left(\cdot; \rvvz_{n}\right) }^2_{*} \,\middle|\, \vz_{t-1}^{(1:N)},\, \vlambda_{t-1} }
+    \E{ \norm{ \frac{1}{N}\sum^{N}_{n=1} \vs\left(\vlambda; \rvvz_{n}\right) }^2_{*} \,\middle|\, \vz_{t-1}^{(1:N)},\, \vlambda_{t-1} }
     \nonumber
     \\
     &\quad\leq
-    \E{  \frac{1}{N^2} \sum^{N}_{n=1} \norm{s\left(\cdot; \rvvz_{n}\right) }^2_{*} \,\middle|\, \vz_{t-1}^{(1:N)},\, \vlambda_{t-1} }
+    \E{  \frac{1}{N^2} \sum^{N}_{n=1} \norm{\vs\left(\vlambda; \rvvz_{n}\right) }^2_{*} \,\middle|\, \vz_{t-1}^{(1:N)},\, \vlambda_{t-1} }
     &&\quad\text{\textit{Triangle inequality}}
     \nonumber
     \\
     &\quad=
-    \frac{1}{N^2}\sum^{N}_{n=1} \Esub{\rvvz_{n} \sim K\left(\vz_{t-1}^{(n)}, \cdot\right)}{ \norm{s\left(\cdot; \rvvz_{n}\right) }^2_{*} \,\middle|\,  \vz_{t-1}^{(1:N)},\, \vlambda_{t-1} }
+    \frac{1}{N^2}\sum^{N}_{n=1} \Esub{\rvvz_{n} \sim K\left(\vz_{t-1}^{(n)}, \cdot\right)}{ \norm{\vs\left(\vlambda; \rvvz_{n}\right) }^2_{*} \,\middle|\,  \vz_{t-1}^{(1:N)},\, \vlambda_{t-1} }
     &&\quad\text{\textit{Linearity of expectation}}
     \nonumber
     \\
     &\quad\leq
     \frac{1}{N^2}\sum^{N}_{n=1}
-      \Esub{\rvvz_n \sim q_{\text{def.}}\left(\cdot;\vlambda\right)}{ \norm{s\left(\cdot; \rvvz_n \right)}_{*}^2 }
+      \Esub{\rvvz_n \sim q_{\text{def.}}\left(\cdot;\vlambda\right)}{ \norm{\vs\left(\vlambda; \rvvz_n \right)}_{*}^2 }
       +
-      {\left(1 - \frac{1}{w^*}\right)} \, \norm{s\left(\cdot; \vz_{t-1}^{(n)} \right)}_{*}^2
+      {\left(1 - \frac{1}{w^*}\right)} \, \norm{\vs\left(\vlambda; \vz_{t-1}^{(n)} \right)}_{*}^2
     &&\quad\text{\textit{\cref{thm:imh_expecation}}}
     \nonumber
     \\
