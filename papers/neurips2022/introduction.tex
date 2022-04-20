@@ -1,5 +1,5 @@
 
-\section{Introduction}
+\section{Introduction}\label{section:intro}
 Bayesian inference aims to analyze the posterior distribution of an unknown latent variable \(\vz\) from which the data \(\vx\) is observed.
 By assuming a model \(p\,(\vx\,|\,\vz)\), the posterior \(\pi\,(\vz)\) is given by Bayes' rule such that \(\pi\,(\vz) = {p\,(\vx\,|\,\vz)\,p\,(\vz)}/{p\,(\vx)}\) where \(p\,(\vz)\) represents our prior belief on \(\vz\).
 Instead of working directly with the target distribution \(\pi\), variational inference (VI,~\citealt{blei_variational_2017}) seeks a \textit{variational approximation} \(q\,(\vz; \vlambda)\) that is the most similar to \(\pi\) according to a discrepancy measure \(D\,(\pi,\, q(\cdot; \vlambda))\).

@@ -70,7 +70,7 @@ In addition, to utilize the convergence analysis results of MCGD, we require \(P
 An execption is~\citet{debavelaere_convergence_2021} where they assume \(P\) to be polynomially ergodic.
 \begin{assumption}{(Markov chain kernel)}\label{thm:kernel_conditions}
 \vspace{-0.05in}
-  The Markov chain kernel \(P_{\vlambda}\left(\veta, \cdot\right)\) is geometrically ergodic as
+  The Markov chain kernel \(P\) is geometrically ergodic as
   {%\small
   \[
   \DTV{P_{\vlambda}^{n}\left(\veta, \cdot\right)}{ \Pi } \leq C \, \rho^{n}
@@ -79,6 +79,7 @@ An execption is~\citet{debavelaere_convergence_2021} where they assume \(P\) to 
   for some positive constant \(C\).
 \vspace{-0.05in}
 \end{assumption}
+\vspace{-0.05in}
 
 \vspace{-0.05in}
 \paragraph{Non-Asymptotic Convergence Rates}
@@ -219,6 +220,7 @@ Therefore \(q_{\text{def.}}\) does not restrict our choice of the variational fa
 \begin{assumption}{(Bounded Score)}\label{thm:bounded_score}
   The score gradient is bounded for \(\forall \vlambda \in \Lambda\) and \(\forall \vz \in \mathcal{Z}\) such that \(\norm{\vs\left(\vlambda; \vz\right)}_* \leq L \) for some finite constant \(L > 0\).
 \end{assumption}
+\vspace{-0.05in}
 Informally, this assumption is equivalent to assuming 
 %% \begin{enumerate*}[label=\textbf{(\roman*)}]
 %% \item \(\Lambda\) is compact with a finite radius,
@@ -226,12 +228,6 @@ Informally, this assumption is equivalent to assuming
 %% \item and that the score gradient is continuous with respect to \(\vlambda\) and \(\vz\).
 %% \end{enumerate*}
 Admittedly, this assumption is strong, but it provides a straightforward way to compare the gradient variance of different MCSA implementations.
-
-%\input{thm_gradient_bound}
-
-%% The later is guarenteed to hold for any geometrically ergodic Markov chain kernel~\citet{10.2307/25442663}.
-
-%% These assumptions are weaker than the bounded score assumption (\(\norm{s\left(\cdot; \vz\right)}_{*} < L < \infty\)) imposed by most recent non-asymptotic results on the general convergence of MCGD~\citep{NEURIPS2018_1371bcce, doan_convergence_2020, pmlr-v99-karimi19a, Xiong_Xu_Liang_Zhang_2021}.
 
 \vspace{-0.05in}
 \paragraph{Markovian Score Climbing}
@@ -266,11 +262,18 @@ Furthermore, to derive an upper bound on the gradient variance, we use the exact
   \end{align}
 }%
 where {\(w\left(\vz\right) = \pi\left(\vz\right)/q_{\text{def.}}\left(\vz; \vlambda\right)\), \(x \vee y = \max\left(x, y\right)\)},
-{%\small
+{\small
   \begin{align}
-    T_n\left(w\right)      = \int_w^{\infty} \frac{n}{v^2} \, \lambda^{n-1}\left(v\right)\,dv,
+    T_n\left(w\right)      = \int_w^{\infty}
+    \frac{n}{v^2}
+    %\left(n / v^2\right)
+    \, \lambda^{n-1}\left(v\right)\,dv,
     \quad\text{and}\quad
-    \lambda\left(w\right) = \int_{R\left(w\right)} \left( 1 - \frac{w\left(\vz\prime\right)}{w}  \right) \pi\left(d\vz\prime\right)\label{eq:T_lambda}
+    \lambda\left(w\right) =
+    \int_{R\left(w\right)}
+    \left( 1 - \frac{w\left(\vz\prime\right)}{w}  \right)
+    %\left( 1 - w\left(\vz\prime\right)/w  \right)
+    \pi\left(d\vz\prime\right)\label{eq:T_lambda}
   \end{align}
 }
 for {\(R\left(w\right) = \{\, \vz\prime \mid w\,\left(\vz\prime\right) \leq w \,\}\)}.
@@ -330,9 +333,9 @@ Unfortunately, it is difficult to incorporate the fact that the mixing rate impr
 %% We empirically show this fact on the bias and variance in~\cref{section:simulation}.
 
 \begin{wraptable}{r}{0.6\textwidth}
-  \vspace{-0.7in}
+  \vspace{-0.75in}
   \input{table_cost}
-  \vspace{-0.3in}
+  \vspace{-0.2in}
 \end{wraptable}
 %
 \subsection{Computational Cost}

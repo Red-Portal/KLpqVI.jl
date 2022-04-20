@@ -1,16 +1,16 @@
 
 \section{Probabilistic Models Used in the Experiments}
-\subsection{Hierarchical Logistic Regression}\label{section:linear_logistic}
-The hierarchical logistic regression used in~\cref{section:logistic} is 
-\begin{align*}
-    \sigma_{\beta}  &\sim \mathcal{N}^+\left(0, 1.0\right) \\
-    \sigma_{\alpha} &\sim \mathcal{N}^+\left(0, 1.0\right) \\
-    \symbf{\beta} &\sim \mathcal{N}\left(\symbf{0}, \sigma_{\beta}^2\,\symbf{I}\right) \\
-    \alpha        &\sim \mathcal{N}\left(0, \sigma_{\alpha}^2\right) \\
-    p             &\sim \mathcal{N}\left(\vx_i^{\top}\symbf{\beta} + \alpha,\, \sigma_{\alpha}^2\right)\\
-    y_i           &\sim \text{Bernoulli-Logit}\,(p)
-\end{align*}
-where \(\vx_i\) and \(y_i\) are the predictors and binary target variable of the \(i\)th datapoints.
+%% \subsection{Hierarchical Logistic Regression}\label{section:linear_logistic}
+%% The hierarchical logistic regression used in~\cref{section:logistic} is 
+%% \begin{align*}
+%%     \sigma_{\beta}  &\sim \mathcal{N}^+\left(0, 1.0\right) \\
+%%     \sigma_{\alpha} &\sim \mathcal{N}^+\left(0, 1.0\right) \\
+%%     \symbf{\beta} &\sim \mathcal{N}\left(\symbf{0}, \sigma_{\beta}^2\,\symbf{I}\right) \\
+%%     \alpha        &\sim \mathcal{N}\left(0, \sigma_{\alpha}^2\right) \\
+%%     p             &\sim \mathcal{N}\left(\vx_i^{\top}\symbf{\beta} + \alpha,\, \sigma_{\alpha}^2\right)\\
+%%     y_i           &\sim \text{Bernoulli-Logit}\,(p)
+%% \end{align*}
+%% where \(\vx_i\) and \(y_i\) are the predictors and binary target variable of the \(i\)th datapoints.
 
 \subsection{Gaussian Process Logistic Regression}\label{section:gp_logistic}
 The latent Gaussian process model used in~\cref{section:bgp} is 
