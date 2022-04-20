@@ -1,4 +1,4 @@
-6
+
 %% \begin{figure*}
 %%   \vspace{-0.3in}
 %%   \centering
@@ -19,6 +19,10 @@
 %%   \vspace{-0.15in}
 %% \end{figure*}
 
+\begin{figure*}
+  \input{figures/stepsize_plot}
+  \caption{100 dimensional Gaussian, \(\nu = 500\)}
+\end{figure*}
 
 \vspace{-0.05in}
 \section{Evaluations}\label{section:eval}
@@ -50,8 +54,8 @@ Also, we only use single-HMC in the logistic regression experiment due to its hi
     \vspace{-0.2in}
     \centering
     \input{figures/gaussian_plot}
-    \vspace{-0.2in}
-    \caption{Visualization of the bias and variance during score climbing.
+    %\vspace{-0.2in}
+    \caption{\(\nu = 150\), Visualization of the bias and variance during score climbing.
       We can see that the parallel state estimator achieves both the lowest bias and the lowest variance.
       See the main text for details about the experimental setup.
     }\label{fig:gaussian}

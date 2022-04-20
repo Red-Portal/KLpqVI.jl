@@ -1,154 +1,96 @@
 
-\begin{theoremEnd}{theorem}{\textbf{(MSC,~\citealt{NEURIPS2020_b2070693})}}
-  MSC is obtained by defining 
+\begin{theoremEnd}{theorem}\label{thm:msc}
+  MSC~\citep{NEURIPS2020_b2070693} is obtained by defining 
+  {%\small
   \begin{align*}
-  P_{\lambda}\left(\veta, d\veta\prime\right)
+  P_{\lambda}^n\left(\veta, d\veta\prime\right)
   = 
-  K_{\lambda}\left(\vz, d\vz\prime\right)
+  K_{\lambda}^n\left(\vz, d\vz\prime\right)
   \end{align*}
-  with  \(\veta = \vz\) where \(K_{\vlambda}\left(\vz, \cdot\right)\) is the conditional importance sampling (CIS) kernel~\citep{NEURIPS2020_b2070693} with \(q_{def.}\left(\cdot, \vlambda\right)\) as its proposal distribution.
-  Then, given~\cref{thm:bounded_weight,thm:bounded_score}, the mixing rate and the gradient variance bounds are
+  }
+  with  \(\veta = \vz\) where \(K_{\vlambda}\left(\vz, \cdot\right)\) is the conditional importance sampling (CIS) kernel~\citep{NEURIPS2020_b2070693} with \(q_{def.}\left(\cdot; \vlambda\right)\) as its proposal distribution.
+  Then, given~\cref{thm:bounded_weight,thm:bounded_score}, the mixing rate and the gradient bounds are given as
+  {%\small
   \begin{align*}
-  \DTV{P_{\vlambda}^k\left(\veta, \cdot\right)}{\Pi} \leq  {\left(1 - \frac{N - 1}{2 w^* + N - 2}\right)}^k,\quad \text{and}\quad
-  \E{ \norm{ g\left(\cdot, \rvveta\right) }^2_{*} \,\middle|\, \mathcal{F}_{t} } \leq  L^2.
+  \DTV{P_{\vlambda}^n\left(\veta, \cdot\right)}{\Pi} \leq  {\left(1 - \frac{N - 1}{2 w^* + N - 2}\right)}^n,\quad \text{and}\quad
+  {\small
+  \E{ \norm{ \vg\left(\vlambda, \rvveta\right) }_{*}^2 \,\middle|\, \mathcal{F}_{t} } \leq  L^2,
+  }
   \end{align*}
+  }
+  where \(w^* = \sup_{\vz} \pi\left(\vz\right) / q_{\text{def.}}\left(\vz\right)\).
 \end{theoremEnd}
 \begin{proofEnd}
-  the ergodic convergence rate of the i-SIR kernel is given by \citet{andrieu_uniform_2018}.
+  MSC is described in~\cref{alg:msc}. 
+  At each iteration, it performs a single MCMC transition with the CIS kernel where it internally uses \(N\) proposals.
+
+  \paragraph{Ergodicity of the Markov Chain}
+  The ergodic convergence rate \(P_{\vlambda}\) is equal to that of the i-SIR kernel, whhich has been given by \citet{andrieu_uniform_2018} as
   \begin{alignat*}{2}
-    \DTV{P^{k}\left(\veta, \cdot\right)}{\Pi}
+    \DTV{P^{n}\left(\veta, \cdot\right)}{\Pi}
     =
-    \DTV{K^{k}\left(\vz, \cdot\right)}{\pi}
+    \DTV{K^{n}\left(\vz, \cdot\right)}{\pi}
     \leq
-    {\left(1 - \frac{N - 1}{2 w^* + N - 2}\right)}^k
+    {\left(1 - \frac{N - 1}{2 w^* + N - 2}\right)}^n.
   \end{alignat*}
 
+  \paragraph{\textbf{Bound on the Gradient Variance}}
+  The bound on the gradient variance is straightforward given \cref{thm:bounded_score}.
+  For simplicity, we denote the rejection state as \(\vz^{(1)} = \vz_{t-1} \).
+  Then,
   \begin{alignat}{2}
-    &\E{ \norm{ g\left(\cdot, \rvveta\right) }^2_{*} \,\middle|\, \mathcal{F}_{t} }
+    &\E{ \norm{ \vg\left(\vlambda, \rvveta\right) }_{2} \,\middle|\, \mathcal{F}_{t} }
     \nonumber
     \\
-    &\quad=
-    \E{ \norm{ g\left(\cdot, \rvveta\right) }^2 \,\middle|\, \vz_{t-1},\, \vlambda_{t-1} }
+    &\;=
+    \E{ \norm{ \vg\left(\vlambda, \rvveta\right) }_2 \,\middle|\, \mathcal{F}_{t}}
     \nonumber
     \\
-    &\quad=
+    &\;=
     \Esub{\rvvz \sim K\left(\vz_{t-1}, \cdot\right)}{
-      \norm{ s\left(\cdot; \rvvz\right) }^2_{*} \,\middle|\, \vz_{t-1},\, \vlambda_{t-1}
+      \norm{ \vs\left(\vlambda; \rvvz\right) }_{*} \,\middle|\,
+      \vlambda_{t-1}, \vz_{t-1}
     }
     \nonumber
     \\
-    &\quad=
+    &\;=
     \int
     \sum^{N}_{n=1}
     \frac{
-      w\left(\vz_n\right)
+      w\left(\vz^{(n)}\right)
     }{
-      \sum^{N}_{m=1} w\left(\vz_m\right)
+      \sum^{N}_{m=1} w\left(\vz^{(n)}\right)
     }
-    \norm{ s\left(\cdot; \vz_n\right) }^2_{*}
+    \norm{ \vs\left(\cdot; \vz^{(n)}\right) }^2_{*}
     \prod^{N}_{n=2}
-    q\left(d\vz_n; \vlambda_{t-1}\right)
+    q\left(d\vz^{(n)}; \vlambda_{t-1}\right)
     \nonumber
+    &&\quad\text{\textit{\citep{andrieu_uniform_2018}}}
     \\
-    &\quad=
+    &\;\leq
+    L^2 \,
     \int
     \sum^{N}_{n=1}
-    \overline{w}\left(\vz_n\right)
-    \norm{ s\left(\cdot; \vz_n\right) }^2_{*}
+    \frac{
+      w\left(\vz^{(n)}\right)
+    }{
+      \sum^{N}_{m=1} w\left(\vz^{(n)}\right)
+    }
     \prod^{N}_{n=2}
-    q\left(d\vz_n\right)
+    q\left(d\vz^{(n)}; \vlambda_{t-1}\right)
     \nonumber
-    &&\quad\text{\textit{
-        Define
-        {\small
-          \(
-            {\overline{w}}\left(\vz_n\right) =
-            \frac{
-              w\left(\vz_n\right)
-            }{
-              \sum^{N}_{m=1} w\left(\vz_m\right)
-            }
-            \)
-        }%
-    }}
+    &&\quad\text{\textit{\cref{thm:bounded_score}}}
     \\
-    &\quad=
+    &\;=
+    L^2 \,
     \int
-    \left(
-    \vw^{\top}\,
-    \vf\,
-    \right)
     \prod^{N}_{n=2}
-    q\left(d\vz_n; \vlambda_{t-1}\right)
+    q\left(d\vz^{(n)}; \vlambda_{t-1}\right)
     \nonumber
-    &&\quad\text{\textit{
-        Define vectors
-        {\small
-          \(
-          {\left[\vw\right]}_n = \overline{w}\left(\vz_n\right)
-          \)
-        }%
-        and
-        {\small
-          \(
-          {\left[\,\vf\,\right]}_n = \norm{ s\left(\cdot; \vz_n\right) }^2_{*}
-          \)
-        }%
-    }}
+   &&\quad\text{\textit{The sum of weights is 1}}
     \\
-    &\quad\leq
-    \sqrt{
-    \Esub{
-      q\left(\cdot, \vlambda_{t-1}\right)
-    }{
-      \vw^{\top} \vw
-    }
-    \Esub{
-      q\left(\cdot, \vlambda_{t-1}\right)
-    }{
-      \,\vf^{\top}\vf\,
-    }
-    }
-    \nonumber
-    &&\quad\text{\textit{Cauchy-Schwarz inequality}}
-    \\
-    &\quad=
-    \sqrt{
-    \Esub{
-      \rvvz_n \sim q\left(\cdot, \vlambda_{t-1}\right)
-    }{
-      \sum^{N}_{n=1}
-      {\left(
-        \overline{w}\left(\rvvz_n\right)
-      \right)}^2
-    }
-    \Esub{
-      \rvvz_n \sim q\left(\cdot, \vlambda_{t-1}\right)
-    }{
-      \norm{ s\left(\cdot; \vz_n\right) }^4_{*}
-    }
-    }
-    \nonumber
-    \\
-    &\quad\leq
-    \sqrt{
-    \Esub{
-      \rvvz_n \sim q\left(\cdot, \vlambda_{t-1}\right)
-    }{
-      \norm{ s\left(\cdot; \vz_n\right) }^4_{*}
-    }
-    }
-    \nonumber
-    &&\quad\text{\textit{Applied \(\sum^N_{n=1} {\left(\overline{w}\left(\vz_n\right)\right)}^2 \leq \sum^N_{n=1} \overline{w}\left(\vz_n\right) = 1\)}}
-    \\
-    &\quad\leq
-    \sqrt{
-      \sigma^4
-    }
-    \nonumber
-    \\
-    &\quad=
-    \sigma^2
+    &\;=
+    L^2.
     \nonumber
   \end{alignat}
 
@@ -169,7 +111,7 @@
   %% \begin{alignat}{2}
   %%   &\E{\rvX \mid \lambda_{t-1}, \vz_{t-1}}
   %%   \\
-  %%   &\quad=
+  %%   &\;=
   %%   \int \sum^{N}_{n=1} w\left(\vz_n\right) \norm{ s\left(\cdot; \vz_n\right) }^2_{*}
   %%   \prod^{N}_{n=2}
   %%   q\left(d\rvvz_n\right)

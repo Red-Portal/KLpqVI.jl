@@ -28,7 +28,7 @@
 %%            bfup/{latin,Latin,num}, bfit{latin,Latin,num}}]
 \usepackage{fontspec}
 
-\usepackage{booktabs,threeparttable}
+\usepackage{booktabs,threeparttable,arydshln}
 \usepackage{multirow}
 \usepackage{nicematrix}
 
@@ -41,10 +41,10 @@
   tick style={major tick length=4pt,semithick,black},
   separate axis lines,
   axis x line*=bottom,
-  axis x line shift=5pt,
+  axis x line shift=2pt,
   xlabel shift=-2pt,
   axis y line*=left,
-  axis y line shift=5pt,
+  axis y line shift=2pt,
   ylabel shift=-2pt}}
 
 \usepackage{proof-at-the-end}
@@ -71,6 +71,20 @@
 \crefname{framedproposition}{Proposition}{Propositions}
 \crefname{framedlemma}{Lemma}{Lemmas}
 
+\makeatletter
+\def\adl@drawiv#1#2#3{%
+        \hskip.5\tabcolsep
+        \xleaders#3{#2.5\@tempdimb #1{1}#2.5\@tempdimb}%
+                #2\z@ plus1fil minus1fil\relax
+        \hskip.5\tabcolsep}
+\newcommand{\cdashlinelr}[1]{%
+  \noalign{\vskip\aboverulesep
+           \global\let\@dashdrawstore\adl@draw
+           \global\let\adl@draw\adl@drawiv}
+  \cdashline{#1}
+  \noalign{\global\let\adl@draw\@dashdrawstore
+           \vskip\belowrulesep}}
+\makeatother
 
 %% \newcommand*{\figref}[2][]{%
 %%   \hyperref[{#2}]{%

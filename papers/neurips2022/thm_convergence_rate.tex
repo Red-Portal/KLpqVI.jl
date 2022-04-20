@@ -48,14 +48,14 @@
 \end{proofEnd}
 
 \begin{theoremEnd}{theorem}{(\textbf{Convergence rate})}\label{thm:convergence_rate}
-  Assuming~\cref{thm:kernel_conditions,thm:gradient_estimator,thm:logconcave,thm:compact,thm:bounded_variance} hold, with a diminishing stepsize of \(\alpha_t = R / \left( G \sqrt{\kappa_1 \log \kappa_2 T} \right)\), the average iterates {\small\(\overline{\vlambda}_T = \sum^{T}_{t=1} \vlambda_{t} / T\)} of Markov chain score ascent achieve a convergence rate of
+  Assuming~\cref{thm:kernel_conditions,thm:gradient_estimator,thm:logconcave,thm:compact,thm:bounded_variance} hold, with a diminishing stepsize of \(\alpha_t = \alpha /  \sqrt{T} \), the average iterates {\small\(\overline{\vlambda}_T = \sum^{T}_{t=1} \vlambda_{t} / T\)} of Markov chain score ascent achieve a convergence rate of
   {%\small
   \begin{align*}
     \E{ \DKL{\pi}{q\,(\cdot; {\overline{\vlambda}_{T}})} - \DKL{\pi}{q\left(\cdot; {\vlambda^*}_{T}\right)}}
     =
     \mathcal{O}\left(
     \frac{
-      G \, \sqrt{\log T}
+      \alpha \, G^2 \, \sqrt{\log T}
     }{
       \log \rho^{-1} \, \sqrt{T}
     } \right)  
@@ -101,119 +101,52 @@
     &\E{ \DKL{\pi}{q\,(\cdot; {\overline{\vlambda}_{T}})} - \DKL{\pi}{q\left(\cdot; {\vlambda^*}_{T}\right)}}
     \nonumber
     \\
-    &\quad\leq
+    &\;\leq
     \frac{R^2}{2 \, \alpha \, \sqrt{T}}
     +
     \frac{2 \, \alpha \, G^2}{\sqrt{T}}\left( \kappa_1 \, \log \frac{\kappa_2}{\epsilon} \right)
     +
     3 \, \epsilon \, G \, R
     +
-    \frac{R \, G \, \kappa_1 \, \log \frac{\kappa_2}{\epsilon}}{T}.\label{eq:original_bound}
+    \frac{R \, G \, \kappa_1 \, \log \frac{\kappa_2}{\epsilon}}{T}.
+    \label{eq:duchi_base}
   \end{align}
 
-  From this, by setting the initial stepsize as \(\alpha = R / \left(G \sqrt{\kappa_1 \log \left(\kappa_2 \, T\right) }\right)\) and \(\epsilon = 1/ \sqrt{T}\),
+  From \cref{thm:mixing_time}, we retrieve the constants of \cref{eq:hellinger_mixing} as
+  \(
+  \kappa_1=\frac{2}{\log \rho^{-1} },\;  \kappa_2 = 1
+  \), and set \(\epsilon = 1/\sqrt{T}\).
+  Then, using
+  \begin{alignat}{2}
+    \kappa_1 \, \log \frac{\kappa_2}{\epsilon}
+    =
+    \frac{1}{\log \rho^{-1} } \, \log T,\label{eq:kappa}
+  \end{alignat}
+  it follows that
   \begin{alignat*}{2}
-    &\E{ \DKL{q\,(\cdot; {\overline{\vlambda}_{T}})}{\pi} - \DKL{q\left(\cdot; {\vlambda^*}_{T}\right)}{\pi}}
+    &\E{ \DKL{\pi}{q\,(\cdot; {\overline{\vlambda}_{T}})} - \DKL{\pi}{q\left(\cdot; {\vlambda^*}_{T}\right)}}
     \\
-    &\leq
-    \frac{R}{2 \, \alpha \, \sqrt{T}}
+    &\;\leq
+    \frac{R^2}{2 \, \alpha \, \sqrt{T}}
     +
     \frac{2 \, \alpha \, G^2}{\sqrt{T}}\left( \kappa_1 \, \log \frac{\kappa_2}{\epsilon} \right)
     +
     3 \, \epsilon \, G \, R
     +
     \frac{R \, G \, \kappa_1 \, \log \frac{\kappa_2}{\epsilon}}{T}.
-    &&\quad\text{\textit{\cref{eq:original_bound}}}
+    \nonumber
+    &&\quad\text{\textit{\cref{eq:duchi_base}}}
     \\
-    &=
-    \frac{R \, G \, \sqrt{\kappa_1 \, \log \left(\kappa_2 \, T\right) } }{2 \, \sqrt{T}}
+    &\;=
+    \frac{R^2}{2 \, \alpha \, \sqrt{T}}
     +
-    \frac{2 \, R \, G}{\sqrt{T}}
-    \frac{ \kappa_1 \, \log \kappa_2 \, \sqrt{T} }{ \sqrt{\kappa_1 \log \left(\kappa_2 \, T\right)}}
+    \frac{2 \, \alpha \, G^2 \, \log T }{\log \rho^{-1} \, \sqrt{T}}
     +
-    \frac{3 \, G \, R}{\sqrt{T}}
+    3 \, \epsilon \, G \, R
     +
-    \frac{R \, G \, \kappa_1 \, \log \left(\kappa_2 \, \sqrt{T}\right)}{T}
-    &&\quad\text{\textit{Plugged value of \(\epsilon\) and \(\alpha\)}}
-    \\
-    &\leq
-    \frac{R \, G \, \sqrt{\kappa_1 \, \log \left(\kappa_2 \, T\right) } }{2 \, \sqrt{T}}
-    +
-    \frac{2 \, R \, G}{\sqrt{T}}
-    \frac{ \kappa_1 \, \log \kappa_2 \, T }{ \sqrt{\kappa_1 \log \left(\kappa_2 \, T\right)}}
-    +
-    \frac{3 \, G \, R}{\sqrt{T}}
-    +
-    \frac{R \, G \, \kappa_1 \, \log \left(\kappa_2 \, T\right)}{T}
-    &&\quad\text{\textit{Applied \(\log \sqrt{T} < \log T\)}}
-    \\
-    &=
-    \frac{R \, G \, \sqrt{\kappa_1 \, \log \left(\kappa_2 \, T\right) } }{2 \, \sqrt{T}}
-    +
-    \frac{2 \, R \, G}{\sqrt{T}}
-    \sqrt{\kappa_1 \, \log \left( \kappa_2 \, T\right) }
-    +
-    \frac{3 \, G \, R}{\sqrt{T}}
-    +
-    \frac{R \, G \, \kappa_1 \, \log \left(\kappa_2 \, T\right)}{T}
-    &&\quad\text{\textit{Solved fraction}}
-    \\
-    &=
-    \frac{5 \, R \, G \, \sqrt{\kappa_1 \, \log \left(\kappa_2 \, T\right) } }{2 \, \sqrt{T}}
-    +
-    \frac{3 \, G \, R}{\sqrt{T}}
-    +
-    \frac{R \, G \, \kappa_1 \, \log \left(\kappa_2 \, T\right)}{T}.
-    &&\quad\text{\textit{Combined fractions}}
-  \end{alignat*}
-
-  From \cref{thm:mixing_time}, we retrieve the constants of \cref{eq:hellinger_mixing} as
-  \(
-  \kappa_1=\frac{2}{\log \rho^{-1} },\;  \kappa_2 = 1
-  \), which follows our result
-  \begin{alignat*}{2}
-    &\frac{
-      5 \, R \, G \, \sqrt{\kappa_1 \, \log \left(\kappa_2 \, T\right) }
-    }{
-      2 \, \sqrt{T}
-    }
-    +
-    \frac{3 \, G \, R}{\sqrt{T}}
-    +
-    \frac{R \, G \, \kappa_1 \, \log \left(\kappa_2 \, T\right)}{T}
-    \\
-    &\quad=
-    \frac{
-      5 \, R \, G \, \sqrt{ \frac{2}{\log \rho^{-1}} \, \log T }
-    }{
-      2 \, \sqrt{T}
-    }
-    +
-    \frac{3 \, G \, R}{\sqrt{T}}
-    +
-    \frac{R \, G \, \frac{2}{\log \rho^{-1}} \, \log T}{T}
-    &&\quad\text{\textit{Plugged values of \(\kappa_1\) and \(\kappa_2\)}}
-    \\
-    &\quad=
-    \frac{
-      5 \, \sqrt{2} \, R \, 
-    }{
-      2
-    }
-    \,
-    \frac{
-      G \, \sqrt{\log T}
-    }{
-      \log \rho^{-1} \, \sqrt{T} \, 
-    }
-    +
-    3 \, R \,
-    \frac{G \, R}{\sqrt{T}}
-    +
-    2 \, R
-    \,
-    \frac{G \, \log T}{ \log \rho^{-1} \, T}
-    &&\quad\text{\textit{Pulled constants forward}}
+    \frac{R \, G \, \log T }{\log \rho^{-1} \, T}.
+    \nonumber
+    &&\quad\text{\textit{\cref{eq:kappa}}}
   \end{alignat*}
 \end{proofEnd}
 

@@ -1,0 +1,169 @@
+
+%\tikzexternalenable
+\begin{tikzpicture}
+  \begin{groupplot}[
+      group style = {
+        group size = 5 by 1,
+        horizontal sep = 40pt
+      },
+      width = 8.0cm,
+      height = 5.0cm,
+      yticklabel style = {font=\footnotesize},
+      xticklabel style = {font=\tiny},
+      every tick/.style={
+        black,
+        semithick,
+      },
+      xlabel={
+        \footnotesize
+        Stepsize (\(\gamma\))
+      },
+      ylabel={
+        \footnotesize
+        Final KL 
+      },
+      xmin  =0.001,
+      xmax  =1.0,
+      ymin  =4,
+      ymax  =64,
+      ymode=log,
+      xmode=log,
+      log basis y=2,
+      log basis x=10,
+      xtick pos=bottom,
+      ytick pos=left,
+      xtick align=outside,
+      ytick align=outside,
+    ]
+    \nextgroupplot[
+      title={(a) SGD\label{fig:stepsize_sgd}},
+      title style={at={(0.5,-0.95)}},
+      tuftelike,
+      scaled x ticks = false,
+      width =3.cm,
+      height=3.5cm,
+      major tick length=1.5pt,
+      minor tick length=1.0pt,
+      %legend pos=north,
+      legend style = { 
+        legend columns = 3,
+        %draw           = none,
+        at={(4.5,1.1)},
+        anchor=south,
+        legend cell align={left},
+      }
+    ]
+    \input{figures/stepsize_jsa_sgd}
+    \addlegendentry{\scriptsize JSA}
+    \input{figures/stepsize_msc_sgd}
+    \addlegendentry{\scriptsize MSC}
+    \input{figures/stepsize_pmcsa_sgd}
+    \addlegendentry{\scriptsize pMCSA (ours)}
+%%     \addplot[black,densely dotted] coordinates {
+%%       (0.0001,79)
+%%       (1.0,79)
+%%     };
+
+    \nextgroupplot[
+      title={(b) SHB\label{fig:stepsize_shb}},
+      title style={at={(0.5,-0.95)}},
+      tuftelike,
+      xlabel={
+        \footnotesize
+        Stepsize (\(\gamma\))
+      },
+      ylabel={
+        \footnotesize
+        Final KL 
+      },
+      major tick length=1.5pt,
+      minor tick length=1.0pt,
+      width =3.cm,
+      height=3.5cm,
+    ]
+    \input{figures/stepsize_jsa_momentum}
+    \input{figures/stepsize_msc_momentum}
+    \input{figures/stepsize_pmcsa_momentum}
+    \addplot[black,densely dotted] coordinates {
+      (0.0001,79)
+      (1.0,79)
+    };
+
+    \nextgroupplot[
+      title={(c) Nesterov},
+      title style={at={(0.5,-0.95)}},
+      tuftelike,
+      xlabel={
+        \footnotesize
+        Stepsize (\(\gamma\))
+      },
+      ylabel={
+        \footnotesize
+        Final KL
+      },
+      major tick length=1.5pt,
+      minor tick length=1.0pt,
+      width =3.cm,
+      height=3.5cm,
+    ]
+    \input{figures/stepsize_jsa_nesterov}
+    \input{figures/stepsize_msc_nesterov}
+    \input{figures/stepsize_pmcsa_nesterov}
+%%     \addplot[black,densely dotted] coordinates {
+%%       (0.0001,79)
+%%       (1.0,79)
+%%     };
+
+    \nextgroupplot[
+      title={(d) RMSProp\label{fig:stepsize_rmsprop}},
+      title style={at={(0.5,-0.95)}},
+      tuftelike,
+      xlabel={
+        \footnotesize
+        Stepsize (\(\gamma\))
+      },
+      ylabel={
+        \footnotesize
+        Final KL
+      },
+      major tick length=1.5pt,
+      minor tick length=1.0pt,
+      width =3.cm,
+      height=3.5cm,
+    ]
+    \input{figures/stepsize_jsa_rmsprop}
+    \input{figures/stepsize_msc_rmsprop}
+    \input{figures/stepsize_pmcsa_rmsprop}
+%%     \addplot[black,densely dotted] coordinates {
+%%       (0.0001,79)
+%%       (1.0,79)
+%%     };
+
+    \nextgroupplot[
+      title={(e) ADAM\label{fig:stepsize_adam}},
+      title style={at={(0.5,-0.95)}},
+      tuftelike,
+      xlabel={
+        \footnotesize
+        Stepsize (\(\gamma\))
+      },
+      ylabel={
+        \footnotesize
+        Final KL
+      },
+      major tick length=1.5pt,
+      minor tick length=1.0pt,
+      width =3.cm,
+      height=3.5cm,
+    ]
+    \input{figures/stepsize_jsa_adam}
+    \input{figures/stepsize_msc_adam}
+    \input{figures/stepsize_pmcsa_adam}
+%%     \addplot[black,densely dotted] coordinates {
+%%       (0.0001,79)
+%%       (1.0,79)
+%%     };
+
+  \end{groupplot}
+\end{tikzpicture}
+%\tikzexternaldisable

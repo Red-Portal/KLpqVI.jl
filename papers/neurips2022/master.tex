@@ -61,9 +61,11 @@
 \newcommand{\cmark}{\textcolor{green!80!black}{\ding{51}}}
 \newcommand{\xmark}{\textcolor{red}{\ding{55}}}
 
-\tikzset{external/system call={lualatex -shell-escape -halt-on-error -interaction=batchmode -jobname "\image" "\texsource"}}
+\tikzset{external/system call={xelatex -shell-escape -halt-on-error -interaction=batchmode -jobname "\image" "\texsource"}}
+\tikzexternalize
+\tikzexternaldisable
 
-\title{Pratical Convergence Analysis of \\ Variational Inference by Score Ascent}
+\title{Pratical Performance Analysis of \\ Variational Inference by Score Ascent}
 
 % The \author macro works with any number of authors. There are two commands
 % used to separate the names and addresses of multiple authors: \And and \AND.
@@ -125,11 +127,12 @@
 \input{relatedworks.tex}
 \input{conclusions.tex}
 
-\section*{Broader Impact}
+%\section*{Broader Impact}
 
 %% \begin{ack}
 %% \end{ack}
-
+\newpage
+\input{checklist}
 \bibliography{references}
 
 \newpage
@@ -154,7 +157,7 @@
 %% All of our experiments can be executed within 12 hours on a system with similar computational capabilities.
 
 \input{pseudocode}
-\input{illustration}
+%\input{illustration}
 \input{prob_models}
 
 %\newpage

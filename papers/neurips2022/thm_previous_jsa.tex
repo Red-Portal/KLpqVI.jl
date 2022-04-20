@@ -1,38 +1,117 @@
 
-\begin{theoremEnd}{theorem}{\textbf{(JSA,~\citealt{pmlr-v124-ou20a})}}
-  JSA is obtained by defining 
+\begin{theoremEnd}{theorem}\label{thm:jsa}
+  JSA~\citep{pmlr-v124-ou20a} is obtained by defining 
+  {%\small
   \begin{align*}
-  P_{\vlambda}\left(\veta, d\veta\prime\right)
+  P_{\vlambda}^n\left(\veta, d\veta\prime\right)
   = 
-  K_{\vlambda}\left(\vz_1, d\vz\prime_1\right)
+  K_{\vlambda}^{N\,\left(n-1\right) + 1}\left(\vz_1, d\vz\prime_1\right)
   \,
-  K^2_{\vlambda}\left(\vz_2, d\vz\prime_2\right)
+  K_{\vlambda}^{N\,\left(n-1\right) + 2}\left(\vz_2, d\vz\prime_2\right)
   \cdot
   \ldots 
   \cdot
-  K^N_{\vlambda}\left(\vz_N, d\vz\prime_N\right)
+  K_{\vlambda}^{N\,\left(n-1\right) + N}\left(\vz_N, d\vz\prime_N\right)
   \end{align*}
+  }
   with \(\veta = \left[\vz_1, \vz_2, \ldots, \vz_N\right]\).
   Then, given~\cref{thm:bounded_weight,thm:bounded_score}, the mixing rate and the gradient variance bounds are
+  {%\small
   \begin{align*}
-    \DTV{P_{\vlambda}^k\left(\veta, \cdot\right)}{\Pi}
+    \DTV{P_{\vlambda}^n\left(\veta, \cdot\right)}{\Pi}
     \leq
-    C\left(\rho, N\right)\,{\rho}^{k\,N},
+    C\left(\rho, N\right)\,{\rho}^{n\,N},
     \quad\text{and}\quad
    % 
-    \E{ \norm{ g\left(\cdot, \rvveta\right) }^2_{*} \,\middle|\, \mathcal{F}_{t} }
+    \E{ \norm{ \vg\left(\cdot, \rvveta\right) }^2_{*} \,\middle|\, \mathcal{F}_{t} }
     \leq
     L^2 \,
     \left[\,
     \frac{1}{2} + \frac{3}{2}\,\frac{1}{N}
     + \mathcal{O}\left(\nicefrac{1}{w^*}\right)
-    \,\right]
+    \,\right],
   \end{align*}
-  for some positive constant \(C\) depending on both \(\rho\) and \(N\).
+  }
+  where \(w^* = \sup_{\vz} \pi\left(\vz\right) / q_{\text{def.}}\left(\vz\right)\) and \(C\) is a finite positive constant depending on both \(\rho\) and \(N\).
 \end{theoremEnd}
 \begin{proofEnd}
+
+  JSA is described in~\cref{alg:jsa}. 
+  At each iteration, it performs \(N\) MCMC transitions, and uses the \(N\) samples to estimate the gradient.
+
+  \paragraph{Ergodicity of the Markov Chain}
+  The state transition of the Markov chain samples \(\vz^{(1:N)}\) can be visualized as 
+  {\small
+  \begin{center}
+  \bgroup
+  \def\arraystretch{1.8}
+  \begin{tabular}{c|ccccc}
+   & \(\vz^{(1)}_t\) & \(\vz^{(2)}_t\) & \(\vz^{(3)}_t\) & \(\ldots\) &  \(\vz^{(N)}_t\) \\ \midrule
+   \(t=1\) & \(K_{\vlambda_1}\left(\vz_0, d\vz_1^{(1)}\right)\) & \(K_{\vlambda_1}^2\left(\vz_0, d\vz_1^{(2)}\right)\) & \(K_{\vlambda_1}^3\left(\vz_0, d\vz_1^{(3)}\right)\) & \(\ldots\) & \(K_{\vlambda_1}^N\left(\vz_0, d\vz_1^{(N)}\right)\) \\
+   \(t=2\) & \(K_{\vlambda_2}^{N + 1}\left(\vz_0, d\vz_2^{(1)}\right)\) & \(K_{\vlambda_2}^{N + 2}\left(\vz_0, d\vz_2^{(2)}\right)\) & \(K_{\vlambda_2}^{N + 3}\left(\vz_0, d\vz_2^{(3)}\right)\) & \(\ldots\) & \(K_{\vlambda_2}^{2\,N}\left(\vz_0, d\vz_2^{(N)}\right)\) \\
+   \(\vdots\) & & & \(\vdots\) & & \\
+   \(t=k\) & \(K_{\vlambda_k}^{\left(k-1\right)\,N + 1}\left(\vz_0, d\vz_k^{(1)}\right)\) & \(K_{\vlambda_k}^{\left(k-1\right)\,N + 2}\left(\vz_0, d\vz_k^{(2)}\right)\) & \(K_{\vlambda_k}^{\left(k-1\right)\,N + 3}\left(\vz_0, d\vz_k^{(3)}\right)\) & \(\ldots\) & \(K_{\vlambda_k}^{\left(k-1\right)\,N + N}\left(\vz_0, d\vz_k^{(N)}\right)\) \\
+  \end{tabular}
+  \egroup
+  \end{center}
+  }
+  where \(K_{\vlambda}\left(\vz, \cdot\right)\) is an IMH kernel.
+  Therefore, the \(n\)-step transition kernel for the vector of the Markov-chain samples \(\veta = \vz^{(1:N)}\) can be represented as
+  \begin{align*}
+  P_{\vlambda}^n\left(\veta, d\veta\prime\right)
+  = 
+  K_{\vlambda}^{N\,\left(n-1\right) + 1}\left(\vz_1, d\vz\prime_1\right)
+  \,
+  K_{\vlambda}^{N\,\left(n-1\right) + 2}\left(\vz_2, d\vz\prime_2\right)
+  \cdot
+  \ldots 
+  \cdot
+  K_{\vlambda}^{N\,\left(n-1\right) + N}\left(\vz_N, d\vz\prime_N\right).
+  \end{align*}
+
+%%   For example, let us assume that we use a batch size of 1 and that \(m=1\) is selected at \(t=1\) and \(m=2\) is selected at \(t=2\).
+%%   Then, the transitions can be visualized as
+%%   {\small
+%%   \begin{center}
+%%   \bgroup
+%%   \def\arraystretch{1.8}
+%%   \setlength{\tabcolsep}{5pt}
+%%   \begin{tabular}{c|cccccccccccccc}
+%%       t = 1 & \(\vz^{(1,1)}_1\) & \(\vz^{(1,2)}_1\) & \ldots & \(\vz^{(1,N)}_1\) & \ldots & \(\vz^{(2,1)}_1\) & \(\vz^{(2,2)}_1\) & \ldots & \(\vz^{(2,N)}_1\) & \ldots & \(\vz^{(1,N)}_1\) & \(\vz^{(2,N)}_1\) & \ldots & \(\vz^{(M,N)}_1\) \\
+%%       & \(\downarrow\;K_{1,\lambda}\) & \(\downarrow\;K_{1,\lambda}^2\) & \ldots & \(\downarrow\;K_{1,\lambda}^N\)  &  &  &  & &  &  &  &  &  & \\
+%%       t = 2 & \(\vz^{(1,1)}_2\) & \(\vz^{(1,2)}_2\) & \ldots & \(\vz^{(1,N)}_2\) & \ldots & \(\vz^{(2,1)}_2\) & \(\vz^{(2,2)}_2\) & \ldots & \(\vz^{(2,N)}_2\) & \ldots & \(\vz^{(1,N)}_2\) & \(\vz^{(2,N)}_2\) & \ldots & \(\vz^{(M,N)}_2\) \\
+%%       & & & & & & \(\downarrow\;K_{2,\lambda}\) & \(\downarrow\;K_{2,\lambda}^2\) & \ldots & \(\downarrow\;K_{2,\lambda}^N\)  &  &  &  & &  \\
+%%       t = 3 & \(\vz^{(1,1)}_3\) & \(\vz^{(1,2)}_3\) & \ldots & \(\vz^{(1,N)}_3\) & \ldots & \(\vz^{(2,1)}_2\) & \(\vz^{(2,2)}_3\) & \ldots & \(\vz^{(2,N)}_3\) & \ldots & \(\vz^{(1,N)}_3\) & \(\vz^{(2,N)}_3\) & \ldots & \(\vz^{(M,N)}_3\) \\
+%%   \end{tabular}
+%%   \egroup
+%%   \end{center}
+%%   }
+%%   where \(K_{m,\vlambda}\left(\vz, \cdot\right)\) is a componentwise IMH kernel for the \(m\)th component.
+%%   Conceptually, this means that, when a batch \(\vz^{(m,1:N)}\) is selected \(k\) times, it will evolve as
+%%   \begin{alignat*}{2}
+%%     \vz^{(m,1:N)} \sim  K_{m,\vlambda}^{\left(k-1\right)\,N + 1}\left(\vz^{(m,1)}, d\vz^{(m,1)}\right) \, K_{m,\vlambda}^{\left(k-1\right)\,N + 2}\left(\vz^{(m,2)}, d\vz\prime^{(m,2)}\right) \cdot \ldots \cdot K_{m,\vlambda}^{\left(k-1\right)\,N + N}\left(\vz^{(m,N)}, d\vz\prime^{(m,N)}\right).
+%%   \end{alignat*}
+
+%%   The random-scan kernel can be represented as
+%%   \begin{alignat*}{2}
+%%     P_{\vlambda}^k\left(\veta, d\veta\prime\right)
+%%     =
+%%     \sum_{m=1}^M
+%%     r_{m} \,
+%%     \left(
+%%     K_{m,\vlambda}\left(\vz^{(m,1)}, d\vz\prime^{(m,1)}\right) \,
+%%     K_{m,\vlambda}\left(\vz^{(m,2)}, d\vz\prime^{(m,2)}\right)
+%%     \cdot
+%%     \ldots
+%%     \cdot
+%%     K_{m,\vlambda}^N\left(\vz^{(m,N)}, d\vz\prime^{(m,N)}\right)
+%%     \right)
+%%   \end{alignat*}
+%%   where .
+
+  Now, the convergence in total variation \(d_{\mathrm{TV}}\left(\cdot, \cdot\right)\) can be shown to decrease geometrically as
   \begin{alignat}{2}
-    &\DTV{K^{k}\left(\veta, \cdot\right)}{\Pi}
+    &\DTV{P_{\vlambda}^{n}\left(\veta, \cdot\right)}{\Pi}
     \nonumber
     \\
     &\quad=
@@ -40,7 +119,7 @@
     \abs{
       \Pi\left(A\right)
       -
-      P^{k}\left(\veta, A\right)
+      P^{n}\left(\veta, A\right)
     }
     &&\quad\text{\textit{Definition of \(d_{\text{TV}}\)}}
     \nonumber
@@ -49,11 +128,11 @@
     \sup_{A}
     \Bigg|
     \int_{A}
-      \pi\left(d\vz\prime_1\right) \times \ldots \times \pi\left(d\vz\prime_N\right)
+      \pi\left(d\vz\prime^{(1)}\right) \times \ldots \times \pi\left(d\vz\prime^{(N)}\right)
     \nonumber
       \\
       &\qquad\qquad\qquad-
-      K^{(k-1)\,N\,+1}\left(\vz_1, d\vz\prime_1\right) \times \ldots \times K^{k\,N}\left(\vz_N, d\vz\prime_N\right)
+      K^{(n-1)\,N\,+1}_{\vlambda}\left(\vz^{(1)}, d\vz\prime^{(1)}\right) \times \ldots \times K^{n\,N}_{\vlambda}\left(\vz^{(N)}, d\vz\prime^{(N)}\right)
     \,\Bigg|
     \nonumber
     \\
@@ -62,26 +141,26 @@
     \sum_{n=1}^N
     \abs{
     \int_{A}
-      \pi\left(d\vz\prime_k\right) - K^{(k-1)\,N + n}\left(\vz_n, d\vz\prime_n\right) 
+      \pi\left(d\vz^{(n)}\right) - K^{(n-1)\,N + n}_{\vlambda}\left(\vz^{(n)}, d\vz\prime^{(n)}\right) 
     }
     &&\quad\text{\textit{\cref{thm:product_measure_bound}}}
     \nonumber
     \\
     &\quad=
     \sum_{n=1}^N
-    \DTV{K^{(k-1)\,N + n}\left(\vz_n, \cdot\right)}{\pi}
+    \DTV{K^{(n-1)\,N + n}_{\vlambda}\left(\vz^{(n)}, \cdot\right)}{\pi}
     &&\quad\text{\textit{Definition of \(d_{\text{TV}}\)}}
     \nonumber
     \\
     &\quad\leq
     \sum_{n=1}^N
-    \rho^{(k-1)\,N + n}
+    \rho^{(n-1)\,N + n}
     &&\quad\text{\textit{Geometric ergodicity}}
     \nonumber
     %\label{eq:used_ergodicity}
     \\
     &\quad=
-    \rho^{k\,N}
+    \rho^{n\,N}
     \,
     \rho^{-N}
     \,
@@ -92,40 +171,45 @@
     &\quad=
     \frac{\rho \, \left(1 - \rho^N\right)}{\rho^N \left(1 - \rho\right)}
     \,
-    {\left( \rho^{N} \right)}^k
+    {\left( \rho^{N} \right)}^n.
     \nonumber
   \end{alignat}
+  Although the constant depends on \(\rho\) and \(N\), the kernel \(P\) is geometrically ergodic and converges \(N\) times faster than the base kernel \(K\).
 
+  \paragraph{\textbf{Bound on the Gradient Variance}}
+  To analyze the variance of the gradient, we require a detailed expression of the \(n\)-step marginal transition kernel, which is unavailable in general for most MCMC kernels.
+  Fortunately, specifically for the IMH kernel,~\citet{Smith96exacttransition} have shown that the \(n\)-step marginal IMH kernel is given as~\cref{eq:imh_exact_kernel}.
+  From this, we show that
   \begin{alignat}{2}
     &\E{ \norm{ g\left(\cdot, \rvveta\right) }^2_{*} \,\middle|\, \mathcal{F}_{t} }
     \nonumber
     \\
     &\quad=
-    \E{ \norm{ g\left(\cdot, \rvveta\right) }^2 \,\middle|\, \vz_{t-1},\, \vlambda_{t-1} }
+    \E{ \norm{ g\left(\cdot, \rvveta\right) }^2 \,\middle|\, \vz_{t-1}^{(N)},\, \vlambda_{t-1} }
     \nonumber
     \\
     &\quad=
-    \E{ \norm{ \frac{1}{N}\sum^{N}_{n=1} s\left(\cdot; \rvvz_{n}\right) }^2_{*} \,\middle|\, \vz_{t-1},\, \vlambda_{t-1} }
+    \E{ \norm{ \frac{1}{N}\sum^{N}_{n=1} s\left(\cdot; \rvvz^{(n)}\right) }^2_{*} \,\middle|\, \vz_{t-1}^{(N)},\, \vlambda_{t-1} }
     \nonumber
     \\
     &\quad\leq
-    \E{ \frac{1}{N^2} \sum^{N}_{n=1} \norm{s\left(\cdot; \rvvz_{n}\right) }^2_{*} \,\middle|\, \vz_{t-1},\, \vlambda_{t-1} }
+    \E{ \frac{1}{N^2} \sum^{N}_{n=1} \norm{s\left(\cdot; \rvvz^{(n)}\right) }^2_{*} \,\middle|\, \vz_{t-1}^{(N)},\, \vlambda_{t-1} }
     &&\quad\text{\textit{Triangle inequality}}
     \nonumber
     \\
     &\quad=
-    \frac{1}{N^2}\sum^{N}_{n=1} \Esub{\rvvz_{n} \sim K^n\left(\vz_{t-1}, \cdot\right)}{ \norm{s\left(\cdot; \rvvz_{n}\right) }^2_{*} \,\middle|\,  \vz_{t-1},\, \vlambda_{t-1} }
+    \frac{1}{N^2}\sum^{N}_{n=1} \Esub{\rvvz^{(n)} \sim K^n\left(\vz_{t-1}, \cdot\right)}{ \norm{s\left(\cdot; \rvvz^{(n)}\right) }^2_{*} \,\middle|\,  \vz_{t-1}^{(N)},\, \vlambda_{t-1} }
     &&\quad\text{\textit{Linearity of expectation}}
     \nonumber
     \\
     &\quad\leq
     \frac{1}{N^2}\sum^{N}_{n=1}
       n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1}
-      \Esub{\rvvz_n \sim q_{\text{def.}}\left(\cdot; \vlambda\right)}{ \norm{s\left(\cdot; \rvvz_n \right)}_{*}^2 }
+      \Esub{\rvvz^{(n)} \sim q_{\text{def.}}\left(\cdot; \vlambda\right)}{ \norm{s\left(\cdot; \rvvz^{(n)} \right)}_{*}^2 }
       \nonumber
       \\
       &\qquad+ 
-        {\left(1 - \frac{1}{w^*}\right)}^{n} \, \norm{s\left(\cdot; \vz_{t-1} \right)}_{*}^2
+        {\left(1 - \frac{1}{w^*}\right)}^{n} \, \norm{s\left(\cdot; \vz_{t-1}^{(N)} \right)}_{*}^2
     &&\quad\text{\textit{\cref{thm:imh_expecation}}}
     \nonumber
     \\
@@ -134,6 +218,7 @@
       n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1}  \, L^2
       +
       {\left(1 - \frac{1}{w^*}\right)}^{n} \, L^2
+    &&\quad\text{\textit{\cref{thm:bounded_score}}}
     \nonumber
     \\
     &\quad=
@@ -164,14 +249,14 @@
     + \mathcal{O}\left(1/w^*\right)
     \,\right]
     \nonumber
-    &&\quad\text{\textit{Laurent series expansion at \(w \rightarrow \infty\)}}
+    &&\quad\text{\textit{Laurent series expansion at \(w^* \rightarrow \infty\)}}
     \\
     &\quad=
     L^2 \,
     \left[\,
     \frac{1}{2} + \frac{3}{2}\,\frac{1}{N}
     + \mathcal{O}\left(1/w^*\right)
-    \,\right]
+    \,\right].
     \nonumber
   \end{alignat}
   The laurent approximation is useful for realistic values of \(w^*\) since it is bounded below exponentially by the KL divergence.

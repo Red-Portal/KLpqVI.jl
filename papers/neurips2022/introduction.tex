@@ -1,67 +1,66 @@
 
 \section{Introduction}
-Given an observed data \(\vx\) and a latent variable \(\vz\), Bayesian inference aims to analyze the posterior distribution  given an unnormalized joint density \(p\,(\vz,\,\vx)\) where the relationship is given by Bayes' rule such that \(\pi\,(\vz) = {p\,(\vz,\,\vx)}/{p\,(\vx)} \propto p\,(\vz,\,\vx)\).
-Instead of working directly with the target distribution \(\pi\), variational inference (VI,~\citealt{blei_variational_2017}) methods seek a \textit{variational approximation} \(q(\vz; \vlambda)\) that is the most similar to \(\pi\) according to a discrepancy measure \(D\,(\pi,\, q(\cdot; \vlambda))\).
+Bayesian inference aims to analyze the posterior distribution of an unknown latent variable \(\vz\) from which the data \(\vx\) is observed.
+By assuming a model \(p\,(\vx\,|\,\vz)\), the posterior \(\pi\,(\vz)\) is given by Bayes' rule such that \(\pi\,(\vz) = {p\,(\vx\,|\,\vz)\,p\,(\vz)}/{p\,(\vx)}\) where \(p\,(\vz)\) represents our prior belief on \(\vz\).
+Instead of working directly with the target distribution \(\pi\), variational inference (VI,~\citealt{blei_variational_2017}) seeks a \textit{variational approximation} \(q\,(\vz; \vlambda)\) that is the most similar to \(\pi\) according to a discrepancy measure \(D\,(\pi,\, q(\cdot; \vlambda))\).
 
-Naturally, choosing a discrepancy measure is critical to the problem.
+Naturally, choosing an appropriate discrepancy measure is key to the quality of the solution.
 This fact had led to a quest for suitable divergence measures~\citep{pmlr-v37-salimans15, NIPS2016_7750ca35, NIPS2017_35464c84, NEURIPS2018_1cd138d0, pmlr-v97-ruiz19a}.
 So far, the exclusive (or reverse, backward)  KL divergence \(\DKL{q\left(\cdot; \vlambda\right)}{\pi}\) has been used ``exclusively'' among various discrepancy measures.
 This is partly because the exclusive KL is defined as an average over \(q_{\lambda}(\vz)\), which can be estimated efficiently.
-By contrast, the inclusive KL is defined as
+In contrast, the inclusive KL is defined as
 %
-{\small
+{%\small
 \vspace{-0.05in}
-\begin{align}
-  %% \DKL{p}{q_{\lambda}} = \int p\,(\vz\mid\vx) \log\big(\, p\,(\vz\mid\vx)/q_{\lambda}(\vz) \,\big)\,d\vz
-  %% = \Esub{p(\vz\mid\vx)}{\log\big(\, p\,(\vz\mid\vx)/q_{\lambda}(\vz) \,\big) } \label{eq:klpq}
+\begin{align*}
   \DKL{\pi}{q\left(\cdot; \vlambda\right)}
-  = \int \pi\,(\vz) \log \frac{\pi\left(\vz\right)}{\,q(\vz; \vlambda)} \,d\vz
-  = \Esub{\pi}{\log \frac{\pi\left(\rvvz\right)}{\,q(\rvvz; \vlambda)} } \label{eq:klpq}
-\end{align}
+  = \int \pi\,(d\vz) \log \frac{\pi\left(\vz\right)}{\,q(\vz; \vlambda)} \,d\vz
+  = \Esub{\rvvz \sim \pi\left(\cdot\right)}{\log \frac{\pi\left(\rvvz\right)}{\,q(\rvvz; \vlambda)} } %\label{eq:klpq}
+\end{align*}
 %\vspace{-0.05in}
 }%
 %
-where the average is taken over \(\pi\). 
-This is a chicken-and-egg problem as our goal is to obtain \(\pi\) in the first place.
-Despite this challenge, minimizing~\eqref{eq:klpq} has drawn the attention of researchers because it is believed to result in favorable properties~\citep{minka2005divergence, mackay_local_2001}.
+where the average is taken over \(\pi\).
+Since our goal is to obtain \(\pi\) in the first place, the difficulty of minimizing the inclusive KL lies in the fact that this is a chicken-and-egg problem.
+Despite this challenge, the inclusive KL has consistently drawn attention due to its statistical properties~\citep{minka2005divergence, mackay_local_2001}.
 
-For minimizing the inclusive KL divergence,~\citet{NEURIPS2020_b2070693} have recently introduced Markovian score climbing (MSC) while~\citet{pmlr-v124-ou20a} have introduced joint stochastic approximation (JSA).
-Both methods use stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951}) where the stochastic gradients are estimated using Markov chain Monte Carlo (MCMC).
-Also, they are designed such that the MCMC kernel \(K_{\vlambda_t}\) can directly take advantage of the current variational approximation \(q\left(\cdot; \vlambda_t\right)\).
+Recently,~\citet{NEURIPS2020_b2070693,pmlr-v124-ou20a} have respectively proposed Markovian score climbing (MSC) and joint stochastic approximation (JSA).
+These methods minimize the inclusive KL using stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951}) where the gradients are estimated using Markov chain Monte Carlo (MCMC).
+The MCMC kernel \(K_{\vlambda_t}\left(\vz_t, \cdot\right)\) is chosen such that it directly takes advantage of the current variational approximation \(q\left(\cdot; \vlambda_t\right)\).
+Thus, the quality of the gradients improve over time as the KL divergence decreases.
 
-In this paper, we cast MSC and JSA into the same framework we call Markov chain score ascent (MCSA).
-MCSA is radically different from vanilla SGD as the gradient noise is Markovian instead of being independently, identically distributed (\textit{i.i.d.}).
-While convergence of MCSA has been shown by~\citet{NEURIPS2020_b2070693} through the work of~\citet{gu_stochastic_1998}, this result is asymptotic, and does not provide insight into the practical performance of MCSA.
-We instead utilize the Markov chain gradient descent framework~\citet{duchi_ergodic_2012, NEURIPS2018_1371bcce, pmlr-v99-karimi19a, doan_convergence_2020}.
-Although most of the current results in MCGD require strong assumptions such as boundedness of the score function, they provide a practical relationship between the convergence rate, the mixing rate of the MCMC kernel, and the gradient variance.
-In particular, we obtain non-asymptotic convergence rates based on the result of~\citet{duchi_ergodic_2012}.
-%% The general SGD setting where noise is Markovian have been previously considered by.
-%% These Markov chain gradient descent (MCGD) methods encompasses an extremely wide range of problems including distributed optimization~\citep{ram_incremental_2009}, reinforcement learning~\citep{tadic_asymptotic_2017, doan_convergence_2020, Xiong_Xu_Liang_Zhang_2021}, and expectation-minimization~\citep{pmlr-v99-karimi19a}, to name a few.
-%% Despite the apparent resemblance between MCGD and MCSA, MCSA has yet to be framed into the MCGD framework.
-%% Furthermore, the design of JSA~\citep[Algorithm 3]{pmlr-v124-ou20a} is slightly more complicated to directly apply MCGD.
-%% In this work, we provide a general condition for MCSA to become a special case of MCGD.
-%% Under the discussed assumptions, we establish the non-asymptotic convergence of both JSA and MSC as a special case of ergodic mirror descent by~\citet{duchi_ergodic_2012}.
-Our result enables comparing the practical performance of JSA and MSC through their gradient variance.
-Furthermore, we provide a new simple variant of MCSA that achieves lower variance than both MCGD and MCSA.
+MSC and JSA are radically different from the classical black-box VI with vanilla SGD~\citep{pmlr-v33-ranganath14, JMLR:v18:16-107} setting.
+In particular, vanilla SGD assumes the gradient noise to be independent across iterations, whereas the gradient noise in MSC and JSA is Markovian.
+While~\citet{NEURIPS2020_b2070693} have shown convergence of MSC through the work of~\citet{gu_stochastic_1998}, this result only asymptotic, and does not provide insight into the practical performance of MSC.
+Fortunately, we show that the Markov chain gradient descent (MCGD,~\citealt{duchi_ergodic_2012, NEURIPS2018_1371bcce, pmlr-v99-karimi19a, doan_convergence_2020}) setting provides a practical framework.
+
+In this paper, we first cast MSC and JSA into a general framework we call Markov chain score ascent (MCSA).
+Then, we show that MCSA is a special cases of MCGD, enabling the application of its non-asymptotic convergence results.
+The key properties affecting the convergence rate of MCGD are the ergodic convergence rate (\(\rho\)) of the MCMC kernel and the gradient variance (\(G\)).
+We analyze these properties (\(\rho, G\)) of MSC and JSA, enabling their practical comparison given a fixed computational budget (\(N\)).
+Furthermore, based on the recent insight that the mixing rate does not affect the convergence rate of MCGD~\citet{doan_convergence_2020,doan_finitetime_2020}, we propose a novel scheme, parallel MCSA (pMCSA), which achieves lower variance by trading off the mixing rate.
 
 We verify our theoretical analysis through numerical simulations.
 Furthermore, we compare MSC, JSA, and our proposed method on general Bayesian inference problems.
-Our experiments show that our proposed method is superior than all previous approaches.
+Our experiments show that our proposed method is superior to previous MCSA approaches.
 Furthermore, within our experiments, MSCA is competitive against evidence lower-bound (ELBO) maximization.
 We further discuss this result in relation with the conclusions of~\citet{dhaka_challenges_2021} in~\cref{section:discussion}.
 
-%\vspace{-0.05in}
-%\paragraph{Contribution Summary}
-%\vspace{-0.2in}
-\begin{itemize}[noitemsep]
-\item[\ding{228}] We established non-asymptotic convergence of MCSA based on previous results of MCGD and providing general design conditions (\textbf{\cref{section:convergence}}).
-\item[\ding{228}] We compare the practical performance of MCSA algorithms (\textbf{\cref{section:comparison}}).
-\item[\ding{228}] We propose a new MCSA scheme with a tighter gradient variance bound (\textbf{\cref{section:comparison}}).
-\item[\ding{228}] We compare the newly proposed MSCA scheme against previous algorithms on general Bayesian inference benchmarks (\textbf{\cref{section:eval}}).
-\end{itemize}
 \vspace{-0.05in}
-%\item We discuss connections with adaptive IMH methods (\textbf{\cref{section:related}}).
+\paragraph{Contribution Summary}
+%\vspace{-0.2in}
+%% \begin{enumerate*}[label=\textbf{(\roman*)}]
+\begin{enumerate}[leftmargin=5mm,listparindent=\parindent]
+\vspace{-0.05in}
+\item \textbf{Theoretical Framework (\cref{section:convergence,thm:product_kernel})} \\
+  We show that MCSA is a special case of the MCGD framework, which automatically establishes its non-asymptotic convergence.
+\item \textbf{Performance Analysis (\cref{section:comparison,thm:jsa,thm:msc})} \\
+  We compare in \cref{section:comparison} the practical performance of previous MCSA algorithms.
+\item \textbf{New MCSA Algorithm (\cref{section:comparison,thm:pmcsa})} \\
+  We propose a new MCSA scheme with lower gradient variance, and evaluate its performance on general Bayesian inference benchmarks.
+\end{enumerate}
 %\end{enumerate*}
+%\item We discuss connections with adaptive IMH methods (\textbf{\cref{section:related}}).
 
 %%% Local Variables:
 %%% TeX-master: "master"

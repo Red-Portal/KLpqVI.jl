@@ -3,23 +3,22 @@
 %\begin{table}
 %\centering
 \caption{Computational Costs of MCSA Schemes}\label{table:cost}
-  \vspace{-0.05in}
-\setlength{\tabcolsep}{2pt}
+\setlength{\tabcolsep}{1pt}
   \begin{threeparttable}
 \begin{tabular}{lccccc}\toprule
 & \multicolumn{3}{c}{\footnotesize Posterior Sampling} & \multicolumn{2}{c}{\footnotesize Stochastic gradient} \\
 \cmidrule(lr){2-4}\cmidrule(lr){5-6}
-  & \(\footnotesize p\left( \vz, \vx \right)\)
-  & \(\footnotesize q_{\vlambda}(\vz)\)
-  & \(\footnotesize q_{\vlambda}(\vz)\)
-  & \(\footnotesize p\left( \vz, \vx \right)\)
-  & \(\footnotesize q_{\vlambda}(\vz)\)
+  & \(\scriptsize p\left( \vz, \vx \right)\)
+  & \(\scriptsize q\left(\vz; \vlambda\right)\)
+  & \(\scriptsize q\left(\vz; \vlambda\right)\)
+  & \(\scriptsize p\left( \vz, \vx \right)\)
+  & \(\scriptsize q\left(\vz; \vlambda\right)\)
   \\
-  & {\footnotesize\# Eval.  }
-  & {\footnotesize\# Eval.  }
-  & {\footnotesize\# Samples}
-  & {\footnotesize\# Grad.  }
-  & {\footnotesize\# Grad.  }
+  & {\scriptsize\# Eval.  }
+  & {\scriptsize\# Eval.  }
+  & {\scriptsize\# Samples}
+  & {\scriptsize\# Grad.  }
+  & {\scriptsize\# Grad.  }
 %
 \\\midrule
 %
@@ -65,7 +64,6 @@ JSA
 \end{tabular}
   \begin{tablenotes}
     \item[*]{\footnotesize We assume that the parameters are cached as much as possible}.
-    \item[*]{\footnotesize \(N\) is the number of samples used in each method}.
     \item[1]{\footnotesize Vanilla CIS kernel}.
     \item[2]{\footnotesize Rao-Blackwellized CIS kernel}.
   \end{tablenotes}

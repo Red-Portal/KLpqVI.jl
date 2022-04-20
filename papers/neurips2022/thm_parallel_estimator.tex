@@ -1,32 +1,54 @@
 
-\begin{theoremEnd}{theorem}{\textbf{(Proposed)}}
-  For our proposed scheme,
+\begin{theoremEnd}{theorem}\label{thm:pmcsa}
+  pMCSA, our proposed scheme, is obtained by setting
+  {%\small
   \begin{align*}
-    P_{\vlambda}\left(\veta, d\veta\prime\right)
+    P_{\vlambda}^n\left(\veta, d\veta\prime\right)
     = 
-    K_{\vlambda}\left(\vz_1, d\vz\prime_1\right)
+    K_{\vlambda}^n\left(\vz^{(1)}, d\vz\prime^{(1)}\right)
     \,
-    K_{\vlambda}\left(\vz_2, d\vz\prime_2\right)
+    K_{\vlambda}^n\left(\vz^{(2)}, d\vz\prime^{(2)}\right)
     \cdot
     \ldots 
     \cdot
-    K_{\vlambda}\left(\vz_N, d\vz\prime_N\right)
+    K_{\vlambda}^n\left(\vz^{(N)}, d\vz\prime^{(N)}\right)
   \end{align*}
-  with \(\veta = \left[\vz_1, \vz_2, \ldots, \vz_N\right]\)
+  }
+  with \(\veta = \left[\vz^{(1)}, \vz^{(2)}, \ldots, \vz^{(N)}\right]\).
   Then, given~\cref{thm:bounded_weight,thm:bounded_score}, the mixing rate and the gradient variance bounds are
+  {%\small
   \begin{align*}
-    \DTV{P_{\vlambda}^k\left(\veta, \cdot\right)}{\Pi}
+    \DTV{P_{\vlambda}^n\left(\veta, \cdot\right)}{\Pi}
     \leq
-    C\left(N\right)\,{\rho^k},
+    C\left(N\right)\,{\rho^n},
     \quad\text{and}\quad
-    \E{ \norm{ g\left(\cdot, \rvveta\right) }^2_{*} \,\middle|\, \mathcal{F}_{t} }
+    \E{ \norm{ \vg\left(\cdot, \rvveta\right) }^2_{*} \,\middle|\, \mathcal{F}_{t} }
     \leq
-    L^2 \left[\; \frac{1}{N} + \frac{1}{N}\,\left(1 - \frac{1}{w^*}\right) \;\right]
+    L^2 \left[\; \frac{1}{N} + \frac{1}{N}\,\left(1 - \frac{1}{w^*}\right) \;\right],
   \end{align*}
-  for some positive constant \(C\) depending on \(N\).
+  }
+  where \(w^* = \sup_{\vz} \pi\left(\vz\right) / q_{\text{def.}}\left(\vz\right)\) and \(C\) is some positive constant depending on \(N\).
 \end{theoremEnd}
 \begin{proofEnd}
-  For our new scheme,
+
+  Our proposed scheme, pMCSA, is described in~\cref{alg:jsa}. 
+  At each iteration, our scheme performs a single MCMC transition for each of the \(N\) samples, or chains, to estimate the gradient.
+  Similarly to JSA, we use the IMH kernel \(K_{\vlambda}\).
+
+  \paragraph{Ergodicity of the Markov Chain}
+  Since our kernel operates the same MCMC kernel \(K_{\vlambda}\) for each of the \(N\) parallel Markov chains, the \(n\)-step marginal kernel \(P_{\vlambda}\) can be represented as
+  \begin{align*}
+    P_{\vlambda}^n\left(\veta, d\veta\prime\right)
+    = 
+    K_{\vlambda}^n\left(\vz^{(1)}, d\vz\prime^{(1)}\right)
+    \,
+    K_{\vlambda}^n\left(\vz^{(2)}, d\vz\prime^{(2)}\right)
+    \cdot
+    \ldots 
+    \cdot
+    K_{\vlambda}^n\left(\vz^{(N)}, d\vz\prime^{(N)}\right).
+  \end{align*}
+  Then, the convergence in total variation \(d_{\mathrm{TV}}\left(\cdot, \cdot\right)\) can be shown to decrease geometrically as
   \begin{alignat}{2}
     &\DTV{K^{k}\left(\veta, \cdot\right)}{\Pi}
     \nonumber
@@ -36,7 +58,7 @@
     \abs{
       \Pi\left(A\right)
       -
-      P^{k}\left(\veta, A\right)
+      P^{n}\left(\veta, A\right)
     }
     &&\quad\text{\textit{Definition of \(d_{\text{TV}}\)}}
     \nonumber
@@ -49,7 +71,7 @@
     \nonumber
       \\
       &\qquad\qquad\qquad-
-      K^k\left(\vz_1, d\vz\prime_1\right) \cdot \ldots \cdot K^k\left(\vz_N, d\vz\prime_N\right)
+      K^n\left(\vz_1, d\vz\prime_1\right) \cdot \ldots \cdot K^n\left(\vz_N, d\vz\prime_N\right)
     \;\big|
     \nonumber
     \\
@@ -58,29 +80,31 @@
     \sum_{n=1}^N
     \abs{
     \int_{A}
-      \pi\left(d\vz\prime_k\right) - K^{k}\left(\vz_n, d\vz\prime_n\right) 
+      \pi\left(d\vz\prime_k\right) - K^{n}\left(\vz_n, d\vz\prime_n\right) 
     }
     &&\quad\text{\textit{\cref{thm:product_measure_bound}}}
     \nonumber
     \\
     &\quad=
     \sum_{n=1}^N
-    \DTV{K^k\left(\vz_n, \cdot\right)}{\pi}
+    \DTV{K^n\left(\vz_n, \cdot\right)}{\pi}
     &&\quad\text{\textit{Definition of TV distance}}
     \nonumber
     \\
     &\quad\leq
     \sum_{n=1}^N
-    \rho^{k}
+    \rho^{n}
     &&\quad\text{\textit{Geometric ergodicity}}
     \nonumber
     \\
     &\quad=
     N\,\rho^{k}
-    &&\quad\text{\textit{Solved sum}}
+    &&\quad\text{\textit{Solved sum}}.
     \nonumber
   \end{alignat}
 
+  \paragraph{\textbf{Bound on the Gradient Variance}}
+  The bound on the gradient variance can be derived in similar manner to JSA as
   \begin{alignat}{2}
     &\E{ \norm{ g\left(\cdot, \rvveta\right) }^2_{*} \,\middle|\, \mathcal{F}_{t} }
     \nonumber
@@ -114,6 +138,7 @@
     &\quad\leq
     \frac{1}{N^2}\sum^{N}_{n=1}
         L^2 + {\left(1 - \frac{1}{w^*}\right)} \, L^2
+    &&\quad\text{\textit{\cref{thm:bounded_score}}}
     \nonumber
     \\
     &\quad=
@@ -127,6 +152,7 @@
     \nonumber
     &&\quad\text{\textit{Solved sum}}
   \end{alignat}
+  Therefore, the gradient decreases at a solid \(\mathcal{O}\left(1/N\right)\) rate.
 \end{proofEnd}
 
 %%% Local Variables:

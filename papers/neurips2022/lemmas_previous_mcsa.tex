@@ -1,4 +1,117 @@
 
+%% \begin{theoremEnd}{lemma}\label{thm:}
+%%   Assuming \cref{thm:location_scale,thm:lipschitz,thm:solution_space} and that the base density \(\phi\left(\cdot\right)\) is standardized, the expectation of the score function over the the variational approximation \(q\left(\cdot; \vlambda\right)\) is bivariate uniformly Lipschitz continuous as
+%%   \begin{align*}
+%%     \Esub{\rvvz \sim q\left(\cdot; \vlambda\right)}{
+%%       \norm{ \nabla \log q\left(\rvvz; \vlambda\right) }_2
+%%     }
+%%     \leq
+%%     2 \, D \, L \, M \, \left(\norm{\vlambda}_2 + 1 \right).
+%%   \end{align*}
+%% \end{theoremEnd}
+%% \begin{proofEnd}
+%%   \begin{alignat}{2}
+%%     &\Esub{\rvvz \sim q\left(\cdot; \vlambda\right)}{
+%%       \norm{ \nabla \log q\left(\rvvz; \vlambda\right) }_2
+%%     }
+%%     \nonumber
+%%     \\
+%%     &\;\leq
+%%     \Esub{\rvvz \sim q\left(\cdot; \vlambda\right)}{
+%%       D \, L \, M \, \left( \norm{\rvvz}_2 + \norm{\vlambda}_2 + 1 \right)
+%%     }
+%%     \nonumber
+%%     &&\quad\text{\textit{\cref{thm:score_bound}}}
+%%     \\
+%%     &\;\leq
+%%     D \, L \, M \, \left(
+%%     \Esub{\rvvz \sim q\left(\cdot; \vlambda\right)}{
+%%       \norm{\rvvz}_2
+%%     }
+%%     + \norm{\vlambda} + 1 \right)
+%%     &&\quad\text{\textit{Pushed in expectation}}
+%%     \nonumber
+%%     \\
+%%     &\;\leq
+%%     D \, L \, M \, \left(
+%%     \sqrt{
+%%       \Esub{\rvvz \sim q\left(\cdot; \vlambda\right)}{
+%%         \norm{\rvvz}_2^2
+%%       }
+%%     }
+%%     + \norm{\vlambda}_2 + 1 \right)
+%%     &&\quad\text{\textit{Jensen's inequality}}
+%%     \nonumber
+%%     \\
+%%     &\;=
+%%     D \, L \, M \, \left(
+%%     \sqrt{
+%%       \Esub{\rvvu \sim \phi\left(\cdot\right)}{
+%%         \norm{ \mC_{\vlambda} \rvvu + \vm_{\vlambda} }_2^2
+%%       }
+%%     }
+%%     + \norm{\vlambda}_2 + 1 \right)
+%%     \nonumber
+%%     &&\quad\text{\textit{\cref{thm:location_scale}}}
+%%     \\
+%%     &\;=
+%%     D \, L \, M \, \left(
+%%     \sqrt{
+%%       \Esub{\rvvu \sim \phi\left(\cdot\right)}{
+%%         \rvvu^{\top} \mC_{\vlambda}^{\top} \mC_{\vlambda} \rvvu +  \rvvu^{\top} \mC_{\vlambda}^{\top}  \vm_{\vlambda}  + \vm_{\vlambda}^{\top} \vm_{\vlambda}
+%%       }
+%%     }
+%%     + \norm{\vlambda}_2 + 1 \right)
+%%     \nonumber
+%%     &&\quad\text{\textit{Expanded norm}}
+%%     \\
+%%     &\;=
+%%     D \, L \, M \, \left(
+%%     \sqrt{
+%%       \Esub{\rvvu \sim \phi\left(\cdot\right)}{
+%%         \mathrm{tr}\left( \mC_{\vlambda}^{\top} \mC_{\vlambda} \rvvu \rvvu^{\top} \right)
+%%         +  \rvvu^{\top} \mC_{\vlambda}^{\top}  \vm_{\vlambda}  + \vm_{\vlambda}^{\top} \vm_{\vlambda}
+%%       }
+%%     }
+%%     + \norm{\vlambda}_2 + 1 \right)
+%%     \nonumber
+%%     &&\quad\text{\textit{Matrix trace trick}}
+%%     \\
+%%     &\;=
+%%     D \, L \, M \, \left(
+%%     \sqrt{
+%%       \mathrm{tr}\left( \mC_{\vlambda}^{\top} \mC_{\vlambda} \right)
+%%       +
+%%       \vm_{\vlambda}^{\top} \vm_{\vlambda}
+%%     }
+%%     + \norm{\vlambda}_2 + 1 \right)
+%%     \nonumber
+%%     &&\quad\text{\textit{Since \(\rvvu \sim \phi\left(\cdot\right)\) is standardized}}
+%%     \\
+%%     &\;=
+%%     D \, L \, M \, \left(
+%%     \sqrt{
+%%       \norm{C}_F^2
+%%       +
+%%       \norm{\vm}^2_2
+%%     }
+%%     + \norm{\vlambda}_2 + 1 \right)
+%%     \nonumber
+%%     &&\quad\text{\textit{Definition of \(L^2\)-norm}}
+%%     \\
+%%     &\;=
+%%     D \, L \, M \, \left(
+%%     \norm{\vlambda}_2
+%%     + \norm{\vlambda}_2 + 1 \right)
+%%     \nonumber
+%%     &&\quad\text{\textit{\cref{eq:parameter_norm}}}
+%%     \\
+%%     &\;\leq
+%%     2 \, D \, L \, M \, \left(\norm{\vlambda}_2 + 1 \right)
+%%     \nonumber
+%%   \end{alignat}
+%% \end{proofEnd}
+
 \begin{theoremEnd}[all end]{lemma}\label{thm:product_measure_bound}
   For the probability measures \(p_1, \ldots, p_N\) and \(q_1, \ldots, q_N\) defined on a measurable space \((\mathsf{X}, \mathcal{A})\) and an arbitrary set \(A \in \mathcal{A}\),
   \begin{align*}

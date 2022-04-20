@@ -1,27 +1,253 @@
 
-
-\begin{theoremEnd}{theorem}
-  The gradient upper bounds of Markov chain score ascent methods can be found as follows:
-  \begin{itemize}
-    \item MSC~\citep{NEURIPS2020_b2070693}:
-    \item JSA~\citep{pmlr-v124-ou20a}:
-    \begin{align}
-      G_{\text{JSA}}^2 = 
-      L^2 \left[\;
-      \frac{1}{2} 
-      +
-      \frac{1}{2 \, N} 
-      +
-      \frac{1}{N^2} 
-      {\left(1 - \frac{1}{w^*}\right)}
-      \;\right]
-    \end{align}
-    \item This work:
-      \begin{align}
-        G^2_{\text{ours}} = L^2 \left[\; \frac{1}{N} + \frac{1}{N}\,\left(1 - \frac{1}{w^*}\right) \;\right]
-      \end{align}
-  \end{itemize}
+\begin{theoremEnd}{proposition}\label{thm:score_bound}
+  The score gradient of the variational approximation \(q\left(\cdot; \vlambda\right)\) in the location scale family with a base density that is uniformly Lipschitz continuous as
+  \begin{align*}
+    \norm{ \nabla_{\vlambda} \log q\left(\cdot; \vlambda\right) }_2
+    \leq
+    D \, L \, M \left( \norm{\vz}_2 + \norm{\vlambda}_2 + 1 \right)
+  \end{align*}
+  where \(\vz \in \mathbb{R}^D\).
 \end{theoremEnd}
+\begin{proofEnd}
+  Let us denote the reparameterization function 
+  \begin{align}
+    \vt^{-1}\left(\vz, \vlambda\right) = \mC^{-1}_{\vlambda}\left(\vz - \vm_{\vlambda}\right)\label{eq:reparam}
+  \end{align}
+  such that
+  \begin{align*}
+    q\left(\vz; \vlambda\right) = \phi\left( \vt^{-1}\left(\vz, \vlambda\right) \right).
+  \end{align*}
+
+  for \(\vlambda = (\vm_{\vlambda}, \mC_{\vlambda})\), \(\vmu = (\vm_{\vmu}, \mC_{\vmu})\)
+  Using this, we analyze the gradient of the location \(\vm_{\vlambda}\) and scale \(\mC_{\vlambda}\) parameters separately.
+  First, the gradient of the location parameter is bounded as
+  \begin{alignat}{2}
+    \norm{
+      \nabla_{\vm_{\vlambda}} \log q\left(\vz; \vlambda\right)
+    }_2
+    &=
+    \norm{
+      \nabla_{\vm_{\vlambda}} \log \phi\left( \vt^{-1}\left(\vz, \vlambda\right) \right)
+    }_2
+    &&\quad\text{\textit{\cref{eq:reparam}}}
+    \nonumber
+    \\
+    &=
+    \norm{
+    \nabla_{\vm_{\vlambda}} \vt^{-1}\left(\vz, \vlambda\right)  \nabla_{\vt^{-1}} \log \phi\left( \vt^{-1}\left(\vz, \vlambda\right) \right) 
+    }_2
+    &&\quad\text{\textit{Chain rule}}
+    \nonumber
+    \\
+    &=
+    \norm{
+    \nabla_{\vm_{\vlambda}} \left( \mC^{-1}_{\vlambda}\left(\vz - \vm_{\vlambda}\right) \right) \nabla_{\vt^{-1}} \log \phi\left( \vt^{-1}\left(\vz, \vlambda\right) \right) 
+    }_2
+    &&\quad\text{\textit{\cref{eq:reparam}}}
+    \nonumber
+    \\
+    &=
+    \norm{
+      -\mC^{-1}_{\vlambda}
+      \nabla_{\vt^{-1}} \log \phi\left( \vt^{-1}\left(\vz, \vlambda\right) \right) 
+    }_2
+    &&\quad\text{\textit{Solved derivative}}
+    \nonumber
+    \\
+    &\leq
+    \norm{
+      \mC^{-1}_{\vlambda}
+    }_{\mathrm{op}}
+    \,
+    \norm{
+      \nabla_{\vt^{-1}} \log \phi\left( \vt^{-1}\left(\vz, \vlambda\right) \right) 
+    }_2
+    \nonumber
+    \\
+    &\leq
+    \sqrt{M} \,
+    L.
+    &&\quad\text{\textit{\cref{thm:lipschitz}}}
+    \label{eq:location_grad}
+  \end{alignat}
+
+  Second, for the scale parameter, we bound the derivative of the \(i,j\) element of the matrix \(\mC_{\vlambda}\).
+  Let us drop the subscript \(\vlambda\) for clarity.
+  Then, similarly to the location parameter,
+  \begin{alignat}{2}
+    \abs{
+      \nabla_{\mC_{i,j}} \log q\left(\vz; \vlambda\right)
+    }
+    &=
+    \abs{
+      \nabla_{\mC_{i,j}} \log \phi\left( \vt^{-1}\left(\vz, \vlambda\right) \right)
+    }
+    &&\quad\text{\textit{\cref{eq:reparam}}}
+    \nonumber
+    \\
+    &=
+    \abs{
+      \iprod{
+        \nabla_{\mC_{i,j}} \vt^{-1}\left(\vz, \vlambda\right)   
+      }{
+        \nabla_{\vt} \log \phi\left( \vt^{-1}\left(\vz, \vlambda\right) \right)   
+      }
+    }
+    &&\quad\text{\textit{Chain rule}}
+    \nonumber
+    \\
+    &=
+    \abs{
+      \iprod{
+        \nabla_{\mC_{i,j}} \left( \mC^{-1}_{\vlambda}\left(\vz - \vm_{\vlambda}\right) \right)
+      } {
+        \nabla_{\vt} \log \phi\left( \vt^{-1}\left(\vz, \vlambda\right) \right)          
+      }
+    }
+    \nonumber
+    \\
+    &\leq
+    \norm{
+      \nabla_{\mC_{i,j}} \left( \mC^{-1}_{\vlambda}\left(\vz - \vm_{\vlambda}\right) \right)
+    }_2 \,
+    \norm{
+      \nabla_{\vt} \log \phi\left( \vt^{-1}\left(\vz, \vlambda\right) \right)          
+    }_2
+    &&\quad\text{\textit{Cauchy-Schwarz inequality}}
+    \nonumber
+    \\
+    &\leq
+    L\,
+    \norm{
+      \nabla_{\mC_{i,j}} \left( \mC^{-1}_{\vlambda}\left(\vz - \vm_{\vlambda}\right) \right)
+    }_2.
+    &&\quad\text{\textit{\cref{thm:lipschitz}}}
+    \nonumber
+    \\
+    &=
+    L\,
+    \norm{
+    \mC^{-1}_{\vlambda} \frac{\partial \mC}{\partial_{\mC_{i,j}}} \mC^{-1}_{\vlambda}  \left(\vz - \vm_{\vlambda}\right) 
+    }_2
+    \nonumber
+    &&\quad\text{\textit{Solved gradient}}
+    \\
+    &\leq
+    L\,
+    \norm{
+      \mC^{-1}_{\vlambda}
+    }_{\text{op}} \,
+    \norm{
+      \frac{\partial \mC}{\partial_{\mC_{i,j}}}
+    }_{\text{op}} \,
+    \norm{
+      \mC^{-1}_{\vlambda} 
+    }_{\text{op}}
+    \norm{
+    \vz - \vm_{\vlambda}
+    }_2
+    \nonumber
+    &&\quad\text{\textit{Property of operator norm}}
+    \\
+    &=
+    L\,
+    \norm{
+      \mC^{-1}_{\vlambda}
+    }_{\text{op}} \,
+    \norm{
+      \mC^{-1}_{\vlambda} 
+    }_{\text{op}}
+    \norm{
+    \vz - \vm_{\vlambda}
+    }_2
+    &&\quad\text{\textit{Largest eigenvalue \(\sigma_{\text{max}}\left(\frac{\partial \mC}{\partial_{\mC_{i,j}}}\right) = 1\)}}
+    \nonumber
+    \\
+    &\leq
+    L \,
+    M \,
+    \norm{
+    \vz - \vm_{\vlambda}
+    }_2
+    &&\quad\text{\textit{\cref{thm:solution_space}}}
+    \nonumber
+    \\
+    &\leq
+    L \,
+    M \,\left(
+    \norm{\vz}_2 + \norm{\vm_{\vlambda}}_2
+    \right)
+    &&\quad\text{\textit{Triangle inequality}}
+    \nonumber
+    \\
+    &\leq
+    L \,
+    M \, \left(
+    \norm{\vz}_2 + \norm{\vlambda}_2
+    \right)
+    &&\quad\text{\textit{\cref{eq:parameter_norm}}}
+    \nonumber
+  \end{alignat}
+
+  Now, by the poperty of norms,
+  \begin{alignat}{2}
+    \norm{
+      \nabla_{\mC} \log q\left(\vz; \vlambda\right)
+    }_{F}
+    &\leq
+    D \,
+    \sup_{i,j}
+    \abs{
+      \nabla_{\mC_{i,j}} \log q\left(\vz; \vlambda\right)
+    }
+    \nonumber
+    \\
+    &\leq
+    D \,
+    L \,
+    M \, \left(
+    \norm{\vz} + \norm{\vlambda}
+    \right).
+    \label{eq:scale_grad}
+  \end{alignat}
+  Then, combining \cref{eq:location_grad,eq:scale_grad}, 
+  \begin{alignat}{2}
+    \norm{
+      \nabla_{\vlambda} \log q\left(\vz; \vlambda\right)
+    }
+    &\leq
+    \norm{
+      \nabla_{\vm_{\vlambda}} \log q\left(\vz; \vlambda\right)
+    }_2
+    +
+    \norm{
+      \nabla_{\mC_{\vlambda}} \log q\left(\vz; \vlambda\right)
+    }_{F} 
+    &&\quad\text{\textit{\cref{eq:parameter_norm}}}
+    \nonumber
+    \\
+    &\leq
+    D \,
+    L \,
+    M \, \left(
+    \norm{\vz}_2 + \norm{\vlambda}_2
+    \right)
+    +
+    \sqrt{M} \, L
+    &&\quad\text{\textit{\cref{eq:location_grad,eq:scale_grad}}}
+    \nonumber
+    \\
+    &\leq
+    D \,
+    L \,
+    M \, \left(
+    \norm{\vz}_2 + \norm{\vlambda}_2
+    +
+    1 
+    \right).
+    \nonumber
+  \end{alignat}
+\end{proofEnd}
 
 %%% Local Variables:
 %%% TeX-master: "master"
