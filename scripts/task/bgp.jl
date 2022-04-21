@@ -118,10 +118,10 @@ function run_task(prng::Random.AbstractRNG,
 
     #AdvancedVI.setadbackend(:forwarddiff)
     #Turing.Core._setadbackend(Val(:forwarddiff))
-    AdvancedVI.setadbackend(:reversediff)
-    Turing.Core._setadbackend(Val(:reversediff))
-    # AdvancedVI.setadbackend(:zygote) 
-    # Turing.Core._setadbackend(Val(:zygote))
+    #AdvancedVI.setadbackend(:reversediff)
+    #Turing.Core._setadbackend(Val(:reversediff))
+    AdvancedVI.setadbackend(:zygote) 
+    Turing.Core._setadbackend(Val(:zygote))
 
     varinfo     = DynamicPPL.VarInfo(model)
     varsyms     = keys(varinfo.metadata)
