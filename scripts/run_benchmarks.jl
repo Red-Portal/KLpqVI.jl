@@ -143,35 +143,25 @@ function general_benchmarks()
                 "breast",
                 "heart",
                 ]
-        for settings ∈ [
-            Dict(:method    => "MSC_PIMH",
-                 :task      => task,
-                 :n_samples => 10),
-            Dict(:method    => "MSC_CIS",
-                 :task      => task,
-                 :n_samples => 10),
-            Dict(:method    => "MSC_CISRB",
-                 :task      => task,
-                 :n_samples => 10),
-            Dict(:method    => "MSC_SIMH",
-                 :task      => task,
-                 :n_samples => 10),
-            Dict(:method    => "SNIS",
-                 :task      => task,
-                 :n_samples => 10),
-            Dict(:method    => "ELBO",
-                 :task      => task,
-                 :n_samples => 10)
+        for method ∈ [
+            "MSC_PIMH",
+            "MSC_CIS",
+            "MSC_CISRB",
+            "MSC_SIMH",
+            "SNIS",
+            "ELBO",
             ]
-            @info "starting epxeriment" settings = settings
+            settings = Dict{Symbol,Any}()
+            settings[:method]    = method
             settings[:defensive] = defensive
             settings[:stepsize]  = stepsize
-            settings[:task]      = "gaussian_correlated"
+            settings[:task]      = task
             settings[:decay]     = decay
             settings[:optimizer] = optimizer
             settings[:n_samples] = n_samples
             settings[:n_reps]    = n_reps
             settings[:n_iter]    = n_iter
+            @info "starting epxeriment" settings = settings
             produce_or_load(datadir("exp_raw"),
                 settings,
                 run_experiment,
