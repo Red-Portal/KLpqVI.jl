@@ -21,6 +21,7 @@ Turing.@model function logisticgp(X, y, jitter=1e-6)
     K_chol = cholesky(K_ϵ, check=false)
 
     if !LinearAlgebra.issuccess(K_chol)
+        f  ~ MvNormal(zeros(size(X,2)), ones(size(X,2)))
         Turing.@addlogprob! -Inf
         return
     end
