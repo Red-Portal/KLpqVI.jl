@@ -129,8 +129,8 @@ function general_benchmarks()
     decay     = false
     optimizer = "ADAM"
     n_samples = 10
-    n_reps    = 100
-    n_iter    = 5
+    n_reps    = 80
+    n_iter    = 20000
 
     for task ∈ ["wine",
                 "concrete",
