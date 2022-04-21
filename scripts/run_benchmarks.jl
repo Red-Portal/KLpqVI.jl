@@ -137,7 +137,6 @@ function general_benchmarks()
                 "yacht",
                 "naval",
                 "boston",
-                "toy",
                 "sonar",
                 "ionosphere",
                 "australian",
