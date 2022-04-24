@@ -31,7 +31,7 @@ function make_logjoint(rng, model::DynamicPPL.Model, weight::Real=1.0)
     logπ, ∇logπ
 end
 
-function vi(model::DynamicPPL.Model,
+function vi(model::DynamicPPL.Model, 
             q_init=nothing;
             n_mc,
             n_iter,
@@ -46,8 +46,6 @@ function vi(model::DynamicPPL.Model,
     varsyms     = keys(varinfo.metadata)
     n_params    = sum([size(varinfo.metadata[sym].vals, 1) for sym ∈ varsyms])
     logπ, ∇logπ = make_logjoint(rng, model)
-    alg         = AdvancedVI.ADVI(n_mc, n_iter)
-    stats       = Vector{NamedTuple}(undef, n_iter)
 
     θ, q = if isnothing(q_init)
         μ = randn(rng, n_params)
@@ -97,10 +95,8 @@ function vi(ℓπ,
             objective           = AdvancedVI.ELBO(),
             rng                 = Random.GLOBAL_RNG,
             callback            = nothing,
-            T_polyak            = n_iter+1,#round(Int, 0.5*n_iter),
             show_progress::Bool = false,
             ℓjac                = z′ -> 0)
-    n_dims = length(λ0)
     prog   = if(show_progress)
         ProgressMeter.Progress(n_iter)
     else
@@ -109,16 +105,9 @@ function vi(ℓπ,
     stats   = Vector{NamedTuple}(undef, n_iter)
     ∇KL_buf = DiffResults.GradientResult(λ0)
 
-    ∂ℓq∂λ(λ_, z_) = begin
-        Zygote.gradient(λ′ -> ℓq(λ′, z_), λ_)[1]
-    end
-
     init_state!(objective, rng, rand_q, λ0, ℓπ, n_mc)
 
-    λ     = λ0
-    λ_avg = zeros(length(λ))
-    n_avg = 0
-
+    λ = λ0
     elapsed_total = 0
     for t = 1:n_iter
         start_time = Dates.now()
@@ -134,17 +123,9 @@ function vi(ℓπ,
         elapsed_total += elapsed.value
         stat           = merge(stat, (elapsed=elapsed_total,))
 
-        #λ[div(length(λ), 2)+1:end] = max.(λ[div(length(λ), 2)+1:end], -6)
-        if t == T_polyak
-            λ_avg  = deepcopy(λ0) 
-        elseif t > T_polyak
-            n_avg  = t - T_polyak
-            λ_avg  = λ_avg*n_avg/(n_avg+1) + λ/(n_avg+1)
-        end
-
         if(!isnothing(callback))
-            #stat′ = callback(ℓπ, λ)
-            stat′ = callback(ℓπ,  t > T_polyak ? λ_avg : λ)
+            stat′ = callback(ℓπ, λ)
+            #stat′ = callback(ℓπ,  t > T_polyak ? λ_avg : λ)
             stat  = merge(stat, stat′)
         end
 
