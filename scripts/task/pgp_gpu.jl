@@ -2,12 +2,14 @@
 load_dataset(::Val{:boston_gpu})   = load_dataset(Val(:boston))
 load_dataset(::Val{:wine_gpu})     = load_dataset(Val(:wine))
 load_dataset(::Val{:yacht_gpu})    = load_dataset(Val(:yacht))
-load_dataset(::Val{:wine_gpu})     = load_dataset(Val(:wine))
 load_dataset(::Val{:concrete_gpu}) = load_dataset(Val(:concrete))
 
 function run_task(
     prng::Random.AbstractRNG,
-    task::Union{Val{:wine_gpu},Val{:boston_gpu}},
+    task::Union{Val{:wine_gpu},
+                Val{:boston_gpu},
+                Val{:yacht_gpu},
+                Val{:concrete_gpu}},
     optimizer,
     objective,
     n_iter,
