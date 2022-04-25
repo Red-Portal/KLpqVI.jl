@@ -192,15 +192,14 @@ function stepsize_plot()
 end
 
 function main()
-    @showprogress pmap(datadir("exp_raw") |> readdir) do fname
-        data_name = fname[1:end-5]
+    @showprogress map(datadir("exp_raw") |> readdir) do fname
         data      = FileIO.load(datadir("exp_raw", fname))
         result    = data["result"]
         settings  = data["settings"]
 
         @info "$(fname)" settings=settings
-        summary = process_data(result)
-        
-        FileIO.save(datadir("exp_pro", fname), summary)
+        h5open(datadir("exp_pro", fname), "w") do io
+            process_data(io, result, settings)
+        end
     end
 end
