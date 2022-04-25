@@ -110,7 +110,7 @@ end
         Random.seed!(seed_key)
 
         proc_id   = myid()
-        proc_key  = proc_id[id_to_key]
+        proc_key  = id_to_key[proc_id]
         device_id = device_list[proc_key]
         CUDA.device!(device_id)
 
