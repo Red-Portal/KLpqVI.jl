@@ -95,8 +95,13 @@ end
     method = dispatch_inference_method(method)
     optimizer = dispatch_optimizer(optimizer, stepsize)
 
-    @assert nprocs == length(devices())
     device_list = collect(CUDA.devices())
+    n_devices   = length(devices())
+    cpu_list    = pmap(x -> myid(), 1:n_devices) 
+    key_to_id   = Dict(enumerate(cpu_list))
+    id_to_key   = Dict(value => key for (key, value) in key_to_id)
+
+    @assert length(cpu_list) == n_devices
 
     stats = ProgressMeter.@showprogress pmap(1:n_reps) do seed_key
         seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
@@ -104,8 +109,9 @@ end
         Random123.set_counter!(prng, seed_key)
         Random.seed!(seed_key)
 
-        procid = myid()
-        device_id = device_list[procid]
+        proc_id   = myid()
+        proc_key  = proc_id[id_to_key]
+        device_id = device_list[proc_key]
         CUDA.device!(device_id)
 
         run_task(
@@ -222,7 +228,7 @@ function general_benchmarks_gpu()
         "australian_gpu",
         "german_gpu",
         "wine_gpu",
-        "concrete_gup",
+        "concrete_gpu",
         "yacht_gpu",
         "boston_gpu",
     ]
