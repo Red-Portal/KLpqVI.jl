@@ -15,6 +15,7 @@ using HDF5
 using DataFramesMeta
 using Printf
 using PrettyTables
+using UnicodePlots
 
 @everywhere function process_data(ks, stats)::Dict
     mapreduce(merge, ks) do k
@@ -40,78 +41,41 @@ using PrettyTables
     end
 end
 
-@everywhere function process_batches(batches)
-    allkeys = vcat(collect.(keys.(batches[1]))...)
-    ks      = collect(Set(allkeys))
+function process_data(io, df, settings)
+    α = 0.8
 
-    @info "Finding y values"
-    data_batches = map(batches) do stats
-        process_data(ks, stats)
+    #iter        = repeat(1:settings[:n_iter]; inner=settings[:n_reps])
+    iter        = repeat(1:settings[:n_iter], settings[:n_reps])
+    df[:,:iter] = iter
+
+    cols       = names(df)
+    valid_cols = setdiff(cols, ["iter"])
+    valid_cols = filter(col -> eltype(df[:,col]) <: Real, valid_cols)
+    # @info("Processing Data",
+    #       n_iter        = settings[:n_iter],
+    #       n_reps        = settings[:n_reps],
+    #       optimizer     = settings[:optimizer],
+    #       method        = settings[:method],
+    #       valid_columns = valid_cols,
+    #       )
+
+    for valid_col ∈ valid_cols
+        valid_col⁺ = valid_col * "⁺"
+        valid_col⁻ = valid_col * "⁻"
+        stats      = @chain df begin
+            @select(:iter, $valid_col)
+            groupby(:iter)
+            @combine($valid_col  = median($valid_col),
+                     $valid_col⁺ = quantile($valid_col, (1 - α) / 2),
+                     $valid_col⁻ = quantile($valid_col, (1 / 2 + α / 2)))
+        end
+        x  = stats[:,:iter]
+        y  = stats[:,valid_col]
+        y⁺ = stats[:,valid_col⁺] - stats[:,valid_col]
+        y⁻ = stats[:,valid_col]  - stats[:,valid_col⁺]
+        write(io, "$(valid_col)_x", x)
+        write(io, "$(valid_col)_y", Array(hcat(y, y⁺, y⁻)'))
     end
-
-    @info "Computing statistics"
-    mapreduce(merge, ks) do k
-        name_y = string(k) * "_y"
-        name_t = string(k) * "_t"
-        name_x = string(k) * "_x"
-
-        ts = map(data_batches) do batch
-            batch[name_t]
-        end
-        xs = map(data_batches) do batch
-            batch[name_x]
-        end
-        ys = map(data_batches) do batch
-            batch[name_y]
-        end
-
-        name_μ = string(k) * "_mean"
-        μ_t    = mean(ts)
-
-        CIs = map(1:length(ys[1])) do  t
-            boot = bootstrap(mean, [ys[i][t] for i = 1:length(ys)], AntitheticSampling(1024))
-            confint(boot, PercentileConfInt(0.8))
-        end
-
-        μ_y    = [CI[1][1] for CI in CIs]
-        e_l    = [CI[1][2] for CI in CIs]
-        e_h    = [CI[1][3] for CI in CIs]
-            #[median(  [ys[i][t] for i = 1:length(ys)])      for t = 1:length(ys[1])]
-        #e_l    = #[quantile([ys[i][t] for i = 1:length(ys)], 0.2) for t = 1:length(ys[1])]
-        #e_h    = #[quantile([ys[i][t] for i = 1:length(ys)], 0.8) for t = 1:length(ys[1])]
-
-        y_stat = Array(hcat(μ_y, e_h - μ_y, e_l - μ_y)')
-
-        Dict(name_t   => μ_t,
-             name_x   => xs[1],
-             name_y   => y_stat,
-             )
-        # for i = 1:length(ys)
-        #     insertcols!(summ, Symbol("y$(i)") => ys[i])
-        # end
-        #name = string(k)*".csv"
-        #FileIO.save(joinpath(path, name), summ)
-    end
-end
-
-function convergence_diagnostic()
-    data         = Dict()
-    data[:CIS]   = FileIO.load(datadir("exp_raw", "method=MSC_CIS_n_samples=16_task=gaussian.jld2")) 
-    data[:CISRB] = FileIO.load(datadir("exp_raw", "method=MSC_CISRB_n_samples=16_task=gaussian.jld2")) 
-    data[:PIMH]  = FileIO.load(datadir("exp_raw", "method=MSC_PIMH_n_samples=16_task=gaussian.jld2")) 
-
-    p    = load_dataset(Val(:gaussian))
-    ∫pℓp = entropy(p)
-
-    result             = Dict()
-    result["cis"]       = [stat[:kl] for stat ∈ data[:CIS]["result"][1]]         .+ ∫pℓp
-    result["cisrb"]     = [stat[:kl] for stat ∈ data[:CISRB]["result"][1]]       .+ ∫pℓp
-    result["pimh"]      = [stat[:kl] for stat ∈ data[:PIMH]["result"][1]]        .+ ∫pℓp
-
-    result["pimh_est"]  = [stat[:crossent] for stat ∈ data[:PIMH]["result"][1]]  .+ ∫pℓp
-    result["cis_est"]   = [stat[:crossent] for stat ∈ data[:CIS]["result"][1]] .+ ∫pℓp
-    result["cisrb_est"] = [stat[:crossent] for stat ∈ data[:CISRB]["result"][1]]   .+ ∫pℓp
-    FileIO.save(datadir("exp_pro", "convergence_diagnostic.jld2"), result)
 end
 
 function draw_table_logistic()
@@ -233,13 +197,9 @@ function main()
         data      = FileIO.load(datadir("exp_raw", fname))
         result    = data["result"]
         settings  = data["settings"]
-        task      = string(settings[:task])
-        method    = string(settings[:method])
-        n_samples = string(settings[:n_samples])
 
-        #outpath   = datadir("exp_pro", task, method, n_samples)
         @info "$(fname)" settings=settings
-        summary = process_batches(result)
+        summary = process_data(result)
         
         FileIO.save(datadir("exp_pro", fname), summary)
     end
