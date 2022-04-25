@@ -5,7 +5,7 @@ using Distributed
 @everywhere @quickactivate "KLpqVI"
 
 @everywhere using ReverseDiff
-            using Plots, StatsPlots
+using Plots, StatsPlots
 @everywhere using Flux
 @everywhere using DataFrames
 @everywhere using ForwardDiff
@@ -15,107 +15,141 @@ using Distributed
 @everywhere using DelimitedFiles
 @everywhere using FileIO
 @everywhere using UnPack
-@everywhere using ParameterSchedulers: Scheduler
+@everywhere using CUDA
 
 @everywhere include(srcdir("KLpqVI.jl"))
 @everywhere include("task/task.jl")
 
-@everywhere begin
-    using ParameterSchedulers
-    @eval ParameterSchedulers begin
-        struct Sqrt <: AbstractSchedule{false}
-            start::Float64
-        end
-        Base.eltype(::Type{Sqrt}) = Float64
-        (schedule::Sqrt)(t) = schedule.start / sqrt(t)
+dispatch_optimizer(opt::String, stepsize) = begin
+    if (opt == "ADAM")
+        ADAM(stepsize)
+    elseif (opt == "NADAM")
+        NADAM(stepsize)
+    elseif (opt == "Nesterov")
+        Nesterov(stepsize)
+    elseif (opt == "RMSProp")
+        RMSProp(stepsize)
+    elseif (opt == "ADAGrad")
+        ADAGrad(stepsize)
+    elseif (opt == "SGD")
+        Descent(stepsize)
+    elseif (opt == "Momentum")
+        Momentum(stepsize)
+    end
+end
 
-        export Sqrt
+dispatch_inference_method(method::String) = begin
+    if (method == "MSC_PIMH")
+        MSC_PIMH()
+    elseif (method == "MSC_SIMH")
+        MSC_SIMH()
+    elseif (method == "ELBO")
+        ELBO()
+    elseif (method == "MSC_CIS")
+        MSC_CIS()
+    elseif (method == "MSC_CISRB")
+        MSC_CISRB()
+    elseif (method == "SNIS")
+        SNIS()
     end
 end
 
 @everywhere function run_experiment(settings::Dict)
-    @unpack method, decay, optimizer, task, stepsize, defensive, n_iter, n_samples, n_reps = settings
+    @unpack method, decay, optimizer, task, stepsize, defensive, n_iter, n_samples, n_reps =
+        settings
 
-    task   = Val(Symbol(task))
-    method = if(method == "MSC_PIMH")
-        MSC_PIMH()
-    elseif(method == "MSC_SIMH")
-        MSC_SIMH()
-    elseif(method == "ELBO")
-        ELBO()
-    elseif(method == "MSC_CIS")
-        MSC_CIS()
-    elseif(method == "MSC_CISRB")
-        MSC_CISRB()
-    elseif(method == "SNIS")
-        SNIS()
-    end
+    task = Val(Symbol(task))
+    method = dispatch_inference_method(method)
+    optimizer = dispatch_optimizer(optimizer, stepsize)
 
-    optimizer = if(optimizer == "ADAM")
-        ADAM(stepsize)
-    elseif(optimizer == "NADAM")
-        NADAM(stepsize)
-    elseif(optimizer == "Nesterov")
-        Nesterov(stepsize)
-    elseif(optimizer == "RMSProp")
-        RMSProp(stepsize)
-    elseif(optimizer == "ADAGrad")
-        ADAGrad(stepsize)
-    elseif(optimizer == "SGD")
-        Descent(stepsize)
-    elseif(optimizer == "Momentum")
-        Momentum(stepsize)
-    end
-
-    optimizer = if(decay)
-        Scheduler(Sqrt(stepsize), optimizer)
-    else
-        optimizer
-    end
-
-    stats   = ProgressMeter.@showprogress pmap(1:n_reps) do seed_key
+    stats = ProgressMeter.@showprogress pmap(1:n_reps) do seed_key
         seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
         prng = Random123.Philox4x(UInt64, seed, 8)
         Random123.set_counter!(prng, seed_key)
         Random.seed!(seed_key)
-        run_task(prng,
-                 task,
-                 optimizer,
-                 method,
-                 n_iter,
-                 n_samples,
-                 defensive;
-                 show_progress=false)
+        run_task(
+            prng,
+            task,
+            optimizer,
+            method,
+            n_iter,
+            n_samples,
+            defensive;
+            show_progress = false,
+        )
     end
     df = vcat(DataFrame.(stats)...)
 
-    for (k,v) ∈ settings
-        df[:,k] .= v
+    for (k, v) ∈ settings
+        df[:, k] .= v
     end
 
-    Dict("result"=>df, "settings"=>settings)
+    Dict("result" => df, "settings" => settings)
+end
+
+@everywhere function run_experiment_gpu(settings::Dict)
+    @unpack method, decay, optimizer, task, stepsize, defensive, n_iter, n_samples, n_reps =
+        settings
+
+    task = Val(Symbol(task))
+    method = dispatch_inference_method(method)
+    optimizer = dispatch_optimizer(optimizer, stepsize)
+
+    @assert nprocs == length(devices())
+    device_list = collect(CUDA.devices())
+
+    stats = ProgressMeter.@showprogress pmap(1:n_reps) do seed_key
+        seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
+        prng = Random123.Philox4x(UInt64, seed, 8)
+        Random123.set_counter!(prng, seed_key)
+        Random.seed!(seed_key)
+
+        procid = myid()
+        device_id = device_list[procid]
+        CUDA.device!(device_id)
+
+        run_task(
+            prng,
+            task,
+            optimizer,
+            method,
+            n_iter,
+            n_samples,
+            defensive;
+            show_progress = false,
+        )
+    end
+    df = vcat(DataFrame.(stats)...)
+
+    for (k, v) ∈ settings
+        df[:, k] .= v
+    end
+
+    Dict("result" => df, "settings" => settings)
 end
 
 function gaussian_stepsize()
     ν = 400
-    for ϵ ∈ exp10.(range(log10(0.001), log10(1.0); length=20))
+    for ϵ ∈ exp10.(range(log10(0.001), log10(1.0); length = 20))
         for decay ∈ [true, false]
             for defensive ∈ [0.0, 0.001]
                 for method ∈ ["MSC_SIMH", "MSC_PIMH", "MSC_CIS"]
                     for optimizer ∈ ["ADAM", "RMSProp", "Momentum", "Nesterov", "SGD"]
-                        seed      = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
-                        prng      = Random123.Philox4x(UInt64, seed, 8)
-                        n_iter    = 20000
-                        n_mc      = 10
+                        seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
+                        prng = Random123.Philox4x(UInt64, seed, 8)
+                        n_iter = 20000
+                        n_mc = 10
 
-                        settings             = Dict{Symbol,Any}()
-                        @info "starting epxeriment" settings=settings
-                        produce_or_load(datadir("exp_raw"),
-                                        settings,
-                                        run_experiment,
-                                        suffix="jld2",
-                                        loadfile=false,
-                                        tag=false)
+                        settings = Dict{Symbol,Any}()
+                        @info "starting epxeriment" settings = settings
+                        produce_or_load(
+                            datadir("exp_raw"),
+                            settings,
+                            run_experiment,
+                            suffix = "jld2",
+                            loadfile = false,
+                            tag = false,
+                        )
                     end
                 end
             end
@@ -132,25 +166,74 @@ function general_benchmarks()
     n_reps    = 80
     n_iter    = 20000
 
-    for task ∈ ["wine",
-                "concrete",
-                "yacht",
-                "naval",
-                "boston",
-                "sonar",
-                "ionosphere",
-                "australian",
-                "breast",
-                "heart",
-                ]
-        for method ∈ [
-            "MSC_PIMH",
-            "MSC_CIS",
-            "MSC_CISRB",
-            "MSC_SIMH",
-            "SNIS",
-            "ELBO",
+    for task ∈ [
+        "wine",
+        "concrete",
+        "yacht",
+        "naval",
+        "boston",
+        "sonar",
+        "ionosphere",
+        "heart",
+        #"australian",
+        #"breast",
+    ]
+        for (method, n_samples) ∈ [
+            ("MSC_PIMH",  10),
+            ("MSC_CIS",   10),
+            ("MSC_CISRB", 10),
+            ("MSC_SIMH",  10),
+            ("SNIS",      10),
+            ("ELBO",       1),
+            ("ELBO",      10)
             ]
+            settings = Dict{Symbol,Any}()
+            settings[:method] = method
+            settings[:defensive] = defensive
+            settings[:stepsize] = stepsize
+            settings[:task] = task
+            settings[:decay] = decay
+            settings[:optimizer] = optimizer
+            settings[:n_samples] = n_samples
+            settings[:n_reps] = n_reps
+            settings[:n_iter] = n_iter
+            @info "starting epxeriment" settings = settings
+            produce_or_load(
+                datadir("exp_raw"),
+                settings,
+                run_experiment,
+                suffix = "jld2",
+                loadfile = false,
+                tag = false,
+            )
+        end
+    end
+end
+
+function general_benchmarks_gpu()
+    defensive = nothing
+    stepsize  = 0.01
+    decay     = false
+    optimizer = "ADAM"
+    n_reps    = 20
+    n_iter    = 20000
+
+    for task ∈ [
+        "australian_gpu",
+        "german_gpu",
+        "wine_gpu",
+        "concrete_gup",
+        "yacht_gpu",
+        "boston_gpu",
+    ]
+        for (method, n_samples) ∈ [("MSC_PIMH", 10),
+                                   ("MSC_CIS", 10),
+                                   ("MSC_CISRB", 10),
+                                   ("MSC_SIMH", 10),
+                                   ("SNIS", 10),
+                                   ("ELBO", 1),
+                                   ("ELBO", 10),
+                                   ]
             settings = Dict{Symbol,Any}()
             settings[:method]    = method
             settings[:defensive] = defensive
@@ -162,103 +245,17 @@ function general_benchmarks()
             settings[:n_reps]    = n_reps
             settings[:n_iter]    = n_iter
             @info "starting epxeriment" settings = settings
-            produce_or_load(datadir("exp_raw"),
+            produce_or_load(
+                datadir("exp_raw"),
                 settings,
-                run_experiment,
+                run_experiment_gpu,
                 suffix = "jld2",
                 loadfile = false,
-                tag = false)
+                tag = false,
+            )
         end
     end
 end
-
-#     n_samples = 10
-#     for task ∈ ["sonar", "ionosphere", "breast"]
-#         for settings ∈ [Dict(:method=>"MSC_PIMH",
-#                              :task  =>task,
-#                              :n_samples=>n_samples),
-
-#                         Dict(:method=>"MSC_SIMH",
-#                             :task  =>task,
-#                             :n_samples=>n_samples),
-
-#                         Dict(:method=>"MSC_CIS",
-#                              :task  =>task,
-#                              :n_samples=>n_samples),
-
-#                         Dict(:method=>"MSC_CISRB",
-#                              :task  =>task,
-#                              :n_samples=>n_samples),
-
-#                         Dict(:method=>"SNIS",
-#                              :task  =>task,
-#                              :n_samples=>n_samples),
-
-#                         Dict(:method=>"ELBO",
-#                              :task  =>task,
-#                              :n_samples=>n_samples),
-#                         ]
-#             settings[:n_reps] = 30
-#             @info "starting epxeriment" settings=settings
-#             produce_or_load(datadir("exp_raw"),
-#                             settings,
-#                             run_experiment,
-#                             suffix="jld2",
-#                             loadfile=false,
-#                             tag=false)
-#         end
-#     end
-
-#     n_samples = 1
-#     for task ∈ ["sonar", "ionosphere", "breast"]
-#         for settings ∈ [Dict(:method=>"ELBO",
-#                              :task  =>task,
-#                              :n_samples=>n_samples),]
-#             settings[:n_reps] = 30
-#             @info "starting epxeriment" settings=settings
-#             produce_or_load(datadir("exp_raw"),
-#                             settings,
-#                             run_experiment,
-#                             suffix="jld2",
-#                             loadfile=false,
-#                             tag=false)
-#         end
-#     end
-
-#     for n_samples ∈ [20, 50]
-#     for task ∈ ["sonar"]
-#         for settings ∈ [Dict(:method=>"MSC_PIMH",
-#                              :task  =>task,
-#                              :n_samples=>n_samples),
-
-#                         Dict(:method=>"MSC_SIMH",
-#                             :task  =>task,
-#                             :n_samples=>n_samples),
-
-#                         Dict(:method=>"MSC_CIS",
-#                              :task  =>task,
-#                              :n_samples=>n_samples),
-
-#                         Dict(:method=>"MSC_CISRB",
-#                              :task  =>task,
-#                              :n_samples=>n_samples),
-
-#                         Dict(:method=>"SNIS",
-#                              :task  =>task,
-#                              :n_samples=>n_samples),
-#                         ]
-#             settings[:n_reps] = 30
-#             @info "starting epxeriment" settings=settings
-#             produce_or_load(datadir("exp_raw"),
-#                             settings,
-#                             run_experiment,
-#                             suffix="jld2",
-#                             loadfile=false,
-#                             tag=false)
-#         end
-#     end
-#     end
-# end
 
 function hyperparameter_tuning()
     for method ∈ ["MSC_PIMH"]
@@ -266,25 +263,27 @@ function hyperparameter_tuning()
             for defensive ∈ [nothing, 0.001]
                 for decay ∈ [true, false]
                     for optimizer ∈ ["NADAM", "ADAM", "RMSProp", "ADAGrad", "Nesterov"]
-                        for stepsize ∈ exp10.(range(log10(0.005), log10(0.5); length=15))
-                            settings = Dict{Symbol, Any}()
+                        for stepsize ∈ exp10.(range(log10(0.005), log10(0.5); length = 15))
+                            settings = Dict{Symbol,Any}()
 
-                            @info "starting epxeriment" settings=settings
+                            @info "starting epxeriment" settings = settings
                             settings[:defensive] = defensive
-                            settings[:stepsize]  = stepsize
-                            settings[:method]    = method
-                            settings[:task]      = task
-                            settings[:decay]     = decay
+                            settings[:stepsize] = stepsize
+                            settings[:method] = method
+                            settings[:task] = task
+                            settings[:decay] = decay
                             settings[:optimizer] = optimizer
                             settings[:n_samples] = 10
-                            settings[:n_reps]    = 8
-                            settings[:n_iter]    = 10000
-                            produce_or_load(datadir("exp_raw"),
-                                            settings,
-                                            run_experiment,
-                                            suffix="jld2",
-                                            loadfile=false,
-                                            tag=false)
+                            settings[:n_reps] = 8
+                            settings[:n_iter] = 10000
+                            produce_or_load(
+                                datadir("exp_raw"),
+                                settings,
+                                run_experiment,
+                                suffix = "jld2",
+                                loadfile = false,
+                                tag = false,
+                            )
                         end
                     end
                 end
@@ -295,88 +294,38 @@ end
 
 function gaussian_stepsize()
     ν = 400
-    for ϵ ∈ exp10.(range(log10(0.001), log10(1.0); length=20))
+    for ϵ ∈ exp10.(range(log10(0.001), log10(1.0); length = 20))
         for decay ∈ [true, false]
             for defensive ∈ [0.0, 0.001]
                 for method ∈ ["MSC_SIMH", "MSC_PIMH", "MSC_CIS"]
                     for optimizer ∈ ["ADAM", "RMSProp", "Momentum", "Nesterov", "SGD"]
-                        seed      = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
-                        prng      = Random123.Philox4x(UInt64, seed, 8)
-                        n_iter    = 20000
-                        n_mc      = 10
+                        seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
+                        prng = Random123.Philox4x(UInt64, seed, 8)
+                        n_iter = 20000
+                        n_mc = 10
 
-                        settings             = Dict{Symbol,Any}()
-                        @info "starting epxeriment" settings=settings
+                        settings = Dict{Symbol,Any}()
+                        @info "starting epxeriment" settings = settings
                         settings[:defensive] = defensive
-                        settings[:stepsize]  = ϵ
-                        settings[:method]    = method
-                        settings[:task]      = "gaussian_correlated"
-                        settings[:decay]     = decay
+                        settings[:stepsize] = ϵ
+                        settings[:method] = method
+                        settings[:task] = "gaussian_correlated"
+                        settings[:decay] = decay
                         settings[:optimizer] = optimizer
                         settings[:n_samples] = 10
-                        settings[:n_reps]    = 20
-                        settings[:n_iter]    = 10000
-                        produce_or_load(datadir("exp_raw"),
-                                        settings,
-                                        run_experiment,
-                                        suffix="jld2",
-                                        loadfile=false,
-                                        tag=false)
+                        settings[:n_reps] = 20
+                        settings[:n_iter] = 10000
+                        produce_or_load(
+                            datadir("exp_raw"),
+                            settings,
+                            run_experiment,
+                            suffix = "jld2",
+                            loadfile = false,
+                            tag = false,
+                        )
                     end
                 end
             end
         end
     end
 end
-
-
-# function stepsize(name)
-#     ν      = 200
-#     stats  = mapreduce(vcat, [nothing, 0.001]) do defensive
-#         mapreduce(vcat, exp10.(range(log10(0.005), log10(1.0); length=20))) do stepsize
-#             mapreduce(vcat, exp10.(range(log10(0.005), log10(1.0); length=20))) do stepsize
-#                 optimizer = ParameterSchedulers.Scheduler(Sqrt(stepsize), Momentum())
-#                 seed      = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
-#                 prng      = Random123.Philox4x(UInt64, seed, 8)
-#                 n_iter    = 20000
-#                 n_mc      = 10
-#                 stats = run_task(prng,
-#                                  Val(:gaussian_correlated),
-#                                  optimizer,
-#                                  method,
-#                                  n_iter,
-#                                  n_mc,
-#                                  defensive;
-#                                  n_dims=100,
-#                                  ν=ν,
-#                                  show_progress=true)
-#                 kls = [stat[:kl] for stat ∈ stats]
-#                 Dict(:defensive=> defensive,
-#                      :stepsize => stepsize,
-#                      :kl       => last(kls),
-#                      :kl_best  => minimum(kls),
-#                      :freedom  => ν
-#                      )
-#             end
-#         end
-#     end
-# end
-
-
-# function main()
-#     seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
-#     prng = Random123.Philox4x(UInt64, seed, 8)
-#     Random123.set_counter!(prng, seed_key)
-
-#     Random.seed!(seed_key)
-#     run_task(prng,
-#                  task,
-#                  method,
-#                  n_samples,
-#                  sleep_itvl,
-#                  sleep_ϵ,
-#                  sleep_L;
-#                  show_progress=false)
-#     end
-#     Dict("result"=>stats, "settings"=>settings)
-# end
