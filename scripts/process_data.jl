@@ -11,6 +11,8 @@
 @everywhere using DataFrames
 @everywhere using Bootstrap
 
+using HDF5
+using DataFramesMeta
 using Printf
 using PrettyTables
 
@@ -191,6 +193,38 @@ function draw_table_gp()
                                                "acc", "ll",
                                                "acc", "ll",
                                                "acc", "ll"])))
+end
+
+function stepsize_plot()
+    defensive = 0.0#01
+    decay     = false
+    ν         = 500
+    data      = load(datadir("exp_pro", "stepsize_nu=$(ν).jld2"), "data")
+    α         = 0.8
+
+
+    h5open(datadir("exp_pro/stepsize_data.h5"), "w") do io
+        for optimizer ∈ ["ADAM", "Nesterov", "Momentum", "RMSProp", "SGD"]
+            for method ∈ ["MSC_PIMH", "MSC_SIMH", "MSC_CIS"]
+                df_subset = @chain data begin
+                    @subset((:decay     .== decay)     .&
+                            (:defensive .== defensive) .& 
+                            (:optimizer .== optimizer) .&
+                            (:method    .== method))
+                    @select(:kl, :stepsize)
+                    groupby(:stepsize)
+                    @combine(:kl = median(:kl), :kl⁻ = quantile(:kl, (1 - α) / 2), :kl⁺ = quantile(:kl, (1 / 2 + α / 2)))
+                end
+                @info("", optimizer, method)
+                Δkl⁺ = df_subset[:, :kl⁺] - df_subset[:, :kl]
+                Δkl⁻ = df_subset[:, :kl]  - df_subset[:, :kl⁻]
+                write(io, "$(method)_$(optimizer)_kl", Array(hcat(df_subset[:, :kl], Δkl⁺, Δkl⁻)'))
+                if (optimizer == "ADAM") && (method == "MSC_PIMH")
+                    write(io, "stepsize", df_subset[:,:stepsize])
+                end
+            end
+        end
+    end
 end
 
 function main()

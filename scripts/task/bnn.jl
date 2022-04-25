@@ -22,75 +22,6 @@ Turing.@model bnn(X, y, hidden_dim) = begin
     y ~ MvNormal(ŷ[1,:], sqrt.(γ⁻¹))
 end
 
-function load_dataset(::Val{:wine})
-    fname   = datadir(joinpath("dataset", "winequality-red.csv"))
-    vals, _ = readdlm(fname, ',', header=true)
-    X = Array{Float32}(vals[:, 1:end-1])
-    y = Array{Float32}(vals[:, end])
-    X, y
-end
-
-function load_dataset(::Val{:boston})
-    fname = datadir(joinpath("dataset", "housing.csv"))
-    vals  = readdlm(fname)
-    X = Array{Float32}(vals[:, 1:end-1])
-    y = Array{Float32}(vals[:, end])
-    X, y
-end
-
-function load_dataset(::Val{:concrete})
-    fname= datadir(joinpath("dataset", "Concrete_Data.xls"))
-    data = FileIO.load(fname, "Sheet1")  |> DataFrame |> Matrix
-    
-    X = Array{Float32}(data[:, 1:end-1])
-    y = Array{Float32}(data[:, end])
-    X, y
-end
-
-function load_dataset(::Val{:yacht})
-    fname = datadir(joinpath("dataset", "yacht_hydrodynamics.data"))
-    s     = open(fname, "r") do io
-        s = read(io, String)
-        replace(s, "  " => " ")
-    end
-
-    io   = IOBuffer(s)
-    vals = readdlm(io, ' ', '\n', header=false)
-
-    X = Array{Float32}(vals[:, 1:end-2])
-    y = Array{Float32}(vals[:, end-1])
-    X, y
-end
-
-function load_dataset(::Val{:naval})
-    fname = datadir(joinpath("dataset", "naval_propulsion.txt"))
-    s     = open(fname, "r") do io
-        s = read(io, String)
-        s = replace(s, "   " => " ")
-    end
-
-    io   = IOBuffer(s)
-    vals = readdlm(io, ' ', '\n', header=false)
-    vals = vals[:,2:end]
-
-    X = Array{Float32}(vals[:, 1:end-2])
-    y = Array{Float32}(vals[:, end-1])
-
-    feature_idx = 1:size(X,2)
-    X = Float64.(X[:, setdiff(feature_idx, (9, 12))])
-
-    X, y
-end
-
-function load_dataset(::Val{:energy})
-    fname= datadir(joinpath("dataset", "Concrete_Data.xls"))
-    data = FileIO.load(fname, "Sheet1")  |> DataFrame |> Matrix
-    
-    X = Array{Float32}(data[:, 1:end-2])
-    y = Array{Float32}(data[:, end])
-    X, y
-end
-
 function propagate_linear(M, V, m_prev, v_prev)
     scaling = size(m_prev, 1)
     m_α     = M * m_prev / sqrt(scaling)
@@ -208,7 +139,7 @@ function run_task(prng::Random.AbstractRNG,
     q        = Turing.Variational.meanfield(model)
     q        = AdvancedVI.update(q, θ)
 
-    i      = 1
+    i      = 0
     #k_hist = []
     function plot_callback(ℓπ, λ)
         q′         = AdvancedVI.update(q, λ)
@@ -248,7 +179,8 @@ function run_task(prng::Random.AbstractRNG,
         lpd  = mean(logpdf.(Normal.(m_y, sqrt.(v_y .+ v_noise)), y_test))
         rmse = sqrt(Flux.Losses.mse(m_y, y_test, agg=mean))
 
-        (rmse=rmse, lpd=lpd, σ=γ_β/γ_α)
+        i += 1
+        (iter = i, rmse=rmse, lpd=lpd, σ=γ_β/γ_α)
     end
 
     ν        = Distributions.Product(fill(Cauchy(), n_params))

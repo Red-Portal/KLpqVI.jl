@@ -15,39 +15,6 @@ Turing.@model logistic_regression(X, y, d) = begin
     y .~ Turing.BernoulliLogit.(s)
 end
 
-function load_dataset(::Val{:german})
-    dataset = DelimitedFiles.readdlm(
-        datadir("dataset", "german.data-numeric"))
-    data_x  = dataset[:, 1:end-1,]
-    data_y  = dataset[:, end] .- 1
-    data_x, data_y
-end
-
-function load_dataset(::Val{:pima})
-    dataset = DelimitedFiles.readdlm(
-        datadir("dataset", "pima-indians-diabetes.csv"), ',', skipstart=1)
-    data_x  = dataset[:, 1:end-1,]
-    data_y  = dataset[:, end]
-    data_x, data_y
-end
-
-function prepare_dataset(prng::Random.AbstractRNG,
-                         data_x::AbstractMatrix,
-                         data_y::AbstractVector;
-                         ratio::Real=0.9)
-    n_data      = size(data_x, 1)
-    shuffle_idx = Random.shuffle(prng, 1:n_data)
-    data_x      = data_x[shuffle_idx,:]
-    data_y      = data_y[shuffle_idx]
-
-    n_train = floor(Int, n_data*ratio)
-    x_train = data_x[1:n_train, :]
-    y_train = data_y[1:n_train]
-    x_test  = data_x[n_train+1:end, :]
-    y_test  = data_y[n_train+1:end]
-    x_train, y_train, x_test, y_test
-end
-
 # function sample_posterior(prng::Random.AbstractRNG, task::Val{:pima})
 #     data_x, data_y = fetch_dataset(task)
 #     n_dims = size(data_x, 2)
