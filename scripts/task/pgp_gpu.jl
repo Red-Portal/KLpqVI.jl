@@ -135,9 +135,16 @@ function run_task(
         (iter = i, rmse = rmse, lpd = lpd)
     end
 
-    λ_μ = randn(prng, n_params)
-    λ_σ = fill(1.0, n_params)
-    λ   = vcat(λ_μ, λ_σ)
+    λ  = if objective isa ELBO
+        λ_μ = randn(prng, n_params)
+        λ_σ = fill(1.0, n_params)
+        vcat(λ_μ, λ_σ)
+    else
+        λ_μ = randn(prng, n_params)
+        λ_σ = fill(3.0, n_params)
+        vcat(λ_μ, λ_σ)
+    end
+
     θ, stats = vi(
         ℓπ,
         ℓq,

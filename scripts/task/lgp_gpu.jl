@@ -144,9 +144,15 @@ function run_task(
     vi_init = DynamicPPL.VarInfo(model, ctx)
     model(prng, vi_init, DynamicPPL.SampleFromUniform())
 
-    λ_μ = randn(prng, n_params)
-    λ_σ = fill(1.0, n_params)
-    λ   = vcat(λ_μ, λ_σ)
+    λ  = if objective isa ELBO
+        λ_μ = randn(prng, n_params)
+        λ_σ = fill(1.0, n_params)
+        vcat(λ_μ, λ_σ)
+    else
+        λ_μ = randn(prng, n_params)
+        λ_σ = fill(3.0, n_params)
+        vcat(λ_μ, λ_σ)
+    end
 
     θ, stats = vi(
         ℓπ,
