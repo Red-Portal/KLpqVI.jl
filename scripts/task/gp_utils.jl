@@ -245,10 +245,10 @@ Zygote.@adjoint function gp_likelihood(
         end
     else
         -Inf, function (Δ)
-            ∂p∂y = CUDA.zeros{eltype(X_dev)}(n_data)
+            ∂p∂y = CUDA.zeros(eltype(X_dev), n_data)
             ∂p∂σ² = 0
             ∂p∂ϵ² = 0
-            ∂p∂ℓ² = CUDA.zeros{eltype(X_dev)}(n_dims)
+            ∂p∂ℓ² = CUDA.zeros(eltype(X_dev), n_dims)
             (nothing, Δ * ∂p∂y, Δ * ∂p∂σ², Δ * ∂p∂ϵ², Δ * ∂p∂ℓ²)
         end
     end
