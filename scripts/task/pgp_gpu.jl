@@ -94,6 +94,8 @@ function run_task(
     i = 0
     #k_hist = []
     function callback(_, λ_)
+        i += 1
+
         μ = λ_[1:n_params]
         σ = StatsFuns.softplus.(λ_[n_params+1:end])
     
@@ -111,7 +113,7 @@ function run_task(
         R_train = distance_matrix_gpu(X_train_dev, X_train_dev, ℓ²_dev)
         K_unit  = se_gpu(R_train)
         K       = eltype(K_unit)(σ²) * K_unit + eltype(K_unit)(1e-6 + ϵ²_f) * I
-        K_chol  = cholesky(K; check = true)
+        K_chol  = cholesky(K; check = false)
 
         R_test_train      = distance_matrix_gpu(X_test_dev, X_train_dev, ℓ²_dev)
         K_unit_test_train = se_gpu(R_test_train)
@@ -127,12 +129,14 @@ function run_task(
         μ_f_pred   = Array(K_test_train * (K_chol \ μ_f_dev))
         σ²_f_pred  = max.(σ² .+ ϵ²_y .- kᵀKpW⁻¹k, eps(eltype(K)))
     
-        y_pred = μ_f_pred * σ_y .+ μ_y
-        lpd    = mean(logpdf.(Normal.(y_pred, σ_y * sqrt.(σ²_f_pred)), y_test))
-        rmse   = sqrt(mean((y_test - y_pred) .^ 2))
-    
-        i += 1
-        (iter = i, rmse = rmse, lpd = lpd)
+        if issuccess(K_chol) && issuccess(K_chol)
+            y_pred = μ_f_pred * σ_y .+ μ_y
+            lpd    = mean(logpdf.(Normal.(y_pred, σ_y * sqrt.(σ²_f_pred)), y_test))
+            rmse   = sqrt(mean((y_test - y_pred) .^ 2))
+            (iter = i, rmse = rmse, lpd = lpd)
+        else
+            (iter = i, rmse = typemax(Float64), lpd = -Inf)
+        end
     end
 
     λ  = if objective isa ELBO
