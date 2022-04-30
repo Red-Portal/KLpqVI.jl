@@ -42,12 +42,13 @@ using UnicodePlots
 end
 
 function process_data(io, df, settings)
-    α = 0.8
+    α = 0.95
 
     #iter        = repeat(1:settings[:n_iter]; inner=settings[:n_reps])
     iter        = repeat(1:settings[:n_iter], settings[:n_reps])
     df[:,:iter] = iter
 
+    method     = settings[:method]
     cols       = names(df)
     valid_cols = setdiff(cols, ["iter"])
     valid_cols = filter(col -> eltype(df[:,col]) <: Real, valid_cols)
@@ -59,22 +60,29 @@ function process_data(io, df, settings)
     #       valid_columns = valid_cols,
     #       )
 
+    function apply_bootstrap(arr)
+        boot = bootstrap(mean, arr, AntitheticSampling(245))
+        ci   = confint(boot, NormalConfInt(α))
+        (y = ci[1][1], y⁺⁻ = ci[1][3])#, y⁻ = ci[1][2])
+    end
+
     for valid_col ∈ valid_cols
-        valid_col⁺ = valid_col * "⁺"
-        valid_col⁻ = valid_col * "⁻"
         stats      = @chain df begin
             @select(:iter, $valid_col)
             groupby(:iter)
-            @combine($valid_col  = median($valid_col),
-                     $valid_col⁺ = quantile($valid_col, (1 - α) / 2),
-                     $valid_col⁻ = quantile($valid_col, (1 / 2 + α / 2)))
+            # @combine(y  = median($valid_col),
+            #          y⁺ = quantile($valid_col, (1 - α) / 2),
+            #          y⁻ = quantile($valid_col, (1 / 2 + α / 2)))
+            @combine($AsTable = apply_bootstrap($valid_col))
         end
+
         x  = stats[:,:iter]
-        y  = stats[:,valid_col]
-        y⁺ = stats[:,valid_col⁺] - stats[:,valid_col]
-        y⁻ = stats[:,valid_col]  - stats[:,valid_col⁺]
-        write(io, "$(valid_col)_x", x)
-        write(io, "$(valid_col)_y", Array(hcat(y, y⁺, y⁻)'))
+        y  = stats[:,:y]
+        #y⁺ = stats[:,:y⁺] - stats[:,:y]
+        #y⁻ = stats[:,:y]  - stats[:,:y⁺]
+        y⁺⁻ = stats[:,:y]  - stats[:,:y⁺⁻]
+        write(io, "$(method)_$(valid_col)_x", x)
+        write(io, "$(method)_$(valid_col)_y", Array(hcat(y, y⁺⁻)'))
     end
 end
 
