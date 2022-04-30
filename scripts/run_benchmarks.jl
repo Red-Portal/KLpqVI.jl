@@ -181,8 +181,11 @@ function general_benchmarks()
         "sonar",
         "ionosphere",
         "heart",
-        #"australian",
-        #"breast",
+        "energy",
+        "gas",
+        "airfoil",
+        "sml",
+        "kin40k",
     ]
         for (method, n_samples) ∈ [
             ("MSC_PIMH",  10),
@@ -191,7 +194,6 @@ function general_benchmarks()
             ("MSC_SIMH",  10),
             ("SNIS",      10),
             ("ELBO",       1),
-            ("ELBO",      10)
             ]
             settings = Dict{Symbol,Any}()
             settings[:method] = method

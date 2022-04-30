@@ -16,6 +16,50 @@ function prepare_dataset(prng::Random.AbstractRNG,
     x_train, y_train, x_test, y_test
 end
 
+function load_dataset(::Val{:sml})
+    dataset = MAT.matread(
+        datadir("dataset", "uci", "sml.mat"))["data"]
+    data_x = dataset[:, 1:end-1]
+    data_y = dataset[:, end]
+
+    valid_features = std(data_x, dims=1)[1,:] .> 1e-5
+
+    data_x = data_x[:, valid_features]
+    data_x, data_y
+end
+
+function load_dataset(::Val{:energy})
+    dataset = MAT.matread(
+        datadir("dataset", "uci", "energy.mat"))["data"]
+    data_x = dataset[:, 1:end-1]
+    data_y = dataset[:, end]
+    data_x, data_y
+end
+
+function load_dataset(::Val{:kin40k})
+    dataset = MAT.matread(
+        datadir("dataset", "uci", "kin40k.mat"))["data"]
+    data_x = dataset[:, 1:end-1]
+    data_y = dataset[:, end]
+    data_x, data_y
+end
+
+function load_dataset(::Val{:airfoil})
+    dataset = MAT.matread(
+        datadir("dataset", "uci", "airfoil.mat"))["data"]
+    data_x = dataset[:, 1:end-1]
+    data_y = dataset[:, end]
+    data_x, data_y
+end
+
+function load_dataset(::Val{:gas})
+    dataset = MAT.matread(
+        datadir("dataset", "uci", "gas.mat"))["data"]
+    data_x = dataset[:, 1:end-1]
+    data_y = dataset[:, end]
+    data_x, data_y
+end
+
 function load_dataset(::Val{:german})
     dataset = DelimitedFiles.readdlm(
         datadir("dataset", "german.data-numeric"))
@@ -91,16 +135,6 @@ function load_dataset(::Val{:naval})
 
     X, y
 end
-
-function load_dataset(::Val{:energy})
-    fname= datadir(joinpath("dataset", "Concrete_Data.xls"))
-    data = FileIO.load(fname, "Sheet1")  |> DataFrame |> Matrix
-    
-    X = Array{Float32}(data[:, 1:end-2])
-    y = Array{Float32}(data[:, end])
-    X, y
-end
-
 
 function load_dataset(::Val{:heart})
     dataset = DelimitedFiles.readdlm(
