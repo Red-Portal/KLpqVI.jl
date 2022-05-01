@@ -16,6 +16,7 @@ import DelimitedFiles
 import Random
 import PyCall
 import AdvancedHMC
+import OptimalTransport
 
 include("datasets.jl")
 include("gp_utils.jl")
@@ -23,7 +24,7 @@ include("gaussian.jl")
 include("logistic.jl")
 include("eightschools.jl")
 include("radon.jl")
-include("lgp.jl")
+#include("lgp.jl")
 include("lgp_gpu.jl")
 include("pgp_gpu.jl")
 include("bnn.jl")

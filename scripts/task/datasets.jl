@@ -16,6 +16,13 @@ function prepare_dataset(prng::Random.AbstractRNG,
     x_train, y_train, x_test, y_test
 end
 
+function load_dataset(::Val{:colon})
+    data   = MAT.matread(datadir("dataset", "colon.mat"))
+    data_x = data["X"]
+    data_y = (data["Y"][:,1] .+ 1) / 2
+    data_x, data_y
+end
+
 function load_dataset(::Val{:sml})
     dataset = MAT.matread(
         datadir("dataset", "uci", "sml.mat"))["data"]
@@ -169,6 +176,8 @@ function load_dataset(::Val{:ionosphere})
     data_y[data_y .== "g"] .= 1.0
     data_y[data_y .== "b"] .= 0.0
 
+    valid_features = std(data_x, dims=1)[1,:] .> 1e-5
+    data_x = data_x[:,valid_features]
     data_x = Float64.(data_x)
     data_y = Float64.(data_y)
     data_x, data_y
