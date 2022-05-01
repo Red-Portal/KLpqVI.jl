@@ -186,6 +186,12 @@ function general_benchmarks()
         "airfoil",
         "sml",
         "kin40k",
+        "sonar_hlr",
+        "ionosphere_hlr",
+        "australian_hlr",
+        "german_hlr",
+        "heart_hlr",
+        "breast_hlr",
     ]
         for (method, n_samples) ∈ [
             ("MSC_PIMH",  10),
