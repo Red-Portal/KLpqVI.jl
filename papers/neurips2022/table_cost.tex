@@ -3,16 +3,16 @@
 %\begin{table}
 %\centering
 \caption{Computational Costs of MCSA Schemes}\label{table:cost}
-\setlength{\tabcolsep}{1pt}
+\setlength{\tabcolsep}{0.5pt}
   \begin{threeparttable}
 \begin{tabular}{lccccc}\toprule
-& \multicolumn{3}{c}{\footnotesize Posterior Sampling} & \multicolumn{2}{c}{\footnotesize Stochastic gradient} \\
+& \multicolumn{3}{c}{\footnotesize Kernel Application} & \multicolumn{2}{c}{\footnotesize Gradient Estimation} \\
 \cmidrule(lr){2-4}\cmidrule(lr){5-6}
-  & \(\scriptsize p\left( \vz, \vx \right)\)
-  & \(\scriptsize q\left(\vz; \vlambda\right)\)
-  & \(\scriptsize q\left(\vz; \vlambda\right)\)
-  & \(\scriptsize p\left( \vz, \vx \right)\)
-  & \(\scriptsize q\left(\vz; \vlambda\right)\)
+  & {\footnotesize\(p\left( \vz, \vx \right)\)}
+  & {\footnotesize\(q\left(\vz; \vlambda\right)\)}
+  & {\footnotesize\(q\left(\vz; \vlambda\right)\)}
+  & {\footnotesize\(p\left( \vz, \vx \right)\)}
+  & {\footnotesize\( q\left(\vz; \vlambda\right)\)}
   \\
   & {\footnotesize\# Eval.  }
   & {\footnotesize\# Eval.  }
@@ -53,7 +53,7 @@ JSA
 \\
 %
 {\footnotesize
-\textit{ours}
+\textit{pMCSA}
 }
 & \(N\)
 & \(2 \, N\)

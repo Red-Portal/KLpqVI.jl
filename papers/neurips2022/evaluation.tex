@@ -1,79 +1,93 @@
 
 %% \begin{figure*}
-%%   \vspace{-0.3in}
 %%   \centering
-%%   \subfloat[\(N=2^2\)]{
-%%     \includegraphics[scale=0.75]{figures/gaussian_01.pdf}
+%%   \subfloat[Optimizer Sensitivity]{
+%%     \includegraphics[scale=1.0]{figures/stepsize_01.pdf}
+%%   } \\
+%%   \subfloat[Gradient Variance]{
+%%     \includegraphics[scale=1.0]{figures/gaussian_01.pdf}
 %%   }
-%%   \subfloat[\(N=2^4\)]{
-%%     \includegraphics[scale=0.75]{figures/gaussian_02.pdf}
+%%   \caption{\textbf{Optimizer stepsize (\(\gamma\)) versus final KL. pMCSA is the least sensitive to optimizer hyperparameters and results in stable convergence.}
+%%       The final KL is obtained at the \(10^4\)th iteration.
+%%       The target distribution is a 100-D Gaussian with \(\nu = 500\).
+%%       The error bands are the 80\% quantiles while the solid lines are the median of 20 replications.
 %%   }
-%%   \subfloat[\(N=2^6\)]{
-%%     \includegraphics[scale=0.75]{figures/gaussian_03.pdf}
-%%   }
-%%   \caption{100-D isotropic Gaussian example with a varying computational budget \(N\).
-%%     MSC-PIMH converges faster than MSC-CIS and MSC-CISRB regardless of \(N\).
-%%     Also, the convergence of MSC-PIMH becomes more stable/monotonic as \(N\) increases.
-%%     The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
-%%   }\label{fig:gaussian}
-%%   \vspace{-0.15in}
 %% \end{figure*}
 
 \begin{figure*}
-  \begin{minipage}{.5\textwidth}
-    \centering
-    \includegraphics[scale=1.1]{figures/stepsize_01.pdf}
-    \caption{\textbf{Optimizer stepsize (\(\gamma\)) versus final KL. pMCSA is the least sensitive to optimizer hyperparameters and results in stable convergence.}
-      The final KL is the value obtained at the \(10^4\)th iteration.
-      The target distribution is a 100 dimensional Gaussian with \(\nu = 500\) degress of freedom.
-      The confidence intervals are the 80\% empirical quantiles while the solid lines are the median of 20 replications.}
-  \end{minipage}\hspace{0.15in}
-  \begin{minipage}{0.45\textwidth}
-    \centering
-    \includegraphics[scale=1.1]{figures/gaussian_01.pdf}
-    \caption{\textbf{Convergence on the 100-D Gaussian. pMCSA achieves the lowest variance, which also scales better with \(N\).}
-      The target distribution is a 100 dimensional Gaussian with \(\nu = 300\) degress of freedom.
-      The confidence intervals are the 80\% empirical quantiles while the solid lines are the median of 20 replications.}\label{fig:gaussian}
-  \end{minipage}
+  \vspace{-0.2in}
+  \centering
+  \includegraphics[scale=0.9]{figures/stepsize_02.pdf}
+  \vspace{-0.05in}
+  \caption{\textbf{Optimizer stepsize (\(\gamma\)) versus final KL.
+      pMCSA is the least sensitive to optimizer hyperparameters and results in stable convergence.}
+      The final KL is obtained at the \(10^4\)th iteration.
+      The target distribution is a 100-D Gaussian with \(\nu = 500\).
+      The error bands are the 80\% quantiles while the solid lines are the median of 20 replications.
+  }\label{fig:stepsize}
+\end{figure*}
+\begin{figure*}
+  \vspace{-0.1in}
+  \centering
+  \includegraphics[scale=0.9]{figures/gaussian_02.pdf}
+  \vspace{-0.07in}
+  \caption{\textbf{
+      KL divergence and gradient variance.
+      pMCSA not only achieves the least gradient variance, but its variance also scales better with \(N\).
+    }
+    The target distribution is a 100-D Gaussian with \(\nu = 300\).
+    The error bands are the 80\% quantiles while the solid lines are the median of 20 replications.
+  }\label{fig:gaussian}
+  \vspace{-0.2in}
 \end{figure*}
 
 \vspace{-0.05in}
 \section{Evaluations}\label{section:eval}
 
 \vspace{-0.05in}
-\subsection{Baselines and Implementation}
+\subsection{Experimental Setup}
 \vspace{-0.05in}
 \paragraph{Implementation}
 For the realistic experiments, we implemented score climbing VI on top of the Turing~\citep{ge2018t} probabilistic programming framework.
 For the variational family, we use diagonal Gaussians with the support transformation of~\citet{JMLR:v18:16-107}.
 We use the ADAM optimizer by~\citet{kingma_adam_2015} with a learning rate of 0.01 in all of the experiments.
-The computational budget is set to \(N=10\) and \(T=10^4\) for all experiments unless specified.
+The computational budget is set to \(N=10\) and \(T=2\cdot10^4\) for all experiments unless specified.
+We used the mean-field Gaussian variational family for all experiments.
 
-We compare the following methods:
-\begin{enumerate}[noitemsep]
-\item[\ding{182}] \textbf{ours}: our proposed scheme.
-\item[\ding{183}] \textbf{JSA}: JSA with the (batch) IMH kernel~\citep{pmlr-v124-ou20a}.
-\item[\ding{184}] \textbf{MSC}: MSC~\citep{NEURIPS2020_b2070693}.
-\item[\ding{185}] \textbf{MSC-RB}: MSC with Rao-Blackwellization~\citep{NEURIPS2020_b2070693}.
-\item[\ding{186}] \textbf{SNIS}: adaptive IS with SNIS~\cref{section:ivi_previous}.
-\item[\ding{187}] \textbf{ELBO}: evidence lower-bound maximization~\citep{pmlr-v33-ranganath14, JMLR:v18:16-107} with the path derivative estimator~\citep{NIPS2017_e91068ff}.
-\end{enumerate}
-For ELBO, we use only a single sample as originally described by~\citet{NIPS2017_e91068ff}.
-This also ensures a fair comparison against inclusive KL minimization methods since the iteration complexity of computing the ELBO gradient can be easily a few orders of magnitude larger.
-Also, we only use single-HMC in the logistic regression experiment due to its high computational demands, 
+\vspace{-0.1in}
+\paragraph{Baselines}
+We compare
+\begin{enumerate*}[label=\textbf{(\roman*)}]
+  \item pMCSA,
+  \item JSA,
+  \item MSC,
+  \item MSC with with Rao-Blackwellization (\textbf{MSC-RB},~\citealt{NEURIPS2020_b2070693}),
+  \item adaptive importance sampling (IS) with the self-normalized IS estimator (\textbf{SNIS},~\citealt{robert_monte_2004}), and
+  \item evidence lower-bound maximization (\textbf{ELBO},~\citealt{pmlr-v33-ranganath14, JMLR:v18:16-107}) with the path derivative estimator~\citep{NIPS2017_e91068ff}
+\end{enumerate*}
 
-\subsection{Numerical Simulation}\label{section:simulation}
-\paragraph{Simulation Setup}
-First, we visualize the variance and bias convergence of the considered schemes on a toy problem.
-We run MCSA methods against a 10 dimensional correlated multivariate Gaussian where the covariance was sampled from a Wishart distribution with \(\nu = 500\) degrees of freedom.
-The variational family is a mean-field Gaussian.
-The gradient variance is estimated using \(512\) Markov chains generated independently of the chains used in MCSA.
+\vspace{-0.05in}
+\subsection{Correlated Multviate Gaussian}\label{section:simulation}
+\vspace{-0.05in}
+\paragraph{Target Distribution}
+First, we perform experiments on a 100 dimensional correlated multivariate Gaussian where the covariance is sampled from a Wishart distribution with varying degrees of freedom \(\nu\).
+This problem is challenging since a IMH/CIS kernel with a diagonal Gaussian proposal will mix very slowly.
+Since exact KL divergence between the target and the varitional approximation is available, exact evaluation is possible.
 
-\paragraph{Simulation Result}
-The results are shown in~\cref{fig:gaussian}.
-We can see that our proposed scheme converges the fastest.
-This is due to the superior gradient variance.
-Surprisingly, this also leads to lower bias that JSA which operates longer per-iteration Markov chains.
+\vspace{-0.1in}
+\paragraph{Convergence and Gradient Variance}
+The convergence in KL divergence and gradient variance is shown in \cref{fig:gaussian}.
+The gradient variance was estimated using \(512\) independent Markov chains using the parameters generated by the main MCSA procedure.
+We can see that pMCSA converges the fastest, and benefits the most from increasing \(N\).
+This is apparent from the fact that gradient variance dramatically improves by increasing \(N\).
+Although other methods also improve slightly by increasing \(N\), the variance reduction is minimal.
+This confirms our theoretical analysis in~\cref{section:comparison}.
+
+\vspace{-0.1in}
+\paragraph{Robustness Against Optimizers}
+We compared the robustness of the MCSA schemes with respect to different SGD optimizers and their hyperparameters in \cref{fig:stepsize}.
+Clearly, pMCSA successfully converges for a wider variety of hyperparameters.
+Since most methods are the most stable when using ADAM, we use ADAM for all of our remaining experiments.
 
 %% \subsection{Hierarchical Logistic Regression}\label{section:logistic}
 %% \vspace{-0.05in}
@@ -82,6 +96,11 @@ Surprisingly, this also leads to lower bias that JSA which operates longer per-i
 %% 10\% of the data points were randomly selected in each of the 100 repetitions as test data.
 
 \input{gp_table.tex}
+
+\input{bnn_table.tex}
+
+\input{pgp_table.tex}
+
 %% %
 
 %% %
@@ -163,37 +182,37 @@ This is better-shown in~\cref{fig:gp}, where ELBO quickly converges to a point w
 %Meanwhile, on \texttt{breast}, ELBO gives better uncertainty estimates than inclusive KL minimization methods.
 %This happens when the modal estimate (preferred by the exclusive KL) gives good accuracy and uncertainty estimates.
 
-  \vspace{-0.05in}
-\subsection{Marginal Likelihood Estimation}\label{section:mll}
-  \vspace{-0.05in}
-\paragraph{Experimental Setup}
-Lastly, we now estimate the marginal log-likelihood of a hierarchical regression model with partial pooling (\texttt{radon}, \(\vz \in \mathbb{R}^{175}\),~\citealt{gelman_data_2007}) for modeling radon levels in U.S homes.
-\texttt{radon} contains multiple posterior degeneracies from the hierarchy.
-We estimated the reference marginal likelihood using \textit{thermodynamic integration} (TI,~\citealt{gelman_simulating_1998, neal_annealed_2001, lartillot_computing_2006}) with HMC implemented by Stan~\citep{carpenter_stan_2017, betancourt_conceptual_2017}.
-%
-\begin{wrapfigure}{r}{0.45\textwidth}
-  \vspace{-0.25in}
-  \centering
-  \begin{minipage}[b]{0.25\linewidth}
-    \centering
-    \includegraphics[scale=0.8]{figures/radon_03.pdf}
-  \end{minipage}
-  \begin{minipage}[b]{0.7\linewidth}
-    \centering
-    \includegraphics[scale=0.8]{figures/radon_02.pdf}
-    %\subcaption{\texttt{radon}}
-  \end{minipage}
-    \vspace{-0.1in}
-  %% \begin{minipage}[b]{0.35\linewidth}
-  %%   \centering
-  %%   \includegraphics[scale=0.7]{figures/sv_02.pdf}
-  %%   \subcaption{\texttt{stock}}\label{fig:sv}
-  %% \end{minipage}
-  \caption{Marginal log-likelihood estimates on the \texttt{radon} dataset.
-    The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
-  }\label{fig:marginal_likelihood}
-  \vspace{-0.2in}
-\end{wrapfigure}
+%%   \vspace{-0.05in}
+%% \subsection{Marginal Likelihood Estimation}\label{section:mll}
+%%   \vspace{-0.05in}
+%% \paragraph{Experimental Setup}
+%% Lastly, we now estimate the marginal log-likelihood of a hierarchical regression model with partial pooling (\texttt{radon}, \(\vz \in \mathbb{R}^{175}\),~\citealt{gelman_data_2007}) for modeling radon levels in U.S homes.
+%% \texttt{radon} contains multiple posterior degeneracies from the hierarchy.
+%% We estimated the reference marginal likelihood using \textit{thermodynamic integration} (TI,~\citealt{gelman_simulating_1998, neal_annealed_2001, lartillot_computing_2006}) with HMC implemented by Stan~\citep{carpenter_stan_2017, betancourt_conceptual_2017}.
+%% %
+%% \begin{wrapfigure}{r}{0.45\textwidth}
+%%   \vspace{-0.25in}
+%%   \centering
+%%   \begin{minipage}[b]{0.25\linewidth}
+%%     \centering
+%%     \includegraphics[scale=0.8]{figures/radon_03.pdf}
+%%   \end{minipage}
+%%   \begin{minipage}[b]{0.7\linewidth}
+%%     \centering
+%%     \includegraphics[scale=0.8]{figures/radon_02.pdf}
+%%     %\subcaption{\texttt{radon}}
+%%   \end{minipage}
+%%     \vspace{-0.1in}
+%%   %% \begin{minipage}[b]{0.35\linewidth}
+%%   %%   \centering
+%%   %%   \includegraphics[scale=0.7]{figures/sv_02.pdf}
+%%   %%   \subcaption{\texttt{stock}}\label{fig:sv}
+%%   %% \end{minipage}
+%%   \caption{Marginal log-likelihood estimates on the \texttt{radon} dataset.
+%%     The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
+%%   }\label{fig:marginal_likelihood}
+%%   \vspace{-0.2in}
+%% \end{wrapfigure}
 %
   \vspace{-0.2in}
 \paragraph{Results}

@@ -7,8 +7,8 @@ Instead of working directly with the target distribution \(\pi\), variational in
 Naturally, choosing an appropriate discrepancy measure is key to the quality of the solution.
 This fact has led to a quest for suitable divergence measures~\citep{pmlr-v37-salimans15, NIPS2016_7750ca35, NIPS2017_35464c84, NEURIPS2018_1cd138d0, pmlr-v97-ruiz19a}.
 So far, the exclusive (or reverse, backward)  KL divergence \(\DKL{q\left(\cdot; \vlambda\right)}{\pi}\) has been used ``exclusively'' among various discrepancy measures.
-This is partly because the exclusive KL is defined as an average over \(q_{\lambda}(\vz)\), which can be estimated efficiently.
-In contrast, the inclusive KL is defined as
+This is partly because the exclusive KL is defined as an average over \(q_{\lambda}(\vz)\), which can be approximated efficiently.
+In contrast, the inclusive KL defined as
 %
 {%\small
 \vspace{-0.05in}
@@ -20,7 +20,7 @@ In contrast, the inclusive KL is defined as
 %\vspace{-0.05in}
 }%
 %
-where the average is taken over \(\pi\).
+requires to take the integral over \(\pi\).
 Since our goal is to obtain \(\pi\) in the first place, the difficulty of minimizing the inclusive KL lies in the fact that this is a chicken-and-egg problem.
 Despite this challenge, the inclusive KL has consistently drawn attention due to its statistical properties~\citep{minka2005divergence, mackay_local_2001}.
 
@@ -28,28 +28,25 @@ Recently,~\citet{NEURIPS2020_b2070693,pmlr-v124-ou20a} have respectively propose
 These methods minimize the inclusive KL using stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951}) where the gradients are estimated using Markov chain Monte Carlo (MCMC).
 The MCMC kernel \(K_{\vlambda_t}\left(\vz_t, \cdot\right)\) is chosen such that it directly takes advantage of the current variational approximation \(q\left(\cdot; \vlambda_t\right)\).
 Thus, the quality of the gradients improves over time as the KL divergence decreases.
-
-MSC and JSA are radically different from the classical black-box VI with vanilla SGD~\citep{pmlr-v33-ranganath14, JMLR:v18:16-107} setting.
-In particular, vanilla SGD assumes the gradient noise to be independent across iterations, whereas the gradient noise in MSC and JSA is Markovian.
+Still, the gradients are non-asymptotically biased and Markovian, which sharply contrasts MSC and JSA from classical black-box VI~\citep{pmlr-v33-ranganath14, JMLR:v18:16-107}, where the gradients are independent and unbiased.
 While~\citet{NEURIPS2020_b2070693} has shown convergence of MSC through the work of~\citet{gu_stochastic_1998}, this result is only asymptotic and does not provide insight into the practical performance of MSC.
-Fortunately, we show that the Markov chain gradient descent (MCGD,~\citealt{duchi_ergodic_2012, NEURIPS2018_1371bcce, pmlr-v99-karimi19a, doan_convergence_2020}) setting provides a practical framework.
+Fortunately, we show that the Markov chain gradient descent (MCGD,~\citealt{duchi_ergodic_2012, NEURIPS2018_1371bcce, pmlr-v99-karimi19a, doan_convergence_2020}) provides a practical framework.
 
-This paper first casts MSC and JSA into a general framework we call Markov chain score ascent (MCSA).
-Then, we show that MCSA is a special case of MCGD, enabling the application of its non-asymptotic convergence results.
+This paper first casts MSC and JSA into a general framework we call Markov chain score ascent (MCSA), which we show is a special case of MCGD.
+This enables the application of the non-asymptotic convergence results of MCGD~\citep{duchi_ergodic_2012, NEURIPS2018_1371bcce, pmlr-v99-karimi19a, doan_finitetime_2020, doan_convergence_2020, Xiong_Xu_Liang_Zhang_2021, debavelaere_convergence_2021} for analyzing them.
 The fundamental properties affecting the convergence rate of MCGD are the ergodic convergence rate (\(\rho\)) of the MCMC kernel and the gradient variance (\(G\)).
 We analyze these properties (\(\rho, G\)) of MSC and JSA, enabling their practical comparison given a fixed computational budget (\(N\)).
 Furthermore, based on the recent insight that the mixing rate does not affect the convergence rate of MCGD~\citet{doan_convergence_2020,doan_finitetime_2020}, we propose a novel scheme, parallel MCSA (pMCSA), which achieves lower variance by trading off the mixing rate.
-
-We verify our theoretical analysis through numerical simulations.
-Furthermore, we compare MSC, JSA, and our proposed method on general Bayesian inference problems.
+We verify our theoretical analysis through numerical simulations and compare MSC, JSA, and pMCSA on general Bayesian inference problems.
 Our experiments show that our proposed method is superior to previous MCSA approaches.
-Furthermore, MSCA is competitive against evidence lower-bound (ELBO) maximization within our experiments.
-We further discuss this result in relation with the conclusions of~\citet{dhaka_challenges_2021} in~\cref{section:discussion}.
+%Furthermore, MSCA is competitive against evidence lower-bound (ELBO) maximization within our experiments.
+%We further discuss this result in relation with the conclusions of~\citet{dhaka_challenges_2021} in~\cref{section:discussion}.
 
-\vspace{-0.05in}
+\vspace{-0.1in}
 \paragraph{Contribution Summary}
 %\vspace{-0.2in}
 %% \begin{enumerate*}[label=\textbf{(\roman*)}]
+\setlength\itemsep{0.01in}
 \begin{enumerate}[leftmargin=5mm,listparindent=\parindent]
 \vspace{-0.05in}
 \item \textbf{Theoretical Framework (\cref{section:convergence,thm:product_kernel})} \\

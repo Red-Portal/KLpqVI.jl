@@ -2,38 +2,24 @@
 \begin{table*}
   \vspace{-0.2in}
   \centering
-  \caption{Classification Accuracy and Log Predictive Density on Logistic Gaussian Process Problems}\label{table:gp}
+  \caption{Test Log Predictive Density on Gaussian Process Logistic Classification}\label{table:gp}
   \vspace{-0.05in}
-  \setlength{\tabcolsep}{1pt}
+  \setlength{\tabcolsep}{4pt}
   \begin{threeparttable}
-  \begin{tabular}{lcccccc}
+  \begin{tabular}{lrrrrrr}
     \toprule
-     & \multicolumn{2}{c}{\textbf{\texttt{sonar}}} & \multicolumn{2}{c}{\textbf{\texttt{ionosphere}}} & \multicolumn{2}{c}{\textbf{\texttt{breast}}} \\
-    \cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule(lr){6-7}
-    & Test Accuracy & Test LPD
-    & Test Accuracy & Test LPD
-    & Test Accuracy & Test LPD \\\midrule
-    %% ELBO & \textbf{0.86 {\scriptsize(0.84, 0.88)}} & -0.42 {\scriptsize(-0.43, -0.40)} & 0.89 {\scriptsize(0.88, 0.90)} & -0.34 {\scriptsize(-0.36, -0.33)} &  \\\arrayrulecolor{black!30}\midrule
-    %% par.-IMH & 0.85 {\scriptsize(0.83, 0.87)} & \textbf{-0.37 {\scriptsize(-0.39, -0.35)}} & \textbf{0.92 {\scriptsize(0.91, 0.93)}} & \textbf{-0.30 {\scriptsize(-0.32, -0.28)}} & 0.96 {\scriptsize(0.96, 0.97)} & \textbf{-0.16 {\scriptsize(-0.17, -0.15)}} \\
-    %% seq.-IMH & 0.85 {\scriptsize(0.83, 0.87)} & -0.39 {\scriptsize(-0.41, -0.38)} & 0.91 {\scriptsize(0.89, 0.92)} & -0.33 {\scriptsize(-0.34, -0.31)} & 0.97 {\scriptsize(0.96, 0.97)} & -0.21 {\scriptsize(-0.21, -0.20)} \\
-    %% single-CIS & 0.85 {\scriptsize(0.83, 0.87)} & -0.40 {\scriptsize(-0.41, -0.38)} & 0.90 {\scriptsize(0.89, 0.92)} & -0.33 {\scriptsize(-0.35, -0.32)} & 0.96 {\scriptsize(0.96, 0.97)} & -0.21 {\scriptsize(-0.21, -0.20)} \\
-    %% single-CISRB & 0.85 {\scriptsize(0.82, 0.87)} & -0.39 {\scriptsize(-0.40, -0.37)} & 0.90 {\scriptsize(0.89, 0.92)} & -0.32 {\scriptsize(-0.33, -0.30)} & 0.96 {\scriptsize(0.95, 0.97)} & -0.20 {\scriptsize(-0.20, -0.19)} \\
-    %% SNIS & 0.85 {\scriptsize(0.83, 0.88)} & -0.39 {\scriptsize(-0.41, -0.37)} & 0.91 {\scriptsize(0.89, 0.92)} & -0.31 {\scriptsize(-0.33, -0.30)} & 0.96 {\scriptsize(0.95, 0.97)} & -0.18 {\scriptsize(-0.19, -0.18)} \\\bottomrule
-  ELBO & 0.83 {\scriptsize(0.82, 0.84)} & -0.39 {\scriptsize(-0.40, -0.38)} & 0.94 {\scriptsize(0.94, 0.94)} & -0.28 {\scriptsize(-0.29, -0.28)} & 0.96 {\scriptsize(0.96, 0.97)} & -0.12 {\scriptsize(-0.12, -0.11)} \\\arrayrulecolor{black!30}\midrule
-  %
-    \textit{ours} & \textbf{0.84 {\scriptsize(0.83, 0.85)}} & \textbf{-0.36 {\scriptsize(-0.38, -0.35)}} & \textbf{0.95 {\scriptsize(0.94, 0.95)}} & \textbf{-0.25 {\scriptsize(-0.26, -0.24)}} & 0.96 {\scriptsize(0.96, 0.97)} & \textbf{-0.11 {\scriptsize(-0.12, -0.11)}} \\
-    %
-    JSA & \textbf{0.84 {\scriptsize(0.83, 0.85)}} & -0.37 {\scriptsize(-0.38, -0.36)} & 0.94 {\scriptsize(0.94, 0.95)} & -0.27 {\scriptsize(-0.27, -0.26)} & 0.96 {\scriptsize(0.96, 0.96)} & -0.14 {\scriptsize(-0.14, -0.13)} \\
-    %
-    MSC & 0.83 {\scriptsize(0.82, 0.84)} & -0.38 {\scriptsize(-0.39, -0.37)} & 0.94 {\scriptsize(0.94, 0.95)} & -0.26 {\scriptsize(-0.27, -0.26)} & 0.96 {\scriptsize(0.96, 0.97)} & -0.14 {\scriptsize(-0.14, -0.13)} \\
-    %
-    MSC-RB & 0.83 {\scriptsize(0.82, 0.85)} & -0.37 {\scriptsize(-0.38, -0.36)} & 0.94 {\scriptsize(0.94, 0.95)} & -0.26 {\scriptsize(-0.27, -0.26)} & \textbf{0.97 {\scriptsize(0.96, 0.97)}} & -0.13 {\scriptsize(-0.13, -0.12)} \\
-    %
-    SNIS & \textbf{0.84 {\scriptsize(0.82, 0.85)}} & -0.37 {\scriptsize(-0.38, -0.36)} & 0.94 {\scriptsize(0.94, 0.94)} & \textbf{-0.25 {\scriptsize(-0.26, -0.25)}} & 0.96 {\scriptsize(0.96, 0.97)} & -0.12 {\scriptsize(-0.12, -0.12)} \\\bottomrule
+    & \multicolumn{1}{c}{\multirow{2}{*}{ELBO}} & \multicolumn{1}{c}{\multirow{1}{*}{\textbf{pMCSA}}} & \multicolumn{1}{c}{\multirow{2}{*}{JSA}} & \multicolumn{1}{c}{\multirow{2}{*}{CIS}} & \multicolumn{1}{c}{\multirow{2}{*}{CIS-RB}} & \multicolumn{1}{c}{\multirow{2}{*}{SNIS}} \\
+    & & \multicolumn{1}{c}{\textbf{(ours)}} & & & & \\
+    \midrule
+    sonar & {-0.69 {\scriptsize{\(\pm 0.00\)}}} & {\bf-0.68 {\scriptsize{\(\pm 0.00\)}}} & {\bf-0.68 {\scriptsize{\(\pm 0.00\)}}} & {\bf-0.68 {\scriptsize{\(\pm 0.00\)}}} & {\bf-0.68 {\scriptsize{\(\pm 0.00\)}}} & {-0.69 {\scriptsize{\(\pm 0.00\)}}} \\
+    ionosphere & {-0.36 {\scriptsize{\(\pm 0.01\)}}} & {\bf-0.35 {\scriptsize{\(\pm 0.01\)}}} & {\bf-0.35 {\scriptsize{\(\pm 0.01\)}}} & {\bf-0.35 {\scriptsize{\(\pm 0.01\)}}} & {\bf-0.35 {\scriptsize{\(\pm 0.01\)}}} & {\bf-0.35 {\scriptsize{\(\pm 0.01\)}}} \\
+    breast & {\bf-0.10 {\scriptsize{\(\pm 0.00\)}}} & {-0.11 {\scriptsize{\(\pm 0.01\)}}} & {-0.14 {\scriptsize{\(\pm 0.01\)}}} & {-0.14 {\scriptsize{\(\pm 0.00\)}}} & {-0.14 {\scriptsize{\(\pm 0.01\)}}} & {-0.14 {\scriptsize{\(\pm 0.01\)}}} \\
+    heart & {-0.44 {\scriptsize{\(\pm 0.01\)}}} & {\bf-0.43 {\scriptsize{\(\pm 0.01\)}}} & {\bf-0.43 {\scriptsize{\(\pm 0.01\)}}} & {\bf-0.43 {\scriptsize{\(\pm 0.01\)}}} & {\bf-0.43 {\scriptsize{\(\pm 0.01\)}}} & {-0.44 {\scriptsize{\(\pm 0.01\)}}} \\
+    german & {\bf-0.48 {\scriptsize{\(\pm 0.01\)}}} & {-0.49 {\scriptsize{\(\pm 0.01\)}}} & {-0.50 {\scriptsize{\(\pm 0.01\)}}} & {-0.50 {\scriptsize{\(\pm 0.01\)}}} & {-0.51 {\scriptsize{\(\pm 0.02\)}}} & {-0.49 {\scriptsize{\(\pm 0.01\)}}} \\
+    australian & {\bf-0.21 {\scriptsize{\(\pm 0.01\)}}} & {\bf-0.21 {\scriptsize{\(\pm 0.01\)}}} & {\bf-0.21 {\scriptsize{\(\pm 0.01\)}}} & {\bf-0.21 {\scriptsize{\(\pm 0.01\)}}} & {-0.22 {\scriptsize{\(\pm 0.01\)}}} & {\bf-0.21 {\scriptsize{\(\pm 0.01\)}}} \\\bottomrule
   \end{tabular}
   \begin{tablenotes}
-    \item[*]{\footnotesize LPD denotes the average log predictive density.}
-    \item[*]{\footnotesize The numbers in the parentheses denote the 80\% bootstrap confidence intervals computed from 100 repetitions.}
+    \item[]{\footnotesize \(\pm\) denotes the 95\% bootstrap confidence intervals obtained from 20 repetitions.}
   \end{tablenotes}
   \end{threeparttable}
   \vspace{-0.15in}
