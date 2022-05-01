@@ -16,7 +16,6 @@ import DelimitedFiles
 import Random
 import PyCall
 import AdvancedHMC
-import OptimalTransport
 
 include("datasets.jl")
 include("gp_utils.jl")
