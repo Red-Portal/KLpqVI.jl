@@ -1,0 +1,27 @@
+
+\begin{table*}
+  \centering
+  \caption{Test Log Predictive Density on Bayesian Neural Network Regression}\label{table:gp}
+  \vspace{-0.05in}
+  \setlength{\tabcolsep}{4pt}
+  \begin{threeparttable}
+  \begin{tabular}{lrrrrrr}
+    \toprule
+    & \multicolumn{1}{c}{\multirow{2}{*}{ELBO}} & \multicolumn{1}{c}{\multirow{1}{*}{\textbf{pMCSA}}} & \multicolumn{1}{c}{\multirow{2}{*}{JSA}} & \multicolumn{1}{c}{\multirow{2}{*}{CIS}} & \multicolumn{1}{c}{\multirow{2}{*}{CIS-RB}} & \multicolumn{1}{c}{\multirow{2}{*}{SNIS}} \\
+    & & \multicolumn{1}{c}{\textbf{(ours)}} & & & & \\
+    \midrule
+    wine & {\bf-0.95 {\scriptsize{\(\pm 0.01\)}}} & {\bf-0.95 {\scriptsize{\(\pm 0.01\)}}} & {-0.97 {\scriptsize{\(\pm 0.01\)}}} & {-0.97 {\scriptsize{\(\pm 0.01\)}}} & {-0.96 {\scriptsize{\(\pm 0.01\)}}} & {-0.96 {\scriptsize{\(\pm 0.01\)}}} \\
+    concrete & {-3.26 {\scriptsize{\(\pm 0.01\)}}} & {\bf-3.24 {\scriptsize{\(\pm 0.01\)}}} & {-3.41 {\scriptsize{\(\pm 0.02\)}}} & {-3.38 {\scriptsize{\(\pm 0.02\)}}} & {-3.37 {\scriptsize{\(\pm 0.02\)}}} & {-3.30 {\scriptsize{\(\pm 0.01\)}}} \\
+    boston & {-2.72 {\scriptsize{\(\pm 0.03\)}}} & {\bf-2.69 {\scriptsize{\(\pm 0.02\)}}} & {-2.87 {\scriptsize{\(\pm 0.02\)}}} & {-2.87 {\scriptsize{\(\pm 0.02\)}}} & {-2.86 {\scriptsize{\(\pm 0.02\)}}} & {-2.74 {\scriptsize{\(\pm 0.02\)}}} \\
+    yacht & {\bf-2.47 {\scriptsize{\(\pm 0.01\)}}} & {-2.52 {\scriptsize{\(\pm 0.01\)}}} & {-3.19 {\scriptsize{\(\pm 0.04\)}}} & {-3.15 {\scriptsize{\(\pm 0.03\)}}} & {-3.17 {\scriptsize{\(\pm 0.05\)}}} & {-2.61 {\scriptsize{\(\pm 0.01\)}}} \\\bottomrule
+  \end{tabular}
+  \begin{tablenotes}
+    \item[]{\footnotesize \(\pm\) denotes the 95\% bootstrap confidence intervals obtained from 20 repetitions.}
+  \end{tablenotes}
+  \end{threeparttable}
+  \vspace{-0.15in}
+\end{table*}
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:
