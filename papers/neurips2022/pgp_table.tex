@@ -1,0 +1,25 @@
+
+\begin{wraptable}{r}{0.4\textwidth}
+  \centering
+  \caption{Test Log Predictive Density on Parametric Gaussian Process Regression}\label{table:gp}
+  \setlength{\tabcolsep}{4pt}
+  \begin{threeparttable}
+  \begin{tabular}{lrr}
+    \toprule
+    & \multicolumn{1}{c}{ELBO} & \multicolumn{1}{c}{\multirow{1}{*}{\textbf{pMCSA}}} \\
+    \midrule
+    wine & {-1.08 {\scriptsize{\(\pm 0.01\)}}} & {\bf-0.96 {\scriptsize{\(\pm 0.02\)}}} \\
+    concrete & {-3.73 {\scriptsize{\(\pm 0.01\)}}} & {\bf-3.44 {\scriptsize{\(\pm 0.01\)}}} \\
+    boston & {-3.09 {\scriptsize{\(\pm 0.01\)}}} & {\bf-2.94 {\scriptsize{\(\pm 0.01\)}}} \\
+    yacht & {-4.97 {\scriptsize{\(\pm 0.03\)}}} & {\bf-4.75 {\scriptsize{\(\pm 0.07\)}}} \\\bottomrule
+  \end{tabular}
+  \begin{tablenotes}
+    \item[]{\footnotesize \(\pm\) denotes the 95\% bootstrap confidence intervals obtained from 20 repetitions.}
+  \end{tablenotes}
+  \end{threeparttable}
+  \vspace{-0.15in}
+\end{wraptable}
+
+%%% Local Variables:
+%%% TeX-master: "master"
+%%% End:
