@@ -1,39 +1,35 @@
 
 \section{Probabilistic Models Used in the Experiments}
-%% \subsection{Hierarchical Logistic Regression}\label{section:linear_logistic}
-%% The hierarchical logistic regression used in~\cref{section:logistic} is 
-%% \begin{align*}
-%%     \sigma_{\beta}  &\sim \mathcal{N}^+\left(0, 1.0\right) \\
-%%     \sigma_{\alpha} &\sim \mathcal{N}^+\left(0, 1.0\right) \\
-%%     \symbf{\beta} &\sim \mathcal{N}\left(\symbf{0}, \sigma_{\beta}^2\,\symbf{I}\right) \\
-%%     \alpha        &\sim \mathcal{N}\left(0, \sigma_{\alpha}^2\right) \\
-%%     p             &\sim \mathcal{N}\left(\vx_i^{\top}\symbf{\beta} + \alpha,\, \sigma_{\alpha}^2\right)\\
-%%     y_i           &\sim \text{Bernoulli-Logit}\,(p)
-%% \end{align*}
-%% where \(\vx_i\) and \(y_i\) are the predictors and binary target variable of the \(i\)th datapoints.
-
-\subsection{Bayesian Neural Network Regression}\label{section:gp_logistic}
-The latent Gaussian process model used in~\cref{section:bgp} is 
+\subsection{Hierarchical Logistic Regression}\label{section:linear_logistic}
+The hierarchical logistic regression used in~\cref{section:logistic} is 
 \begin{align*}
-   \log \alpha &\sim \mathcal{N}(0, 1) \\
-   \log \sigma &\sim \mathcal{N}(0, 1) \\
-   \log \ell_i &\sim \mathcal{N}(0, 1) \\
-   f &\sim \mathcal{GP}\left(\mathbf{0}, \mSigma_{\alpha^2, \sigma^2, \mathbf{\ell}} + \delta\,\mI \right) \\
-   y_i &\sim \text{Bernoulli-Logit}\left(  f\left( \vx_i \right) \right).
+    \sigma_{\beta}^{-1}  &\sim \text{Inverse-Gamma}\left(\alpha=1, \beta=1\right) \\
+    \sigma_{\alpha}^{-1} &\sim \text{Inverse-Gamma}\left(\alpha=1, \beta=1\right) \\
+    \symbf{\beta} &\sim \mathcal{N}\left(\symbf{0}, \sigma_{\beta}^2\,\symbf{I}\right) \\
+    \alpha        &\sim \mathcal{N}\left(0, \sigma_{\alpha}^2\right) \\
+    p             &\sim \mathcal{N}\left(\vx_i^{\top}\symbf{\beta} + \alpha,\, \sigma_{\alpha}^2\right)\\
+    y_i           &\sim \text{Bernoulli-Logit}\,(p)
 \end{align*}
-The covariance \(\mSigma\) is computed using a kernel \(k\left(\cdot, \cdot\right)\) such that \({[\mSigma]}_{i,j} = k\left( \vx_{i}, \vx_{j} \right) \) where \(\vx_i\) and \(\vx_j\) are data points in the dataset.
-For the kernel, we use the Matern 5/2 kernel with automatic relevance determination~\citep{neal_bayesian_1996} defined as
-\begin{align*}
-  &k\left(\vx, \vx' ;\; \alpha^2, \sigma^2, \mathbf{\ell} \right) =
-  \alpha \left( 1 + \sqrt{5} r + \frac{5}{3} r^2 \right) \exp\left( - \sqrt{5} r \right)  \quad
-  \text{where}\;\; r = \sum^{D}_{i=1} \frac{ {\left(\vx_i - \vx'_i\right)}^2 }{\ell^2_i}
-\end{align*}
-where \(D\) is the number of dimensions.
-The jitter term \(\delta\) is used for numerical stability.
-We set a small value of \(\delta = 1\times10^{-6}\).
+where \(\vx_i\) and \(y_i\) are the predictors and binary target variable of the \(i\)th datapoints.
+The hierarchical inverse-gamma priors on the scale variables make the posterior heavy tailed, which is challenging to infer even for advanced MCMC algorithms.
 
-\subsection{Gaussian Process Logistic Regression}\label{section:gp_logistic}
-The latent Gaussian process model used in~\cref{section:bgp} is 
+\subsection{Bayesian Neural Network Regression}\label{section:bnn}
+We use the BNN model of~\citet{pmlr-v37-hernandez-lobatoc15} defined as
+\begin{align*}
+  \lambda^{-1} &\sim \text{Inverse-Gamma}\left(\alpha=6, \beta=6\right) \\
+  \gamma^{-1}  &\sim \text{Inverse-Gamma}\left(\alpha=6, \beta=6\right) \\
+  \mW_1       &\sim \mathcal{N}\left(\mathbf{0}, \lambda^{-1} \mI \right) \\
+  \vz         &= \mathrm{ReLU}\left(\mW_1 \vx_i\right) \\
+  \mW_2       &\sim \mathcal{N}\left(\mathbf{0}, \lambda^{-1} \mI \right) \\
+  \widehat{y} &= \mathrm{ReLU}\left(\mW_2 \vz\right) \\
+  y_i         &\sim \mathcal{N}\left(\widehat{y}, \gamma^{-1}\right)
+\end{align*}
+where \(\vx_i\) and \(y_i\) are the feature vector and target value of the \(i\)th datapoint.
+Given the variational distribution of \(\lambda^{-1}, \gamma^{-1}, \mW_1, \mW_2\), we use the same posterior predictive approximation of~\citet{pmlr-v37-hernandez-lobatoc15}.
+We apply z-standardization (whitening) to the features \(\vx_i\) and the target values \(y_i\), and unwhiten the predictive distribution.
+
+\subsection{Parametric Gaussian Process Logistic Regression}\label{section:gp_logistic}
+The parametric Gaussian process avoids marginalizing the latent function such that
 \begin{align*}
    \log \alpha &\sim \mathcal{N}(0, 1) \\
    \log \sigma &\sim \mathcal{N}(0, 1) \\
