@@ -1,76 +1,7 @@
 
 \section{Pseudocodes of the Considered Schemes}
+\subsection{Markov Chain Monte Carlo Kernels}
 
-\begin{center}
-\begin{minipage}[c]{0.6\textwidth}
-  \centering
-  \begin{algorithm2e}[H]
-    \DontPrintSemicolon
-    \SetAlgoLined
-    \KwIn{MCMC kernel \(K_{\vlambda}(\vz,\cdot)\),
-      initial sample \(\vz_0\),
-      initial parameter \(\vlambda_0\),
-      number of iterations \(T\),
-      stepsize schedule \(\gamma_t\)}
-    \For{\textcolor{black}{\(t = 1, 2, \ldots, T\)}}{
-      \( \vz_{t} \sim K_{\vlambda_{t-1}}(\vz_{t-1}, \cdot) \)\;
-      \(\vs\,(\vlambda; \vz) = \nabla_{\vlambda} \log q\,(\vz; \vlambda)\)\;
-      \( \vg_{\text{single}} = s\,(\vlambda_{t-1}; \vz_{t}) \)\;
-      \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t\, \vg_{\text{single}} \)\;
-    }
-    \caption{Markovian Score Climbing}\label{alg:msc}
-  \end{algorithm2e}
-\end{minipage}
-
-  \begin{center}
-  \begin{minipage}[c]{0.63\textwidth}
-    \begin{algorithm2e}[H]
-      \DontPrintSemicolon
-      \SetAlgoLined
-      \KwIn{MCMC kernel \(K_{\vlambda}(\vz,\cdot)\),
-        initial sample \(\vz_0^{(N)}\),
-        initial parameter \(\vlambda_0\),
-        number of iterations \(T\),
-        stepsize schedule \(\gamma_t\)
-      }
-      \For{\(t = 1, 2, \ldots, T\)}{
-        \(\vz_{t}^{(0)} = \vz_{t-1}^{(N)}\)\;
-        \For{\(n = 1, 2, \ldots, N\)}{
-          \(\vz_{t}^{(n)} \sim K_{\vlambda_{t-1}}(\vz_{t}^{(n-1)}, \cdot)\)\;
-        }
-        \( \vs\left(\vlambda; \vz\right) = \nabla_{\vlambda} \log q\,(\vz; \vlambda) \)\;
-        \( \vg = \frac{1}{N} \sum^{N}_{n=1} \vs\,(\vlambda_{t-1}; \vz_{t}^{(n)}) \)\;
-        \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t \, \vg \,
-        \)\;
-      }
-      \caption{Joint Stochastic Optimization}\label{alg:jsa}
-    \end{algorithm2e}
-  \end{minipage}
-  \end{center}
-
-  \begin{center}
-\begin{minipage}[c]{0.7\textwidth}
-  \begin{algorithm2e}[H]
-    \DontPrintSemicolon
-    \SetAlgoLined
-    \KwIn{MCMC kernel \(K_{\vlambda}(\vz,\cdot)\),
-      initial samples \(\vz_0^{(1)},\, \ldots,\, \vz_0^{(N)}\),
-      initial parameter \(\vlambda_0\),
-      number of iterations \(T\),
-      stepsize schedule \(\gamma_t\)
-    }
-    \For{\(t = 1, 2, \ldots, T\)}{
-        \For{\(n = 1, 2, \ldots, N\)}{
-          \(\vz^{(n)}_{t} \sim K_{\vlambda_{t-1}}(\vz^{(n)}_{t-1}, \cdot)\)\;
-      }
-      \( \vs\left(\vlambda; \vz\right) = \nabla_{\vlambda} \log q\,(\vz;\vlambda) \)\;
-      \( \vg = \frac{1}{N} \sum^{N}_{i=1} \vs\,(\vlambda_{t-1}; \vz_{t}^{(i)}) \)\;
-      \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t\, \vg \)\;
-    }
-    \caption{Parallel Markov Chain Score Ascent}\label{alg:pmcsa}
-  \end{algorithm2e}
-\end{minipage}
-  \end{center}
 
   \begin{center}
 \begin{minipage}[c]{0.63\textwidth}
@@ -117,7 +48,79 @@
 \end{minipage}
   \end{center}
 
+\subsection{Markov Chain Score Ascent Algorithms}
+
+\begin{center}
+\begin{minipage}[c]{0.6\textwidth}
+  \centering
+  \begin{algorithm2e}[H]
+    \DontPrintSemicolon
+    \SetAlgoLined
+    \KwIn{MCMC kernel \(K_{\vlambda}(\vz,\cdot)\),
+      initial sample \(\vz_0\),
+      initial parameter \(\vlambda_0\),
+      number of iterations \(T\),
+      stepsize schedule \(\gamma_t\)}
+    \For{\textcolor{black}{\(t = 1, 2, \ldots, T\)}}{
+      \( \vz_{t} \sim K_{\vlambda_{t-1}}(\vz_{t-1}, \cdot) \)\;
+      \(\vs\,(\vlambda; \vz) = \nabla_{\vlambda} \log q\,(\vz; \vlambda)\)\;
+      \( \vg_{\text{single}} = s\,(\vlambda_{t-1}; \vz_{t}) \)\;
+      \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t\, \vg_{\text{single}} \)\;
+    }
+    \caption{Markovian Score Climbing}\label{alg:msc}
+  \end{algorithm2e}
+\end{minipage}
 \end{center}
+
+  \begin{center}
+  \begin{minipage}[c]{0.63\textwidth}
+    \begin{algorithm2e}[H]
+      \DontPrintSemicolon
+      \SetAlgoLined
+      \KwIn{MCMC kernel \(K_{\vlambda}(\vz,\cdot)\),
+        initial sample \(\vz_0^{(N)}\),
+        initial parameter \(\vlambda_0\),
+        number of iterations \(T\),
+        stepsize schedule \(\gamma_t\)
+      }
+      \For{\(t = 1, 2, \ldots, T\)}{
+        \(\vz_{t}^{(0)} = \vz_{t-1}^{(N)}\)\;
+        \For{\(n = 1, 2, \ldots, N\)}{
+          \(\vz_{t}^{(n)} \sim K_{\vlambda_{t-1}}(\vz_{t}^{(n-1)}, \cdot)\)\;
+        }
+        \( \vs\left(\vlambda; \vz\right) = \nabla_{\vlambda} \log q\,(\vz; \vlambda) \)\;
+        \( \vg = \frac{1}{N} \sum^{N}_{n=1} \vs\,(\vlambda_{t-1}; \vz_{t}^{(n)}) \)\;
+        \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t \, \vg \,
+        \)\;
+      }
+      \caption{Joint Stochastic Approximation}\label{alg:jsa}
+    \end{algorithm2e}
+  \end{minipage}
+  \end{center}
+
+  \begin{center}
+\begin{minipage}[c]{0.7\textwidth}
+  \begin{algorithm2e}[H]
+    \DontPrintSemicolon
+    \SetAlgoLined
+    \KwIn{MCMC kernel \(K_{\vlambda}(\vz,\cdot)\),
+      initial samples \(\vz_0^{(1)},\, \ldots,\, \vz_0^{(N)}\),
+      initial parameter \(\vlambda_0\),
+      number of iterations \(T\),
+      stepsize schedule \(\gamma_t\)
+    }
+    \For{\(t = 1, 2, \ldots, T\)}{
+        \For{\(n = 1, 2, \ldots, N\)}{
+          \(\vz^{(n)}_{t} \sim K_{\vlambda_{t-1}}(\vz^{(n)}_{t-1}, \cdot)\)\;
+      }
+      \( \vs\left(\vlambda; \vz\right) = \nabla_{\vlambda} \log q\,(\vz;\vlambda) \)\;
+      \( \vg = \frac{1}{N} \sum^{N}_{i=1} \vs\,(\vlambda_{t-1}; \vz_{t}^{(i)}) \)\;
+      \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t\, \vg \)\;
+    }
+    \caption{Parallel Markov Chain Score Ascent}\label{alg:pmcsa}
+  \end{algorithm2e}
+\end{minipage}
+  \end{center}
 
 %%% Local Variables:
 %%% TeX-master: "master"
