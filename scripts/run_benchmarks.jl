@@ -233,12 +233,13 @@ function general_benchmarks_gpu()
     n_iter    = 20000
 
     for task ∈ [
-        "australian_gpu",
-        "german_gpu",
         "wine_gpu",
         "concrete_gpu",
         "yacht_gpu",
         "boston_gpu",
+        "gas_gpu",
+        "energy_gpu",
+        "airfoil_gpu",
     ]
         for (method, n_samples) ∈ [("MSC_PIMH", 10),
                                    ("MSC_CIS", 10),
@@ -246,7 +247,6 @@ function general_benchmarks_gpu()
                                    ("MSC_SIMH", 10),
                                    ("SNIS", 10),
                                    ("ELBO", 1),
-                                   ("ELBO", 10),
                                    ]
             settings = Dict{Symbol,Any}()
             settings[:method]    = method

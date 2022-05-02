@@ -144,6 +144,11 @@ function run_task(prng::Random.AbstractRNG,
     q        = Turing.Variational.meanfield(model)
     q        = AdvancedVI.update(q, θ)
 
+    @info("Bayesian Neural Network Regression $(task)",
+          train_data=size(X_train),
+          test_data=size(X_test),
+          n_params=n_params)
+
     i      = 0
     #k_hist = []
     function plot_callback(ℓπ, λ)
