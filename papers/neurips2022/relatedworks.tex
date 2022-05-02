@@ -7,47 +7,24 @@ Concurrently, in the context of variational autoencoders with discrete latent va
 JSA can be viewed as a variant of MSC that takes advantage of models with \textit{i.i.d.} data likelihoods.
 Meanwhile,~\citet{li_approximate_2017} used a similar approach to MSC, but their method is slow to achieve stationarity.
 Other than using MCMC,~\citet{DBLP:journals/corr/BornscheinB14,le_revisiting_2019} used SNIS while~\citet{pmlr-v119-wu20h} used sequential Monte Carlo (SMC) for estimating the score, but these methods are restricted to deep generative models.
-Further away,~\citet{pmlr-v161-jerfel21a} used boosting instead of SGD to minimize the inclusive KL, which results in a more flexible variational family.
+On a different note,~\citet{pmlr-v161-jerfel21a} used boosting instead of SGD to minimize the inclusive KL, which results in a more flexible variational family.
 %Lastly,~\citet{10.5555/2074022.2074067} introduced expectation propagation.
 
-\vspace{-0.05in}
+\vspace{-0.1in}
 \paragraph{MCMC for VI, VI for MCMC}
-Not restricted to inclusive KL minimization, MCMC has been widely utilized in VI.
+MCMC has been widely utilized in VI, not only for inclusive KL minimization.
 For example,~\citet{pmlr-v37-salimans15, pmlr-v97-ruiz19a} construct alternative divergence bounds from samples of an MCMC sampler.
-More recently, several other methods that apply variational inference for adapting the MCMC kernel have been developed.
-For adapting the proposals of an IMH sampler, \citet{habib2018auxiliary} minimize the exclusive KL divergence while~\cite{neklyudov_metropolishastings_2019} minimize the symmetric KL divergence.
+More recently, several methods that apply VI to adaptating MCMC kernels have been developed.
+For adapting IMH kernels, \citet{habib2018auxiliary} minimize the exclusive KL divergence while~\cite{neklyudov_metropolishastings_2019} minimize the symmetric KL divergence.
 And for HMC,~\citet{zhang_variational_2018, pmlr-v139-campbell21a} have proposed to use score matching, ELBO maximization, and Stein discrepancy minimization.
 
-\vspace{-0.05in}
+\vspace{-0.1in}
 \paragraph{Adaptive MCMC}
-As pointed out by~\citet{pmlr-v124-ou20a}, using \(q_{\vlambda}\) within the MCMC kernel makes score climbing structurally equivalent to adaptive MCMC.
+As pointed out by~\citet{pmlr-v124-ou20a}, using \(q_{\vlambda}\) within the MCMC kernel makes MCSA structurally equivalent to adaptive MCMC.
 In particular,~\citet{10.1007/s11222-008-9110-y, garthwaite_adaptive_2016} discuss the use of stochastic approximation in adaptive MCMC.
 Also,~\citet{andrieu_ergodicity_2006, keith_adaptive_2008, holden_adaptive_2009, giordani_adaptive_2010} specifically discuss adapting the propsosal of IMH kernels.
 Most similar to score climbing VI is the work of~\citet{keith_adaptive_2008} where they propose to use cross-entropy minimization~\citep{barbakh_cross_2009}, which is mathematically identical to inclusive VI.
 
-%% \vspace{-0.1in}
-%% \paragraph{Ergodicity and Inclusive VI}
-%% Meanwhile, in the context of MCMC,~\citet{10.2307/2242610} showed that it is necessary to ensure \(\sup_{\vz} w(\vz) = M < \infty\) (finite weight condition) for an IMH kernel to be geometrically ergodic.
-%% While this might seem less relevant for inclusive VI, the bound
-%% %
-%% \vspace{-0.02in}
-%% \begin{align}
-%%   \DKL{p}{q_{\vlambda}} = \int p(\vz\mid\vx) \log w(\vz)\,d\vz \leq \int p(\vz\mid\vx) \log M \, d\vz = \log M.
-%% \end{align}
-%% \vspace{-0.02in}
-%% %
-%% suggests that it is in fact a sufficient condition for the KL divergence to be finite.
-%% This condition can easily be violated as shown by \citet{10.1007/s11222-008-9110-y}.
-%% To ensure this does not happen,~\citet{giordani_adaptive_2010, holden_adaptive_2009} use proposal distributions of the form of \(w\,q_0(\vz) + (1-w)\,q_{\vlambda}(\vz)\) for some \(0<w<1\) for their adaptive IMH sampler.
-%% Here, \(q_0\) is supposed to be a heavy tailed distribution in the spirit of defensive mixtures~\citep{hesterberg_weighted_1995}.
-%% %In the benchmark problems we considered, we observed that MSC converges without such precaution.
-%% A research direction in the interest of both adaptive MCMC and inclusive VI would be to investigate whether such precaution is actually necessary for convergence.
-%% If that is the case, it would be beneficial to consider variational families of heavy-tailed distributions as proposed by~\citet{NEURIPS2018_25db67c5} for exclusive VI.
-
-%Therefore, for problems where MSC is not geometricaly ergodic, inclusive VI would also fail to converge.
-%% On the other hand, for problems where MSC converges without problem, defensive mixtures shouldn't be necessary.
-%% for problems where \(w(\vz)\) is not bounded, virtually all inclusive VI methods, including SNIS and RWS, will fail to work, as their weights will have very high variance~\citep{mcbook}.
-%The boundedness of \(w(\vz)\) is more related to model specification and the selection of the variational family \(\mathcal{Q}\).
 
 %%% Local Variables:
 %%% TeX-master: "master"
