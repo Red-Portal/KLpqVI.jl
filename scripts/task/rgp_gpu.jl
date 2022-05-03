@@ -84,7 +84,7 @@ function run_task(
         ℓpϵ_f = logpdf(Normal(0, 4), ℓϵ_f_)
         ℓpσ = logpdf(Normal(0, 4), ℓσ_)
         ℓpν = logpdf(Gamma(4, 10), ν_)
-        ℓpℓ = logpdf(MvNormal(fill(0.0, n_dims), fill(1.0, n_dims)), ℓℓ_)
+        ℓpℓ = logpdf(MvNormal(fill(0.0, n_dims), fill(0.2, n_dims)), ℓℓ_)
         ℓpf = gp_likelihood(X_train_dev, f_dev_, σ²_, ϵ²_f_ + jitter, ℓ²_dev_)
 
         z_train = (y_train .- f_) ./ ϵ_y_
