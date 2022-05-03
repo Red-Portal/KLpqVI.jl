@@ -134,12 +134,12 @@ function run_task(
         μ_f_dev = CuArray{eltype(X_train_dev)}(μ_f)
     
         R_train = distance_matrix_gpu(X_train_dev, X_train_dev, ℓ²_dev)
-        K_unit  = se_gpu(R_train)
+        K_unit  = matern52_gpu(R_train)
         K       = eltype(K_unit)(σ²) * K_unit + eltype(K_unit)(jitter + ϵ²_f) * I
         K_chol  = cholesky(K; check = false)
 
         R_test_train      = distance_matrix_gpu(X_test_dev, X_train_dev, ℓ²_dev)
-        K_unit_test_train = se_gpu(R_test_train)
+        K_unit_test_train = matern52_gpu(R_test_train)
         K_test_train      = eltype(K_unit_test_train)(σ²) * K_unit_test_train
     
         W_factor   = cu(diagm(eltype(K).(σ_f)))
