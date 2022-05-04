@@ -17,8 +17,6 @@ import DiffResults
 import DistributionsAD
 import DynamicPPL
 import ForwardDiff
-import PyCall
-import Pandas
 import Random
 import RDatasets
 import Turing

@@ -14,7 +14,6 @@ import JLD
 import MAT
 import DelimitedFiles
 import Random
-import PyCall
 import AdvancedHMC
 
 include("datasets.jl")

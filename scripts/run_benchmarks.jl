@@ -84,6 +84,10 @@ end
         df[:, k] .= v
     end
 
+    cols       = names(df)
+    cols_valid = intersect(cols, ["rmse", "iter", "lpd", "elapsed", "acc", "elbo"])
+    df         = df[:,cols_valid]
+
     Dict("result" => df, "settings" => settings)
 end
 
@@ -170,7 +174,7 @@ function general_benchmarks()
     optimizer = "ADAM"
     n_samples = 10
     n_reps    = 80
-    n_iter    = 20000
+    n_iter    = 50000
 
     for task ∈ [
         "wine",
@@ -200,6 +204,7 @@ function general_benchmarks()
             ("MSC_SIMH",  10),
             ("SNIS",      10),
             ("ELBO",       1),
+            ("ELBO",      10),
             ]
             settings = Dict{Symbol,Any}()
             settings[:method] = method
