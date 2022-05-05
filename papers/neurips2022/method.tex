@@ -222,7 +222,7 @@ Note that \(q_{\text{def.}}\) is only used in the Markov chain kernels, which do
   The score gradient is bounded for \(\forall \vlambda \in \Lambda\) and \(\forall \vz \in \mathcal{Z}\) such that \(\norm{\vs\left(\vlambda; \vz\right)}_* \leq L \) for some finite constant \(L > 0\).
 \end{assumption}
 \vspace{-0.05in}
-Informally, this assumption is equivalent to assuming 
+%%Informally, this assumption is equivalent to assuming 
 %% \begin{enumerate*}[label=\textbf{(\roman*)}]
 %% \item \(\Lambda\) is compact with a finite radius,
 %% \item the Markov chains are variance bounding~\citep[Theorem 1]{10.2307/25442663},
@@ -235,7 +235,7 @@ Admittedly, this assumption is strong, but it provides a straightforward way to 
 MSC is a simple instance of MCSA where \(\eta_t = \vz_t\) and \(P_{\vlambda_t} = K_{\vlambda_t}\), \(K_{\vlambda_t}\) is the conditional importance sampling (CIS) kernel (originally proposed as the iterated sequential importance resampling kernel by~\citet{andrieu_uniform_2018}).
 See \cref{alg:msc} for a detailed pseudocode.
 Although MSC uses only a single sample such that \(N=1\), the CIS kernel internally uses \(N\) proposals to generate a single sample.
-Therefore, note \(N\) in MSC has a different meaning, but it still indicates the computational budget.
+Therefore, \(N\) in MSC has a different meaning, but it still indicates the computational budget.
 
 \input{lemmas_previous_mcsa}
 \input{thm_previous_msc}
