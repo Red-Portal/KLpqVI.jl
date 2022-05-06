@@ -66,8 +66,8 @@ We compare
   \item evidence lower-bound maximization (\textbf{ELBO},~\citealt{pmlr-v33-ranganath14, JMLR:v18:16-107}) with the path derivative estimator~\citep{NIPS2017_e91068ff}
 \end{enumerate*}
 
-\vspace{-0.05in}
-\subsection{Correlated Multviate Gaussian}\label{section:simulation}
+\vspace{-0.1in}
+\subsection{Simulations}\label{section:simulation}
 \vspace{-0.05in}
 \paragraph{Target Distribution}
 First, we perform experiments on a 100 dimensional correlated multivariate Gaussian where the covariance is sampled from a Wishart distribution with varying degrees of freedom \(\nu\).
@@ -95,7 +95,7 @@ Since most methods are the most stable when using ADAM, we use ADAM for all of o
 %% We now perform logistic regression with the \texttt{Pima Indians} diabetes (\(\vz \in \mathbb{R}^{11}\),~\citealt{smith_using_1988}), \texttt{German credit} (\(\vz \in \mathbb{R}^{27}\)), and \texttt{heart disease} (\(\vz \in \mathbb{R}^{16}\),~\citealt{detrano_international_1989}) datasets obtained from the UCI repository~\citep{Dua:2019}.
 %% 10\% of the data points were randomly selected in each of the 100 repetitions as test data.
 
-\input{gp_table.tex}
+% \input{gp_table.tex}
 
 \input{bnn_table.tex}
 
@@ -159,19 +159,19 @@ For \texttt{breast}, we preprocessed the input features with z-standardization.
 For this experiment, the iteration complexity of ELBO is almost two orders of magnitude larger than all inclusive KL minimization methods.
 
 %
-\begin{wrapfigure}{r}{0.45\textwidth}
-  \vspace{-0.4in}
-  \centering
-     \includegraphics[scale=0.9]{figures/ionosphere_01.pdf}
-  %% \subfloat[\texttt{german}]{
-  %%   \includegraphics[scale=0.75]{figures/breast_01.pdf}
-  %% } \\
-     \vspace{-0.1in}
-  \caption{Test log predictive density on the \texttt{ionosphere} dataset.
-    The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
-  }\label{fig:gp}
-  \vspace{-0.2in}
-\end{wrapfigure}
+% \begin{wrapfigure}{r}{0.45\textwidth}
+%   \vspace{-0.4in}
+%   \centering
+%      \includegraphics[scale=0.9]{figures/ionosphere_01.pdf}
+%   %% \subfloat[\texttt{german}]{
+%   %%   \includegraphics[scale=0.75]{figures/breast_01.pdf}
+%   %% } \\
+%      \vspace{-0.1in}
+%   \caption{Test log predictive density on the \texttt{ionosphere} dataset.
+%     The solid lines and colored regions are the medians and 80\% percentiles computed from 100 repetitions.
+%   }\label{fig:gp}
+%   \vspace{-0.2in}
+% \end{wrapfigure}
 %
 \vspace{-0.05in}
 \paragraph{Result}

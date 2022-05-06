@@ -31,18 +31,17 @@ An execption is~\citet{debavelaere_convergence_2021} where they assume \(P\) to 
   \]
   }
   for some positive constant \(C\).
-\vspace{-0.05in}
 \end{assumption}
 \vspace{-0.05in}
 
-\vspace{-0.05in}
+\vspace{-0.1in}
 \paragraph{Non-Asymptotic Convergence Rates}
 Based on the conclusion of \cref{thm:product_kernel,thm:kernel_conditions} and additional assumptions on the objective function such as convexity, we can apply the previous convergence results of MCGD to MCSA.
 \cref{table:convergence} provides a brief list of some relevant results.
 We omitted terms resulting from assumptions on the objective function, such as Lipschitz smoothness.
 Instead, we focus on the terms including the gradient variance (\(G\)) and mixing rate (\(\rho\)) since they are closely related to the algorithmic design of MCSA algorithms.
 
-\vspace{-0.05in}
+\vspace{-0.1in}
 \paragraph{Convergence and Mixing Rate}
 An analysis on the general MCGD setting was first provided by~\citet{duchi_ergodic_2012}.
 Notice their rate is dependent on the mixing rate by the \(1 / \log \rho^{-1}\) term.
@@ -97,7 +96,7 @@ This obervation is important since it means trading gradient variance and mixing
 \vspace{-0.2in}
 \end{table*}
 
-\vspace{-0.05in}
+\vspace{-0.1in}
 \paragraph{Gradient Bound Assumption}
 Except for \citet{doan_finitetime_2020}, most results assume that the gradient is bounded for \(\forall\veta,\vlambda\) as {\footnotesize\( {\| \vg\left(\vlambda, \veta\right) \|} < G \)}.
 Admidttedly, this condition is strong for MCSA, but it is similar to the bounded variance assumption {\footnotesize\(\mathbb{E}\,[\norm{\vg}^2]  < G^2\)} used in vanilla SGD, which is also known to be strong since it does not hold for strongly convex objectives~\citep{pmlr-v80-nguyen18c}.
@@ -240,7 +239,7 @@ Therefore, \(N\) in MSC has a different meaning, but it still indicates the comp
 \input{lemmas_previous_mcsa}
 \input{thm_previous_msc}
 
-\vspace{-0.05in}
+\vspace{-0.1in}
 \paragraph{Joint Stochastic Approximation}
 JSA~\citep{pmlr-v124-ou20a} was originally proposed for deep generative models where the likelihood can be factorized by each datapoint.
 In this setting,~\citeauthor{pmlr-v124-ou20a} perform minibatching by using a random-scan verion of the independent Metropolis-Hastings (IMH, \citealt{hastings_monte_1970,robert_monte_2004}) kernel.
@@ -248,10 +247,10 @@ We use the general verion of JSA with the vanilla IMH kernel which can be applie
 At each MCGD step, JSA performs multiple MCMC transitions and estimates the gradient by averaging all the intermediate samples.
 See \cref{alg:jsa} for a detailed pseudocode.
 
-\vspace{-0.05in}
+\vspace{-0.1in}
 \paragraph{Independent Metropolis-Hastings}
 %A key element of JSA~\citep{pmlr-v124-ou20a} is that it uses the IMH kernel.
-The IMH kernel used in JSA generate the proposals from the variational approximation \(q\left(\cdot; \vlambda_t\right)\).
+The IMH kernel used in JSA generates the proposals from the variational approximation \(q\left(\cdot; \vlambda_t\right)\).
 To show geometric ergodicity of the implicit kernel \(P\), we utilize the geometric convergence rate of IMH kernels provided by~\citet[Theorem 2.1]{10.2307/2242610} and~\citet{wang_exact_2020}.
 Furthermore, to derive an upper bound on the gradient variance, we use the exact \(n\)-step marginal IMH kernel derived by~\citet{Smith96exacttransition} as
 {%\small
@@ -299,7 +298,7 @@ See~\cref{alg:pmcsa} for a detailed pseudocode.
 %% The mixing rate independent bounds in \cref{table:convergence} suggest that this would provide faster convergence regardless.
 %% Our empirical results in \cref{section:eval} show that this is indeed true in practice.
 
-\vspace{-0.05in}
+\vspace{-0.1in}
 \paragraph{Theoretical Performance of MSC, JSA, and pMCSA}
 By combining~\cref{thm:msc,thm:jsa,thm:pmcsa} with the convergence rates in~\cref{table:convergence}, we can compare the theoretical convergence of the considered algorithms.
 For MSC, when \(w^*\) is large, the gradient variance and the mixing rate are worse than JSA and pMCSA and cannot be improved by increasing \(N\).
@@ -307,7 +306,7 @@ Therefore, we will not discuss it further.
 On the other hand, JSA and pMCSA can be seen as trading-off bias (mixing rate) for variance.
 However, when \(w^*\) is large, we can expect JSA to perform worse than pMCSA due to the constant \(1/2\).
 
-\vspace{-0.05in}
+\vspace{-0.1in}
 \paragraph{Effect of increasing \(N\)}
 If we consider the convergence rate of~\citet{duchi_ergodic_2012}, the mixing rate affects the convergence rate through the \(\log \rho^{-1}\) term.
 For JSA, the combined rate appears to worsen as we increase \(N\), while for pMCSA, the combined rate stays constant with respect to \(N\).
@@ -337,23 +336,25 @@ Unfortunately, it is challenging to incorporate the changes in the mixing rate i
 
 \begin{wraptable}{r}{0.55\textwidth}
   \centering
-  \vspace{-0.75in}
+  \vspace{-0.5in}
   \input{table_cost}
   \vspace{-0.2in}
 \end{wraptable}
 %
+\vspace{-0.05in}
 \subsection{Computational Cost}
+\vspace{-0.05in}
 The three schemes using the CIS kernel and the IMH kernel can have different computational costs depending on the parameter \(N\).
 The computational costs of each scheme are organized in~\cref{table:cost}.
 
-\vspace{-0.05in}
+\vspace{-0.1in}
 \paragraph{Cost of Sampling Proposals}
 For the CIS kernel used by MSC, \(N\) controls the number of internal proposals sampled from \(q\,(\vz; \vlambda)\).
 For JSA and pMCSA, the IMH kernel only uses a single sample from \(q\,(\vz; \vlambda)\), but applies the kernel \(N\) times.
 Assuming caching is done as much as possible, pMCSA needs twice more evaluations of \(q\,(\vz; \vlambda)\) compared to other methods.
 However, in general, this added cost should be minimal compared to the cost of evaluating \(p\,(\vz,\vx)\).
 
-\vspace{-0.05in}
+\vspace{-0.1in}
 \paragraph{Cost of Estimating the Score}
 When estimating the score, MSC computes \(\nabla_{\vlambda} \log q\,(\vz; \vlambda)\) only once, while JSA and our proposed scheme compute it \(N\) times.
 However,~\cite{NEURIPS2020_b2070693} also discuss a Rao-Blackwellized version of the CIS kernel, which also computes the gradient \(N\) times.
