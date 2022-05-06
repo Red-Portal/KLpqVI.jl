@@ -1,25 +1,28 @@
 
-\begin{wraptable}{r}{0.4\textwidth}
+%\begin{wraptable}{r}{0.4\textwidth}
+\begin{table*}
   \centering
-  \caption{Test Log Predictive Density on Parametric Gaussian Process Regression}\label{table:gp}
+  \caption{Test Log Predictive Density on Robust Gaussian Process Regression}\label{table:gp}
   \setlength{\tabcolsep}{4pt}
   \begin{threeparttable}
-  \begin{tabular}{lrr}
+  \begin{tabular}{lrrrrrr}
     \toprule
-    & \multicolumn{1}{c}{ELBO} & \multicolumn{1}{c}{\multirow{1}{*}{\textbf{pMCSA}}} \\
+    & \multicolumn{1}{c}{\multirow{2}{*}{ELBO}} & \multicolumn{1}{c}{\multirow{1}{*}{\textbf{pMCSA}}} & \multicolumn{1}{c}{\multirow{2}{*}{JSA}} & \multicolumn{1}{c}{\multirow{2}{*}{CIS}} & \multicolumn{1}{c}{\multirow{2}{*}{CIS-RB}} \\ % & \multicolumn{1}{c}{\multirow{2}{*}{SNIS}} \\
+    & & \multicolumn{1}{c}{\textbf{(ours)}} & & & \\
     \midrule
-    wine & {-1.08 {\scriptsize{\(\pm 0.01\)}}} & {\bf-0.96 {\scriptsize{\(\pm 0.02\)}}} \\
-    concrete & {-3.73 {\scriptsize{\(\pm 0.01\)}}} & {\bf-3.44 {\scriptsize{\(\pm 0.01\)}}} \\
-    boston & {-3.09 {\scriptsize{\(\pm 0.01\)}}} & {\bf-2.94 {\scriptsize{\(\pm 0.01\)}}} \\
-    %yacht & {-4.97 {\scriptsize{\(\pm 0.03\)}}} & {\bf-4.75 {\scriptsize{\(\pm 0.07\)}}} \\
-    \bottomrule
+ wine & {-1.02 {\scriptsize{\(\pm 0.01\)}}} & {\bf-0.93 {\scriptsize{\(\pm 0.01\)}}} & {-1.04 {\scriptsize{\(\pm 0.01\)}}} & {-1.00 {\scriptsize{\(\pm 0.02\)}}} & {-0.99 {\scriptsize{\(\pm 0.02\)}}} \\
+    concrete & {-3.68 {\scriptsize{\(\pm 0.01\)}}} & {\bf-3.49 {\scriptsize{\(\pm 0.01\)}}} & {-3.69 {\scriptsize{\(\pm 0.03\)}}} & {-3.59 {\scriptsize{\(\pm 0.04\)}}} & {-3.57 {\scriptsize{\(\pm 0.02\)}}} \\
+    boston & {-2.98 {\scriptsize{\(\pm 0.01\)}}} & {\bf-2.97 {\scriptsize{\(\pm 0.01\)}}} & {-3.01 {\scriptsize{\(\pm 0.03\)}}} & {-3.01 {\scriptsize{\(\pm 0.04\)}}} & {\bf-2.97 {\scriptsize{\(\pm 0.03\)}}} \\
+    yacht & {-3.63 {\scriptsize{\(\pm 0.02\)}}} & {-3.31 {\scriptsize{\(\pm 0.03\)}}} & {-3.29 {\scriptsize{\(\pm 0.05\)}}} & {\bf-3.25 {\scriptsize{\(\pm 0.03\)}}} & {-3.26 {\scriptsize{\(\pm 0.05\)}}} \\
+    airfoil & {-3.15 {\scriptsize{\(\pm 0.01\)}}} & {\bf-2.63 {\scriptsize{\(\pm 0.01\)}}} & {-2.83 {\scriptsize{\(\pm 0.04\)}}} & {-2.77 {\scriptsize{\(\pm 0.02\)}}} & {-2.73 {\scriptsize{\(\pm 0.02\)}}} \\
+    energy & {-2.75 {\scriptsize{\(\pm 0.01\)}}} & {\bf-2.58 {\scriptsize{\(\pm 0.03\)}}} & {-2.78 {\scriptsize{\(\pm 0.04\)}}} & {-2.70 {\scriptsize{\(\pm 0.04\)}}} & {-2.72 {\scriptsize{\(\pm 0.05\)}}} \\\bottomrule
   \end{tabular}
   \begin{tablenotes}
     \item[]{\footnotesize \(\pm\) denotes the 95\% bootstrap confidence intervals obtained from 20 repetitions.}
   \end{tablenotes}
   \end{threeparttable}
-  \vspace{-0.15in}
-\end{wraptable}
+\end{table*}
+%\end{wraptable}
 
 %%% Local Variables:
 %%% TeX-master: "master"
