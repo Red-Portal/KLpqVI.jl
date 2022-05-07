@@ -1,17 +1,19 @@
 
 %\vspace{-0.05in}
-\section{Practical Performance Analysis of Markov Chain Score Ascent}
-\subsection{Non-Asymptotic Convergence of Markov Chain Score Ascent}\label{section:convergence}
+\section{Markov Chain Score Ascent}
+
+In this section, we provide a formal analysis of the mixing rate and gradient variance for two existing approaches to inclusive KL minimization, MSC \jrg{cite} and JSA \jrg{cite}. To achieve this, we first develop Markov Chain Score Ascent (MCSA), a framework for inclusive KL minimization. We show that MSC and JSA are special cases of this framework. By analyzing the ergodic convergence rate and gradient variance for MSC and JSA, we then derive non-asymptotic convergence rates for these methods.
+
+\subsection{Markov Chain Score Ascent as a special case of MCGD}\label{section:convergence}
 
 \vspace{-0.05in}
-\paragraph{Markov Chain Score Ascent}
 As shown in~\cref{eq:mcgd}, the basic ingredients of MCGD are the target function \(f\left(\vlambda, \eta\right)\), the gradient estimator \(\vg\left(\vlambda, \eta\right)\), and the Markov chain kernel \(P_{\vlambda}\left(\eta, \cdot\right)\).
 Obtaining MCSA through MCGD boils down to designing \(\vg\) and \(P_{\vlambda}\) such that \(f\left(\vlambda\right) = \DKL{\pi}{q\left(\cdot; \vlambda\right)} \).
 In the following theorem, we provide practical conditions for setting \(g\) and \(P_{\vlambda}\) such that the MCGD steps in~\cref{eq:mcgd} results in MCSA.
 
 \input{thm_product_kernel}
 
-This framework is general enough to include both JSA and MSC.
+As we will show, this framework is general enough to include both JSA and MSC.
 We will later propose a third novel scheme that conforms to~\cref{thm:product_kernel}.
 Note that \(N\) here can be regarded as the computational budget of each MCGD iteration since the cost of
 \begin{enumerate*}[label=\textbf{(\roman*)}]
@@ -142,9 +144,9 @@ In a similar spirit, we will obtain the gradient bound \(G\) of different MCSA a
 %% However, their bound for the convex case is independent of the kernel mixing rate, which leaves out the practical effects of the mixing rate.
 
 \vspace{-0.05in}
-\subsection{Performance Analysis of Markov Chain Score Ascent Methods}\label{section:comparison}
+\subsection{Analysis of Prior Markov Chain Score Ascent Methods}\label{section:comparison}
 \vspace{-0.05in}
-Both MSC and JSA naturally satisfy the MCSA framework discussed in~\cref{thm:product_kernel}.
+In this section, we will show that MSC and JSA both naturally satisfy the MCSA framework discussed in~\cref{thm:product_kernel}.
 Furthermore, we establish 
 \begin{enumerate*}[label=\textbf{(\roman*)}]
   \item the geometric convergence rate of their implicitly defined kernel \(P\) and
@@ -227,7 +229,7 @@ Note that \(q_{\text{def.}}\) is only used in the Markov chain kernels, which do
 %% \item the Markov chains are variance bounding~\citep[Theorem 1]{10.2307/25442663},
 %% \item and that the score gradient is continuous with respect to \(\vlambda\) and \(\vz\).
 %% \end{enumerate*}
-Admittedly, this assumption is strong, but it provides a straightforward way to compare the gradient variance of different MCSA implementations.
+This assumption enables us to compare the gradient variance of different MCSA implementations.
 
 \vspace{-0.05in}
 \paragraph{Markovian Score Climbing}
@@ -282,9 +284,8 @@ for {\(R\left(w\right) = \{\, \vz\prime \mid w\,\left(\vz\prime\right) \leq w \,
 \input{thm_previous_jsa}
 %
 
-\paragraph{Parallel Markov Chain Score Ascent (ours)}
-For challenging problems, the mismatch between \(\pi\) and \(q_{\vlambda^*}\) can result in a large \(w^*\).
-In this case, our JSA gradient bound suggests that increasing \(N\) does not improve variance, which significantly limits its applicability.
+\section{Parallel Markov Chain Score Ascent}
+In this section, we turn to leveraging our new understanding of MCSA methods to develop a novel scheme with improved theoretical performance. \jrg{can we motivate this more strongly? Specifically, can we say that, by tying MCSA theory to MCGD theory, we can observe that the mixing rate isn't as important, so we develop a new scheme to exploit this previously not understood property.} In partiuclar, our JSA gradient bound suggests that increasing \(N\) does not improve variance, which significantly limits its applicability.
 To fix this limitation, we propose a new MCSA scheme we call \textit{parallel MCSA} (pMCSA) that always achieves \(\mathcal{O}\left(\nicefrac{1}{N}\right)\) variance reduction.
 Instead of using \(N\) \textit{sequential} Markov chain states, pMCSA operates \(N\) parallel Markov chains with.
 At each step, pMCSA performs only a single Markov-chain transition for each chain.

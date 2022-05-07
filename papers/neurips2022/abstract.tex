@@ -1,10 +1,11 @@
 
-Recently, variational inference (VI) methods that minimize the inclusive Kullback-Leibler (KL) divergence by stochastic gradient descent (SGD) have been developed.
-These methods, we call Markov chain score ascent (MCSA), obtain noisy estimates of the gradient by running Markov chains in conjunction with SGD iterations.
-This paper shows that these MCSA methods are a special case of the Markov chain gradient descent (MCGD) framework.
-Based on the non-asymptotic convergence results of MCGD, we analyze the practical performance of previously developed MCSA algorithms.
-Furthermore, we propose a novel MCSA scheme, parallel MCSA (pMCSA), that achieves a tighter bound on the gradient variance.
-We evaluate pMCSA against previously developed MCSA methods on general Bayesian inference benchmarks and demonstrate its performance.
+Recently, variational inference (VI) methods that minimize the inclusive Kullback-Leibler (KL) divergence by stochastic gradient descent (SGD) have been developed. \jrg{need a better first sentence here} In this paper, we provide the first theoretical analysis of the mixing rate and gradient variances of these methods. To accomplish this, we demonstrate that previously studied approaches--which we collectively here refer to as Markov chain score ascent (MCSA) methods--can be cast as special cases of Markov chain gradient descent (MCGD). Furthermore, by leveraging this new understanding of MCSA approaches, we develop a novel MCSA scheme, parallel MCSA (pMCSA) that achieves a tighter bound on the gradient variance than prior work. We evaluate pMCSA against prior MCSA methods on general Bayesian inference benchmarks and demonstrate that this improved theoretical result translates to improved empirical performance. \jrg{I rewrote this a bit}
+
+% These methods, we call Markov chain score ascent (MCSA), obtain noisy estimates of the gradient by running Markov chains in conjunction with SGD iterations.
+% This paper shows that these MCSA methods are a special case of the Markov chain gradient descent (MCGD) framework.
+% Based on the non-asymptotic convergence results of MCGD, we analyze the practical performance of previously developed MCSA algorithms.
+% Furthermore, we propose a novel MCSA scheme, parallel MCSA (pMCSA), that achieves a tighter bound on the gradient variance.
+% We evaluate pMCSA against previously developed MCSA methods on general Bayesian inference benchmarks and demonstrate its performance.
 
 %Our experiments show that, when using our proposed scheme, inclusive KL divergence minimization is competitive against evidence lower bound minimization.
 %Our results motivate the use of the inclusive KL divergence for VI.
