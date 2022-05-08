@@ -474,18 +474,6 @@ git-tree-sha1 = "bed775e32c6f38a19c1dbe0298480798e6be455f"
 uuid = "cad2338a-1db2-11e9-3401-43bc07c9ede2"
 version = "0.5.0"
 
-[[deps.ExcelFiles]]
-deps = ["DataValues", "Dates", "ExcelReaders", "FileIO", "IterableTables", "IteratorInterfaceExtensions", "Printf", "PyCall", "TableShowUtils", "TableTraits", "TableTraitsUtils", "XLSX"]
-git-tree-sha1 = "f3e5f4279d77b74bf6aef2b53562f771cc5a0474"
-uuid = "89b67f3b-d1aa-5f6f-9ca4-282e8d98620d"
-version = "1.0.0"
-
-[[deps.ExcelReaders]]
-deps = ["DataValues", "Dates", "PyCall", "Test"]
-git-tree-sha1 = "6f9db420dd362bd5bcea3a0f6dabf8bda587fec3"
-uuid = "c04bee98-12a5-510c-87df-2a230cb6e075"
-version = "0.11.0"
-
 [[deps.Expat_jll]]
 deps = ["Artifacts", "JLLWrappers", "Libdl", "Pkg"]
 git-tree-sha1 = "bad72f730e9e91c08d9427d5e8db95478a3c323d"

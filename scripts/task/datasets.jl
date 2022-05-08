@@ -100,12 +100,11 @@ function load_dataset(::Val{:boston})
 end
 
 function load_dataset(::Val{:concrete})
-    fname= datadir(joinpath("dataset", "Concrete_Data.xls"))
-    data = FileIO.load(fname, "Sheet1")  |> DataFrame |> Matrix
-    
-    X = Array{Float32}(data[:, 1:end-1])
-    y = Array{Float32}(data[:, end])
-    X, y
+    dataset = MAT.matread(
+        datadir("dataset", "uci", "concrete.mat"))["data"]
+    data_x = dataset[:, 1:end-1]
+    data_y = dataset[:, end]
+    data_x, data_y
 end
 
 function load_dataset(::Val{:yacht})
