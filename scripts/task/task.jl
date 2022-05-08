@@ -15,6 +15,7 @@ import MAT
 import DelimitedFiles
 import Random
 import AdvancedHMC
+import ExcelFiles
 
 include("datasets.jl")
 include("gp_utils.jl")
