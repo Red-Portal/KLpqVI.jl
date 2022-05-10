@@ -1,11 +1,13 @@
 
 \begin{theoremEnd}{proposition}\label{thm:product_kernel}
-  Let \(\veta = \left[ \vz^{(1)}, \vz^{(2)}, \ldots, \vz^{(N)} \right]\) and a Markov chain kernel \(P_{\vlambda}\left(\veta, \cdot\right)\) be \(\Pi\)-invariant where \(\Pi\) is defined as
+  Let \(\veta = \left( \vz^{(1)}, \vz^{(2)}, \ldots, \vz^{(N)} \right)\) and a Markov chain kernel \(P_{\vlambda}\left(\veta, \cdot\right)\) be \(\Pi\)-invariant where \(\Pi\) is defined as
+  {%\small
   \[
   \Pi\left(\veta\right) = \pi\left(\vz^{(1)}\right) \, \pi\left(\vz^{(2)}\right) \times \ldots \times \pi\left(\vz^{(N)}\right).
   \]
+  }
   Then, by defining the target function \(f\) and the gradient estimator \(\vg\) as
-  {
+  {\small
   \begin{align*}
     f\left(\vlambda, \veta\right) =  \frac{1}{N} \sum^{N}_{n=1} \log q\left(\vz^{(n)}; \vlambda\right) + \mathbb{H}\left[\,\pi\,\right], 
     \quad\text{and}\quad
@@ -13,7 +15,7 @@
   \end{align*}
   }
   where \(\mathbb{H}\left[\,\pi\,\right]\) is the entropy of \(\pi\), MCGD results in inclusive KL minimization as
-  {
+  {%\small
   \begin{align*}
     \Esub{\Pi}{ f\left(\vlambda, \rvveta\right) } = \DKL{\pi}{q\left(\cdot; \vlambda\right)},
     \quad\text{and}\quad

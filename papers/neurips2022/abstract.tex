@@ -1,5 +1,12 @@
 
-Recently, variational inference (VI) methods that minimize the inclusive Kullback-Leibler (KL) divergence by stochastic gradient descent (SGD) have been developed. \jrg{need a better first sentence here} In this paper, we provide the first theoretical analysis of the mixing rate and gradient variances of these methods. To accomplish this, we demonstrate that previously studied approaches--which we collectively here refer to as Markov chain score ascent (MCSA) methods--can be cast as special cases of Markov chain gradient descent (MCGD). Furthermore, by leveraging this new understanding of MCSA approaches, we develop a novel MCSA scheme, parallel MCSA (pMCSA) that achieves a tighter bound on the gradient variance than prior work. We evaluate pMCSA against prior MCSA methods on general Bayesian inference benchmarks and demonstrate that this improved theoretical result translates to improved empirical performance. \jrg{I rewrote this a bit}
+\krk{
+  Minimizing the inclusive Kullback-Leibler (KL) divergence with stochastic gradient descent (SGD) is challenging due to the fact that it requires gradients averaged over the posterior.
+  However, multiple methods have recently emerged showing that it is possible to run SGD with \textit{biased} gradient estimates obtained from Markov chains,
+}
+In this paper, we provide the first theoretical analysis of the mixing rate and gradient variances of these methods.
+To accomplish this, we demonstrate that previously studied approaches--which we collectively here refer to as Markov chain score ascent (MCSA) methods--can be cast as special cases of Markov chain gradient descent (MCGD).
+Furthermore, by leveraging this new understanding of MCSA approaches, we develop a novel MCSA scheme, parallel MCSA (pMCSA) that achieves a tighter bound on the gradient variance than prior work.
+We evaluate pMCSA against prior MCSA methods on general Bayesian inference benchmarks and demonstrate that this improved theoretical result translates to improved empirical performance.
 
 % These methods, we call Markov chain score ascent (MCSA), obtain noisy estimates of the gradient by running Markov chains in conjunction with SGD iterations.
 % This paper shows that these MCSA methods are a special case of the Markov chain gradient descent (MCGD) framework.

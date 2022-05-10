@@ -60,6 +60,7 @@
 \newcommand{\cmark}{\textcolor{green!80!black}{\ding{51}}}
 \newcommand{\xmark}{\textcolor{red}{\ding{55}}}
 \newcommand{\jrg}[1]{\textcolor{red}{[Jake: #1]}}
+\newcommand{\krk}[1]{\textcolor{blue}{#1}}
 
 \tikzset{external/system call={xelatex -shell-escape -halt-on-error -interaction=batchmode -jobname "\image" "\texsource"}}
 \tikzexternalize
@@ -157,15 +158,13 @@ Each of the CPUs has 20 logical threads with 32k L1 cache, 256k L2 cache, and 25
 All of our experiments can be executed within 12 hours on a system with similar computational capabilities.
 
 \input{pseudocode}
-%\input{illustration}
 \input{prob_models}
 
-%\newpage
 \section{Proofs}\label{section:proofs}
 %\input{var_seq}
 %\input{lemmas}
 \printProofs
-
+\newpage
 \input{additional_plots}
 
 \end{document}

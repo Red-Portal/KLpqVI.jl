@@ -1,9 +1,14 @@
 
-%\vspace{-0.05in}
+\vspace{-0.05in}
 \section{Markov Chain Score Ascent}
+\vspace{-0.05in}
 
-In this section, we provide a formal analysis of the mixing rate and gradient variance for two existing approaches to inclusive KL minimization, MSC \jrg{cite} and JSA \jrg{cite}. To achieve this, we first develop Markov Chain Score Ascent (MCSA), a framework for inclusive KL minimization. We show that MSC and JSA are special cases of this framework. By analyzing the ergodic convergence rate and gradient variance for MSC and JSA, we then derive non-asymptotic convergence rates for these methods.
+In this section, we provide a formal analysis of the two existing approaches to inclusive KL minimization, MSC~\citet{NEURIPS2020_b2070693} and JSA~\citet{pmlr-v124-ou20a}.
+To achieve this, we first develop Markov Chain Score Ascent (MCSA), a framework for inclusive KL minimization with MCGD.
+Then, we show that MSC and JSA are special cases of this framework.
+By analyzing the ergodic convergence rate and gradient variance for MSC and JSA, we then analyze the non-asymptotic convergence of these methods.
 
+\vspace{-0.05in}
 \subsection{Markov Chain Score Ascent as a special case of MCGD}\label{section:convergence}
 
 \vspace{-0.05in}
@@ -22,8 +27,8 @@ Note that \(N\) here can be regarded as the computational budget of each MCGD it
 \end{enumerate*}
 will linearly increase with \(N\).
 
-In addition, to utilize the convergence analysis results of MCGD, we require \(P\) to be geometrically ergodic.
-An execption is~\citet{debavelaere_convergence_2021} where they assume \(P\) to be polynomially ergodic.
+In addition, the MCGD framework often assumes \(P\) to be geometrically ergodic.
+An exception is~\citet{debavelaere_convergence_2021} where they operate with polynomially ergodic kernels.
 \begin{assumption}{(Markov chain kernel)}\label{thm:kernel_conditions}
 \vspace{-0.05in}
   The Markov chain kernel \(P\) is geometrically ergodic as
@@ -38,20 +43,20 @@ An execption is~\citet{debavelaere_convergence_2021} where they assume \(P\) to 
 
 \vspace{-0.1in}
 \paragraph{Non-Asymptotic Convergence Rates}
-Based on the conclusion of \cref{thm:product_kernel,thm:kernel_conditions} and additional assumptions on the objective function such as convexity, we can apply the previous convergence results of MCGD to MCSA.
+Based on the conclusion of \cref{thm:product_kernel,thm:kernel_conditions} and additional technical assumptions on the objective function, we can apply the existing convergence results of MCGD to MCSA.
 \cref{table:convergence} provides a brief list of some relevant results.
 We omitted terms resulting from assumptions on the objective function, such as Lipschitz smoothness.
 Instead, we focus on the terms including the gradient variance (\(G\)) and mixing rate (\(\rho\)) since they are closely related to the algorithmic design of MCSA algorithms.
 
 \vspace{-0.1in}
 \paragraph{Convergence and Mixing Rate}
-An analysis on the general MCGD setting was first provided by~\citet{duchi_ergodic_2012}.
-Notice their rate is dependent on the mixing rate by the \(1 / \log \rho^{-1}\) term.
-For MCSA, this is conservative since, on challenging problems, the mixing is slow such that \(\rho \approx 1\).
-Fortunately, recent results by \citet{doan_convergence_2020,doan_finitetime_2020} have shown that it is possible to obtain rates independent of the mixing rate.
-In particular, in the result of~\citet{doan_finitetime_2020}, the influence of the mixing rate decreases in a rate of \(\mathcal{O}\left(\nicefrac{1}{T^2}\right)\).
+\citet{duchi_ergodic_2012} was first to provide an analysis on the general MCGD setting.
+Their convergence rate is dependent on the mixing rate through the \(1 / \log \rho^{-1}\) term.
+For MCSA, this results in an overly conservative rate since, on challenging problems, mixing can be slow such that \(\rho \approx 1\).
+Fortunately, \citet{doan_convergence_2020,doan_finitetime_2020} have recently shown that it is possible to obtain a rate independent of the mixing rate \(\rho\).
+For example, in the result of~\citet{doan_finitetime_2020}, the influence of \(\rho\) decreases in a rate of \(\mathcal{O}\left(\nicefrac{1}{T^2}\right)\).
 %The fact that the convergence rate can be independent of the mixing rate is critical.
-This obervation is important since it means trading gradient variance and mixing rate could result in profitable deals.
+This obervation is important since it means trading gradient variance and mixing rate could be profitable.
 
 \begin{table*}
 \vspace{-0.2in}
@@ -78,7 +83,7 @@ This obervation is important since it means trading gradient variance and mixing
     & {\footnotesize\(\beta_t = \frac{1}{2 \, L \sqrt{t + 1}}\)}
     &&& {\footnotesize{Theorem 2}}
     \\\cdashlinelr{1-5}
-    \multirow{2}{*}{\small SGD}
+    \multirow{2}{*}{\small SGD\tnote{3}}
     & {\footnotesize\(\gamma_t = \gamma/t\)}
     & \multirow{2}{*}{\footnotesize\( {\|\,\vg\left(\vlambda, \veta\right)\|}_* < G \left( \norm{\vlambda}_2 + 1 \right) \)}
     & \multirow{2}{*}{\small\(\mathcal{O}\left(\frac{G^2 \log T}{ T}\right)\)}
@@ -88,11 +93,13 @@ This obervation is important since it means trading gradient variance and mixing
     &&& {\footnotesize{Theorem 1,2}}
     \\ \bottomrule
   \end{tabular}
-  \begin{tablenotes}
-  \item[1]{ \(\mathcal{F}_t\) is the \(\sigma\)-field formed by all the iterates \(\veta_t\), \(\vlambda_t\) up to the \(t\)th SGD iteration. }
-  \item[1]{ \(\norm{\vx}_*\) is the dual norm such that \(\norm{\vx}_* = \sup_{\norm{\vz} \leq 1} \iprod{\vx}{\vz}\).}
-  \item[2]{ \(\beta_t\) is the stepsize of the momentum.}
-  \item[2,3]{ \(L\) is the Lipschitz smoothness constant.}
+  \begin{tablenotes}[flushleft]
+  \item[]{%
+    \footnotesize\textit{\textbf{Notation}}: \(^1\)\(\mathcal{F}_t\) is the \(\sigma\)-field formed by all the iterates \(\veta_t\), \(\vlambda_t\) up to the \(t\)th SGD iteration and \(\norm{\vx}_*\) is the dual norm such that \(\norm{\vx}_* = \sup_{\norm{\vz} \leq 1} \iprod{\vx}{\vz}\).
+    \(^2\)\(\beta_t\) is the stepsize of the momentum.
+    \(^2\)\(^3\)\(L\) is the Lipschitz smoothness constant.
+    \(^3\)\(\mu\) is the strong convexity constant.
+  }
   \end{tablenotes}
 \end{threeparttable}
 \vspace{-0.2in}
@@ -102,51 +109,14 @@ This obervation is important since it means trading gradient variance and mixing
 \paragraph{Gradient Bound Assumption}
 Except for \citet{doan_finitetime_2020}, most results assume that the gradient is bounded for \(\forall\veta,\vlambda\) as {\footnotesize\( {\| \vg\left(\vlambda, \veta\right) \|} < G \)}.
 Admidttedly, this condition is strong for MCSA, but it is similar to the bounded variance assumption {\footnotesize\(\mathbb{E}\,[\norm{\vg}^2]  < G^2\)} used in vanilla SGD, which is also known to be strong since it does not hold for strongly convex objectives~\citep{pmlr-v80-nguyen18c}.
-%Furthermore, strictly speaking, even the assumption of~\citet{doan_finitetime_2020} is still strong to include the most basic variational families.
-%% For example for the Gaussian family, the gradient bound with respect to the covariance matrix is bounded as
-%% {\small
-%% \begin{align*}
-%%   \norm{ \nabla_{\mSigma} \log q\left(\vz; \vlambda\right) }_F
-%%   \leq
-%%   \norm{
-%%   \nabla_{\mSigma} {\left(\vmu - \vz\right)}^{\top} \mSigma^{-1} {\left(\vmu - \vz\right)}
-%%   }_{F}
-%%   =
-%%   \norm{
-%%    \mSigma^{-\top} \, {\left(\vmu - \vz\right) \, \left(\vmu - \vz\right)}^{\top} \, \mSigma^{-\top}
-%%   }_{F}
-%% \end{align*}
-%% }%
-%where \(\vlambda = \left(\mu, \mSigma\right)\).
-%Even if we bound the norm of \(\vz\), it is apparent that the gradient grows as \(\norm{\vlambda}^2_2\) instead of \(\norm{\vlambda}_2\).
 Nonetheless, assuming the existence of \(G\) can lead to useful analysis with practical benefits.
 For example, it can be used to compare the performance of different algorithms as done by~\citet{pmlr-v108-geffner20a}.
 In a similar spirit, we will obtain the gradient bound \(G\) of different MCSA algorithms and compare them.
 
-%\input{thm_gradient_bound}
-
-
-%% \begin{assumption}{\textbf{(Bounded variance)}}\label{thm:bounded_variance}
-%%   Let \(\vlambda \in \Lambda\) be measurable with respect to the \(\sigma\)-field \(\mathcal{F}_{t-1}\).
-%%   The  gradient estimator \(g\) is bounded a constant \(G < \infty\) such that
-%%   \(
-%%   \E{ {\lVert\, g\left(\cdot, \rvveta_{t}\right) \,\rVert}^2_{*} \;\middle|\; \mathcal{F}_{t-1}} < G^2.
-%%   \)
-%% \end{assumption}
-
-%% Under the stated conditions, the non-asymptotic convergence rate of MCSA is a special case of the ergodic mirror descent algorithm of~\citet{duchi_ergodic_2012}.
-
-%\input{thm_convergence_rate}
-%\input{thm_convergence_rate2}
-
-%% This result is a direct adaptation of the ergodic mirror descent algorithm by~\cite{duchi_ergodic_2012}.
-%% For accelerated variants of MCGD,~\citet{doan_convergence_2020} provide non-asymptotic convergence results.
-%% However, their bound for the convex case is independent of the kernel mixing rate, which leaves out the practical effects of the mixing rate.
-
 \vspace{-0.05in}
 \subsection{Analysis of Prior Markov Chain Score Ascent Methods}\label{section:comparison}
 \vspace{-0.05in}
-In this section, we will show that MSC and JSA both naturally satisfy the MCSA framework discussed in~\cref{thm:product_kernel}.
+In this section, we will show that MSC and JSA both qualify as MCSA through~\cref{thm:product_kernel}.
 Furthermore, we establish 
 \begin{enumerate*}[label=\textbf{(\roman*)}]
   \item the geometric convergence rate of their implicitly defined kernel \(P\) and
@@ -158,80 +128,22 @@ To do this, we use the following assumptions.
 \end{assumption}
 \vspace{-0.05in}
 The fact that \(w^*\) exists for all \(\vlambda \in \Lambda\) is restrictive and not relevant in practice.
-It does help excaping the slow mixing region in the initial MCGD steps, but the benefit vanishes quickly as we converge.
+It does help excaping slow mixing regions in the initial MCGD steps, but this benefit vanishes quickly as we converge.
 However, ensuring boundedness is necessary for theoretically analyzing MCGD through~\cref{thm:kernel_conditions}.
 Although previous MCSA methods did not take specific measures to ensure~\cref{thm:bounded_weight}, this can be done by using a variational family with heavy tails~\citep{NEURIPS2018_25db67c5} or using a defensive mixture~\citep{hesterberg_weighted_1995, holden_adaptive_2009} as
-\vspace{-0.05in}
 \begin{align*}
   q_{\text{def.}}\left(\vz; \vlambda \right) = w \, q\left(\vz; \vlambda\right) + (1 - w) \, \nu\left(\vz\right)
 \end{align*}
 where \(0 < w < 1\) and \(\nu\left(\cdot\right)\) is a heavy tailed distribution that satisfies \(\sup_{\vz \in \mathcal{Z}} \pi\left(\vz\right) / \nu\left(\vz\right) < \infty\).
 Note that \(q_{\text{def.}}\) is only used in the Markov chain kernels, which does not restrict our choice of the variational family.
 
-%
-%% \begin{assumption}{(Location scale family)}\label{thm:location_scale}
-%%   The variational family is the location-scale family with the location (\(\vm\)) and scale (\(\mC\)) parameters denoted as \(\vlambda = (\vm_{\vlambda}, \mC_{\vlambda})\) with the base density \(\phi\) such that the probability density and samples are given by
-%%   \begin{align*}
-%%     &\text{\textit{(sampling)}}\quad \rvvz = \mC_{\vlambda} \, \rvvu + \vm_{\vlambda}, \quad \rvvu \sim \phi\left(\cdot\right), 
-%%     &\text{\textit{(density)}}\quad q\left(\vz; \vlambda\right) = \phi\left( \mC^{-1}_{\vlambda}\left( \vz - \vm_{\vlambda} \right) \right)
-%%   \end{align*}
-%% \end{assumption}
-%% Furthermore, the squared \(L^2\)-norm of variational parameters are given as
-%% \begin{align}
-%%   \norm{\vlambda}_2^2 = \norm{\vm_{\vlambda}}_2^2 + \norm{\mC_{\vlambda}}_F^2 \label{eq:parameter_norm}
-%% \end{align}
-%% for \(\vlambda = (\vm_{\vlambda}, \mC_{\vlambda})\).
-
-%% \begin{assumption}{(Lipschitz continuity of base distribution)}\label{thm:lipschitz}
-%%   the base density is log-Lipschitz continuous as
-%%   \(
-%%     \abs{ \log \phi\left(\vu\right) - \log \phi\left(\vu\prime\right) } \leq L \, \norm{\vu - \vu\prime}
-%%   \)
-%%   for some finite constant \(L > 0\).
-%% \end{assumption}
-%% This is equivalent to assuming \(\norm{\nabla \log \phi\left(\vu\right) } < L\)
-
-%% \begin{assumption}{Contrained scale}\label{thm:solution_space}
-%%   The parameter space \(\Lambda_M\) is constrained such that the singular values of the scale matrix are lower bounded such that
-%%   {\small
-%%   \[
-%%   \Lambda_M = \left\{\, (\vm, \mC) \,\middle|\, \sigma_{\text{min}}(\mC) \geq \frac{1}{\sqrt{M}} \,\right\}
-%%   \]
-%%   }
-%%   for some finite constant \(M > 0\).
-%% \end{assumption}
-
-%% \begin{assumption}{Uniformly Lipschitz continuous score}\label{thm:solution_space}
-%%   The score gradient is bivariate uniformly Lipschitz continuous as
-%%   {\small
-%%   \[
-%%   \norm{ \nabla \log q\left(\vz; \vlambda\right) }_2 \leq L \left( \norm{\vlambda}_2 + \norm{\vz}_2 + 1 \right)
-%%   \]
-%%   }
-%%   for some finite constant \(L > 0\).
-%% \end{assumption}
-
-%% \begin{assumption}{(Bounded variance)}\label{thm:bounded_variance}
-%%   The samples \(\veta_t\) generated by the Markov chain kernel as \(\rvveta \sim P_{\vlambda}\left(\veta, \cdot\right)\) have a finite second moment for all \(t\) such as
-%%   \(
-%%    \mathbb{E}[\, {\| \veta_t \|}^2 \,|\, \mathcal{F}_{t-1} \,] < V,
-%%   \)
-%%   for some finite constant \(V > 0\).
-%% \end{assumption}
-
 \begin{assumption}{(Bounded Score)}\label{thm:bounded_score}
   The score gradient is bounded for \(\forall \vlambda \in \Lambda\) and \(\forall \vz \in \mathcal{Z}\) such that \(\norm{\vs\left(\vlambda; \vz\right)}_* \leq L \) for some finite constant \(L > 0\).
 \end{assumption}
 \vspace{-0.05in}
-%%Informally, this assumption is equivalent to assuming 
-%% \begin{enumerate*}[label=\textbf{(\roman*)}]
-%% \item \(\Lambda\) is compact with a finite radius,
-%% \item the Markov chains are variance bounding~\citep[Theorem 1]{10.2307/25442663},
-%% \item and that the score gradient is continuous with respect to \(\vlambda\) and \(\vz\).
-%% \end{enumerate*}
-This assumption enables us to compare the gradient variance of different MCSA implementations.
+This assumption enables us to compare the gradient variance of different MCSA variants.
 
-\vspace{-0.05in}
+\vspace{-0.1in}
 \paragraph{Markovian Score Climbing}
 MSC is a simple instance of MCSA where \(\eta_t = \vz_t\) and \(P_{\vlambda_t} = K_{\vlambda_t}\), \(K_{\vlambda_t}\) is the conditional importance sampling (CIS) kernel (originally proposed as the iterated sequential importance resampling kernel by~\citet{andrieu_uniform_2018}).
 See \cref{alg:msc} for a detailed pseudocode.
@@ -285,7 +197,11 @@ for {\(R\left(w\right) = \{\, \vz\prime \mid w\,\left(\vz\prime\right) \leq w \,
 %
 
 \section{Parallel Markov Chain Score Ascent}
-In this section, we turn to leveraging our new understanding of MCSA methods to develop a novel scheme with improved theoretical performance. \jrg{can we motivate this more strongly? Specifically, can we say that, by tying MCSA theory to MCGD theory, we can observe that the mixing rate isn't as important, so we develop a new scheme to exploit this previously not understood property.} In partiuclar, our JSA gradient bound suggests that increasing \(N\) does not improve variance, which significantly limits its applicability.
+In this section, we turn to leveraging our new understanding of MCSA methods to develop a novel scheme with improved theoretical performance.
+
+\subsection{Parallel Markov Chain Score Ascent}
+
+\jrg{can we motivate this more strongly? Specifically, can we say that, by tying MCSA theory to MCGD theory, we can observe that the mixing rate isn't as important, so we develop a new scheme to exploit this previously not understood property.} In partiuclar, our JSA gradient bound suggests that increasing \(N\) does not improve variance, which significantly limits its applicability.
 To fix this limitation, we propose a new MCSA scheme we call \textit{parallel MCSA} (pMCSA) that always achieves \(\mathcal{O}\left(\nicefrac{1}{N}\right)\) variance reduction.
 Instead of using \(N\) \textit{sequential} Markov chain states, pMCSA operates \(N\) parallel Markov chains with.
 At each step, pMCSA performs only a single Markov-chain transition for each chain.

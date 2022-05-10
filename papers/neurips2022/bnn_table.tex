@@ -1,29 +1,31 @@
 
 \begin{table*}
+  \vspace{-0.1in}
   \centering
   \caption{Test Log Predictive Density on Bayesian Neural Network Regression}\label{table:gp}
   \vspace{-0.05in}
-  \setlength{\tabcolsep}{4pt}
+  \setlength{\tabcolsep}{2.3pt}
   \begin{threeparttable}
-  \begin{tabular}{lrrrrrr}
+  \begin{tabular}{lrrrcccccc}
     \toprule
-    & \multicolumn{1}{c}{\multirow{2}{*}{ELBO}} & \multicolumn{1}{c}{\multirow{1}{*}{\textbf{pMCSA}}} & \multicolumn{1}{c}{\multirow{2}{*}{JSA}} & \multicolumn{1}{c}{\multirow{2}{*}{CIS}} & \multicolumn{1}{c}{\multirow{2}{*}{CIS-RB}} & \multicolumn{1}{c}{\multirow{2}{*}{SNIS}} \\
-    & & \multicolumn{1}{c}{\textbf{(ours)}} & & & & \\
+    & \multicolumn{1}{c}{\multirow{2}{*}{\footnotesize\(\mathrm{dim}\left(\mathcal{\Lambda}\right)\)}} & \multicolumn{1}{c}{\multirow{2}{*}{\(D\)}} &  \multicolumn{1}{c}{\multirow{2}{*}{\(N_{\text{train}}\)}} & \multicolumn{2}{c}{\multirow{1}{*}{ELBO}} & \multicolumn{4}{c}{MCSA Variants} \\\cmidrule(lr){5-6}\cmidrule(lr){7-10}
+  & & & & \(N=1\) & \(N=10\) & \multicolumn{1}{c}{\multirow{1}{*}{\textbf{pMCSA}}} & \multicolumn{1}{c}{\multirow{1}{*}{JSA}} & \multicolumn{1}{c}{\multirow{1}{*}{CIS}} & \multicolumn{1}{c}{\multirow{1}{*}{CIS-RB}}\\
     \midrule
-    wine & {\bf-0.95 {\scriptsize{\(\pm 0.01\)}}} & {\bf-0.95 {\scriptsize{\(\pm 0.01\)}}} & {-0.97 {\scriptsize{\(\pm 0.01\)}}} & {-0.97 {\scriptsize{\(\pm 0.01\)}}} & {-0.96 {\scriptsize{\(\pm 0.01\)}}} & {-0.96 {\scriptsize{\(\pm 0.01\)}}} \\
-    concrete & {-3.26 {\scriptsize{\(\pm 0.01\)}}} & {\bf-3.24 {\scriptsize{\(\pm 0.01\)}}} & {-3.41 {\scriptsize{\(\pm 0.02\)}}} & {-3.38 {\scriptsize{\(\pm 0.02\)}}} & {-3.37 {\scriptsize{\(\pm 0.02\)}}} & {-3.30 {\scriptsize{\(\pm 0.01\)}}} \\
-    boston & {-2.72 {\scriptsize{\(\pm 0.03\)}}} & {\bf-2.69 {\scriptsize{\(\pm 0.02\)}}} & {-2.87 {\scriptsize{\(\pm 0.02\)}}} & {-2.87 {\scriptsize{\(\pm 0.02\)}}} & {-2.86 {\scriptsize{\(\pm 0.03\)}}} & {-2.74 {\scriptsize{\(\pm 0.02\)}}} \\
-    yacht & {\bf-2.47 {\scriptsize{\(\pm 0.01\)}}} & {-2.52 {\scriptsize{\(\pm 0.01\)}}} & {-3.19 {\scriptsize{\(\pm 0.04\)}}} & {-3.15 {\scriptsize{\(\pm 0.04\)}}} & {-3.17 {\scriptsize{\(\pm 0.05\)}}} & {-2.61 {\scriptsize{\(\pm 0.01\)}}} \\
-    airfoil & {-2.55 {\scriptsize{\(\pm 0.02\)}}} & {\bf-2.42 {\scriptsize{\(\pm 0.01\)}}} & {-2.63 {\scriptsize{\(\pm 0.02\)}}} & {-2.61 {\scriptsize{\(\pm 0.02\)}}} & {-2.59 {\scriptsize{\(\pm 0.01\)}}} & {-2.67 {\scriptsize{\(\pm 0.01\)}}} \\
-    gas & {\bf-0.07 {\scriptsize{\(\pm 0.01\)}}} & {-0.11 {\scriptsize{\(\pm 0.02\)}}} & {-0.54 {\scriptsize{\(\pm 0.03\)}}} & {-0.61 {\scriptsize{\(\pm 0.03\)}}} & {-0.57 {\scriptsize{\(\pm 0.03\)}}} & {-0.38 {\scriptsize{\(\pm 0.01\)}}} \\
-    energy & {-2.46 {\scriptsize{\(\pm 0.02\)}}} & {\bf-2.20 {\scriptsize{\(\pm 0.02\)}}} & {-2.57 {\scriptsize{\(\pm 0.03\)}}} & {-2.52 {\scriptsize{\(\pm 0.02\)}}} & {-2.52 {\scriptsize{\(\pm 0.02\)}}} & {-2.51 {\scriptsize{\(\pm 0.01\)}}} \\
-    sml & {\bf-1.34 {\scriptsize{\(\pm 0.01\)}}} & {-1.40 {\scriptsize{\(\pm 0.01\)}}} & {-1.80 {\scriptsize{\(\pm 0.02\)}}} & {-1.88 {\scriptsize{\(\pm 0.01\)}}} & {-1.89 {\scriptsize{\(\pm 0.02\)}}} & {-1.95 {\scriptsize{\(\pm 0.02\)}}} \\\bottomrule
-  \end{tabular}
+    yacht & 403 & 6 & 277 & {\bf-2.45 {\scriptsize{\(\pm 0.01\)}}} & {\bf-2.44 {\scriptsize{\(\pm 0.01\)}}} & {\bf-2.49 {\scriptsize{\(\pm 0.01\)}}} & {-3.00 {\scriptsize{\(\pm 0.05\)}}} & {-2.98 {\scriptsize{\(\pm 0.04\)}}} & {-2.98 {\scriptsize{\(\pm 0.04\)}}}\\
+    concrete & 503 & 8 & 927 & {-3.25 {\scriptsize{\(\pm 0.01\)}}} & {\bf-3.24 {\scriptsize{\(\pm 0.01\)}}} & {\bf-3.20 {\scriptsize{\(\pm 0.01\)}}} & {-3.33 {\scriptsize{\(\pm 0.02\)}}} & {-3.32 {\scriptsize{\(\pm 0.02\)}}} & {-3.33 {\scriptsize{\(\pm 0.02\)}}}\\
+    airfoil & 353 & 6 & 1352 & {-2.53 {\scriptsize{\(\pm 0.02\)}}} & {-2.56 {\scriptsize{\(\pm 0.02\)}}} & {\bf-2.27 {\scriptsize{\(\pm 0.02\)}}} & {-2.51 {\scriptsize{\(\pm 0.02\)}}} & {-2.53 {\scriptsize{\(\pm 0.01\)}}} & {-2.51 {\scriptsize{\(\pm 0.01\)}}}\\
+    energy & 503 & 9 & 691 & {-2.42 {\scriptsize{\(\pm 0.02\)}}} & {-2.40 {\scriptsize{\(\pm 0.02\)}}} & {\bf-1.92 {\scriptsize{\(\pm 0.03\)}}} & {-2.38 {\scriptsize{\(\pm 0.02\)}}} & {-2.37 {\scriptsize{\(\pm 0.02\)}}} & {-2.36 {\scriptsize{\(\pm 0.02\)}}}\\
+    boston & 753 & 14 & 455 & {\bf-2.72 {\scriptsize{\(\pm 0.03\)}}} & {\bf-2.70 {\scriptsize{\(\pm 0.03\)}}} & {\bf-2.69 {\scriptsize{\(\pm 0.02\)}}} & {-2.82 {\scriptsize{\(\pm 0.02\)}}} & {-2.80 {\scriptsize{\(\pm 0.03\)}}} & {-2.78 {\scriptsize{\(\pm 0.02\)}}}\\
+    gas & 6503 & 129 & 2308 & {\bf-0.06 {\scriptsize{\(\pm 0.01\)}}} & {\bf 0.13 {\scriptsize{\(\pm 0.03\)}}} & {-0.09 {\scriptsize{\(\pm 0.02\)}}} & {-0.47 {\scriptsize{\(\pm 0.03\)}}} & {-0.47 {\scriptsize{\(\pm 0.04\)}}} & {-0.50 {\scriptsize{\(\pm 0.03\)}}}\\
+    \bottomrule
+ \end{tabular}
   \begin{tablenotes}
-    \item[]{\footnotesize \(\pm\) denotes the 95\% bootstrap confidence intervals obtained from 80 repetitions.}
+    \item[1] {\footnotesize \(\mathrm{dim}\left(\mathcal{\Lambda}\right)\): Dimentionality of \(\vlambda\), \(D\): Number of features, \(N_{\text{train}}\): Number of training data points.}
+    \item[2] {\footnotesize \(\pm\) denotes the 95\% bootstrap confidence intervals obtained from 80 repetitions.}
+    \item[3] {\footnotesize Bolded numbers don't have enough evidence to be distinguished from the best performing method under a .05 significance threshold (Friedman test with Nemenyi post-hoc test,~\citealt{JMLR:v7:demsar06a})}.
   \end{tablenotes}
   \end{threeparttable}
-  \vspace{-0.15in}
+  \vspace{-0.1in}
 \end{table*}
 
 %%% Local Variables:

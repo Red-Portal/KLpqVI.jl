@@ -1,6 +1,10 @@
 
 \section{Introduction}\label{section:intro}
-Bayesian inference aims to analyze the posterior distribution of an unknown latent variable \(\vz\) from which the data \(\vx\) is observed \jrg{I don't know that I'd call these latent variables in the most general setting. Historically, these were more commonly parameters of a model $\theta$. I also think $\vz$ here clashes with the use of $\vz$ later to mean the samples from the Markov chain}.
+Bayesian inference aims to analyze the posterior distribution of an unknown latent variable \(\vz\) from which the data \(\vx\) is observed.
+%
+%\jrg{I don't know that I'd call these latent variables in the most general setting. Historically, these were more commonly parameters of a model $\theta$. I also think $\vz$ here clashes with the use of $\vz$ later to mean the samples from the Markov chain}.
+% krk: The papers closest to our work seems to prefer the term "latent variable" even though they still consider the general Bayesian inference setting. So I think it's okay to match the terminology with those. Also, I think \(\vz\) here is the same as the samples from the Markov chain, is this confusing here?
+%
 By assuming a model \(p\,(\vx\,|\,\vz)\), the posterior \(\pi\,(\vz)\) is given by Bayes' rule such that \(\pi\,(\vz) = {p\,(\vx\,|\,\vz)\,p\,(\vz)}/{p\,(\vx)}\) where \(p\,(\vz)\) represents our prior belief on \(\vz\).
 Instead of working directly with the target distribution \(\pi\), variational inference (VI,~\citealt{blei_variational_2017}) seeks a \textit{variational approximation} \(q\,(\vz; \vlambda)\) that is the most similar to \(\pi\) according to a discrepancy measure \(D\,(\pi,\, q(\cdot; \vlambda))\).
 
@@ -33,9 +37,10 @@ While~\citet{NEURIPS2020_b2070693} has shown convergence of MSC through the work
 
 %
 
-In this paper, we address these theoretical gaps by casting MSC and JSA into a general framework we call Markov chain score ascent (MCSA), which we show is a special case of Markov chain gradient descent. \jrg{last paragraph and here a fair bit} (MCGD,~\citealt{duchi_ergodic_2012, NEURIPS2018_1371bcce, pmlr-v99-karimi19a, doan_convergence_2020}) provides a practical framework. This enables the application of the non-asymptotic convergence results of MCGD~\citep{duchi_ergodic_2012, NEURIPS2018_1371bcce, pmlr-v99-karimi19a, doan_finitetime_2020, doan_convergence_2020, Xiong_Xu_Liang_Zhang_2021, debavelaere_convergence_2021} for analyzing them.
-The fundamental properties affecting the convergence rate of MCGD are the ergodic convergence rate (\(\rho\)) of the MCMC kernel and the gradient variance (\(G\)).
-We analyze these properties (\(\rho, G\)) of MSC and JSA, enabling their practical comparison given a fixed computational budget (\(N\)).
+In this paper, we address these theoretical gaps by casting MSC and JSA into a general framework we call Markov chain score ascent (MCSA), which we show is a special case of Markov chain gradient descent (MCGD,~\citealt{duchi_ergodic_2012}).
+This enables the application of the non-asymptotic convergence results of MCGD~\citep{duchi_ergodic_2012, NEURIPS2018_1371bcce, pmlr-v99-karimi19a, doan_finitetime_2020, doan_convergence_2020, Xiong_Xu_Liang_Zhang_2021, debavelaere_convergence_2021}.
+For MCGD methods, the fundamental properties affecting the convergence rate are the ergodic convergence rate (\(\rho\)) of the MCMC kernel and the gradient variance (\(G\)).
+We analyze \(\rho\) and \(G\) of MSC and JSA, enabling their practical comparison given a fixed computational budget (\(N\)).
 Furthermore, based on the recent insight that the mixing rate does not affect the convergence rate of MCGD~\citet{doan_convergence_2020,doan_finitetime_2020}, we propose a novel scheme, parallel MCSA (pMCSA), which achieves lower variance by trading off the mixing rate.
 We verify our theoretical analysis through numerical simulations and compare MSC, JSA, and pMCSA on general Bayesian inference problems.
 Our experiments show that our proposed method is superior to previous MCSA approaches.
@@ -44,27 +49,16 @@ Our experiments show that our proposed method is superior to previous MCSA appro
 
 \vspace{-0.1in}
 \paragraph{Contribution Summary}
-\jrg{Item one should be something along the lines of we provide the first non-asymptotic analysis of MSC and JSA. Item two should be we accomplish this by showing it's a special case (basically point 1 below). I've sketched this out -- maybe we add back in the appropriate sec/thm references?}
+%\jrg{Item one should be something along the lines of we provide the first non-asymptotic analysis of MSC and JSA. Item two should be we accomplish this by showing it's a special case (basically point 1 below). I've sketched this out -- maybe we add back in the appropriate sec/thm references?}
 %\vspace{-0.2in}
 %% \begin{enumerate*}[label=\textbf{(\roman*)}]
 \setlength\itemsep{0.01in}
-\begin{enumerate}
-    \item We provide the first non-asymptotic theoretical analysis of two recently proposed methods, MSC and JSA, for inclusive KL minimization.
-    \item To accomplish this, we show that both methods can be viewed as what we call ``Markov chain score ascent'' (MCSA) methods, which are a specical case of the MCGD framework. \jrg{Note we want to avoid words like ``automatic'' -- it makes the contribution sound trivial.}
-    \item In light of this reframing, we develop a novel MCSA method which we call pMCSA that achieves lower gradient variance.
-    \item We demonstrate that pMCSA achieves superior empirical performance across a variety of Bayesian inference tasks.
+\begin{enumerate}[leftmargin=7mm,listparindent=\parindent]
+    \item We provide the first non-asymptotic theoretical analysis of two recently proposed inclusive KL minimization methods, MSC and JSA \textbf{(\cref{section:convergence,thm:product_kernel})}.
+    \item To accomplish this, we show that both methods can be viewed as what we call ``Markov chain score ascent'' (MCSA) methods, which are a specical case of the MCGD framework \textbf{(\cref{section:comparison,thm:jsa,thm:msc})}.
+    \item In light of this, we develop a novel MCSA method which we call parallel MCSA (pMCSA) that achieves lower gradient variance.
+    \item We demonstrate that pMCSA achieves superior empirical performance across a variety of Bayesian inference tasks \textbf{(\cref{section:eval})}.
 \end{enumerate}
-% \begin{enumerate}[leftmargin=5mm,listparindent=\parindent]
-% \vspace{-0.05in}
-% \item \textbf{Theoretical Framework (\cref{section:convergence,thm:product_kernel})} \\
-%   We show that MCSA is a special case of the MCGD framework, which automatically establishes its non-asymptotic convergence.
-% \item \textbf{Performance Analysis (\cref{section:comparison,thm:jsa,thm:msc})} \\
-%   We analyze the performance of previous MCSA algorithms, MSC and JSA, through their gradient variance and MCMC kernel mixing rate.
-% \item \textbf{New MCSA Algorithm (\cref{section:comparison,thm:pmcsa})} \\
-%   We propose pMCSA, a new MCSA scheme, that achieves lower gradient variance.
-% \end{enumerate}
-%\end{enumerate*}
-%\item We discuss connections with adaptive IMH methods (\textbf{\cref{section:related}}).
 
 %%% Local Variables:
 %%% TeX-master: "master"
