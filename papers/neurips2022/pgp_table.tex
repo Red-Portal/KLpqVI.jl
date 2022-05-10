@@ -8,8 +8,8 @@
   \begin{threeparttable}
   \begin{tabular}{lrrrccccc}
     \toprule
-    & \multicolumn{1}{c}{\multirow{2}{*}{\footnotesize\(\mathrm{dim}\left(\mathcal{\Lambda}\right)\)}} & \multicolumn{1}{c}{\multirow{2}{*}{\(D\)}} &  \multicolumn{1}{c}{\multirow{2}{*}{\(N_{\text{train}}\)}} & \multicolumn{1}{c}{\multirow{1}{*}{ELBO}} & \multicolumn{4}{c}{MCSA Variants} \\\cmidrule(lr){5-5}\cmidrule(lr){6-9}
-   & & & & \(N=1\) & \multicolumn{1}{c}{\multirow{1}{*}{\textbf{pMCSA}}} & \multicolumn{1}{c}{\multirow{1}{*}{JSA}} & \multicolumn{1}{c}{\multirow{1}{*}{CIS}} & \multicolumn{1}{c}{\multirow{1}{*}{CIS-RB}}\\
+    & \multicolumn{1}{c}{\multirow{2}{*}{\footnotesize\(D_{\vlambda}\)}} & \multicolumn{1}{c}{\multirow{2}{*}{\(D_{\vx}\)}} &  \multicolumn{1}{c}{\multirow{2}{*}{\(N_{\text{train}}\)}} & \multicolumn{1}{c}{\multirow{1}{*}{ELBO}} & \multicolumn{4}{c}{MCSA Variants} \\\cmidrule(lr){5-5}\cmidrule(lr){6-9}
+   & & & & \(N=1\) & \multicolumn{1}{c}{\multirow{1}{*}{\footnotesize\textbf{pMCSA{\scriptsize\,(ours)}}}} & \multicolumn{1}{c}{\multirow{1}{*}{\footnotesize{JSA}}} & \multicolumn{1}{c}{\multirow{1}{*}{\footnotesize{CIS}}} & \multicolumn{1}{c}{\multirow{1}{*}{\footnotesize{CIS-RB}}}\\
     \midrule
     %boston & & &  & {\bf-2.98 {\scriptsize{\(\pm 0.01\)}}} & {\bf-2.96 {\scriptsize{\(\pm 0.02\)}}} & {\bf-3.00 {\scriptsize{\(\pm 0.03\)}}} & {\bf-3.00 {\scriptsize{\(\pm 0.03\)}}} & {\bf-2.96 {\scriptsize{\(\pm 0.03\)}}} \\
     yacht & 287 & 6 & 277 & {-3.63 {\scriptsize{\(\pm 0.02\)}}} & {\bf-3.31 {\scriptsize{\(\pm 0.04\)}}} & {\bf-3.29 {\scriptsize{\(\pm 0.05\)}}} & {\bf-3.25 {\scriptsize{\(\pm 0.04\)}}} & {\bf-3.27 {\scriptsize{\(\pm 0.05\)}}} \\
@@ -20,7 +20,7 @@
     \\\bottomrule
   \end{tabular}
   \begin{tablenotes}
-    \item[1] {\footnotesize \(\mathrm{dim}\left(\mathcal{\Lambda}\right)\): Dimentionality of \(\vlambda\), \(D\): Number of features, \(N_{\text{train}}\): Number of training data points.}
+    \item[1] {\footnotesize \(D_{\vlambda}\): Dimentionality of \(\vlambda\), \(D_{\vx}\): Number of features, \(N_{\text{train}}\): Number of training data points.}
     \item[2] {\footnotesize \(\pm\) denotes the 95\% bootstrap confidence intervals obtained from 20 repetitions.}
     \item[3] {\footnotesize Bolded numbers don't have enough evidence to be distinguished from the best performing method under a .05 significance threshold (Friedman test with Nemenyi post-hoc test,~\citealt{JMLR:v7:demsar06a})}.
   \end{tablenotes}
