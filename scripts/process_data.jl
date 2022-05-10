@@ -1,22 +1,27 @@
 
-            using Distributed
-@everywhere using DrWatson
-@everywhere @quickactivate "KLpqVI"
+using Distributed
+using DrWatson
+@quickactivate "KLpqVI"
 
-@everywhere using FileIO
-@everywhere using JLD2
-@everywhere using Statistics
-@everywhere using CSVFiles
-            using ProgressMeter
-@everywhere using DataFrames
-@everywhere using Bootstrap
+using FileIO
+using JLD2
+using Statistics
+using CSVFiles
+using ProgressMeter
+using DataFrames
+using Bootstrap
 
 using HDF5
 using DataFramesMeta
 using Printf
 using PrettyTables
 using UnicodePlots
-using HypothesisTests
+using PyCall
+
+import Pandas
+
+stats    = PyCall.pyimport("scipy.stats")
+posthocs = PyCall.pyimport("scikit_posthocs")
 
 function compress_data()
     files = filter(fname -> occursin("jld2", fname), readdir(datadir("exp_raw"), join=true))
@@ -29,6 +34,38 @@ function compress_data()
         data["result"] = df
         JLD2.save(file, data)
     end
+end
+
+function hypothesis_test(task, α)
+    files   = readdir(datadir("exp_raw"); join=true)
+    files   = filter(fname -> occursin(task, fname), files)
+    bundles = ProgressMeter.@showprogress map(files) do fname
+        data   = JLD2.load(datadir("exp_raw", fname))
+        method = data["settings"][:method]
+        df     = data["result"]
+        n_iter = maximum(df[:,:n_iter])
+        lpd    = @chain df begin
+            @subset(:iter .== n_iter)
+            @select(:lpd)
+            Array
+        end
+        (method, lpd[:,1])
+    end
+
+    method = [fill(bundle[1], length(bundle[2])) for bundle ∈ bundles]
+    lpd    = [bundle[2]                          for bundle ∈ bundles]
+
+    df = Pandas.DataFrame(Dict(:method => vcat(method...), :value => vcat(lpd...)))
+
+    display(stats.friedmanchisquare(lpd...))
+
+    df_posthoc = Pandas.DataFrame(posthocs.posthoc_nemenyi(df, val_col="value", group_col="method"))
+    display(df_posthoc)
+
+    for i = 1:length(bundles), j = 1:length(bundles)
+        Pandas.iloc(df_posthoc)[i,j] = Pandas.iloc(df_posthoc)[i,j] .< α
+    end
+    display(df_posthoc)
 end
 
 function process_data(io, df, settings)
@@ -66,11 +103,15 @@ function process_data(io, df, settings)
             @combine($AsTable = apply_bootstrap($valid_col))
         end
 
-        x  = stats[:,:iter]
-        y  = stats[:,:y]
+        n_samples = size(stats, 1)
+        n_thin    = div(n_samples, 2000)
+        idx       = 1:n_thin:n_samples
+
+        x  = stats[idx,:iter]
+        y  = stats[idx,:y]
         #y⁺ = stats[:,:y⁺] - stats[:,:y]
         #y⁻ = stats[:,:y]  - stats[:,:y⁺]
-        y⁺⁻ = stats[:,:y]  - stats[:,:y⁺⁻]
+        y⁺⁻ = stats[idx,:y]  - stats[idx,:y⁺⁻]
         write(io, "$(method)_$(valid_col)_x", x)
         write(io, "$(method)_$(valid_col)_y", Array(hcat(y, y⁺⁻)'))
     end
