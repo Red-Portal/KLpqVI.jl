@@ -16,30 +16,7 @@ using DataFramesMeta
 using Printf
 using PrettyTables
 using UnicodePlots
-
-@everywhere function process_data(ks, stats)::Dict
-    mapreduce(merge, ks) do k
-        filt_stats = filter(stat -> k ∈ keys(stat), stats)
-        y          = [stat[k]          for stat ∈ filt_stats]
-        x          = [stat[:iteration] for stat ∈ filt_stats]
-        t          = [stat[:elapsed]   for stat ∈ filt_stats]
-
-        y[isnan.(y)] .= typemax(eltype(y))
-        if(k == :paretok)
-            y[isinf.(y)] .= 1e+6
-        end
-
-        if(length(y) > 1000)
-            y = y[1:10:end]
-            x = x[1:10:end]
-            t = t[1:10:end]
-        end
-        name_y = string(k) * "_y"
-        name_x = string(k) * "_x"
-        name_t = string(k) * "_t"
-        Dict(name_y => y, name_x => x, name_t => t)
-    end
-end
+using HypothesisTests
 
 function compress_data()
     files = filter(fname -> occursin("jld2", fname), readdir(datadir("exp_raw"), join=true))
@@ -209,7 +186,11 @@ function draw_table_bnn()
                                  ("MSC_CISRB", "single-CISRB", 10),
                                  ("SNIS",      "SNIS", 10),
                                  ]
-            data   = FileIO.load(datadir("exp_pro", "decay=false_method=$(method)_n_iter=20000_n_reps=$(n_reps)_n_samples=$(N)_optimizer=ADAM_stepsize=0.01_task=$(problem).jld2"))
+            data   = try
+                FileIO.load(datadir("exp_pro", "decay=false_method=$(method)_n_iter=50000_n_reps=$(n_reps)_n_samples=$(N)_optimizer=ADAM_stepsize=0.01_task=$(problem).jld2"))
+            catch
+                FileIO.load(datadir("exp_pro", "decay=false_method=$(method)_n_iter=20000_n_reps=$(n_reps)_n_samples=$(N)_optimizer=ADAM_stepsize=0.01_task=$(problem).jld2"))
+            end
             # acc_y  = data["$(method)_acc_y"][1,end]
             # acc_Δy = abs(data["$(method)_acc_y"][2,end])
             # push!(row_entries, Printf.@sprintf("%.2f {\\scriptsize{\\(\\pm %.2f\\)}}", acc_y, acc_Δy))
@@ -238,20 +219,22 @@ end
 
 function draw_table_pgp()
     entries = []
-    for (method, name, N) ∈ [("ELBO",      "ELBO", 1),
-                             ("MSC_PIMH",  "par.-IMH", 10),
-                             ("MSC_SIMH",  "seq.-IMH", 10),
-                             ("MSC_CIS",   "single-CIS", 10),
-                             ("MSC_CISRB", "single-CISRB", 10),
-                             ("SNIS",      "SNIS", 10),
+    for (problem, n_reps) ∈ [("wine_gpu",     20),
+                             ("concrete_gpu", 20),
+                             ("boston_gpu",   20),
+                             ("yacht_gpu",    20),
+                             ("airfoil_gpu",  20),
+                             ("energy_gpu",   20),
                              ]
         row_entries = String[]
-        push!(row_entries, name)
+        push!(row_entries, problem)
 
-        for (problem, n_reps) ∈ [("wine_gpu", 20),
-                                 ("concrete_gpu", 20),
-                                 ("boston_gpu", 20),
-                                 ("yacht_gpu", 20),
+        for (method, name, N) ∈ [("ELBO",      "ELBO", 1),
+                                 ("MSC_PIMH",  "par.-IMH", 10),
+                                 ("MSC_SIMH",  "seq.-IMH", 10),
+                                 ("MSC_CIS",   "single-CIS", 10),
+                                 ("MSC_CISRB", "single-CISRB", 10),
+                                 ("SNIS",      "SNIS", 10),
                                  ]
             data   = FileIO.load(datadir("exp_pro", "decay=false_method=$(method)_n_iter=20000_n_reps=$(n_reps)_n_samples=$(N)_optimizer=ADAM_stepsize=0.01_task=$(problem).jld2"))
             # acc_y  = data["$(method)_acc_y"][1,end]
@@ -270,12 +253,26 @@ function draw_table_pgp()
                                       backend = Val(:latex),
                                       tf = PrettyTables.tf_latex_booktabs,
                                       header=(["",
-                                               "wine",
-                                               "concrete",
-                                               "boston",
-                                               "yacth",
+                                               "ELBO",
+                                               "pMCSA",
+                                               "JSA",
+                                               "CIS",
+                                               "CIS-RB",
+                                               "SNIS",
                                                ],
                                               )))
+    # table = permutedims(hcat(entries...), (2,1))
+    # println(size(table))
+    # display(PrettyTables.pretty_table(table;
+    #                                   backend = Val(:latex),
+    #                                   tf = PrettyTables.tf_latex_booktabs,
+    #                                   header=(["",
+    #                                            "wine",
+    #                                            "concrete",
+    #                                            "boston",
+    #                                            "yacth",
+    #                                            ],
+    #                                           )))
 end
 
 function stepsize_plot()
@@ -313,7 +310,7 @@ end
 function main()
     files = readdir(datadir("exp_raw"))
     files = filter(fname -> occursin(".jld2", fname), files)
-    @showprogress map(files) do fname
+    @showprogress pmap(files) do fname
         data      = FileIO.load(datadir("exp_raw", fname))
         result    = data["result"]
         settings  = data["settings"]
