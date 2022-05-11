@@ -2,11 +2,11 @@
 % Second version of table, with booktabs.
 %\begin{table}
 %\centering
-\caption{Computational Costs of MCSA Schemes}\label{table:cost}
-\setlength{\tabcolsep}{0.5pt}
+\caption{Computational Costs}\label{table:cost}
+\setlength{\tabcolsep}{0.3pt}
   \begin{threeparttable}
 \begin{tabular}{lccccc}\toprule
-& \multicolumn{3}{c}{\footnotesize Kernel Application} & \multicolumn{2}{c}{\footnotesize Gradient Estimation} \\
+& \multicolumn{3}{c}{\footnotesize Applying \(P_{\vlambda}\)} & \multicolumn{2}{c}{\footnotesize Estimating \(\vg\)} \\
 \cmidrule(lr){2-4}\cmidrule(lr){5-6}
   & {\footnotesize\(p\left( \vz, \vx \right)\)}
   & {\footnotesize\(q\left(\vz; \vlambda\right)\)}
@@ -39,7 +39,7 @@ MSC
 & \(N\)
 & \(N-1\)
 & \(0\)
-& \(1\)\tnote{1}\;\;{\footnotesize or}\;\(N\)\tnote{2}
+& \(1\)\tnote{1}\;\;{\footnotesize{or}}\,\(N\)\tnote{2}
 \\
 %
 {\footnotesize
@@ -62,10 +62,8 @@ JSA
 & \(N\)
 \\\bottomrule
 \end{tabular}
-  \begin{tablenotes}
-    \item[*]{\footnotesize We assume that the parameters are cached as much as possible}.
-    \item[1]{\footnotesize Vanilla CIS kernel}.
-    \item[2]{\footnotesize Rao-Blackwellized CIS kernel}.
+  \begin{tablenotes}[flushleft]
+    \item[]{\footnotesize\textbf{\textit{Note}:} We assume that the parameters are cached as much as possible. \(^1\)Vanilla CIS kernel. \(^2\)Rao-Blackwellized CIS kernel.}
   \end{tablenotes}
   \end{threeparttable}
 %\end{table}

@@ -1,7 +1,7 @@
 
 \begin{theoremEnd}{theorem}\label{thm:pmcsa}
   pMCSA, our proposed scheme, is obtained by setting
-  {%\small
+  {\small
   \begin{align*}
     P_{\vlambda}^n\left(\veta, d\veta\prime\right)
     = 
@@ -27,7 +27,7 @@
     L^2 \left[\; \frac{1}{N} + \frac{1}{N}\,\left(1 - \frac{1}{w^*}\right) \;\right],
   \end{align*}
   }
-  where \(w^* = \sup_{\vz} \pi\left(\vz\right) / q_{\text{def.}}\left(\vz\right)\) and \(C\) is some positive constant depending on \(N\).
+  where \(w^* = \sup_{\vz} \pi\left(\vz\right) / q_{\text{def.}}\left(\vz;\vlambda\right)\) and \(C\) is some positive constant depending on \(N\).
 \end{theoremEnd}
 \begin{proofEnd}
 
@@ -50,7 +50,7 @@
   \end{align*}
   Then, the convergence in total variation \(d_{\mathrm{TV}}\left(\cdot, \cdot\right)\) can be shown to decrease geometrically as
   \begin{alignat}{2}
-    &\DTV{K^{k}\left(\veta, \cdot\right)}{\Pi}
+    &\DTV{K^{k}_{\vlambda}\left(\veta, \cdot\right)}{\Pi}
     \nonumber
     \\
     &\quad=
@@ -58,7 +58,7 @@
     \abs{
       \Pi\left(A\right)
       -
-      P^{n}\left(\veta, A\right)
+      P^{n}_{\vlambda}\left(\veta, A\right)
     }
     &&\quad\text{\textit{Definition of \(d_{\text{TV}}\)}}
     \nonumber
@@ -71,7 +71,7 @@
     \nonumber
       \\
       &\qquad\qquad\qquad-
-      K^n\left(\vz_1, d\vz\prime_1\right) \cdot \ldots \cdot K^n\left(\vz_N, d\vz\prime_N\right)
+      K^n_{\vlambda}\left(\vz_1, d\vz\prime_1\right) \cdot \ldots \cdot K^n_{\vlambda}\left(\vz_N, d\vz\prime_N\right)
     \;\big|
     \nonumber
     \\
@@ -80,14 +80,14 @@
     \sum_{n=1}^N
     \abs{
     \int_{A}
-      \pi\left(d\vz\prime_k\right) - K^{n}\left(\vz_n, d\vz\prime_n\right) 
+      \pi\left(d\vz\prime_k\right) - K^{n}_{\vlambda}\left(\vz_n, d\vz\prime_n\right) 
     }
     &&\quad\text{\textit{\cref{thm:product_measure_bound}}}
     \nonumber
     \\
     &\quad=
     \sum_{n=1}^N
-    \DTV{K^n\left(\vz_n, \cdot\right)}{\pi}
+    \DTV{K^n_{\vlambda}\left(\vz_n, \cdot\right)}{\pi}
     &&\quad\text{\textit{Definition of TV distance}}
     \nonumber
     \\
@@ -123,13 +123,13 @@
     \nonumber
     \\
     &\quad=
-    \frac{1}{N^2}\sum^{N}_{n=1} \Esub{\rvvz_{n} \sim K\left(\vz_{t-1}^{(n)}, \cdot\right)}{ \norm{\vs\left(\vlambda; \rvvz_{n}\right) }^2_{*} \,\middle|\,  \vz_{t-1}^{(1:N)},\, \vlambda_{t-1} }
+    \frac{1}{N^2}\sum^{N}_{n=1} \Esub{\rvvz_{n} \sim K_{\vlambda_{t-1}}\left(\vz_{t-1}^{(n)}, \cdot\right)}{ \norm{\vs\left(\vlambda; \rvvz_{n}\right) }^2_{*} \,\middle|\,  \vz_{t-1}^{(1:N)},\, \vlambda_{t-1} }
     &&\quad\text{\textit{Linearity of expectation}}
     \nonumber
     \\
     &\quad\leq
     \frac{1}{N^2}\sum^{N}_{n=1}
-      \Esub{\rvvz_n \sim q_{\text{def.}}\left(\cdot;\vlambda\right)}{ \norm{\vs\left(\vlambda; \rvvz_n \right)}_{*}^2 }
+      \Esub{\rvvz_n \sim q_{\text{def.}}\left(\cdot;\vlambda_{t-1}\right)}{ \norm{\vs\left(\vlambda; \rvvz_n \right)}_{*}^2 }
       +
       {\left(1 - \frac{1}{w^*}\right)} \, \norm{\vs\left(\vlambda; \vz_{t-1}^{(n)} \right)}_{*}^2
     &&\quad\text{\textit{\cref{thm:imh_expecation}}}

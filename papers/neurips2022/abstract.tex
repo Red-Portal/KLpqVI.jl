@@ -1,12 +1,10 @@
 
-\krk{
-  Minimizing the inclusive Kullback-Leibler (KL) divergence with stochastic gradient descent (SGD) is challenging since its gradient is defined as an integral over the posterior.
-  Recently, multiple methods have proposed to run SGD with \textit{biased} gradient estimates obtained from a Markov chain.
-}%
-In this paper, we provide the first non-asymptotic convergence analysis of these methods through their mixing rate and gradient variance.
+Minimizing the inclusive Kullback-Leibler (KL) divergence with stochastic gradient descent (SGD) is challenging since its gradient is defined as an integral over the posterior.
+Recently, multiple methods have proposed to run SGD with \textit{biased} gradient estimates obtained from a Markov chain.
+In this paper, we provide the first non-asymptotic convergence analysis of these methods by establishing their mixing rate and gradient variance.
 To do this, we demonstrate that these methods--which we collectively refer to as Markov chain score ascent (MCSA) methods--can be cast as special cases of the Markov chain gradient descent framework.
 Furthermore, by leveraging this new understanding, we develop a novel MCSA scheme, parallel MCSA (pMCSA) that achieves a tighter bound on the gradient variance.
-We evaluate pMCSA against prior MCSA methods on general Bayesian inference benchmarks and demonstrate that this improved theoretical result translates to superior empirical performance.
+We demonstrate that this improved theoretical result translates to superior empirical performance.
 
 % These methods, we call Markov chain score ascent (MCSA), obtain noisy estimates of the gradient by running Markov chains in conjunction with SGD iterations.
 % This paper shows that these MCSA methods are a special case of the Markov chain gradient descent (MCGD) framework.

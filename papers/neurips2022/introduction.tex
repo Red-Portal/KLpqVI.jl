@@ -4,10 +4,8 @@ Bayesian inference aims to analyze the posterior distribution of an unknown late
 By assuming a model \(p\,(\vx\,|\,\vz)\), the posterior \(\pi\,(\vz)\) is given by Bayes' rule such that \(\pi\,(\vz) \propto {p\,(\vx\,|\,\vz)\,p\,(\vz)}\) where \(p\,(\vz)\) represents our prior belief on \(\vz\).
 Instead of working directly with \(\pi\), variational inference (VI,~\citealt{blei_variational_2017}) seeks a \textit{variational approximation} \(q\,(\vz; \vlambda)\) that is the most similar to \(\pi\) according to a discrepancy measure \(D\,(\pi,\, q\,(\cdot; \vlambda))\).
 
-Naturally, choosing an appropriate discrepancy measure is key to the quality of the solution.
-This fact has led to a quest for suitable divergence measures~\citep{pmlr-v37-salimans15, NIPS2016_7750ca35, NIPS2017_35464c84, NEURIPS2018_1cd138d0, pmlr-v97-ruiz19a}.
-So far, the exclusive (or reverse, backward)  KL divergence \(\DKL{q\left(\cdot; \vlambda\right)}{\pi}\) has been used ``exclusively'' among various discrepancy measures.
-This is partly because the exclusive KL is defined as an average over \(q_{\lambda}(\vz)\), which can be approximated efficiently.
+Naturally, choosing an appropriate discrepancy measure is key, which has led to a quest for suitable divergence measures~\citep{pmlr-v37-salimans15, NIPS2016_7750ca35, NIPS2017_35464c84, NEURIPS2018_1cd138d0, pmlr-v97-ruiz19a}.
+So far, the exclusive (or reverse, backward)  KL divergence \(\DKL{q\left(\cdot; \vlambda\right)}{\pi}\) has seen ``exclusive'' use, partly because it is defined as an average over \(q_{\lambda}(\vz)\), which can be approximated efficiently.
 In contrast, the inclusive KL defined as
 %
 {%\small
@@ -51,9 +49,9 @@ Our experiments show that our proposed method is superior to previous MCSA appro
 \setlength\itemsep{0.01in}
 \begin{enumerate}[leftmargin=7mm,listparindent=\parindent]
     \item \textbf{\cref{section:comparison}:} We provide the first non-asymptotic theoretical analysis of two recently proposed inclusive KL minimization methods, MSC~\textbf{(\cref{thm:msc})} and JSA~\textbf{(\cref{thm:jsa})}.
-    \item \textbf{\cref{section:mcsa}:} To accomplish this, we show that both methods can be viewed as what we call ``Markov chain score ascent'' (MCSA) methods, which are a special case of the MCGD framework \textbf{(\cref{thm:product_kernel})}.
+    \item \textbf{\cref{section:mcsa}:} To do this, we show that both methods can be viewed as what we call ``Markov chain score ascent'' (MCSA) methods, which are a special case of MCGD~\textbf{(\cref{thm:product_kernel})}.
     \item \textbf{\cref{section:pmcsa}:} In light of this, we develop a novel MCSA method which we call parallel MCSA (pMCSA) that achieves lower gradient variance \textbf{(\cref{thm:pmcsa})}.
-    \item \textbf{\cref{section:eval}:} We demonstrate that pMCSA achieves superior empirical performance across a variety of Bayesian inference tasks.
+    %\item \textbf{\cref{section:eval}:} We demonstrate that the improved theoretical performance of pMCSA translates to superior empirical performance across a variety of Bayesian inference tasks.
 \end{enumerate}
 
 %%% Local Variables:

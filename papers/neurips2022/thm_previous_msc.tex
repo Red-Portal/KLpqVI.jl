@@ -1,7 +1,7 @@
 
 \begin{theoremEnd}{theorem}\label{thm:msc}
   MSC~\citep{NEURIPS2020_b2070693} is obtained by defining 
-  {%\small
+  {\small
   \begin{align*}
   P_{\lambda}^n\left(\veta, d\veta\prime\right)
   = 
@@ -18,18 +18,18 @@
   }
   \end{align*}
   }
-  where \(w^* = \sup_{\vz} \pi\left(\vz\right) / q_{\text{def.}}\left(\vz\right)\).
+  where \(w^* = \sup_{\vz} \pi\left(\vz\right) / q_{\text{def.}}\left(\vz;\vlambda\right)\).
 \end{theoremEnd}
 \begin{proofEnd}
   MSC is described in~\cref{alg:msc}. 
   At each iteration, it performs a single MCMC transition with the CIS kernel where it internally uses \(N\) proposals.
 
   \paragraph{Ergodicity of the Markov Chain}
-  The ergodic convergence rate \(P_{\vlambda}\) is equal to that of the i-SIR kernel, whhich has been given by \citet{andrieu_uniform_2018} as
+  The ergodic convergence rate of \(P_{\vlambda}\) is equal to that of the iterated sequential importance resampling (i-SIR) kernel \(K_{\vlambda}\), which has been given by \citet{andrieu_uniform_2018} as
   \begin{alignat*}{2}
-    \DTV{P^{n}\left(\veta, \cdot\right)}{\Pi}
+    \DTV{P^{n}_{\vlambda}\left(\veta, \cdot\right)}{\Pi}
     =
-    \DTV{K^{n}\left(\vz, \cdot\right)}{\pi}
+    \DTV{K^{n}_{\vlambda}\left(\vz, \cdot\right)}{\pi}
     \leq
     {\left(1 - \frac{N - 1}{2 w^* + N - 2}\right)}^n.
   \end{alignat*}
@@ -47,7 +47,7 @@
     \nonumber
     \\
     &\;=
-    \Esub{\rvvz \sim K\left(\vz_{t-1}, \cdot\right)}{
+    \Esub{\rvvz \sim K_{\vlambda_{t-1}}\left(\vz_{t-1}, \cdot\right)}{
       \norm{ \vs\left(\vlambda; \rvvz\right) }_{*} \,\middle|\,
       \vlambda_{t-1}, \vz_{t-1}
     }

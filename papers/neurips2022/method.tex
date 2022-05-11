@@ -11,12 +11,12 @@ This framework will establish the theoretical connection between inclusive KL mi
 \vspace{-0.05in}
 As shown in~\cref{eq:mcgd}, the basic ingredients of MCGD are the target function \(f\left(\vlambda, \eta\right)\), the gradient estimator \(\vg\left(\vlambda, \eta\right)\), and the Markov chain kernel \(P_{\vlambda}\left(\eta, \cdot\right)\).
 Obtaining MCSA from MCGD boils down to designing \(\vg\) and \(P_{\vlambda}\) such that \(f\left(\vlambda\right) = \DKL{\pi}{q\left(\cdot; \vlambda\right)} \).
-The following proposition provides sufficient conditions on \(g\) and \(P_{\vlambda}\) to achieve this goal.
+The following proposition provides sufficient conditions on \(\vg\) and \(P_{\vlambda}\) to achieve this goal.
 
 \input{thm_product_kernel}
 
 As we will show, this framework is general enough to include both JSA and MSC.
-We will later propose a third novel scheme that conforms to~\cref{thm:product_kernel}.
+%We will later propose a third novel scheme that conforms to~\cref{thm:product_kernel}.
 Note that \(N\) here can be regarded as the computational budget of each MCGD iteration since the cost of
 \begin{enumerate*}[label=\textbf{(\roman*)}]
   \item generating the Markov chain samples \(\vz^{(1)}, \ldots, \vz^{(N)}\) and
@@ -36,25 +36,25 @@ An exception is the analysis of~\citet{debavelaere_convergence_2021} where they 
   }
   for some positive constant \(C\).
 \end{assumption}
-\vspace{-0.05in}
 
+\vspace{-0.05in}
 \subsection{Non-Asymptotic Convergence of Markov Chain Score Ascent}%\label{}
 \vspace{-0.05in}
 \paragraph{Non-Asymptotic Convergence}
 Through~\cref{thm:product_kernel,thm:kernel_conditions} and some additional technical assumptions on the objective function, we can apply the existing convergence results of MCGD to MCSA.
-\cref{table:convergence} provides a brief list of some relevant results.
-Apart from properties of the objective function (such as Lipschitzness) the convergence rates are stated in terms of the gradient bound \(G\), kernel mixing rate \(\rho\), and number of iteration \(T\).
-\(G\) and \(\rho\) are closely related to the design choices of different MCSA algorithms.
+\cref{table:convergence} provides a list of relevant results.
+Apart from properties of the objective function (such as Lipschitz smoothness), the convergence rates are stated in terms of the gradient bound \(G\), kernel mixing rate \(\rho\), and number of MCGD iteration \(T\).
+We focus on \(G\) and \(\rho\) as they are closely related to the design choices of different MCSA algorithms.
 
 \vspace{-0.1in}
-\paragraph{Convergence and Mixing Rate}
+\paragraph{Convergence and the Mixing Rate \(\rho\)}
 \citet{duchi_ergodic_2012} was first to provide an analysis on the general MCGD setting.
 Their convergence rate is dependent on the mixing rate through the \(1 / \log \rho^{-1}\) term.
 For MCSA, this results in an overly conservative rate since, on challenging problems, mixing can be slow such that \(\rho \approx 1\).
 Fortunately, \citet{doan_convergence_2020,doan_finitetime_2020} have recently shown that it is possible to obtain a rate independent of the mixing rate \(\rho\).
 For example, in the result of~\citet{doan_finitetime_2020}, the influence of \(\rho\) decreases in a rate of \(\mathcal{O}\left(\nicefrac{1}{T^2}\right)\).
 %The fact that the convergence rate can be independent of the mixing rate is critical.
-This obervation is important since it means trading gradient variance and mixing rate could be profitable.
+This observation is critical since it implies that trading gradient variance and mixing rate could be profitable.
 
 \begin{table*}
 \vspace{-0.2in}
@@ -104,23 +104,23 @@ This obervation is important since it means trading gradient variance and mixing
 \end{table*}
 
 \vspace{-0.1in}
-\paragraph{Gradient Bound Assumption}
+\paragraph{Gradient Bound \(G\)}
 Except for \citet{doan_finitetime_2020}, most results assume that the gradient is bounded for \(\forall\veta,\vlambda\) as {\footnotesize\( {\| \vg\left(\vlambda, \veta\right) \|} < G \)}.
-Admidttedly, this condition is strong for MCSA, but it is similar to the bounded variance assumption {\footnotesize\(\mathbb{E}\,[\norm{\vg}^2]  < G^2\)} used in vanilla SGD, which is also known to be strong since it does not hold for strongly convex objectives~\citep{pmlr-v80-nguyen18c}.
-Nonetheless, assuming the existence of \(G\) can lead to useful analysis with practical benefits.
-For example, it can be used to compare the performance of different algorithms as done by~\citet{pmlr-v108-geffner20a}.
-In a similar spirit, we will obtain the gradient bound \(G\) of different MCSA algorithms and compare them.
+Admittedly, this condition is strong, but it is similar to the bounded variance assumption {\footnotesize\(\mathbb{E}\,[\norm{\vg}^2]  < G^2\)} used in vanilla SGD, which is also known to be strong as it contradicts strong convexity~\citep{pmlr-v80-nguyen18c}.
+Nonetheless, assuming \(G\) can have practical benefits beyond theoretical settings.
+For example,~\citet{pmlr-v108-geffner20a} use \(G\) to compare the performance different VI gradient estimators.
+In a similar spirit, we will obtain the gradient bound \(G\) of different MCSA algorithms and compare their theoretical performance.
 
 \vspace{-0.05in}
 \section{Analyzing Prior Markov Chain Score Ascent Methods}\label{section:comparison}
 \vspace{-0.05in}
-In this section, we will show that MSC and JSA both qualify as MCSA through~\cref{thm:product_kernel}.
+In this section, we will show that MSC and JSA both qualify as MCSA methods.
 Furthermore, we establish 
 \begin{enumerate*}[label=\textbf{(\roman*)}]
-  \item the geometric convergence rate of their implicitly defined kernel \(P\) and
+  \item the mixing rate of their implicitly defined kernel \(P\) and
   \item the upper bound on their gradient variance.
 \end{enumerate*}
-This will enable the theoretical analysis of their non-asymptotic convergence aspects.
+This will enable theoretical analysis of their non-asymptotic convergence.
 
 \vspace{-0.05in}
 \subsection{Technical Assumptions}
@@ -131,9 +131,9 @@ To cast previous methods into MCSA, we need some technical assumptions.
 \end{assumption}
 \vspace{-0.05in}
 The fact that \(w^*\) exists for all \(\vlambda \in \Lambda\) is restrictive and not relevant in practice.
-It does help excaping slow mixing regions in the initial MCGD steps, but this benefit vanishes quickly as we converge.
-However, ensuring boundedness is necessary for theoretically analyzing MCGD through~\cref{thm:kernel_conditions}.
-Although previous MCSA methods did not take specific measures to ensure~\cref{thm:bounded_weight}, this can be done by using a variational family with heavy tails~\citep{NEURIPS2018_25db67c5} or using a defensive mixture~\citep{hesterberg_weighted_1995, holden_adaptive_2009} as
+It does help escaping slow mixing regions in the initial steps, but this benefit vanishes quickly as we converge.
+However, boundedness is necessary for ensuring~\cref{thm:kernel_conditions}.
+Although previous MCSA methods did not take specific measures to ensure boundedness, this can be done by using a variational family with heavy tails~\citep{NEURIPS2018_25db67c5} or using a defensive mixture~\citep{hesterberg_weighted_1995, holden_adaptive_2009} as
 \begin{align*}
   q_{\text{def.}}\left(\vz; \vlambda \right) = w \, q\left(\vz; \vlambda\right) + (1 - w) \, \nu\left(\vz\right)
 \end{align*}
@@ -144,40 +144,40 @@ Note that \(q_{\text{def.}}\) is only used in the Markov chain kernels, which do
   The score gradient is bounded for \(\forall \vlambda \in \Lambda\) and \(\forall \vz \in \mathcal{Z}\) such that \(\norm{\vs\left(\vlambda; \vz\right)}_* \leq L \) for some finite constant \(L > 0\).
 \end{assumption}
 \vspace{-0.05in}
-This assumption enables us to compare the gradient variance of different MCSA variants.
+Although this assumption is strong, it enables us to compare the gradient variance of MCSA methods.
+We empirically justify our bounds obtained using~\cref{thm:bounded_score} in \cref{section:simulation}.
 
 \vspace{-0.05in}
 \subsection{Markovian Score Climbing}
 \vspace{-0.1in}
-MSC is a simple instance of MCSA where \(\eta_t = \vz_t\) and \(P_{\vlambda_t} = K_{\vlambda_t}\), \(K_{\vlambda_t}\) is the conditional importance sampling (CIS) kernel (originally proposed as the iterated sequential importance resampling kernel by~\citet{andrieu_uniform_2018}).
-See \cref{alg:msc} for a detailed pseudocode.
-Although MSC uses only a single sample such that \(N=1\), the CIS kernel internally uses \(N\) proposals to generate a single sample.
+MSC (\cref{alg:msc}) is a simple instance of MCSA where \(\eta_t = \vz_t\) and \(P_{\vlambda_t} = K_{\vlambda_t}\), where \(K_{\vlambda_t}\) is the conditional importance sampling (CIS) kernel (originally proposed by~\citet{andrieu_uniform_2018}) where the proposals are generated from \(q\left(\cdot; \vlambda_t\right)\).
+Although MSC uses only a single sample for the Markov chain, the CIS kernel internally uses \(N\) proposals to generate a single sample.
 Therefore, \(N\) in MSC has a different meaning, but it still indicates the computational budget.
 
 \input{lemmas_previous_mcsa}
 \input{thm_previous_msc}
 
-\paragraph{Theoretical Analysis}
+\vspace{-0.1in}
+\paragraph{Discussion}
 \cref{thm:msc} shows that, the gradient variance of MSA doesn't care about \(N\).
 Although the mixing rate does improve with \(N\), when \(w^*\) is large, this will be marginal.
-Therefore, overall, the performance of MSC cannot be improved by increasing the computational budget \(N\).
+Overall, the performance of MSC cannot be improved by increasing the computational budget \(N\).
 
-\vspace{-0.05in}
-\subsection{Joint Stochastic Approximation}
 \vspace{-0.1in}
-JSA~\citep{pmlr-v124-ou20a} was originally proposed for deep generative models where the likelihood can be factorized by each datapoint.
-In this setting,~\citeauthor{pmlr-v124-ou20a} perform minibatching by using a random-scan verion of the independent Metropolis-Hastings (IMH, \citealt{hastings_monte_1970,robert_monte_2004}) kernel.
-We use the general verion of JSA with the vanilla IMH kernel which can be applied to non-factorizable likelihoods.
-At each MCGD step, JSA performs multiple MCMC transitions and estimates the gradient by averaging all the intermediate samples.
+\subsection{Joint Stochastic Approximation}
+\vspace{-0.07in}
+JSA~\citep{pmlr-v124-ou20a} was originally proposed for deep generative models where the likelihood factorizes into each datapoint, in which subsampling can be done by using a random-scan version of the independent Metropolis-Hastings (IMH, \citealt{hastings_monte_1970}) kernel.
+Instead, we consider the general version of JSA with the vanilla IMH kernel which can be used with non-factorizable likelihoods.
+At each MCGD step, JSA performs multiple Markov chain transitions and estimates the gradient by averaging all the intermediate states.
 See \cref{alg:jsa} for a detailed pseudocode.
 
 \vspace{-0.1in}
 \paragraph{Independent Metropolis-Hastings}
 %A key element of JSA~\citep{pmlr-v124-ou20a} is that it uses the IMH kernel.
-The IMH kernel used in JSA generates the proposals from the variational approximation \(q\left(\cdot; \vlambda_t\right)\).
+Similarly to MSC, the IMH kernel in JSA generates proposals from \(q\left(\cdot; \vlambda_t\right)\).
 To show geometric ergodicity of the implicit kernel \(P\), we utilize the geometric convergence rate of IMH kernels provided by~\citet[Theorem 2.1]{10.2307/2242610} and~\citet{wang_exact_2020}.
 Furthermore, to derive an upper bound on the gradient variance, we use the exact \(n\)-step marginal IMH kernel derived by~\citet{Smith96exacttransition} as
-{%\small
+{\small
   \begin{align}
   K^n_{\vlambda}\left(\vz, d\vz\prime\right) 
   = T_n\left(\, w\left(\vz\right) \vee w\left(\vz\prime\right)\,\right) \, \pi\left(\vz\prime\right) \, d\vz\prime
@@ -185,7 +185,7 @@ Furthermore, to derive an upper bound on the gradient variance, we use the exact
   \label{eq:imh_exact_kernel}
   \end{align}
 }%
-where {\(w\left(\vz\right) = \pi\left(\vz\right)/q_{\text{def.}}\left(\vz; \vlambda\right)\), \(x \vee y = \max\left(x, y\right)\)},
+where {\(w\left(\vz\right) = \pi\left(\vz\right)/q_{\text{def.}}\left(\vz; \vlambda\right)\), \(x \vee y = \max\left(x, y\right)\)}, and for {\(R\left(w\right) = \{\, \vz\prime \mid w\,\left(\vz\prime\right) \leq w \,\}\)}, 
 {\small
   \begin{align}
     T_n\left(w\right)      = \int_w^{\infty}
@@ -197,15 +197,15 @@ where {\(w\left(\vz\right) = \pi\left(\vz\right)/q_{\text{def.}}\left(\vz; \vlam
     \int_{R\left(w\right)}
     \left( 1 - \frac{w\left(\vz\prime\right)}{w}  \right)
     %\left( 1 - w\left(\vz\prime\right)/w  \right)
-    \pi\left(d\vz\prime\right)\label{eq:T_lambda}
+    \pi\left(d\vz\prime\right).\label{eq:T_lambda}
   \end{align}
-}
-for {\(R\left(w\right) = \{\, \vz\prime \mid w\,\left(\vz\prime\right) \leq w \,\}\)}.
-%
+}%
 \input{lemmas_imh}
+\vspace{-0.05in}
 \input{thm_previous_jsa}
 %
-\paragraph{Theoretical Analysis}
+\vspace{-0.1in}
+\paragraph{Discussion}
 According to~\cref{thm:jsa}, JSA benefits from increasing \(N\) both in terms of faster mixing rate and lower gradient variance.
 However, similarly to MSC, when \(w^*\) is large, \(\rho \rightarrow 1\), and thus the mixing rate improvement becomes marginal.
 More importantly, a large \(w^*\) limits the amount of variance reduction by \(1/2\) term.
@@ -213,43 +213,41 @@ On challenging problems, due to the misspecification of \(q_{\vlambda}\) resulti
 
 \vspace{-0.05in}
 \section{Parallel Markov Chain Score Ascent}\label{section:pmcsa}
-\vspace{-0.05in}
-In this section, we turn to leveraging our new understanding of MCSA methods to develop a novel scheme without the limitations of previous works.
+\vspace{-0.1in}
+In this section, we turn to leverage our new understanding of MCSA methods to develop a novel scheme that overcomes their limitations.
 
-\vspace{-0.05in}
+\vspace{-0.1in}
 \subsection{Parallel Markov Chain Score Ascent}
-\vspace{-0.05in}
+\vspace{-0.07in}
 \paragraph{Motivations for a Novel Scheme}
-From the results of~\cref{section:comparison}, we know that the performance of both MSC and JSA worsens as \(w^*\) becomes large.
-Furthermore, this decrease in performance cannot be easily counterbalanced by increasing the computational budget \(N\).
-Meanwhile, the insights in \cref{section:convergence} suggests that the convergence of MCSA methods depend more on the gradient variance than the mixing rate.
-Therefore, we propose a novel scheme, parallel Markov chain gradient descent (pMCSA) that trades the mixing rate while consistently achieving \(\mathcal{O}\left(\nicefrac{1}{N}\right)\) variance reduction.
+The results of~\cref{section:comparison} suggest that the performance of both MSC and JSA worsens as \(w^*\) becomes large.
+Furthermore, this negative impact cannot be easily counterbalanced by increasing the computational budget \(N\).
+Meanwhile, in \cref{section:convergence}, we discussed that the convergence of MCSA depends more on the gradient variance than the mixing rate.
+Therefore, we propose a novel scheme, \textit{parallel Markov chain score ascent} (pMCSA), that embraces a slower mixing rate in order to consistently achieve a \(\mathcal{O}\left(\nicefrac{1}{N}\right)\) variance reduction.
 
 %\jrg{can we motivate this more strongly? Specifically, can we say that, by tying MCSA theory to MCGD theory, we can observe that the mixing rate isn't as important, so we develop a new scheme to exploit this previously not understood property.} 
 
 \vspace{-0.1in}
 \paragraph{Algorithm Description}
-Instead of using \(N\) \textit{sequential} Markov chain states, pMCSA operates \(N\) parallel Markov chains with.
-At each step, pMCSA performs only a single Markov-chain transition for each chain.
-This results in a per-SGD-iteration cost comparable to JSA.
+Unlike JSA that uses \(N\) \textit{sequential} Markov chain states, pMCSA operates \(N\) parallel Markov chains.
+To maintain a similar per-iteration cost with JSA, it performs only a single Markov chain transition for each chain.
 We will later discuss the computational costs in detail.
 See~\cref{alg:pmcsa} for a detailed pseudocode.
 
 \input{thm_parallel_estimator}
 
 \vspace{-0.1in}
-\paragraph{Theoretical Analysis}
-Unlike JSA and MSC, the variance reduction rate is independent of \(w^*\).
-Therefore, pMCSA shold perform significantly better on challenging practical problems.
-Meanwhile, if we consider the convergence rate of~\citet{duchi_ergodic_2012}, the mixing rate affects the convergence rate through the \(\log \rho^{-1}\) term.
-In practice, however, we observe that increasing \(N\) accelerates convergence in general (quite dramatically for pMCSA).
+\paragraph{Discussion}
+Unlike JSA and MSC, the variance reduction rate of pMCSA is independent of \(w^*\).
+Therefore, it should perform significantly better on challenging practical problems.
+If we consider the rate of~\citet{duchi_ergodic_2012}, the combined rate is constant with respect to \(N\) since it cancels out.
+In practice, however, we observe that increasing \(N\) accelerates convergence quite dramatically.
 Therefore, the mixing rate independent convergence rates by~\citet{doan_finitetime_2020, doan_convergence_2020} appears to better reflect practical performance.
-This is especially true in MCSA since
+This is due to the fact that
 \begin{enumerate*}[label=\textbf{(\roman*)}]
   \item the mixing rate \(\rho\) is a conservative \textit{global} bound and 
-  \item the mixing rate will improve as MCSA converges.
+  \item the mixing rate will improve naturally as MCSA converges.
 \end{enumerate*}
-Unfortunately, it is challenging to incorporate the changes in the mixing rate into the convergence rate.
 
 %% \paragraph{Bias v.s. Variance}
 %% While our proposed scheme achievs superior variance reduction, the mixing rate is worse.
@@ -266,7 +264,7 @@ Unfortunately, it is challenging to incorporate the changes in the mixing rate i
 %% Therefore, reducing the variance is much more effective for accelerating convergence.
 %% We empirically show this fact on the bias and variance in~\cref{section:simulation}.
 
-\begin{wraptable}{r}{0.55\textwidth}
+\begin{wraptable}{r}{0.5\textwidth}
   \centering
   \vspace{-0.5in}
   \input{table_cost}
@@ -283,7 +281,7 @@ The computational costs of each scheme are organized in~\cref{table:cost}.
 \paragraph{Cost of Sampling Proposals}
 For the CIS kernel used by MSC, \(N\) controls the number of internal proposals sampled from \(q\,(\vz; \vlambda)\).
 For JSA and pMCSA, the IMH kernel only uses a single sample from \(q\,(\vz; \vlambda)\), but applies the kernel \(N\) times.
-Assuming caching is done as much as possible, pMCSA needs twice more evaluations of \(q\,(\vz; \vlambda)\) compared to other methods.
+Assuming caching is done as much as possible, pMCSA needs twice more evaluations of \(q\,(\vz; \vlambda)\).
 However, in general, this added cost should be minimal compared to the cost of evaluating \(p\,(\vz,\vx)\).
 
 \vspace{-0.1in}
