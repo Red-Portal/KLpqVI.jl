@@ -1,12 +1,8 @@
 
 \section{Introduction}\label{section:intro}
 Bayesian inference aims to analyze the posterior distribution of an unknown latent variable \(\vz\) from which the data \(\vx\) is observed.
-%
-%\jrg{I don't know that I'd call these latent variables in the most general setting. Historically, these were more commonly parameters of a model $\theta$. I also think $\vz$ here clashes with the use of $\vz$ later to mean the samples from the Markov chain}.
-% krk: The papers closest to our work seems to prefer the term "latent variable" even though they still consider the general Bayesian inference setting. So I think it's okay to match the terminology with those. Also, I think \(\vz\) here is the same as the samples from the Markov chain, is this confusing here?
-%
-By assuming a model \(p\,(\vx\,|\,\vz)\), the posterior \(\pi\,(\vz)\) is given by Bayes' rule such that \(\pi\,(\vz) = {p\,(\vx\,|\,\vz)\,p\,(\vz)}/{p\,(\vx)}\) where \(p\,(\vz)\) represents our prior belief on \(\vz\).
-Instead of working directly with the target distribution \(\pi\), variational inference (VI,~\citealt{blei_variational_2017}) seeks a \textit{variational approximation} \(q\,(\vz; \vlambda)\) that is the most similar to \(\pi\) according to a discrepancy measure \(D\,(\pi,\, q(\cdot; \vlambda))\).
+By assuming a model \(p\,(\vx\,|\,\vz)\), the posterior \(\pi\,(\vz)\) is given by Bayes' rule such that \(\pi\,(\vz) \propto {p\,(\vx\,|\,\vz)\,p\,(\vz)}\) where \(p\,(\vz)\) represents our prior belief on \(\vz\).
+Instead of working directly with \(\pi\), variational inference (VI,~\citealt{blei_variational_2017}) seeks a \textit{variational approximation} \(q\,(\vz; \vlambda)\) that is the most similar to \(\pi\) according to a discrepancy measure \(D\,(\pi,\, q\,(\cdot; \vlambda))\).
 
 Naturally, choosing an appropriate discrepancy measure is key to the quality of the solution.
 This fact has led to a quest for suitable divergence measures~\citep{pmlr-v37-salimans15, NIPS2016_7750ca35, NIPS2017_35464c84, NEURIPS2018_1cd138d0, pmlr-v97-ruiz19a}.
@@ -26,14 +22,14 @@ In contrast, the inclusive KL defined as
 %
 requires to take the integral over \(\pi\).
 Since our goal is to obtain \(\pi\) in the first place, the difficulty of minimizing the inclusive KL lies in the fact that this is a chicken-and-egg problem.
-Despite this challenge, the inclusive KL has consistently drawn attention due to its statistical properties~\citep{minka2005divergence, mackay_local_2001}.
+Despite this challenge, the inclusive KL has consistently drawn attention due to its statistical properties such as better uncertainty estimates~\citep{minka2005divergence, mackay_local_2001}.
 
 Recently,~\citet{NEURIPS2020_b2070693,pmlr-v124-ou20a} have respectively proposed Markovian score climbing (MSC) and joint stochastic approximation (JSA).
-These methods minimize the inclusive KL using stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951}) where the gradients are estimated using Markov chain Monte Carlo (MCMC).
-The MCMC kernel \(K_{\vlambda_t}\left(\vz_t, \cdot\right)\) is chosen such that it directly takes advantage of the current variational approximation \(q\left(\cdot; \vlambda_t\right)\).
+These methods minimize the inclusive KL using stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951}) where the gradients are estimated using a Markov chain.
+The Markov chain kernel \(K_{\vlambda_t}\left(\vz_t, \cdot\right)\) is chosen such that it directly takes advantage of the current variational approximation \(q\left(\cdot; \vlambda_t\right)\).
 Thus, the quality of the gradients improves over time as the KL divergence decreases.
-Still, the gradients are non-asymptotically biased and Markovian, which sharply contrasts MSC and JSA from classical black-box VI~\citep{pmlr-v33-ranganath14, JMLR:v18:16-107}, where the gradients are independent and unbiased.
-While~\citet{NEURIPS2020_b2070693} has shown convergence of MSC through the work of~\citet{gu_stochastic_1998}, this result is only asymptotic and does not provide insight into the practical performance of MSC.
+Still, the gradients are non-asymptotically biased and the gradient noise is Markovian, which sharply contrasts MSC and JSA from classical black-box VI~\citep{pmlr-v33-ranganath14, JMLR:v18:16-107}, where the gradients are unbiased and independent.
+While~\citet{NEURIPS2020_b2070693} has shown convergence of MSC through the work of~\citet{gu_stochastic_1998}, this result is only asymptotic and does not provide practical insight into the performance of MSC.
 
 %
 
@@ -54,10 +50,10 @@ Our experiments show that our proposed method is superior to previous MCSA appro
 %% \begin{enumerate*}[label=\textbf{(\roman*)}]
 \setlength\itemsep{0.01in}
 \begin{enumerate}[leftmargin=7mm,listparindent=\parindent]
-    \item We provide the first non-asymptotic theoretical analysis of two recently proposed inclusive KL minimization methods, MSC and JSA \textbf{(\cref{section:convergence,thm:product_kernel})}.
-    \item To accomplish this, we show that both methods can be viewed as what we call ``Markov chain score ascent'' (MCSA) methods, which are a specical case of the MCGD framework \textbf{(\cref{section:comparison,thm:jsa,thm:msc})}.
-    \item In light of this, we develop a novel MCSA method which we call parallel MCSA (pMCSA) that achieves lower gradient variance.
-    \item We demonstrate that pMCSA achieves superior empirical performance across a variety of Bayesian inference tasks \textbf{(\cref{section:eval})}.
+    \item \textbf{\cref{section:comparison}:} We provide the first non-asymptotic theoretical analysis of two recently proposed inclusive KL minimization methods, MSC~\textbf{(\cref{thm:msc})} and JSA~\textbf{(\cref{thm:jsa})}.
+    \item \textbf{\cref{section:mcsa}:} To accomplish this, we show that both methods can be viewed as what we call ``Markov chain score ascent'' (MCSA) methods, which are a special case of the MCGD framework \textbf{(\cref{thm:product_kernel})}.
+    \item \textbf{\cref{section:pmcsa}:} In light of this, we develop a novel MCSA method which we call parallel MCSA (pMCSA) that achieves lower gradient variance \textbf{(\cref{thm:pmcsa})}.
+    \item \textbf{\cref{section:eval}:} We demonstrate that pMCSA achieves superior empirical performance across a variety of Bayesian inference tasks.
 \end{enumerate}
 
 %%% Local Variables:
