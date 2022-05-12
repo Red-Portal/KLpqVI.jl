@@ -4,60 +4,40 @@
 
 \begin{figure}[H]
   \centering
-  \subfloat[Wine]{
-    \includegraphics[scale=0.9]{figures/wine_01.pdf}
-  }\hspace{0.2in}
-  \subfloat[Wine]{
-    \includegraphics[scale=0.9]{figures/wine_02.pdf}
-  } \\
+%%   \subfloat[Wine]{
+%%     \includegraphics[scale=0.9]{figures/wine_04.pdf}
+%%   }\hspace{0.2in}
   \subfloat[Concrete]{
     \includegraphics[scale=0.9]{figures/concrete_01.pdf}
-  } \hspace{0.2in}
-  \subfloat[Concrete]{
-    \includegraphics[scale=0.9]{figures/concrete_02.pdf}
-  } \\
+  }\vspace{0.05in}\\
   \subfloat[Boston]{
     \includegraphics[scale=0.9]{figures/boston_01.pdf}
-  }\hspace{0.2in}
-  \subfloat[Boston]{
-    \includegraphics[scale=0.9]{figures/boston_02.pdf}
-  } \\
+  }\vspace{0.05in}\\
   \subfloat[Yacht]{
     \includegraphics[scale=0.9]{figures/yacht_01.pdf}
-  }\hspace{0.2in}
-  \subfloat[Yacht]{
-    \includegraphics[scale=0.9]{figures/yacht_02.pdf}
+  }\vspace{0.05in}\\
+  \subfloat[Airfoil]{
+    \includegraphics[scale=0.9]{figures/airfoil_01.pdf}
   }
-  \caption{Bayesian Neural Network Regression}
+  \caption{\textbf{Test root-mean-square error (RMSE) and test log predictive density (LPD) on Bayesian neural network regression.} 
+    The grey square marks the performance of ELBO \(N=10\) at the wall clock time shown next to it.
+  The colored region shows the 95\% boostrap confidence interval obtained from 20 repetitions.}
 \end{figure}
 
 \begin{figure}[H]
   \centering
-  \subfloat[Airfoil]{
-    \includegraphics[scale=0.9]{figures/airfoil_01.pdf}
-  }\hspace{0.2in}
-  \subfloat[Airfoil]{
-    \includegraphics[scale=0.9]{figures/airfoil_02.pdf}
-  } \\
   \subfloat[Gas]{
     \includegraphics[scale=0.9]{figures/gas_01.pdf}
-  } \hspace{0.2in}
-  \subfloat[Gas]{
-    \includegraphics[scale=0.9]{figures/gas_02.pdf}
-  } \\
+  }\vspace{0.05in}\\
   \subfloat[Energy]{
     \includegraphics[scale=0.9]{figures/energy_01.pdf}
-  }\hspace{0.2in}
-  \subfloat[Energy]{
-    \includegraphics[scale=0.9]{figures/energy_02.pdf}
-  } \\
+  }\vspace{0.05in}\\
   \subfloat[SML]{
     \includegraphics[scale=0.9]{figures/sml_01.pdf}
-  }\hspace{0.2in}
-  \subfloat[SML]{
-    \includegraphics[scale=0.9]{figures/sml_02.pdf}
   }
-  \caption{Bayesian Neural Network Regression}
+  \caption{\textbf{(continued) Test root-mean-square error (RMSE) and test log predictive density (LPD) on Bayesian neural network regression.}
+    The grey square marks the performance of ELBO \(N=10\) at the wall clock time shown next to it.
+  The colored region shows the 95\% boostrap confidence interval obtained from 20 repetitions.}
 \end{figure}
 
 \subsection{Robust Gaussian Process Regression}\label{section:gp_additional}
@@ -65,45 +45,26 @@
   \centering
   \subfloat[Wine]{
     \includegraphics[scale=0.9]{figures/wine_pgp_01.pdf}
-  }\hspace{0.2in}
-  \subfloat[Wine]{
-    \includegraphics[scale=0.9]{figures/wine_pgp_02.pdf}
-  } \\
-  \subfloat[Concrete]{
-    \includegraphics[scale=0.9]{figures/concrete_pgp_01.pdf}
-  } \hspace{0.2in}
-  \subfloat[Concrete]{
-    \includegraphics[scale=0.9]{figures/concrete_pgp_02.pdf}
-  } \\
-  \subfloat[Boston]{
-    \includegraphics[scale=0.9]{figures/boston_pgp_01.pdf}
-  } \hspace{0.2in}
-  \subfloat[Boston]{
-    \includegraphics[scale=0.9]{figures/boston_pgp_02.pdf}
-  } \\
-  \subfloat[Yacht]{
-    \includegraphics[scale=0.9]{figures/yacht_pgp_01.pdf}
-  } \hspace{0.2in}
-  \subfloat[Yacht]{
-    \includegraphics[scale=0.9]{figures/yacht_pgp_02.pdf}
-  }  
-  \caption{Robust Gaussian Process Regression}
+  } 
+  \caption{\textbf{Test root-mean-square error (RMSE) and test log predictive density (LPD) on Robust Gaussian Process Regression.}
+  The colored region shows the 95\% boostrap confidence interval obtained from 20 repetitions.}
 \end{figure}
 
 \begin{figure}[H]
+  \subfloat[Concrete]{
+    \includegraphics[scale=0.9]{figures/concrete_pgp_01.pdf}
+  }\vspace{0.05in}\\
+  \subfloat[Yacht]{
+    \includegraphics[scale=0.9]{figures/yacht_pgp_01.pdf}
+  }\vspace{0.05in}\\
   \subfloat[Airfoil]{
     \includegraphics[scale=0.9]{figures/airfoil_pgp_01.pdf}
-  } \hspace{0.2in}
-  \subfloat[Airfoil]{
-    \includegraphics[scale=0.9]{figures/airfoil_pgp_02.pdf}
-  } \\
+  }\vspace{0.05in}\\
   \subfloat[Energy]{
     \includegraphics[scale=0.9]{figures/energy_pgp_01.pdf}
-  } \hspace{0.2in}
-  \subfloat[Energy]{
-    \includegraphics[scale=0.9]{figures/energy_pgp_02.pdf}
   } 
-  \caption{Robust Gaussian Process Regression}
+  \caption{\textbf{(continued) Test root-mean-square error (RMSE) and test log predictive density (LPD) on Robust Gaussian Process Regression.}
+  The colored region shows the 95\% boostrap confidence interval obtained from 20 repetitions.}
 \end{figure}
 
 %%% Local Variables:
