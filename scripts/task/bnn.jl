@@ -161,7 +161,6 @@ function run_task(prng::Random.AbstractRNG,
     #k_hist = []
     function plot_callback(ℓπ, λ)
         i += 1
-        if mod(i, 100) == 1
         q′         = AdvancedVI.update(q, λ)
         W1_μ, W1_Σ = get_variational_mean_var(q′, model, Symbol("W1"))
         W2_μ, W2_Σ = get_variational_mean_var(q′, model, Symbol("W2"))
@@ -200,9 +199,6 @@ function run_task(prng::Random.AbstractRNG,
         rmse = sqrt(Flux.Losses.mse(m_y, y_test, agg=mean))
 
         (iter = i, rmse=rmse, lpd=lpd, σ=γ_β/γ_α, elbo_estimate=elbo(prng, q′, ℓπ, 1024))
-        else
-            NamedTuple()
-        end
     end
 
     ν        = Distributions.Product(fill(Cauchy(), n_params))
