@@ -43,6 +43,22 @@ function load_dataset(::Val{:energy})
     data_x, data_y
 end
 
+function load_dataset(::Val{:skillcraft})
+    dataset = MAT.matread(
+        datadir("dataset", "uci", "skillcraft.mat"))["data"]
+    data_x = dataset[:, 1:end-1]
+    data_y = dataset[:, end]
+    data_x, data_y
+end
+
+function load_dataset(::Val{:parkinsons})
+    dataset = MAT.matread(
+        datadir("dataset", "uci", "parkinsons.mat"))["data"]
+    data_x = dataset[:, 1:end-1]
+    data_y = dataset[:, end]
+    data_x, data_y
+end
+
 function load_dataset(::Val{:kin40k})
     dataset = MAT.matread(
         datadir("dataset", "uci", "kin40k.mat"))["data"]

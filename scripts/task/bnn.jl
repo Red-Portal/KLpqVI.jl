@@ -68,6 +68,13 @@ function test()
     display(Plots.plot!(Normal(m[1], sqrt(v[1]))))
 end
 
+function elbo(prng, q, ℓπ, n_samples)
+    zs   = rand(prng, q, n_samples)
+    elbo = mapreduce(+, eachcol(zs)) do zᵢ
+        (ℓπ(zᵢ) - logpdf(q, zᵢ))/n_samples
+    end
+end
+
 # function full_covariance_meanfield(rng::Random.AbstractRNG, model::DynamicPPL.Model)
 #     # Setup.
 #     varinfo = DynamicPPL.VarInfo(model)
@@ -99,6 +106,8 @@ function run_task(prng::Random.AbstractRNG,
                               Val{:gas},
                               Val{:sml},
                               Val{:kin40k},
+                              Val{:skillcraft},
+                              Val{:parkinsons},
                               },
                   optimizer,
                   objective,
@@ -151,6 +160,8 @@ function run_task(prng::Random.AbstractRNG,
     i      = 0
     #k_hist = []
     function plot_callback(ℓπ, λ)
+        i += 1
+        if mod(i, 100) == 1
         q′         = AdvancedVI.update(q, λ)
         W1_μ, W1_Σ = get_variational_mean_var(q′, model, Symbol("W1"))
         W2_μ, W2_Σ = get_variational_mean_var(q′, model, Symbol("W2"))
@@ -188,8 +199,10 @@ function run_task(prng::Random.AbstractRNG,
         lpd  = mean(logpdf.(Normal.(m_y, sqrt.(v_y .+ v_noise)), y_test))
         rmse = sqrt(Flux.Losses.mse(m_y, y_test, agg=mean))
 
-        i += 1
-        (iter = i, rmse=rmse, lpd=lpd, σ=γ_β/γ_α)
+        (iter = i, rmse=rmse, lpd=lpd, σ=γ_β/γ_α, elbo_estimate=elbo(prng, q′, ℓπ, 1024))
+        else
+            NamedTuple()
+        end
     end
 
     ν        = Distributions.Product(fill(Cauchy(), n_params))
