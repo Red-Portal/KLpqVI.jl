@@ -1,6 +1,6 @@
 
 \section{Probabilistic Models Used in the Experiments}
-\subsection{Bayesian Neural Network Regression}\label{section:bnn}
+\subsection{Bayesian Neural Network Regression}\label{section:model_bnn}
 We use the BNN model of~\citet{pmlr-v37-hernandez-lobatoc15} defined as
 \begin{align*}
   \lambda^{-1} &\sim \text{Inverse-Gamma}\left(\alpha=6, \beta=6\right) \\
@@ -15,7 +15,7 @@ where \(\vx_i\) and \(y_i\) are the feature vector and target value of the \(i\)
 Given the variational distribution of \(\lambda^{-1}, \gamma^{-1}, \mW_1, \mW_2\), we use the same posterior predictive approximation of~\citet{pmlr-v37-hernandez-lobatoc15}.
 We apply z-standardization (whitening) to the features \(\vx_i\) and the target values \(y_i\), and unwhiten the predictive distribution.
 
-\subsection{Robust Gaussian Process Logistic Regression}\label{section:rgp}
+\subsection{Robust Gaussian Process Logistic Regression}\label{section:model_rgp}
 We perform robust Gaussian process regression by using a Student-T prior with a latent Gaussian process prior.
 The model is defined as
 \begin{align*}

@@ -4,23 +4,23 @@
 \vspace{-0.1in}
 This paper presented a new theoretical framework for analyzing inclusive KL divergence minimization methods based on running SGD with Markov chains.
 Furthermore, we proposed pMCSA, a new MCSA methods that enjoys substantially low variance.
-We evaluated our theoretical analysis and the utility of pMCSA on general Bayesian inference problems.
+We have shown that this theoretical improvement translates into better empirical performance.
 
 \vspace{-0.1in}
 \paragraph{Limitations}
 Our work has two main limitations.
-Firstly, our work aims to theoretically understand existing MCSA methods.
-Therefore, our work inherits the current limitations of MCSA methods, such as the difficulty of minibatching for models with non-factorizable likelihoods~\citep{NEURIPS2020_b2070693}.
+Firstly, since our work aims to understand existing MCSA methods, it inherits the current limitations of MCSA methods.
+For example, minibatch subsampling is challenging for models with non-factorizable likelihoods~\citep{NEURIPS2020_b2070693}.
 Secondly, our theoretical analysis in~\cref{section:comparison} requires~\cref{thm:bounded_score}, which is strong, but required to connect with MCGD.
-An important future step would be to relax the assumptions needed by MCGD.
+An important future direction would be to relax the assumptions needed by MCGD.
 
 \vspace{-0.1in}
 \paragraph{Inclusive KL}
-In \cref{section:eval}, we showed that minimizing the inclusive KL divergence is competitive against exclusive KL divergence minimization on general Bayesian inference problems.
-This is not in line with the conclusions of~\citet{dhaka_challenges_2021} that the inclusive KL does not work on high-dimensional problems (\citeauthor{dhaka_challenges_2021} consider few hundreds of dimensions).
-However, we note that dimensionality becomes a problem only in the presence of strong correlations.
-As such, the general utility of inclusive KL minimization methods will depend on how correlated posteriors are in practice.
-To conclude, our results motivate the development of better inference algorithms for alternative divergence measures, including the inclusive KL. 
+In \cref{section:eval}, we have shown that minimizing the inclusive KL divergence is competitive against exclusive KL divergence minimization on general Bayesian inference problems.
+Although~\citet{dhaka_challenges_2021} has shown that the inclusive KL does not work on high-dimensional problems (\citeauthor{dhaka_challenges_2021} consider few hundreds of dimensions), this is only the case with strong correlations.
+Furthermore, the true performance of alternative divergences is often masked by the limitations of the inference procedure~\citet{geffner2021empirical, pmlr-v139-geffner21a}.
+Given that pMCSA significantly advanced the ``performance'' of inclusive KL minimization, it is possible that similar improvements could be extracted from other divergences.
+To conclude, our results motivate the development of better inference algorithms for alternative divergence measures.
 
 %An interesting direction for future research would be to invstigate whether such result 
 %This is against the conclusions of~\citet{dhaka_challenges_2021} that exclusive VI should outperform inclusive VI in high-dimensions. 

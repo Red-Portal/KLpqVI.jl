@@ -4,9 +4,10 @@ Bayesian inference aims to analyze the posterior distribution of an unknown late
 By assuming a model \(p\,(\vx\,|\,\vz)\), the posterior \(\pi\,(\vz)\) is given by Bayes' rule such that \(\pi\,(\vz) \propto {p\,(\vx\,|\,\vz)\,p\,(\vz)}\) where \(p\,(\vz)\) represents our prior belief on \(\vz\).
 Instead of working directly with \(\pi\), variational inference (VI,~\citealt{blei_variational_2017}) seeks a \textit{variational approximation} \(q\,(\vz; \vlambda)\) that is the most similar to \(\pi\) according to a discrepancy measure \(D\,(\pi,\, q\,(\cdot; \vlambda))\).
 
-Naturally, choosing an appropriate discrepancy measure is key, which has led to a quest for suitable divergence measures~\citep{pmlr-v37-salimans15, NIPS2016_7750ca35, NIPS2017_35464c84, NEURIPS2018_1cd138d0, pmlr-v97-ruiz19a}.
-So far, the exclusive (or reverse, backward)  KL divergence \(\DKL{q\left(\cdot; \vlambda\right)}{\pi}\) has seen ``exclusive'' use, partly because it is defined as an average over \(q_{\lambda}(\vz)\), which can be approximated efficiently.
-In contrast, the inclusive KL defined as
+%% Naturally, choosing an appropriate discrepancy measure is key, which has led to a quest for suitable divergence measures~\citep{ NIPS2016_7750ca35, NIPS2017_35464c84, NEURIPS2018_1cd138d0, NEURIPS2020_c928d86f, regli_alphabeta_2018, pmlr-v48-hernandez-lobatob16, NIPS2016_7750ca35 }.
+Naturally, choosing an appropriate \(D\,(\cdot,\, \cdot)\) is key, which has led to a quest for suitable divergence measures~\citep{NIPS2017_35464c84, NEURIPS2018_1cd138d0, NEURIPS2020_c928d86f, regli_alphabeta_2018, pmlr-v48-hernandez-lobatob16, NIPS2016_7750ca35}.
+So far, the exclusive (or reverse, backward)  KL divergence \(\DKL{q\left(\cdot; \vlambda\right)}{\pi}\) has seen ``exclusive'' use, partly because it integrates over \(q_{\lambda}(\vz)\), which can be approximated efficiently.
+In contrast, the inclusive KL (or forward) defined as
 %
 {%\small
 \vspace{-0.05in}

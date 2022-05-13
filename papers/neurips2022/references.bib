@@ -997,6 +997,19 @@
   number = {3}
 }
 
+@article{ba-nguvo_sequential_2005,
+  title = {Sequential {{Monte Carlo}} Methods for Multi-Target Filtering with Random Finite Sets},
+  author = {{Ba-Ngu Vo} and Singh, S. and Boucet, A.},
+  year = {2005},
+  month = oct,
+  volume = {41},
+  pages = {1224--1245},
+  file = {/home/msca8h/Zotero/storage/LBNFNFL5/Ba-Ngu Vo et al. - 2005 - Sequential monte carlo methods for multi-target fi.pdf},
+  journal = {IEEE Transactions on Aerospace and Electronic Systems},
+  language = {en},
+  number = {4}
+}
+
 @inproceedings{backstrom_group_2006,
   title = {Group Formation in Large Social Networks: Membership, Growth, and Evolution},
   booktitle = {Proc. 12th {{ACM SIGKDD Int}}. {{Conf}}. {{Knowl}}. {{Discovery Data Mining}}},
@@ -4097,6 +4110,20 @@
   language = {en}
 }
 
+@article{gabrie_adaptive_2022,
+  title = {Adaptive {{Monte Carlo}} Augmented with Normalizing Flows},
+  author = {Gabri{\'e}, Marylou and Rotskoff, Grant M. and {Vanden-Eijnden}, Eric},
+  year = {2022},
+  month = mar,
+  volume = {119},
+  pages = {e2109420119},
+  abstract = {Significance             Monte Carlo methods, tools for sampling data from probability distributions, are widely used in the physical sciences, applied mathematics, and Bayesian statistics. Nevertheless, there are many situations in which it is computationally prohibitive to use Monte Carlo due to slow ``mixing'' between modes of a distribution unless hand-tuned algorithms are used to accelerate the scheme. Machine learning techniques based on generative models offer a compelling alternative to the challenge of designing efficient schemes for a specific system. Here, we formalize Monte Carlo augmented with normalizing flows and show that, with limited prior data and a physically inspired algorithm, we can substantially accelerate sampling with generative models.           ,              Many problems in the physical sciences, machine learning, and statistical inference necessitate sampling from a high-dimensional, multimodal probability distribution. Markov Chain Monte Carlo (MCMC) algorithms, the ubiquitous tool for this task, typically rely on random local updates to propagate configurations of a given system in a way that ensures that generated configurations will be distributed according to a target probability distribution asymptotically. In high-dimensional settings with multiple relevant metastable basins, local approaches require either immense computational effort or intricately designed importance sampling strategies to capture information about, for example, the relative populations of such basins. Here, we analyze an adaptive MCMC, which augments MCMC sampling with nonlocal transition kernels parameterized with generative models known as normalizing flows. We focus on a setting where there are no preexisting data, as is commonly the case for problems in which MCMC is used. Our method uses 1) an MCMC strategy that blends local moves obtained from any standard transition kernel with those from a generative model to accelerate the sampling and 2) the data generated this way to adapt the generative model and improve its efficacy in the MCMC algorithm. We provide a theoretical analysis of the convergence properties of this algorithm and investigate numerically its efficiency, in particular in terms of its propensity to equilibrate fast between metastable modes whose rough location is known a priori but respective probability weight is not. We show that our algorithm can sample effectively across large free energy barriers, providing dramatic accelerations relative to traditional MCMC algorithms.},
+  file = {/home/msca8h/Zotero/storage/G6YUS2FS/Gabrié et al. - 2022 - Adaptive Monte Carlo augmented with normalizing fl.pdf},
+  journal = {Proceedings of the National Academy of Sciences},
+  language = {en},
+  number = {10}
+}
+
 @article{gadioli_margot_2019,
   title = {{{mARGOt}}: {{A Dynamic Autotuning Framework}} for {{Self}}-{{Aware Approximate Computing}}},
   shorttitle = {{{mARGOt}}},
@@ -4185,6 +4212,13 @@
   publisher = {{ML Research Press}},
   biburl = {https://dblp.org/rec/bib/conf/aistats/GeXG18},
   series = {{{PMLR}}}
+}
+
+@inproceedings{geffner2021empirical,
+  title = {Empirical Evaluation of Biased Methods for Alpha Divergence Minimization},
+  booktitle = {Proceedings of the Symposium on Advances in Approximate Bayesian Inference},
+  author = {Geffner, Tomas and Domke, Justin},
+  year = {2021}
 }
 
 @article{geirhos_shortcut_2020,
@@ -6727,6 +6761,17 @@
   publisher = {{Curran Associates, Inc.}}
 }
 
+@article{lian_estimating_2010,
+  title = {Estimating Unknown Clutter Intensity for {{PHD}} Filter},
+  author = {Lian, Feng and Han, Chongzhao and Liu, Weifeng},
+  year = {2010},
+  month = oct,
+  volume = {46},
+  pages = {2066--2078},
+  journal = {IEEE Transactions on Aerospace and Electronic Systems},
+  number = {4}
+}
+
 @article{liang_cramerrao_2021,
   title = {Cram\'er-{{Rao}} Bound Analysis of Underdetermined Wideband {{DOA}} Estimation under the Subband Model via Frequency Decomposition},
   author = {Liang, Yibao and Cui, Wei and Shen, Qing and Liu, Wei and Wu, Siliang},
@@ -8190,6 +8235,26 @@
   publisher = {{Curran Associates, Inc.}}
 }
 
+@inproceedings{NEURIPS2020_c928d86f,
+  title = {F-{{Divergence}} Variational Inference},
+  booktitle = {Advances in Neural Information Processing Systems},
+  author = {Wan, Neng and Li, Dapeng and Hovakimyan, Naira},
+  year = {2020},
+  volume = {33},
+  pages = {17370--17379},
+  publisher = {{Curran Associates, Inc.}}
+}
+
+@inproceedings{NEURIPS2021_05f971b5,
+  title = {{{MCMC}} Variational Inference via Uncorrected {{Hamiltonian}} Annealing},
+  booktitle = {Advances in Neural Information Processing Systems},
+  author = {Geffner, Tomas and Domke, Justin},
+  year = {2021},
+  volume = {34},
+  pages = {639--651},
+  publisher = {{Curran Associates, Inc.}}
+}
+
 @inproceedings{NEURIPS2021_148148d6,
   title = {Automatic Symmetry Discovery with Lie Algebra Convolutional Network},
   booktitle = {Advances in Neural Information Processing Systems},
@@ -8197,6 +8262,16 @@
   year = {2021},
   volume = {34},
   pages = {2503--2515},
+  publisher = {{Curran Associates, Inc.}}
+}
+
+@inproceedings{NEURIPS2021_a1a609f1,
+  title = {Differentiable Annealed Importance Sampling and the Perils of Gradient Noise},
+  booktitle = {Advances in Neural Information Processing Systems},
+  author = {Zhang, Guodong and Hsu, Kyle and Li, Jianing and Finn, Chelsea and Grosse, Roger B},
+  year = {2021},
+  volume = {34},
+  pages = {19398--19410},
   publisher = {{Curran Associates, Inc.}}
 }
 
@@ -8968,6 +9043,20 @@
   series = {{{PMLR}}}
 }
 
+@inproceedings{pmlr-v139-geffner21a,
+  title = {On the Difficulty of Unbiased Alpha Divergence Minimization},
+  booktitle = {Proceedings of the International Conference on Machine Learning},
+  author = {Geffner, Tomas and Domke, Justin},
+  year = {2021},
+  month = jul,
+  volume = {139},
+  pages = {3650--3659},
+  publisher = {{ML Research Press}},
+  abstract = {Several approximate inference algorithms have been proposed to minimize an alpha-divergence between an approximating distribution and a target distribution. Many of these algorithms introduce bias, the magnitude of which becomes problematic in high dimensions. Other algorithms are unbiased. These often seem to suffer from high variance, but little is rigorously known. In this work we study unbiased methods for alpha-divergence minimization through the Signal-to-Noise Ratio (SNR) of the gradient estimator. We study several representative scenarios where strong analytical results are possible, such as fully-factorized or Gaussian distributions. We find that when alpha is not zero, the SNR worsens exponentially in the dimensionality of the problem. This casts doubt on the practicality of these methods. We empirically confirm these theoretical results.},
+  pdf = {http://proceedings.mlr.press/v139/geffner21a/geffner21a.pdf},
+  series = {{{PMLR}}}
+}
+
 @inproceedings{pmlr-v139-immer21a,
   title = {Scalable Marginal Likelihood Estimation for Model Selection in Deep Learning},
   booktitle = {Proceedings of the 38th International Conference on Machine Learning},
@@ -8993,6 +9082,20 @@
   publisher = {{PMLR}},
   abstract = {The posterior over Bayesian neural network (BNN) parameters is extremely high-dimensional and non-convex. For computational reasons, researchers approximate this posterior using inexpensive mini-batch methods such as mean-field variational inference or stochastic-gradient Markov chain Monte Carlo (SGMCMC). To investigate foundational questions in Bayesian deep learning, we instead use full batch Hamiltonian Monte Carlo (HMC) on modern architectures. We show that (1) BNNs can achieve significant performance gains over standard training and deep ensembles; (2) a single long HMC chain can provide a comparable representation of the posterior to multiple shorter chains; (3) in contrast to recent studies, we find posterior tempering is not needed for near-optimal performance, with little evidence for a ``cold posterior'' effect, which we show is largely an artifact of data augmentation; (4) BMA performance is robust to the choice of prior scale, and relatively similar for diagonal Gaussian, mixture of Gaussian, and logistic priors; (5) Bayesian neural networks show surprisingly poor generalization under domain shift; (6) while cheaper alternatives such as deep ensembles and SGMCMC can provide good generalization, their predictive distributions are distinct from HMC. Notably, deep ensemble predictive distributions are similarly close to HMC as standard SGLD, and closer than standard variational inference.},
   pdf = {http://proceedings.mlr.press/v139/izmailov21a/izmailov21a.pdf},
+  series = {Proceedings of Machine Learning Research}
+}
+
+@inproceedings{pmlr-v151-brofos22a,
+  title = {Adaptation of the Independent {{Metropolis}}-{{Hastings}} Sampler with Normalizing Flow Proposals},
+  booktitle = {Proceedings of the 25th International Conference on Artificial Intelligence and Statistics},
+  author = {Brofos, James and Gabrie, Marylou and Brubaker, Marcus A. and Lederman, Roy R.},
+  year = {2022},
+  month = mar,
+  volume = {151},
+  pages = {5949--5986},
+  publisher = {{PMLR}},
+  abstract = {Markov Chain Monte Carlo (MCMC) methods are a powerful tool for computation with complex probability distributions. However the performance of such methods is critically dependent on properly tuned parameters, most of which are difficult if not impossible to know a priori for a given target distribution. Adaptive MCMC methods aim to address this by allowing the parameters to be updated during sampling based on previous samples from the chain at the expense of requiring a new theoretical analysis to ensure convergence. In this work we extend the convergence theory of adaptive MCMC methods to a new class of methods built on a powerful class of parametric density estimators known as normalizing flows. In particular, we consider an independent Metropolis-Hastings sampler where the proposal distribution is represented by a normalizing flow whose parameters are updated using stochastic gradient descent. We explore the practical performance of this procedure on both synthetic settings and in the analysis of a physical field system, and compare it against both adaptive and non-adaptive MCMC methods.},
+  pdf = {https://proceedings.mlr.press/v151/brofos22a/brofos22a.pdf},
   series = {Proceedings of Machine Learning Research}
 }
 
@@ -9066,6 +9169,21 @@
   address = {{Lille, France}},
   abstract = {Recent advances in stochastic gradient variational inference have made it possible to perform variational Bayesian inference with posterior approximations containing auxiliary random variables. This enables us to explore a new synthesis of variational inference and Monte Carlo methods where we incorporate one or more steps of MCMC into our variational approximation. By doing so we obtain a rich class of inference algorithms bridging the gap between variational methods and MCMC, and offering the best of both worlds: fast posterior approximation through the maximization of an explicit objective, with the option of trading off additional computation for additional accuracy. We describe the theoretical foundations that make this possible and show some promising first results.},
   pdf = {http://proceedings.mlr.press/v37/salimans15.pdf},
+  series = {{{PMLR}}}
+}
+
+@inproceedings{pmlr-v48-hernandez-lobatob16,
+  title = {Black-Box Alpha Divergence Minimization},
+  booktitle = {Proceedings of the International Conference on Machine Learning},
+  author = {{Hernandez-Lobato}, Jose and Li, Yingzhen and Rowland, Mark and Bui, Thang and {Hernandez-Lobato}, Daniel and Turner, Richard},
+  year = {2016},
+  month = jun,
+  volume = {48},
+  pages = {1511--1520},
+  publisher = {{ML Research Press}},
+  address = {{New York, New York, USA}},
+  abstract = {Black-box alpha (BB-{$\alpha$}) is a new approximate inference method based on the minimization of {$\alpha$}-divergences. BB-{$\alpha$}scales to large datasets because it can be implemented using stochastic gradient descent. BB-{$\alpha$}can be applied to complex probabilistic models with little effort since it only requires as input the likelihood function and its gradients. These gradients can be easily obtained using automatic differentiation. By changing the divergence parameter {$\alpha$}, the method is able to interpolate between variational Bayes (VB) ({$\alpha\rightarrow$}0) and an algorithm similar to expectation propagation (EP) ({$\alpha$}= 1). Experiments on probit regression and neural network regression and classification problems show that BB-{$\alpha$}with non-standard settings of {$\alpha$}, such as {$\alpha$}= 0.5, usually produces better predictions than with {$\alpha\rightarrow$}0 (VB) or {$\alpha$}= 1 (EP).},
+  pdf = {http://proceedings.mlr.press/v48/hernandez-lobatob16.pdf},
   series = {{{PMLR}}}
 }
 
@@ -9556,6 +9674,22 @@
   publisher = {{IEEE}},
   address = {{Vancouver, BC}},
   file = {/home/msca8h/Zotero/storage/RDV8WJIS/Regier et al. - 2018 - Cataloging the Visible Universe Through Bayesian I.pdf}
+}
+
+@article{regli_alphabeta_2018,
+  title = {Alpha-Beta Divergence for Variational Inference},
+  author = {Regli, Jean-Baptiste and Silva, Ricardo},
+  year = {2018},
+  month = may,
+  publisher = {{arXiv}},
+  abstract = {This paper introduces a variational approximation framework using direct optimization of what is known as the \{\textbackslash it scale invariant Alpha-Beta divergence\} (sAB divergence). This new objective encompasses most variational objectives that use the Kullback-Leibler, the R\{\textbackslash 'e\}nyi or the gamma divergences. It also gives access to objective functions never exploited before in the context of variational inference. This is achieved via two easy to interpret control parameters, which allow for a smooth interpolation over the divergence space while trading-off properties such as mass-covering of a target distribution and robustness to outliers in the data. Furthermore, the sAB variational objective can be optimized directly by repurposing existing methods for Monte Carlo computation of complex variational objectives, leading to estimates of the divergence instead of variational lower bounds. We show the advantages of this objective on Bayesian models for regression problems.},
+  archiveprefix = {arXiv},
+  eprint = {1805.01045},
+  eprinttype = {arxiv},
+  file = {/home/msca8h/Zotero/storage/WWX23CZI/Regli and Silva - 2018 - Alpha-Beta Divergence For Variational Inference.pdf;/home/msca8h/Zotero/storage/RXTW3RKY/1805.html},
+  keywords = {Computer Science - Machine Learning,Statistics - Machine Learning},
+  number = {arXiv:1805.01045},
+  primaryclass = {cs, stat}
 }
 
 @article{rendell_global_2021,
@@ -11275,6 +11409,17 @@
   file = {/home/msca8h/Zotero/storage/PNJJNDU4/Vehtari et al. - 2020 - Rank-Normalization, Folding, and Localization An .pdf},
   journal = {Bayesian Analysis},
   language = {en}
+}
+
+@article{vo_gaussian_2006,
+  title = {The {{Gaussian}} Mixture Probability Hypothesis Density Filter},
+  author = {Vo, B.-N. and Ma, W.-K.},
+  year = {2006},
+  month = nov,
+  volume = {54},
+  pages = {4091--4104},
+  journal = {IEEE Transactions on Signal Processing},
+  number = {11}
 }
 
 @article{vorobyov_principles_2013,

@@ -113,9 +113,9 @@ Overall, most MCSA methods seem to be the most stable with ADAM, which points th
 %% While the test accuracy suggests that ELBO converges quickly around \(t=2000\) (\cref{fig:german_acc}), in terms of uncertainty estimate, it takes much longer to converge (\cref{fig:german_lpd}).
 %% This shows that inclusive KL minimization chooses a path that has better density coverage as expected.
 
-  \vspace{-0.05in}
+  \vspace{-0.1in}
 \subsection{Bayesian Neural Network Regression}\label{section:bnn}
-  \vspace{-0.05in}
+  \vspace{-0.07in}
 \paragraph{Setup}
 For realistic experiments, we train Bayesian neural networks (BNN, \citealt{neal_bayesian_1996}) for regression.
 We use datasets from the UCI repository~\cite{Dua:2019} with 90\% random train-test splits.
@@ -128,27 +128,26 @@ The results are shown in~\cref{table:bnn}.
 pMCSA achieves the best performance compared to all other MCSA methods.
 Also, its overall performance is comparable to exclusive KL minimization methods (ELBO) unlike other MCSA methods.
 Furthermore, on \textsf{airfoil} and \textsf{energy}, pMCSA improves over ELBO by 0.29 \texttt{nat} and 0.48 \texttt{nat}.
-This contrasts to the fact that the worst case performance of pMCSA on \textsf{gas} is not too far from ELBO.
-We can also see that Rao-Blackwellization for MSC does not improve performance by much (MSC v.s. MSC-RB).
+Even on \textsf{gas} where pMCSA did not beat ELBO, its performance is comparable and it dominates all other MCSA methods by roughly 0.4 \texttt{nat}.
 Additional experimental results can be found in~\cref{section:bnn_additional}
 
-  \vspace{-0.05in}
+  \vspace{-0.1in}
 \subsection{Robust Gaussian Process Regression}\label{section:bgp}
-  \vspace{-0.05in}
+  \vspace{-0.07in}
 \paragraph{Setup}
 Now, we train Gaussian processes (GP) with a Student-T likelihood for robust regression.
 We use datasets from the UCI repository~\cite{Dua:2019} with 90\% random train-test splits.
-We use the Mat\'ern 5/2 covariance kernel with automatic relevance determination (ARD, \citealt{neal_bayesian_1996}) and a gamma prior on the degree of freedom (see \cref{section:bnn} for more details).
-During prediction, we use the mode of \(q_{\vlambda}\) for the hyperparameters, while we marginalize the latent function values over \(q_{\vlambda}\)~\citep{rasmussen_gaussian_2006}.
-Note that, in this experiment, differentiating through the likelihood is expensive, making the per-iteration cost of ELBO \(N=1\) comparable to MCSA methods with \(N=10\).
-Therefore, for ELBO, we only consider \(N=1\).
+We use the Mat\'ern 5/2 covariance kernel with automatic relevance determination (ARD, \citealt{neal_bayesian_1996}) and a gamma prior on the degree of freedom (see \cref{section:model_rgp} for more details).
+For prediction, we use the mode of \(q_{\vlambda}\) for the hyperparameters and marginalize the latent function over \(q_{\vlambda}\)~\citep{rasmussen_gaussian_2006}.
+We consider ELBO only with \(N=1\) since differentiating the likelihood makes its per-iteration cost comparable to MCSA methods with \(N=10\).
 
 \vspace{-0.1in}
 \paragraph{Results}
 The results are shown in~\cref{table:gp}.
-Overall, pMCSA achieves the best performance compared to other MCSA methods and ELBO.
-Interestingly, ELBO performs significantly worse than all other MCSA methods on most datasets, meaning that the exclusive KL performs poorly on GP posteriors.
-Our encouraging regression results suggest that incorporating scalable GP methods such as inducing points~\citep{NIPS2005_4491777b} may lead to an important new class of approximate GP model.
+Overall, except for \textsf{gas}, pMCSA achieves better performance than other MCSA methods and ELBO.
+This suggests that the exclusive KL is less effective for GP posteriors.
+Although ELBO achieves the best performance on \textsf{gas}, pMCSA dominates other MCSA methods.
+Our encouraging regression results suggest that incorporating methods such as inducing points~\citep{NIPS2005_4491777b} into MCSA may lead to an important new class of GP models.
 Additional experimental results can be found in~\cref{section:gp_additional}.
 
 %%% Local Variables:
