@@ -32,7 +32,7 @@
     \,\right],
   \end{align*}
   }
-  where \(w^* = \sup_{\vz} \pi\left(\vz\right) / q_{\text{def.}}\left(\vz;\vlambda\right)\) and \(C\) is a finite positive constant depending on both \(\rho\) and \(N\).
+  where \(w^* = \sup_{\vz} \pi\left(\vz\right) / q_{\text{def.}}\left(\vz;\vlambda\right)\) and \(C\left(\rho, N\right) > 0\) is a finite constant depending on \(\rho\) and \(N\).
 \end{theoremEnd}
 \begin{proofEnd}
 
@@ -40,7 +40,7 @@
   At each iteration, it performs \(N\) MCMC transitions, and uses the \(N\) samples to estimate the gradient.
 
   \paragraph{Ergodicity of the Markov Chain}
-  The state transition of the Markov chain samples \(\vz^{(1:N)}\) can be visualized as 
+  The state transitions of the Markov chain samples \(\vz^{(1:N)}\) are visualized as 
   {\small
   \begin{center}
   \bgroup
@@ -57,7 +57,7 @@
   \end{center}
   }
   where \(K_{\vlambda}\left(\vz, \cdot\right)\) is an IMH kernel.
-  Therefore, the \(n\)-step transition kernel for the vector of the Markov-chain samples \(\veta = \vz^{(1:N)}\) can be represented as
+  Therefore, the \(n\)-step transition kernel for the vector of the Markov-chain samples \(\veta = \vz^{(1:N)}\) is represented as
   \begin{align*}
   P_{\vlambda}^n\left(\veta, d\veta\prime\right)
   = 
@@ -178,7 +178,7 @@
   Although the constant depends on \(\rho\) and \(N\), the kernel \(P\) is geometrically ergodic and converges \(N\) times faster than the base kernel \(K\).
 
   \paragraph{\textbf{Bound on the Gradient Variance}}
-  To analyze the variance of the gradient, we require a detailed expression of the \(n\)-step marginal transition kernel, which is unavailable in general for most MCMC kernels.
+  To analyze the variance of the gradient, we require detailed information about the \(n\)-step marginal transition kernel, which is unavailable in general for most MCMC kernels.
   Fortunately, specifically for the IMH kernel,~\citet{Smith96exacttransition} have shown that the \(n\)-step marginal IMH kernel is given as~\cref{eq:imh_exact_kernel}.
   From this, we show that
   \begin{alignat}{2}
@@ -260,7 +260,7 @@
     \,\right].
     \nonumber
   \end{alignat}
-  The laurent approximation is useful for realistic values of \(w^*\) since it is bounded below exponentially by the KL divergence.
+  The Laurent approximation becomes exact as \(w^* \rightarrow \infty\), which is useful accurate as a consequence of \cref{thm:wstar}.
 \end{proofEnd}
 
 %%% Local Variables:

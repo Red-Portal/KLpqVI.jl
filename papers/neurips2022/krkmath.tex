@@ -40,14 +40,28 @@
   axis y line*=left,
   axis y line shift=2pt,
   ylabel shift=-2pt}}
-
+  
 \usepackage{proof-at-the-end}
+\declaretheoremstyle[
+    spaceabove=0\topsep,
+    spacebelow=0\topsep,
+    name={Proposition},
+]{propsty}
+\declaretheorem[style=propsty]{proposition}
+
+\declaretheoremstyle[
+    spaceabove=0\topsep,
+    spacebelow=0\topsep,
+    name={Theorem},
+]{thmsty}
+\declaretheorem[style=thmsty]{theorem}
+
 \newtheorem{remark}{\textbf{Remark}}
 \newtheorem{lemma}{\textbf{Lemma}}
 \newtheorem{assumption}{\textbf{Assumption}}
 \newtheorem{condition}{\textbf{Condition}}
-\newtheorem{theorem}{\textbf{Theorem}}
-\newtheorem{proposition}{\textbf{Proposition}}
+%\newtheorem{theorem}{\textbf{Theorem}}
+%\newtheorem{proposition}{\textbf{Proposition}}
 \newtheorem{definition}{\textbf{Definition}}
 
 \usepackage{mdframed}
@@ -95,7 +109,7 @@
     end,
     %normal,
     restate,
-    text link={\textit{Proof.} See page~\pageref{proof:prAtEnd\pratendcountercurrent} of the \textit{supplementary material}.}
+    text link={\textit{Proof.} See page~\pageref{proof:prAtEnd\pratendcountercurrent} of the \textit{supplementary material}.},
     %text link={\textit{Proof.} The proof is in the \textit{supplementary material}.
     %text link={\textit{Proof.} See the \hyperref[proof:prAtEnd\pratendcountercurrent]{\textit{full proof}} in~\cref{section:proofs}.}
   }

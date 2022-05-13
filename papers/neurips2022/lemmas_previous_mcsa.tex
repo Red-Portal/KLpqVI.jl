@@ -112,6 +112,33 @@
 %%   \end{alignat}
 %% \end{proofEnd}
 
+\begin{theoremEnd}[all end]{proposition}\label{thm:wstar}
+The maximum importance weight
+\(w^* = \sup_{\vz} w\left(\vz\right) = \sup_{\vz} \pi\left(\vz\right)/q\left(\vz\right)\)
+is bounded below exponentially by the KL divergence as
+\[
+    \exp\left( \DKL{\pi}{q\left(\cdot; \vlambda\right)} \right) < w^*.
+\]
+\end{theoremEnd}
+\begin{proofEnd}
+  \begin{alignat*}{2}
+    \DKL{\pi}{q\left(\cdot; \vlambda\right)}
+    &=
+    \Esub{\rvvz \sim \pi\left(\cdot\right)}{ \log \frac{\pi\left(\rvvz\right)}{q\left(\rvvz; \vlambda\right)} }
+    &&\quad\text{\textit{Definition of \(d_{\text{KL}}\)}}
+    \\
+    &\leq
+    \log \Esub{\rvvz \sim \pi\left(\cdot\right)}{ \frac{\pi\left(\rvvz\right)}{q\left(\rvvz; \vlambda\right)} }
+    &&\quad\text{\textit{Jensen's inequality}}
+    \\
+    &\leq
+    \log \Esub{\rvvz \sim \pi\left(\cdot\right)}{ w^* }
+    \\
+    &=
+    \log w^*.
+  \end{alignat*}
+\end{proofEnd}
+
 \begin{theoremEnd}[all end]{lemma}\label{thm:product_measure_bound}
   For the probability measures \(p_1, \ldots, p_N\) and \(q_1, \ldots, q_N\) defined on a measurable space \((\mathsf{X}, \mathcal{A})\) and an arbitrary set \(A \in \mathcal{A}\),
   \begin{align*}

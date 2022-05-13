@@ -8,7 +8,7 @@
   K_{\lambda}^n\left(\vz, d\vz\prime\right)
   \end{align*}
   }
-  with  \(\veta_t = \vz_t\) where \(K_{\vlambda}\left(\vz, \cdot\right)\) is the conditional importance sampling (CIS) kernel~\citep{NEURIPS2020_b2070693} with \(q_{def.}\left(\cdot; \vlambda\right)\) as its proposal distribution.
+  with  \(\veta_t = \vz_t\) where \(K_{\vlambda}\left(\vz, \cdot\right)\) is the CIS kernel with \(q_{def.}\left(\cdot; \vlambda\right)\) as its proposal distribution.
   Then, given~\cref{thm:bounded_weight,thm:bounded_score}, the mixing rate and the gradient bounds are given as
   {\small
   \begin{align*}
@@ -25,7 +25,8 @@
   At each iteration, it performs a single MCMC transition with the CIS kernel where it internally uses \(N\) proposals.
 
   \paragraph{Ergodicity of the Markov Chain}
-  The ergodic convergence rate of \(P_{\vlambda}\) is equal to that of the iterated sequential importance resampling (i-SIR) kernel \(K_{\vlambda}\), which has been given by \citet{andrieu_uniform_2018} as
+  The ergodic convergence rate of \(P_{\vlambda}\) is equal to that of \(K_{\vlambda}\), the CIS kernel proposed by~\citet{NEURIPS2020_b2070693}. 
+  Although not mentioned by~\citet{NEURIPS2020_b2070693}, this kernel has been previously proposed as the iterated sequential importance resampling (i-SIR) by \citet{andrieu_uniform_2018} with its corresponding geometric convergence rate as
   \begin{alignat*}{2}
     \DTV{P^{n}_{\vlambda}\left(\veta, \cdot\right)}{\Pi}
     =

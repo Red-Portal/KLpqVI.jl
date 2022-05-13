@@ -3,7 +3,7 @@
 \section{Discussions}\label{section:discussion}
 \vspace{-0.1in}
 This paper presented a new theoretical framework for analyzing inclusive KL divergence minimization methods based on running SGD with Markov chains.
-Furthermore, we proposed pMCSA, a new MCSA methods that enjoys substantially low variance.
+Furthermore, we proposed pMCSA, a new MCSA method that enjoys substantially low variance.
 We have shown that this theoretical improvement translates into better empirical performance.
 
 \vspace{-0.1in}
@@ -15,12 +15,13 @@ Secondly, our theoretical analysis in~\cref{section:comparison} requires~\cref{t
 An important future direction would be to relax the assumptions needed by MCGD.
 
 \vspace{-0.1in}
-\paragraph{Inclusive KL}
-In \cref{section:eval}, we have shown that minimizing the inclusive KL divergence is competitive against exclusive KL divergence minimization on general Bayesian inference problems.
-Although~\citet{dhaka_challenges_2021} has shown that the inclusive KL does not work on high-dimensional problems (\citeauthor{dhaka_challenges_2021} consider few hundreds of dimensions), this is only the case with strong correlations.
+\paragraph{Towards Alternative Divergences}
+In \cref{section:eval}, we have shown that minimizing the \textit{inclusive} KL is competitive against  minimizing the \textit{exclusive} KL on general Bayesian inference problems.
+Although~\citet{dhaka_challenges_2021} has shown that the inclusive KL fails on high-dimensional problems, this is only the case under the presence of strong correlations.
+Before entirely ditching the inclusive KL, it is essential to ask, ``how correlated posteriors really are in practice?''
 Furthermore, the true performance of alternative divergences is often masked by the limitations of the inference procedure~\citet{geffner2021empirical, pmlr-v139-geffner21a}.
-Given that pMCSA significantly advanced the ``performance'' of inclusive KL minimization, it is possible that similar improvements could be extracted from other divergences.
-To conclude, our results motivate the development of better inference algorithms for alternative divergence measures.
+Given that pMCSA significantly advances the best-known performance of inclusive KL minimization, it is possible that similar improvements could be extracted from other divergences.
+To conclude, our results motivate further development of better inference algorithms for alternative divergence measures.
 
 %An interesting direction for future research would be to invstigate whether such result 
 %This is against the conclusions of~\citet{dhaka_challenges_2021} that exclusive VI should outperform inclusive VI in high-dimensions. 

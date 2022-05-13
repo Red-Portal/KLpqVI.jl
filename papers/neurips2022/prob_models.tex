@@ -22,7 +22,7 @@ The model is defined as
    \log \sigma_f &\sim \mathcal{N}(0, 4) \\
    \log \epsilon &\sim \mathcal{N}(0, 4) \\
    \log \ell_i   &\sim \mathcal{N}(0, 0.2) \\
-   f   &\sim \mathcal{GP}\left(\mathbf{0}, \mSigma_{\sigma_f, \mathbf{\ell}} + \left(\delta + \epsilon\right)\,\mI \right) \\
+   f   &\sim \mathcal{GP}\left(\mathbf{0}, \mSigma_{\sigma_f, \mathbf{\ell}} + \left(\delta + \epsilon^2\right)\,\mI \right) \\
    \nu &\sim \mathrm{Gamma}\left(\alpha=4, \beta=1/10\right) \\
    \log \sigma_y &\sim \mathcal{N}(0, 4) \\
    y_i &\sim \text{Student-T}\left(  f\left( \vx_i \right), \sigma_y, \nu  \right).

@@ -4,26 +4,26 @@
 \paragraph{Inclusive KL minimization}
 Our MCSA framework generalizes MSC~\citep{NEURIPS2020_b2070693} and JSA~\citet{pmlr-v124-ou20a}, which are inclusive KL minimization based on SGD and Markov chains.
 Similar to MCSA is the method of~\citet{li_approximate_2017}.
-The convergence of this method however, is not guaranteed since it uses short Markov chains, disqualityfing for MCSA.
+However, the convergence of this method is not guaranteed since it uses short Markov chains, disqualifying for MCSA.
 Other methods based on biased gradients have been proposed by~\citet{DBLP:journals/corr/BornscheinB14,le_revisiting_2019}, but these are specific for deep generative models.
 On a different note,~\citet{pmlr-v161-jerfel21a} use boosting instead of SGD to minimize the inclusive KL, which gradually builds a complex variational approximation from a simple variational family.
 
 \vspace{-0.1in}
 \paragraph{Beyond the KL Divergence}
 Discovering alternative divergences for VI has been an active research area.
-For example, the \(\chi^2\)~\citep{NIPS2017_35464c84}, \(f\)~\citep{NEURIPS2018_1cd138d0, NEURIPS2020_c928d86f}, \(\alpha\)~\citet{NIPS2016_7750ca35, regli_alphabeta_2018, pmlr-v48-hernandez-lobatob16} divergences have been studied for VI.
-However, these methods involve the importance ratio \(w\left(\vz\right) = \pi\left(\vz\right)/q\left(\vz\right)\), which leads to significant variance and low signal-to-noise ratio under model misspecification \citep{geffner2021empirical, pmlr-v139-geffner21a}.
-In contrast, pMCSA less affected by model misspecification since, under stationarity, the variance of the Markov chain states are equal to the variance of the posterior.
-Meanwhile,~\citet{pmlr-v37-salimans15,pmlr-v97-ruiz19a,NEURIPS2021_05f971b5,NEURIPS2021_a1a609f1} construct implicit divergences formed by MCMC samples.
+For example, the \(\chi^2\)~\citep{NIPS2017_35464c84}, \(f\)~\citep{NEURIPS2018_1cd138d0, NEURIPS2020_c928d86f}, \(\alpha\)~\citep{NIPS2016_7750ca35, regli_alphabeta_2018, pmlr-v48-hernandez-lobatob16} divergences have been studied for VI.
+However, for gradient estimation these methods involve the importance ratio \(w\left(\vz\right) = \pi\left(\vz\right)/q\left(\vz\right)\), which leads to significant variance and low signal-to-noise ratio under model misspecification \citep{geffner2021empirical, pmlr-v139-geffner21a}.
+In contrast, pMCSA is less affected by model misspecification since, under stationarity, the variance of the Markov chain states is equal to the variance of the posterior.
+Meanwhile,~\citet{pmlr-v37-salimans15,pmlr-v97-ruiz19a,NEURIPS2021_05f971b5,NEURIPS2021_a1a609f1} construct implicit divergences formed by MCMC.
 It is to be seen how these divergences compare against the inclusive KL divergence.
 
 \vspace{-0.1in}
-\paragraph{MCMC for VI, VI for MCMC}
+\paragraph{Adaptive MCMC and MCSA}
 As pointed out by~\citet{pmlr-v124-ou20a}, using \(q\left(\cdot; \vlambda\right)\) within the MCMC kernel makes MCSA structurally equivalent to adaptive MCMC.
 In particular,~\citet{10.1007/s11222-008-9110-y, garthwaite_adaptive_2016, pmlr-v151-brofos22a, gabrie_adaptive_2022} discuss the use of stochastic approximation in adaptive MCMC.
 Also,~\citet{andrieu_ergodicity_2006, keith_adaptive_2008, holden_adaptive_2009, giordani_adaptive_2010, pmlr-v151-brofos22a, habib2018auxiliary, neklyudov_metropolishastings_2019} specifically discuss adapting the propsosal of IMH kernels, and some of them use KL divergence minimization.
 These methods focus on showing ergodicity the samples (\(\vz^{(n)}\) in our notation) not the convergence of the variational approximation \(q\left(\cdot; \vlambda\right)\) (or proposal in an adaptive MCMC context).
-In this work, we focused the convergence of \(q\left(\cdot; \vlambda\right)\), which could advance the adaptive MCMC side of the story.
+In this work, we focused on the convergence of \(q\left(\cdot; \vlambda\right)\), which could advance the adaptive MCMC side of the story.
 
 %And for HMC,~\citet{zhang_variational_2018, pmlr-v139-campbell21a} have proposed to use score matching, ELBO maximization, and Stein discrepancy minimization.
 

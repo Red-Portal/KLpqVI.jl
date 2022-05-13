@@ -1,7 +1,7 @@
 
-\vspace{-0.1in}
+\vspace{-0.12in}
 \section{Background}
-\vspace{-0.05in}
+\vspace{-0.07in}
 \subsection{Variational Inference with Stochastic Gradients}\label{section:ivi_previous}
 \vspace{-0.05in}
 The goal of VI is to find the optimal variational parameter \(\vlambda\) identifying \(q\left(\cdot; \vlambda\right) \in \mathcal{Q}\) that minimizes some discrepancy measure \(D\left(\pi, q\left(\cdot; \vlambda\right)\right)\).
@@ -52,7 +52,7 @@ To better conform with the optimization literature, we instead call this approac
 \subsection{Markov Chain Gradient Descent}\label{section:mcgd}
 \vspace{-0.05in}
 \paragraph{\textbf{Overview of MCGD}}
-Markov chain gradient descent (MCGD, \citealt{duchi_ergodic_2012, NEURIPS2018_1371bcce}) is a family of algorithm that minimize (or maximize) a function \(f\) defined as \(f\left(\vlambda\right) = \int f\left(\vlambda, \veta\right) \, \Pi\left(d\veta\right)\) where \(\Pi\left(d\veta\right)\) is a probability measure.
+Markov chain gradient descent (MCGD, \citealt{duchi_ergodic_2012, NEURIPS2018_1371bcce}) is a family of algorithm that optimize a function \(f\) defined as \(f\left(\vlambda\right) = \int f\left(\vlambda, \veta\right) \, \Pi\left(d\veta\right)\) where \(\Pi\left(d\veta\right)\) is a probability measure.
 MCGD repeats the steps 
 {%\small
 \begin{align}
@@ -61,8 +61,9 @@ MCGD repeats the steps
 \end{align}
 }%
 where \(P_{\vlambda_{t-1}}\) is a \(\Pi\)-invariant Markov chain kernel that could depend on \(\vlambda_{t-1}\).
-Unlike vanilla SGD where the gradient noise is assumed to be \textit{i.i.d.} and unbiased, the gradient noise is now Markovian and non-asymptotically biased.
-Therefore, a different analysis methodology is needed to analyze non-asymptotic convergence, as done by~\citep{duchi_ergodic_2012, NEURIPS2018_1371bcce, pmlr-v99-karimi19a, doan_finitetime_2020, doan_convergence_2020, Xiong_Xu_Liang_Zhang_2021, debavelaere_convergence_2021}.
+The noise of the gradient is Markovian and non-asymptotically biased, departing from vanilla SGD.
+%Unlike vanilla SGD where the gradient noise is assumed to be \textit{i.i.d.} and unbiased, it is now .
+Non-asymptotic convergence on this general setting has recently been studied by~\citet{duchi_ergodic_2012, NEURIPS2018_1371bcce, pmlr-v99-karimi19a, doan_finitetime_2020, doan_convergence_2020, debavelaere_convergence_2021}.
 
 \vspace{-0.1in}
 \paragraph{\textbf{Applications of MCGD}}
