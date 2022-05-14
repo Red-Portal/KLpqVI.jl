@@ -1,6 +1,6 @@
 \vspace{-0.05in}
 \section{Related Works}\label{section:related}
-\vspace{-0.05in}
+\vspace{-0.1in}
 \paragraph{Inclusive KL minimization}
 Our MCSA framework generalizes MSC~\citep{NEURIPS2020_b2070693} and JSA~\citet{pmlr-v124-ou20a}, which are inclusive KL minimization based on SGD and Markov chains.
 Similar to MCSA is the method of~\citet{li_approximate_2017}.
@@ -13,7 +13,7 @@ On a different note,~\citet{pmlr-v161-jerfel21a} use boosting instead of SGD to 
 Discovering alternative divergences for VI has been an active research area.
 For example, the \(\chi^2\)~\citep{NIPS2017_35464c84}, \(f\)~\citep{NEURIPS2018_1cd138d0, NEURIPS2020_c928d86f}, \(\alpha\)~\citep{NIPS2016_7750ca35, regli_alphabeta_2018, pmlr-v48-hernandez-lobatob16} divergences have been studied for VI.
 However, for gradient estimation these methods involve the importance ratio \(w\left(\vz\right) = \pi\left(\vz\right)/q\left(\vz\right)\), which leads to significant variance and low signal-to-noise ratio under model misspecification \citep{geffner2021empirical, pmlr-v139-geffner21a}.
-In contrast, pMCSA is less affected by model misspecification since, under stationarity, the variance of the Markov chain states is equal to the variance of the posterior.
+In contrast, under stationarity, the variance of pMCSA is \({\sigma^2}/{N}\) (\(\sigma\) is the variance of the score over the posterior) regardless of model misspecification.
 Meanwhile,~\citet{pmlr-v37-salimans15,pmlr-v97-ruiz19a,NEURIPS2021_05f971b5,NEURIPS2021_a1a609f1} construct implicit divergences formed by MCMC.
 It is to be seen how these divergences compare against the inclusive KL divergence.
 

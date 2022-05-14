@@ -1,8 +1,7 @@
 
 \section{Additional Experimental Results}
 \subsection{Bayesian Neural Network Regression}\label{section:bnn_additional}
-
-\begin{figure}[H]
+\begin{figure}[ht]
   \centering
   \subfloat[\textsf{yacht}]{
     \includegraphics[scale=0.9]{figures/yacht_01.pdf}
@@ -21,11 +20,12 @@
     \vspace{-0.05in}
   }
   \caption{\textbf{Test root-mean-square error (RMSE) and test log predictive density (LPD) on Bayesian neural network regression.} 
-    The grey squares mark the performance of ELBO \(N=10\) at the wall clock time shown next to it.
+    The grey squares (\textcolor{darkgrey}{\(\blacksquare\)}) mark the performance of ELBO \(N=10\) at the wall clock time shown next to it.
   The error bands show the 95\% bootstrap confidence intervals obtained from 20 independent 90\% train-test splits.}
 \end{figure}
-
-\begin{figure}[H]
+%
+\newpage
+\begin{figure}[h]
   \centering
   \subfloat[\textsf{wine}]{
     \includegraphics[scale=0.9]{figures/wine_01.pdf}
@@ -44,12 +44,13 @@
     \vspace{-0.05in}
   }
   \caption{\textbf{(continued) Test root-mean-square error (RMSE) and test log predictive density (LPD) on Bayesian neural network regression.}
-    The grey squares mark the performance of ELBO \(N=10\) at the wall clock time shown next to it.
+    The grey squares (\textcolor{darkgrey}{\(\blacksquare\)}) mark the performance of ELBO \(N=10\) at the wall clock time shown next to it.
   The error bands show the 95\% bootstrap confidence intervals obtained from 20 independent 90\% train-test splits.}
 \end{figure}
 
+\newpage
 \subsection{Robust Gaussian Process Regression}\label{section:gp_additional}
-\begin{figure}[H]
+\begin{figure}[h]
   \centering
   \subfloat[\textsf{yacht}]{
     \includegraphics[scale=0.9]{figures/yacht_pgp_01.pdf}
@@ -70,8 +71,9 @@
   \caption{\textbf{Test root-mean-square error (RMSE) and test log predictive density (LPD) on robust Gaussian process regression.}
   The error bands shows the 95\% bootstrap confidence interval obtained from 20 repetitions.}
 \end{figure}
-
-\begin{figure}[H]
+%
+\newpage
+\begin{figure}[ht]
   \subfloat[\textsf{concrete}]{
     \includegraphics[scale=0.9]{figures/concrete_pgp_01.pdf}
     \vspace{-0.1in}

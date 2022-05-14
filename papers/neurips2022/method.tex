@@ -1,18 +1,19 @@
 
-\vspace{-0.05in}
+\vspace{-0.07in}
 \section{Markov Chain Score Ascent}\label{section:mcsa}
-\vspace{-0.05in}
+\vspace{-0.08in}
 
 First, we develop Markov chain score ascent (MCSA), a framework for inclusive KL minimization with MCGD.
 This framework will establish the connection between MSC/JSA and MCGD.
 
-\vspace{-0.05in}
+\vspace{-0.08in}
 \subsection{Markov Chain Score Ascent as a Special Case of Markov Chain Gradient Descent}\label{section:convergence}
-\vspace{-0.05in}
+\vspace{-0.07in}
 As shown in~\cref{eq:mcgd}, the basic ingredients of MCGD are the target function \(f\left(\vlambda, \eta\right)\), the gradient estimator \(\vg\left(\vlambda, \eta\right)\), and the Markov chain kernel \(P_{\vlambda}\left(\eta, \cdot\right)\).
 Obtaining MCSA from MCGD boils down to designing \(\vg\) and \(P_{\vlambda}\) such that \(f\left(\vlambda\right) = \DKL{\pi}{q\left(\cdot; \vlambda\right)} \).
 The following proposition provides sufficient conditions on \(\vg\) and \(P_{\vlambda}\) to achieve this goal.
 
+\vspace{0.07in}
 \input{thm_product_kernel}
 
 This simple connection between MCGD and VI paves the way toward the non-asymptotic analysis of JSA and MSC.
