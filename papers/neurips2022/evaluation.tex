@@ -15,7 +15,7 @@
 %% \end{figure*}
 
 \begin{figure*}
-  \vspace{-0.25in}
+  \vspace{-0.27in}
   \centering
   \includegraphics[scale=1.0]{figures/gaussian_02.pdf}
   \vspace{-0.07in}
@@ -38,14 +38,14 @@
       The target distribution is a 100-D Gaussian with \(\nu = 500\).
       The error bands are the 80\% quantiles, while the solid lines are the median of 20 replications.
   }\label{fig:stepsize}
-  \vspace{-0.15in}
+  \vspace{-0.2in}
 \end{figure*}
 
-\vspace{-0.05in}
+\vspace{-0.1in}
 \section{Evaluations}\label{section:eval}
-\vspace{-0.05in}
+\vspace{-0.1in}
 \subsection{Experimental Setup}
-\vspace{-0.05in}
+\vspace{-0.07in}
 \paragraph{Implementation}
 For the realistic experiments, we implemented MCSA methods on top of the Turing~\citep{ge2018t} probabilistic programming framework.
 For the variational family, we use diagonal multivariate Gaussians with the support transformation of~\citet{JMLR:v18:16-107}.
@@ -56,7 +56,7 @@ The budget is set to \(N=10\) and \(T=5\cdot10^4\) for all experiments unless sp
 \paragraph{Baselines}
 We compare
 \begin{enumerate*}[label=\textbf{(\roman*)}]
-  \item \textbf{pMCSA},
+  \item \textbf{pMCSA} (ours,~\cref{section:pmcsa}),
   \item \textbf{JSA}~\citep{pmlr-v124-ou20a},
   \item \textbf{MSC}~\citep{NEURIPS2020_b2070693},
   \item MSC with with Rao-Blackwellization (\textbf{MSC-RB},~\citealt{NEURIPS2020_b2070693}), and
@@ -66,10 +66,10 @@ We compare
 
 \vspace{-0.1in}
 \subsection{Simulations}\label{section:simulation}
-\vspace{-0.05in}
+\vspace{-0.07in}
 \paragraph{Target Distribution}
 First, we verify our theoretical analysis on multivariate Gaussian distributions with a full-rank covariance sampled from a Wishart distribution with \(\nu\) degrees of freedom (exact values of \(\nu\) are in the figure captions).
-This problem is challenging since an IMH (or CIS) kernel with a diagonal Gaussian proposal will mix slowly due to a large \(w^*\).
+This problem is challenging since an IMH (used by pMCSA, JSA) or CIS (used by MSC, MSC-RB) kernel with a diagonal Gaussian proposal will mix slowly due to a large \(w^*\).
 % Since the exact KL divergence between the target and the varitional approximation is available, accurate evaluation is possible.
 
 \vspace{-0.1in}
