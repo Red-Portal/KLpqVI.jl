@@ -59,7 +59,7 @@ This observation is critical since it implies that \textit{trading ``lower gradi
 We exploit this observation in our novel MCSA scheme in~\cref{section:pmcsa}.
 
 \begin{table*}
-\vspace{-0.25in}
+\vspace{-0.27in}
 \centering
 \caption{Convergence Rates of MCGD Algorithms}\label{table:convergence}
 \vspace{-0.05in}
@@ -114,9 +114,9 @@ Nonetheless, assuming \(G\) can have practical benefits beyond theoretical setti
 For example,~\citet{pmlr-v108-geffner20a} use \(G\) to compare the performance different VI gradient estimators.
 In a similar spirit, we will obtain the gradient bound \(G\) of different MCSA algorithms and compare their theoretical performance.
 
-\vspace{-0.07in}
+\vspace{-0.1in}
 \section{Demystifying Prior Markov Chain Score Ascent Methods}\label{section:comparison}
-\vspace{-0.05in}
+\vspace{-0.1in}
 In this section, we will show that MSC and JSA both qualify as MCSA methods.
 Furthermore, we establish 
 \begin{enumerate*}[label=\textbf{(\roman*)}]
@@ -125,29 +125,34 @@ Furthermore, we establish
 \end{enumerate*}
 This will provide insight into their practical non-asymptotic performance.
 
+\vspace{-0.1in}
+\subsection{Technical Assumptions}\label{section:assumption}
 \vspace{-0.07in}
-\subsection{Technical Assumptions}
-\vspace{-0.05in}
 To cast previous methods into MCSA, we need some technical assumptions.
 \begin{assumption}{(Bounded importance weight)}\label{thm:bounded_weight}
   The importance weight ratio \(w\left(\vz\right) = \pi\left(\vz\right) / q\left(\vz; \vlambda\right)\) is bounded by some finite constant as \(w^* < \infty\) for all \(\vlambda \in \Lambda\) such that \(\rho = \left(1 - 1/w^*\right) < 1\).
 \end{assumption}
 \vspace{-0.05in}
+This assumption is necessary to ensure~\cref{thm:kernel_conditions}, and can be practically ensured by using a variational family with heavy tails~\citep{NEURIPS2018_25db67c5} or using a defensive mixture~\citep{hesterberg_weighted_1995, holden_adaptive_2009} as
+\vspace{-0.07in}
+{\[
+  q_{\text{def.}}\left(\vz; \vlambda \right) = w \, q\left(\vz; \vlambda\right) + (1 - w) \, \nu\left(\vz\right)
+\]%
+\vspace{-0.01in}}%
+where \(0 < w < 1\) and \(\nu\left(\cdot\right)\) is a heavy tailed distribution such that \(\sup_{\vz \in \mathcal{Z}} \pi\left(\vz\right) / \nu\left(\vz\right) < \infty\).
+Note that \(q_{\text{def.}}\) is only used in the Markov chain kernels and \(q\left(\cdot;\vlambda^*\right)\) is still the output of the VI procedure.
+While these tricks help escape slowly mixing regions, this benefit quickly vanishes as we converge.
+Therefore, ensuring \cref{thm:bounded_weight} seems unnecessary in practice unless we absolutely care about ergodicity (\textit{e.g.} adaptive MCMC,~\citealt{holden_adaptive_2009, pmlr-v151-brofos22a}).
+
+\vspace{-0.1in}
+\paragraph{\textbf{Model (Variational Family) Misspecification and \(\mathbf{w^*}\)}}
 Note that \(w^*\) is bounded below exponentially by the inclusive KL as shown in~\cref{thm:wstar}.
 Therefore, \(w^*\) will be large 
 \begin{enumerate*}[label=\textbf{(\roman*)}]
     \item in the initial steps of VI and
     \item under model (variational family) misspecification.
 \end{enumerate*}
-Furthermore, \cref{thm:bounded_weight} is necessary to ensure~\cref{thm:kernel_conditions}.
-Practically, this can be done by using a variational family with heavy tails~\citep{NEURIPS2018_25db67c5} or using a defensive mixture~\citep{hesterberg_weighted_1995, holden_adaptive_2009} as
-\begin{align*}
-  q_{\text{def.}}\left(\vz; \vlambda \right) = w \, q\left(\vz; \vlambda\right) + (1 - w) \, \nu\left(\vz\right)
-\end{align*}
-where \(0 < w < 1\) and \(\nu\left(\cdot\right)\) is a heavy tailed distribution such that \(\sup_{\vz \in \mathcal{Z}} \pi\left(\vz\right) / \nu\left(\vz\right) < \infty\).
-Note that \(q_{\text{def.}}\) is only used in the Markov chain kernels and \(q\left(\cdot;\vlambda^*\right)\) is still he output of the VI procedure.
-While these tricks help escape slowly mixing regions, this benefit quickly vanishes as we converge.
-Therefore, ensuring \cref{thm:bounded_weight} seems unnecessary in practice unless we absolutely care about ergodicity (\textit{e.g.} adaptive MCMC,~\citealt{holden_adaptive_2009, pmlr-v151-brofos22a}).
+%In practice, for practical it is fair to expect \(w^*\) will be large.
 
 \begin{assumption}{(Bounded Score)}\label{thm:bounded_score}
   The score gradient is bounded for \(\forall \vlambda \in \Lambda\) and \(\forall \vz \in \mathcal{Z}\) such that \(\norm{\vs\left(\vlambda; \vz\right)}_* \leq L \) for some finite constant \(L > 0\).
@@ -164,18 +169,19 @@ Although MSC uses only a single sample for the Markov chain, the CIS kernel inte
 Therefore, \(N\) in MSC has a different meaning, but it still indicates the computational budget.
 
 \input{lemmas_previous_mcsa}
+\vspace{0.04in}
 \input{thm_previous_msc}
 
-\vspace{-0.1in}
+\vspace{-0.15in}
 \paragraph{Discussion}
 \cref{thm:msc} shows that the gradient variance of MSA is insensitive to \(N\).
-Although the mixing rate does improve with \(N\), when \(w^*\) is large, this will be marginal.
+Although the mixing rate does improve with \(N\), when \(w^*\) is large due to model misspecification and lack of convergence (see the discussion in \cref{section:assumption}), this will be marginal.
 Overall, \textit{the performance of MSC cannot be improved by increasing the computational budget \(N\)}.
 Even under stationarity, the variance of \(\veta\) is equal to that of a \textit{single} posterior sample at best.
 
-\vspace{-0.07in}
+\vspace{-0.1in}
 \subsection{Joint Stochastic Approximation}
-\vspace{-0.07in}
+\vspace{-0.1in}
 JSA (\cref{alg:jsa}) was proposed for deep generative models where the likelihood factorizes into each datapoint, for which subsampling can be used through a random-scan version of the independent Metropolis-Hastings (IMH, \citealt{hastings_monte_1970}) kernel.
 Instead, we consider the general version of JSA with the vanilla IMH kernel since it can be used with any type of likelihood.
 At each MCGD step, JSA performs multiple Markov chain transitions and estimates the gradient by averaging all the intermediate states, which is closer to traditional MCMC estimation.
@@ -216,36 +222,37 @@ where {\(w\left(\vz\right) = \pi\left(\vz\right)/q_{\text{def.}}\left(\vz; \vlam
 \vspace{-0.1in}
 \paragraph{Discussion}
 According to~\cref{thm:jsa}, JSA benefits from increasing \(N\) both in terms of faster mixing rate and lower gradient variance.
-However, similarly to MSC, for large \(w^*\), the mixing rate improvement becomes marginal.
+However, similarly to MSC, under lack of convergence and model misspecification (large \(w^*\)), the improvement becomes marginal.
 More importantly, \textit{in the large \(w^*\) regime, the variance reduction is limited by the constant \(1/2\) term}.
-This is because a large \(w^*\) means more Metropolis-Hastings rejections, increasing the correlation between the \(N\) samples.
-This inefficiency persists even under stationarity unless  \(\pi\left(\cdot\right) \in \mathcal{Q}\) and \(q\left(\cdot; \vlambda\right) = \pi\left(\cdot\right)\).
+This is because a large \(w^*\) results in more Metropolis-Hastings rejections, increasing the correlation between the \(N\) samples.
+This inefficiency persists even under stationarity unless \(\pi\left(\cdot\right) \in \mathcal{Q}\) and \(q\left(\cdot; \vlambda\right) = \pi\left(\cdot\right)\).
 
 %Intuitively, the inefficiency comes from the rejections persisting even under stationarity.
 %On challenging problems with a large \(w^*\), the performance of JSA will also be poor.
 
 \vspace{-0.05in}
 \section{Parallel Markov Chain Score Ascent}\label{section:pmcsa}
-\vspace{-0.1in}
-In this section, we turn to leverage our new understanding of MCSA methods to develop a novel scheme that overcomes their limitations.
+\vspace{-0.12in}
+Our analysis in~\cref{section:comparison} suggests that the statistical performance of both MSC and JSA are heavily affected by model specification and the state of convergence through \(w^*\).
+This affects both the mixing rate \(\rho\) and the gradient variance \(G\).
+Furthermore, a large \(w^*\) abolishes our ability to counterbalance the inefficiency by increasing the computational budget \(N\).
+However, \(\rho\) and \(G\) do not impact convergence equally.
+In particular, we noted in \cref{section:convergence} that recent results on MCGD suggest that MCSA depends more on the gradient variance than the mixing rate.
+We turn to leverage this understanding to overcome the limitations of previous MCSA methods.
 
 \vspace{-0.1in}
 \subsection{Parallel Markov Chain Score Ascent}
 \vspace{-0.07in}
-\paragraph{Motivations for a Novel Scheme}
-The results of~\cref{section:comparison} suggest that the performance of both MSC and JSA are heavily affected by model specification through \(w^*\).
-Furthermore, model misspecification abolishes our ability to counterbalance this inefficiency by  increasing the computational budget \(N\).
-Meanwhile, in \cref{section:convergence}, we discussed that the convergence of MCSA depends more on the gradient variance than the mixing rate.
-Therefore, we propose a novel scheme, \textit{parallel Markov chain score ascent} (pMCSA,~\cref{alg:pmcsa}), that embraces a slower mixing rate in order to consistently achieve a \(\mathcal{O}\left(\nicefrac{1}{N}\right)\) variance reduction.
+We propose a novel scheme, \textit{parallel Markov chain score ascent} (pMCSA,~\cref{alg:pmcsa}), that embraces a slower mixing rate in order to consistently achieve a \(\mathcal{O}\left(\nicefrac{1}{N}\right)\) variance reduction, even on challenging problems with in a large \(w^*\),  
 
 %\jrg{can we motivate this more strongly? Specifically, can we say that, by tying MCSA theory to MCGD theory, we can observe that the mixing rate isn't as important, so we develop a new scheme to exploit this previously not understood property.} 
 
-\vspace{-0.1in}
+\vspace{-0.12in}
 \paragraph{Algorithm Description}
 Unlike JSA, that uses \(N\) \textit{sequential} Markov chain states, pMCSA operates \(N\) parallel Markov chains.
 To maintain a similar per-iteration cost with JSA, it performs only a single Markov chain transition for each chain.
 Since the chains are independent, the Metropolis-Hastings rejections do not affect the variance of pMCSA.
-\vspace{0.07in}
+\vspace{0.1in}
 
 \input{thm_parallel_estimator}
 
@@ -279,7 +286,7 @@ This is because
 
 \begin{wraptable}{r}{0.5\textwidth}
   \centering
-  \vspace{-0.5in}
+  \vspace{-0.4in}
   \input{table_cost}
   \vspace{-0.2in}
 \end{wraptable}
