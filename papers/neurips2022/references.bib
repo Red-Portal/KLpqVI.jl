@@ -1791,6 +1791,19 @@
   number = {2}
 }
 
+@article{bottou_optimization_2018a,
+  title = {Optimization Methods for Large-Scale Machine Learning},
+  author = {Bottou, L{\'e}on and Curtis, Frank E. and Nocedal, Jorge},
+  year = {2018},
+  month = jan,
+  volume = {60},
+  pages = {223--311},
+  file = {/home/msca8h/Zotero/storage/D8EBG3MP/Bottou et al. - 2018 - Optimization Methods for Large-Scale Machine Learn.pdf},
+  journal = {SIAM Review},
+  language = {en},
+  number = {2}
+}
+
 @article{braak_markov_2006,
   title = {A {{Markov Chain Monte Carlo}} Version of the Genetic Algorithm {{Differential Evolution}}: Easy {{Bayesian}} Computing for Real Parameter Spaces},
   shorttitle = {A {{Markov Chain Monte Carlo}} Version of the Genetic Algorithm {{Differential Evolution}}},
@@ -3206,6 +3219,22 @@
   number = {5}
 }
 
+@article{defossez_simple_2020,
+  title = {A Simple Convergence Proof of {{Adam}} and {{Adagrad}}},
+  author = {D{\'e}fossez, Alexandre and Bottou, L{\'e}on and Bach, Francis and Usunier, Nicolas},
+  year = {2020},
+  month = oct,
+  publisher = {{arXiv}},
+  abstract = {We provide a simple proof of convergence covering both the Adam and Adagrad adaptive optimization algorithms when applied to smooth (possibly non-convex) objective functions with bounded gradients. We show that in expectation, the squared norm of the objective gradient averaged over the trajectory has an upper-bound which is explicit in the constants of the problem, parameters of the optimizer and the total number of iterations \$N\$. This bound can be made arbitrarily small: Adam with a learning rate \$\textbackslash alpha=1/\textbackslash sqrt\{N\}\$ and a momentum parameter on squared gradients \$\textbackslash beta\_2=1-1/N\$ achieves the same rate of convergence \$O(\textbackslash ln(N)/\textbackslash sqrt\{N\})\$ as Adagrad. Finally, we obtain the tightest dependency on the heavy ball momentum among all previous convergence bounds for non-convex Adam and Adagrad, improving from \$O((1-\textbackslash beta\_1)\^\{-3\})\$ to \$O((1-\textbackslash beta\_1)\^\{-1\})\$. Our technique also improves the best known dependency for standard SGD by a factor \$1 - \textbackslash beta\_1\$.},
+  archiveprefix = {arXiv},
+  eprint = {2003.02395},
+  eprinttype = {arxiv},
+  file = {/home/msca8h/Zotero/storage/AQQV89MP/Défossez et al. - 2020 - A Simple Convergence Proof of Adam and Adagrad.pdf;/home/msca8h/Zotero/storage/H5QEKTZV/2003.html},
+  keywords = {Computer Science - Machine Learning,Statistics - Machine Learning},
+  number = {arXiv:2003.02395},
+  primaryclass = {cs, stat}
+}
+
 @article{degooijer_conditional_2003,
   title = {On Conditional Density Estimation},
   author = {De Gooijer, Jan G. and Zerom, Dawit},
@@ -3449,34 +3478,34 @@
   number = {4}
 }
 
-@article{doan_convergence_2020,
+@techreport{doan_convergence_2020,
   title = {Convergence Rates of Accelerated {{Markov}} Gradient Descent with Applications in Reinforcement Learning},
   author = {Doan, Thinh T. and Nguyen, Lam M. and Pham, Nhan H. and Romberg, Justin},
   year = {2020},
   month = oct,
+  institution = {{ArXiv}},
   abstract = {Motivated by broad applications in machine learning, we study the popular accelerated stochastic gradient descent (ASGD) algorithm for solving (possibly nonconvex) optimization problems. We characterize the finite-time performance of this method when the gradients are sampled from Markov processes, and hence biased and dependent from time step to time step; in contrast, the analysis in existing work relies heavily on the stochastic gradients being independent and sometimes unbiased. Our main contributions show that under certain (standard) assumptions on the underlying Markov chain generating the gradients, ASGD converges at the nearly the same rate with Markovian gradient samples as with independent gradient samples. The only difference is a logarithmic factor that accounts for the mixing time of the Markov chain. One of the key motivations for this study are complicated control problems that can be modeled by a Markov decision process and solved using reinforcement learning. We apply the accelerated method to several challenging problems in the OpenAI Gym and Mujoco, and show that acceleration can significantly improve the performance of the classic temporal difference learning and REINFORCE algorithms.},
   archiveprefix = {arXiv},
   eprint = {2002.02873},
   eprinttype = {arxiv},
   file = {/home/msca8h/Zotero/storage/WVUPZUP9/Doan et al. - 2020 - Convergence Rates of Accelerated Markov Gradient D.pdf;/home/msca8h/Zotero/storage/PXMZT3YD/2002.html},
-  journal = {arXiv:2002.02873 [math]},
   keywords = {Mathematics - Optimization and Control},
-  primaryclass = {math}
+  number = {arXiv:2002.02873 [math]}
 }
 
-@article{doan_finitetime_2020,
+@techreport{doan_finitetime_2020,
   title = {Finite-Time Analysis of Stochastic Gradient Descent under {{Markov}} Randomness},
   author = {Doan, Thinh T. and Nguyen, Lam M. and Pham, Nhan H. and Romberg, Justin},
   year = {2020},
   month = apr,
+  institution = {{ArXiv}},
   abstract = {Motivated by broad applications in reinforcement learning and machine learning, this paper considers the popular stochastic gradient descent (SGD) when the gradients of the underlying objective function are sampled from Markov processes. This Markov sampling leads to the gradient samples being biased and not independent. The existing results for the convergence of SGD under Markov randomness are often established under the assumptions on the boundedness of either the iterates or the gradient samples. Our main focus is to study the finite-time convergence of SGD for different types of objective functions, without requiring these assumptions. We show that SGD converges nearly at the same rate with Markovian gradient samples as with independent gradient samples. The only difference is a logarithmic factor that accounts for the mixing time of the Markov chain.},
   archiveprefix = {arXiv},
   eprint = {2003.10973},
   eprinttype = {arxiv},
   file = {/home/msca8h/Zotero/storage/9ELL9LC6/Doan et al. - 2020 - Finite-Time Analysis of Stochastic Gradient Descen.pdf;/home/msca8h/Zotero/storage/E8LFYS36/2003.html},
-  journal = {arXiv:2003.10973 [cs, math]},
   keywords = {Computer Science - Machine Learning,Mathematics - Optimization and Control},
-  primaryclass = {cs, math}
+  number = {arXiv:2003.10973}
 }
 
 @article{doi:10.1080/01621459.1951.10500768,
@@ -4487,6 +4516,18 @@
   number = {1}
 }
 
+@article{gower_variancereduced_2020,
+  title = {Variance-Reduced Methods for Machine Learning},
+  author = {Gower, Robert M. and Schmidt, Mark and Bach, Francis and Richtarik, Peter},
+  year = {2020},
+  month = nov,
+  volume = {108},
+  pages = {1968--1983},
+  file = {/home/msca8h/Zotero/storage/7MIX8UTB/Gower et al. - 2020 - Variance-Reduced Methods for Machine Learning.pdf},
+  journal = {Proceedings of the IEEE},
+  number = {11}
+}
+
 @article{goyal_accurate_2017,
   title = {Accurate, {{Large Minibatch SGD}}: {{Training ImageNet}} in 1 {{Hour}}},
   shorttitle = {Accurate, {{Large Minibatch SGD}}},
@@ -4644,6 +4685,22 @@
   pages = {1--6},
   publisher = {{IEEE}},
   address = {{Aberdeen, Scotland, UK}}
+}
+
+@article{guo_novel_2022,
+  title = {A Novel Convergence Analysis for Algorithms of the {{Adam}} Family and Beyond},
+  author = {Guo, Zhishuai and Xu, Yi and Yin, Wotao and Jin, Rong and Yang, Tianbao},
+  year = {2022},
+  month = feb,
+  publisher = {{arXiv}},
+  abstract = {Why does the original analysis of Adam fail, but it still converges very well in practice on a broad range of problems? There are still some mysteries about Adam that have not been unraveled. This paper provides a novel non-convex analysis of Adam and its many variants to uncover some of these mysteries. Our analysis exhibits that an increasing or large enough "momentum" parameter for the first-order moment used in practice is sufficient to ensure Adam and its many variants converge under a mild boundness condition on the adaptive scaling factor of the step size. In contrast, the original problematic analysis of Adam uses a momentum parameter that decreases to zero, which is the key reason that makes it diverge on some problems. To the best of our knowledge, this is the first time the gap between analysis and practice is bridged. Our analysis also exhibits more insights for practical implementations of Adam, e.g., increasing the momentum parameter in a stage-wise manner in accordance with stagewise decreasing step size would help improve the convergence. Our analysis of the Adam family is modular such that it can be (has been) extended to solving other optimization problems, e.g., compositional, min-max and bi-level problems. As an interesting yet non-trivial use case, we present an extension for solving non-convex min-max optimization in order to address a gap in the literature that either requires a large batch or has double loops. Our empirical studies corroborate the theory and also demonstrate the effectiveness in solving min-max problems.},
+  archiveprefix = {arXiv},
+  eprint = {2104.14840},
+  eprinttype = {arxiv},
+  file = {/home/msca8h/Zotero/storage/9HJ822AN/Guo et al. - 2022 - A Novel Convergence Analysis for Algorithms of the.pdf;/home/msca8h/Zotero/storage/4A85ZXS3/2104.html},
+  keywords = {Computer Science - Machine Learning,Mathematics - Optimization and Control},
+  number = {arXiv:2104.14840},
+  primaryclass = {cs, math}
 }
 
 @inproceedings{gupta_exploiting_2018,
@@ -9029,6 +9086,20 @@
   series = {{{PMLR}}}
 }
 
+@inproceedings{pmlr-v130-loizou21a,
+  title = {Stochastic {{Polyak}} Step-Size for {{sGD}}: {{An}} Adaptive Learning Rate for Fast Convergence},
+  booktitle = {Proceedings of the 24th International Conference on Artificial Intelligence and Statistics},
+  author = {Loizou, Nicolas and Vaswani, Sharan and Hadj Laradji, Issam and {Lacoste-Julien}, Simon},
+  year = {2021},
+  month = apr,
+  volume = {130},
+  pages = {1306--1314},
+  publisher = {{PMLR}},
+  abstract = {We propose a stochastic variant of the classical Polyak step-size (Polyak, 1987) commonly used in the subgradient method. Although computing the Polyak step-size requires knowledge of the optimal function values, this information is readily available for typical modern machine learning applications. Consequently, the proposed stochastic Polyak step-size (SPS) is an attractive choice for setting the learning rate for stochastic gradient descent (SGD). We provide theoretical convergence guarantees for SGD equipped with SPS in different settings, including strongly convex, convex and non-convex functions. Furthermore, our analysis results in novel convergence guarantees for SGD with a constant step-size. We show that SPS is particularly effective when training over-parameterized models capable of interpolating the training data. In this setting, we prove that SPS enables SGD to converge to the true solution at a fast rate without requiring the knowledge of any problem-dependent constants or additional computational overhead. We experimentally validate our theoretical results via extensive experiments on synthetic and real datasets. We demonstrate the strong performance of SGD with SPS compared to state-of-the-art optimization methods when training over-parameterized models.},
+  pdf = {http://proceedings.mlr.press/v130/loizou21a/loizou21a.pdf},
+  series = {Proceedings of Machine Learning Research}
+}
+
 @inproceedings{pmlr-v139-campbell21a,
   title = {A Gradient Based Strategy for {{Hamiltonian Monte Carlo}} Hyperparameter Optimization},
   booktitle = {Proceedings of the {{International Conference}} on {{Machine Learning}}},
@@ -9288,6 +9359,20 @@
   series = {{{PMLR}}}
 }
 
+@inproceedings{pmlr-v89-li19c,
+  title = {On the Convergence of Stochastic Gradient Descent with Adaptive Stepsizes},
+  booktitle = {Proceedings of the Twenty-Second International Conference on Artificial Intelligence and Statistics},
+  author = {Li, Xiaoyu and Orabona, Francesco},
+  year = {2019},
+  month = apr,
+  volume = {89},
+  pages = {983--992},
+  publisher = {{PMLR}},
+  abstract = {Stochastic gradient descent is the method of choice for large scale optimization of machine learning objective functions. Yet, its performance is greatly variable and heavily depends on the choice of the stepsizes. This has motivated a large body of research on adaptive stepsizes. However, there is currently a gap in our theoretical understanding of these methods, especially in the non-convex setting. In this paper, we start closing this gap: we theoretically analyze in the convex and non-convex settings a generalized version of the AdaGrad stepsizes. We show sufficient conditions for these stepsizes to achieve almost sure asymptotic convergence of the gradients to zero, proving the first guarantee for generalized AdaGrad stepsizes in the non-convex setting. Moreover, we show that these stepsizes allow to automatically adapt to the level of noise of the stochastic gradients in both the convex and non-convex settings, interpolating between O(1/T) and O(1/sqrt(T)), up to logarithmic terms.},
+  pdf = {http://proceedings.mlr.press/v89/li19c/li19c.pdf},
+  series = {Proceedings of Machine Learning Research}
+}
+
 @inproceedings{pmlr-v89-paananen19a,
   title = {Variable Selection for {{Gaussian}} Processes via Sensitivity Analysis of the Posterior Predictive Distribution},
   booktitle = {Proceedings of the {{Twenty}}-{{Second International Conference}} on {{Artificial Intelligence}} and {{Statistics}} ({{AISTATS}})},
@@ -9317,6 +9402,20 @@
   series = {Proceedings of Machine Learning Research}
 }
 
+@inproceedings{pmlr-v97-qian19b,
+  title = {{{SGD}}: {{General}} Analysis and Improved Rates},
+  booktitle = {Proceedings of the 36th International Conference on Machine Learning},
+  author = {Gower, Robert Mansel and Loizou, Nicolas and Qian, Xun and Sailanbayev, Alibek and Shulgin, Egor and Richt{\'a}rik, Peter},
+  year = {2019},
+  month = jun,
+  volume = {97},
+  pages = {5200--5209},
+  publisher = {{PMLR}},
+  abstract = {We propose a general yet simple theorem describing the convergence of SGD under the arbitrary sampling paradigm. Our theorem describes the convergence of an infinite array of variants of SGD, each of which is associated with a specific probability law governing the data selection rule used to form minibatches. This is the first time such an analysis is performed, and most of our variants of SGD were never explicitly considered in the literature before. Our analysis relies on the recently introduced notion of expected smoothness and does not rely on a uniform bound on the variance of the stochastic gradients. By specializing our theorem to different mini-batching strategies, such as sampling with replacement and independent sampling, we derive exact expressions for the stepsize as a function of the mini-batch size. With this we can also determine the mini-batch size that optimizes the total complexity, and show explicitly that as the variance of the stochastic gradient evaluated at the minimum grows, so does the optimal mini-batch size. For zero variance, the optimal mini-batch size is one. Moreover, we prove insightful stepsize-switching rules which describe when one should switch from a constant to a decreasing stepsize regime.},
+  pdf = {http://proceedings.mlr.press/v97/qian19b/qian19b.pdf},
+  series = {Proceedings of Machine Learning Research}
+}
+
 @inproceedings{pmlr-v97-ruiz19a,
   title = {A Contrastive Divergence for Combining Variational Inference and {{MCMC}}},
   booktitle = {Proceedings of the {{International Conference}} on {{Machine Learning}}},
@@ -9329,6 +9428,20 @@
   abstract = {We develop a method to combine Markov chain Monte Carlo (MCMC) and variational inference (VI), leveraging the advantages of both inference approaches. Specifically, we improve the variational distribution by running a few MCMC steps. To make inference tractable, we introduce the variational contrastive divergence (VCD), a new divergence that replaces the standard Kullback-Leibler (KL) divergence used in VI. The VCD captures a notion of discrepancy between the initial variational distribution and its improved version (obtained after running the MCMC steps), and it converges asymptotically to the symmetrized KL divergence between the variational distribution and the posterior of interest. The VCD objective can be optimized efficiently with respect to the variational parameters via stochastic optimization. We show experimentally that optimizing the VCD leads to better predictive performance on two latent variable models: logistic matrix factorization and variational autoencoders (VAEs).},
   pdf = {http://proceedings.mlr.press/v97/ruiz19a/ruiz19a.pdf},
   series = {{{PMLR}}}
+}
+
+@inproceedings{pmlr-v97-ward19a,
+  title = {{{AdaGrad}} Stepsizes: {{Sharp}} Convergence over Nonconvex Landscapes},
+  booktitle = {Proceedings of the 36th International Conference on Machine Learning},
+  author = {Ward, Rachel and Wu, Xiaoxia and Bottou, Leon},
+  year = {2019},
+  month = jun,
+  volume = {97},
+  pages = {6677--6686},
+  publisher = {{PMLR}},
+  abstract = {Adaptive gradient methods such as AdaGrad and its variants update the stepsize in stochastic gradient descent on the fly according to the gradients received along the way; such methods have gained widespread use in large-scale optimization for their ability to converge robustly, without the need to fine-tune parameters such as the stepsize schedule. Yet, the theoretical guarantees to date for AdaGrad are for online and convex optimization. We bridge this gap by providing strong theoretical guarantees for the convergence of AdaGrad over smooth, nonconvex landscapes. We show that the norm version of AdaGrad (AdaGrad-Norm) converges to a stationary point at the O((N)/N) rate in the stochastic setting, and at the optimal O(1/N) rate in the batch (non-stochastic) setting \textendash{} in this sense, our convergence guarantees are ``sharp''. In particular, both our theoretical results and extensive numerical experiments imply that AdaGrad-Norm is robust to the \textexclamdown em\textquestiondown unknown Lipschitz constant and level of stochastic noise on the gradient\textexclamdown/em\textquestiondown.},
+  pdf = {http://proceedings.mlr.press/v97/ward19a/ward19a.pdf},
+  series = {Proceedings of Machine Learning Research}
 }
 
 @inproceedings{pmlr-v99-karimi19a,
@@ -9584,6 +9697,22 @@
   year = {2008},
   pages = {1177--1184},
   publisher = {{Curran Associates, Inc.}}
+}
+
+@article{rakhlin_making_2012,
+  title = {Making Gradient Descent Optimal for Strongly Convex Stochastic Optimization},
+  author = {Rakhlin, Alexander and Shamir, Ohad and Sridharan, Karthik},
+  year = {2012},
+  month = dec,
+  publisher = {{arXiv}},
+  abstract = {Stochastic gradient descent (SGD) is a simple and popular method to solve stochastic optimization problems which arise in machine learning. For strongly convex problems, its convergence rate was known to be O(\textbackslash log(T)/T), by running SGD for T iterations and returning the average point. However, recent results showed that using a different algorithm, one can get an optimal O(1/T) rate. This might lead one to believe that standard SGD is suboptimal, and maybe should even be replaced as a method of choice. In this paper, we investigate the optimality of SGD in a stochastic setting. We show that for smooth problems, the algorithm attains the optimal O(1/T) rate. However, for non-smooth problems, the convergence rate with averaging might really be \textbackslash Omega(\textbackslash log(T)/T), and this is not just an artifact of the analysis. On the flip side, we show that a simple modification of the averaging step suffices to recover the O(1/T) rate, and no other change of the algorithm is necessary. We also present experimental results which support our findings, and point out open problems.},
+  archiveprefix = {arXiv},
+  eprint = {1109.5647},
+  eprinttype = {arxiv},
+  file = {/home/msca8h/Zotero/storage/MDT76ZEU/Rakhlin et al. - 2012 - Making Gradient Descent Optimal for Strongly Conve.pdf;/home/msca8h/Zotero/storage/9MYBNXGD/1109.html},
+  keywords = {Computer Science - Machine Learning,Mathematics - Optimization and Control},
+  number = {arXiv:1109.5647},
+  primaryclass = {cs, math}
 }
 
 @article{ram_incremental_2009,
@@ -10686,6 +10815,22 @@
   file = {/home/msca8h/Zotero/storage/W8RQ38CV/Stich - 2018 - Local SGD Converges Fast and Communicates Little.pdf;/home/msca8h/Zotero/storage/WS8MI8Z6/1805.html},
   keywords = {90C06; 68W40; 68W10,Computer Science - Distributed; Parallel; and Cluster Computing,Computer Science - Machine Learning,F.2.1,G.1.6,Mathematics - Optimization and Control},
   primaryclass = {cs, math}
+}
+
+@article{stich_unified_2019,
+  title = {Unified Optimal Analysis of the (Stochastic) Gradient Method},
+  author = {Stich, Sebastian U.},
+  year = {2019},
+  month = dec,
+  publisher = {{arXiv}},
+  abstract = {In this note we give a simple proof for the convergence of stochastic gradient (SGD) methods on \$\textbackslash mu\$-convex functions under a (milder than standard) \$L\$-smoothness assumption. We show that for carefully chosen stepsizes SGD converges after \$T\$ iterations as \$O\textbackslash left( LR\^2 \textbackslash exp \textbackslash bigl[-\textbackslash frac\{\textbackslash mu\}\{4L\}T\textbackslash bigr] + \textbackslash frac\{\textbackslash sigma\^2\}\{\textbackslash mu T\} \textbackslash right)\$ where \$\textbackslash sigma\^2\$ measures the variance in the stochastic noise. For deterministic gradient descent (GD) and SGD in the interpolation setting we have \$\textbackslash sigma\^2 =0\$ and we recover the exponential convergence rate. The bound matches with the best known iteration complexity of GD and SGD, up to constants.},
+  archiveprefix = {arXiv},
+  eprint = {1907.04232},
+  eprinttype = {arxiv},
+  file = {/home/msca8h/Zotero/storage/MEUUU2TV/Stich - 2019 - Unified Optimal Analysis of the (Stochastic) Gradi.pdf;/home/msca8h/Zotero/storage/GF2GBADL/1907.html},
+  keywords = {Computer Science - Machine Learning,Mathematics - Numerical Analysis,Mathematics - Optimization and Control,Statistics - Machine Learning},
+  number = {arXiv:1907.04232},
+  primaryclass = {cs, math, stat}
 }
 
 @article{streijl_mean_2016,
