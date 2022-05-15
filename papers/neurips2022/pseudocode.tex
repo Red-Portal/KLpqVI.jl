@@ -15,7 +15,7 @@
     \(\vz^{(0)} = \vz_{t-1}\) \;
     \(\vz^{(i)} \sim q_{\text{def.}}\left(\vz;\vlambda_{t-1}\right)\quad\) for \(i = 1, 2,\ldots, N\) \;
     \(\widetilde{w}(\vz^{(i)}) = p(\vz^{(i)},\vx) \,/\, q_{\text{def.}}\left(\vz^{(i)}; \vlambda_{t-1}\right)\quad\) for \(i = 0, 1,\ldots, N\)\;
-    \(\overline{w}^{(i)} = \nicefrac{\widetilde{w}(\vz^{(i)})}{ \sum^{N}_{i=0} \widetilde{w}(\vz^{(i)}) }\quad\) for \(i = 0, 1,\ldots, N\)\;
+    \(\overline{w}^{(i)} = \frac{\widetilde{w}(\vz^{(i)})}{ \sum^{N}_{i=0} \widetilde{w}(\vz^{(i)}) }\quad\) for \(i = 0, 1,\ldots, N\)\;
     \(\vz_{t} \sim \mathrm{Multinomial}(\overline{w}^{(0)}, \overline{w}^{(1)}, \ldots, \overline{w}^{(N)}) \)\;
     \caption{Conditional Importance Sampling Kernel}
   \end{algorithm2e}
@@ -63,9 +63,8 @@
       stepsize schedule \(\gamma_t\)}
     \For{\textcolor{black}{\(t = 1, 2, \ldots, T\)}}{
       \( \vz_{t} \sim K_{\vlambda_{t-1}}(\vz_{t-1}, \cdot) \)\;
-      \(\vs\,(\vlambda; \vz) = \nabla_{\vlambda} \log q\,(\vz; \vlambda)\)\;
-      \( \vg_{\text{single}} = s\,(\vlambda_{t-1}; \vz_{t}) \)\;
-      \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t\, \vg_{\text{single}} \)\;
+      \( \vg\left(\vlambda\right) = \vs\,(\vlambda; \vz_{t}) \)\;
+      \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t\, \vg\left(\vlambda_{t-1}\right) \)\;
     }
     \caption{Markovian Score Climbing}\label{alg:msc}
   \end{algorithm2e}
@@ -88,9 +87,8 @@
         \For{\(n = 1, 2, \ldots, N\)}{
           \(\vz_{t}^{(n)} \sim K_{\vlambda_{t-1}}(\vz_{t}^{(n-1)}, \cdot)\)\;
         }
-        \( \vs\left(\vlambda; \vz\right) = \nabla_{\vlambda} \log q\,(\vz; \vlambda) \)\;
-        \( \vg = \frac{1}{N} \sum^{N}_{n=1} \vs\,(\vlambda_{t-1}; \vz_{t}^{(n)}) \)\;
-        \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t \, \vg \,
+        \( \vg\left(\vlambda\right) = \frac{1}{N} \sum^{N}_{n=1} \vs\,(\vlambda; \vz_{t}^{(n)}) \)\;
+        \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t \, \vg\left(\vlambda_{t-1}\right) \,
         \)\;
       }
       \caption{Joint Stochastic Approximation}\label{alg:jsa}
@@ -113,9 +111,8 @@
         \For{\(n = 1, 2, \ldots, N\)}{
           \(\vz^{(n)}_{t} \sim K_{\vlambda_{t-1}}(\vz^{(n)}_{t-1}, \cdot)\)\;
       }
-      \( \vs\left(\vlambda; \vz\right) = \nabla_{\vlambda} \log q\,(\vz;\vlambda) \)\;
-      \( \vg = \frac{1}{N} \sum^{N}_{i=1} \vs\,(\vlambda_{t-1}; \vz_{t}^{(i)}) \)\;
-      \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t\, \vg \)\;
+      \( \vg\left(\vlambda\right) = \frac{1}{N} \sum^{N}_{i=1} \vs\,(\vlambda; \vz_{t}^{(i)}) \)\;
+      \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t\, \vg\left(\vlambda_{t-1}\right) \)\;
     }
     \caption{Parallel Markov Chain Score Ascent}\label{alg:pmcsa}
   \end{algorithm2e}
