@@ -18,7 +18,7 @@
   \vspace{-0.27in}
   \centering
   \includegraphics[scale=1.0]{figures/gaussian_02.pdf}
-  \vspace{-0.07in}
+  \vspace{-0.08in}
   \caption{\textbf{
       KL divergence and gradient variance.
       pMCSA not only achieves the least gradient variance, but its variance also scales better with \(N\).
@@ -28,10 +28,10 @@
   }\label{fig:gaussian}
 \end{figure*}
 \begin{figure*}
-  \vspace{-0.13in}
+  \vspace{-0.15in}
   \centering
   \includegraphics[scale=1.0]{figures/stepsize_02.pdf}
-  %\vspace{-0.1in}
+  \vspace{-0.05in}
   \caption{\textbf{Optimizer stepsize (\(\gamma\)) versus final KL.
       pMCSA is the least sensitive to optimizer hyperparameters and results in stable convergence.}
       The final KL is obtained at the \(10^4\)th iteration.
@@ -41,16 +41,16 @@
   \vspace{-0.2in}
 \end{figure*}
 
-\vspace{-0.1in}
+\vspace{-0.12in}
 \section{Evaluations}\label{section:eval}
-\vspace{-0.1in}
+\vspace{-0.12in}
 \subsection{Experimental Setup}
-\vspace{-0.07in}
+\vspace{-0.09in}
 \paragraph{Implementation}
 For the realistic experiments, we implemented MCSA methods on top of the Turing~\citep{ge2018t} probabilistic programming framework.
 For the variational family, we use diagonal multivariate Gaussians with the support transformation of~\citet{JMLR:v18:16-107}.
 We use the ADAM optimizer by~\citet{kingma_adam_2015} with a stepsize of 0.01 in all experiments.
-The budget is set to \(N=10\) and \(T=5\cdot10^4\) for all experiments unless specified.
+The budget is set to \(N=10\) for all experiments unless specified.
 
 \vspace{-0.1in}
 \paragraph{Baselines}
@@ -66,9 +66,9 @@ We compare
 
 \vspace{-0.1in}
 \subsection{Simulations}\label{section:simulation}
-\vspace{-0.07in}
-\paragraph{Target Distribution}
-First, we verify our theoretical analysis on multivariate Gaussian distributions with a full-rank covariance sampled from a Wishart distribution with \(\nu\) degrees of freedom (exact values of \(\nu\) are in the figure captions).
+\vspace{-0.1in}
+\paragraph{Setup}
+First, we verify our theoretical analysis on multivariate Gaussians with full-rank covariances sampled from Wishart distribution with \(\nu\) degrees of freedom (values of \(\nu\) are in the figure captions).
 This problem is challenging since an IMH (used by pMCSA, JSA) or CIS (used by MSC, MSC-RB) kernel with a diagonal Gaussian proposal will mix slowly due to a large \(w^*\).
 % Since the exact KL divergence between the target and the varitional approximation is available, accurate evaluation is possible.
 
@@ -88,7 +88,7 @@ These results confirm our theoretical results in~\cref{section:comparison,sectio
 \vspace{-0.1in}
 \paragraph{Robustness Against Optimizers}
 Since the convergence of most sophisticated SGD optimizers has yet to be established for MCGD, we empirically investigate their effectiveness.
-The results using different SGD optimizers and stepsizes are shown in~\cref{fig:stepsize}.
+The results using SGD~\citep{robbins_stochastic_1951, bottou_optimization_2018a}, Momentum~\citep{polyak_methods_1964}, Nesterov~\citep{nesterov_method_1983}, ADAM~\citep{kingma_adam_2015}, and varying stepsizes are shown in~\cref{fig:stepsize}.
 Clearly, pMCSA successfully converges for the broadest variety of optimizer settings.
 Overall, most MCSA methods seem to be the most stable with ADAM, which points out that establishing the convergence of ADAM for MCGD will be a promising direction for future works.
 
@@ -116,11 +116,11 @@ Overall, most MCSA methods seem to be the most stable with ADAM, which points ou
   \vspace{-0.1in}
 \subsection{Bayesian Neural Network Regression}\label{section:bnn}
   \vspace{-0.07in}
-\paragraph{Experimental Setup}
+\paragraph{Setup}
 For realistic experiments, we train Bayesian neural networks (BNN, \citealt{neal_bayesian_1996}) for regression.
 We use datasets from the UCI repository~\citep{Dua:2019} with 90\% random train-test splits.
-For the model, we use the BNN by~\citet{pmlr-v37-hernandez-lobatoc15} with a \(50\)-unit hidden layer (see \cref{section:model_bnn}).
-For prediction, we use the approximate forward propagation scheme of~\citet{pmlr-v37-hernandez-lobatoc15}.
+We run all methods with \(T=5\cdot10^4\) iterations.
+For the model, we use the priors and forward propagation method of~\citet{pmlr-v37-hernandez-lobatoc15} with a \(50\)-unit hidden layer (see \cref{section:model_bnn}).
 
 \vspace{-0.1in}
 \paragraph{Results}
@@ -134,11 +134,12 @@ Additional experimental results can be found in~\cref{section:bnn_additional}
   \vspace{-0.1in}
 \subsection{Robust Gaussian Process Regression}\label{section:bgp}
   \vspace{-0.07in}
-\paragraph{Experimental Setup}
+\paragraph{Setup}
 We train Gaussian processes (GP) with a Student-T likelihood for robust regression.
-We use datasets from the UCI repository~\citep{Dua:2019} with 90\% random train-test splits.
-We use the Mat\'ern 5/2 covariance kernel with automatic relevance determination (ARD, \citealt{neal_bayesian_1996}) and a gamma prior on the degrees of freedom (see \cref{section:model_rgp}).
-For prediction, we use the mode of \(q\) for the hyperparameters and marginalize the latent function over \(q\)~\citep{rasmussen_gaussian_2006}.
+We datasets from the UCI repository~\citep{Dua:2019} with 90\% random train-test splits.
+We use the Mat\'ern 5/2 covariance kernel with automatic relevance determination~\citep{neal_bayesian_1996} (see \cref{section:model_rgp}).
+We run all methods with \(T=2\cdot10^4\) iterations.
+For prediction, we use the mode of \(q\left(\cdot; \vlambda\right)\) for the hyperparameters and marginalize the latent function over \(q\left(\cdot; \vlambda\right)\)~\citep{rasmussen_gaussian_2006}.
 We consider ELBO with only \(N=1\) since differentiating through the likelihood makes its per-iteration cost comparable to MCSA methods with \(N=10\).
 
 \vspace{-0.1in}
