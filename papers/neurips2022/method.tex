@@ -168,7 +168,7 @@ Therefore, \(N\) in MSC has a different meaning, but it still indicates the comp
 
 \vspace{-0.1in}
 \paragraph{Discussion}
-\cref{thm:msc} shows that the gradient variance of MSA doesn't care about \(N\).
+\cref{thm:msc} shows that the gradient variance of MSA is insensitive to \(N\).
 Although the mixing rate does improve with \(N\), when \(w^*\) is large, this will be marginal.
 Overall, \textit{the performance of MSC cannot be improved by increasing the computational budget \(N\)}.
 Even under stationarity, the variance of \(\veta\) is equal to that of a \textit{single} posterior sample at best.
@@ -217,7 +217,7 @@ where {\(w\left(\vz\right) = \pi\left(\vz\right)/q_{\text{def.}}\left(\vz; \vlam
 \paragraph{Discussion}
 According to~\cref{thm:jsa}, JSA benefits from increasing \(N\) both in terms of faster mixing rate and lower gradient variance.
 However, similarly to MSC, for large \(w^*\), the mixing rate improvement becomes marginal.
-More importantly, \textit{in the large \(w^*\) regime, the variance reduction is limited by the \(1/2\) term}.
+More importantly, \textit{in the large \(w^*\) regime, the variance reduction is limited by the constant \(1/2\) term}.
 This is because a large \(w^*\) means more Metropolis-Hastings rejections, increasing the correlation between the \(N\) samples.
 This inefficiency persists even under stationarity unless  \(\pi\left(\cdot\right) \in \mathcal{Q}\) and \(q\left(\cdot; \vlambda\right) = \pi\left(\cdot\right)\).
 
