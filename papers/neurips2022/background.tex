@@ -2,32 +2,37 @@
 \vspace{-0.12in}
 \section{Background}
 \vspace{-0.07in}
-\subsection{Variational Inference with Stochastic Gradients}\label{section:ivi_previous}
+\subsection{Inclusive Kullback-Leibler Minimization with Stochastic Gradients}\label{section:ivi_previous}
 \vspace{-0.05in}
+\paragraph{VI with SGD}
 The goal of VI is to find the optimal variational parameter \(\vlambda\) identifying \(q\left(\cdot; \vlambda\right) \in \mathcal{Q}\) that minimizes some discrepancy measure \(D\left(\pi, q\left(\cdot; \vlambda\right)\right)\).
 A typical way to perform VI is to use stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951}), provided that \textit{unbiased} gradient estimates of the optimization target \(\vg\,(\vlambda)\) are available such that we can repeat the update
 %\vspace{-0.05in}
 {%\small
 \begin{align*}
-  \vlambda_{t} = \vlambda_{t-1} + \gamma_{t} \, \vg\left(\vlambda_{t-1}\right)
+  \vlambda_{t} = \vlambda_{t-1} - \gamma_{t} \, \vg\left(\vlambda_{t-1}\right)
 \end{align*}
 }%
 where \(\gamma_1, \ldots, \gamma_T\) is a step-size schedule.
-For inclusive KL divergence minimization, \(\vg\) estimates
+
+\paragraph{Inclusive KL Minimization with SGD}
+For inclusive KL minimization, \(\vg\) should be set as
 %
 {%\small
 \begin{align*}
-  \nabla_{\vlambda} \DKL{\pi}{q\left(\cdot; \lambda\right)}
-  = -\Esub{\pi}{ \vs\,(\vlambda; \rvvz) } 
-  \approx \vg\left(\vlambda\right)
+  \vg\left(\vlambda\right)
+  = \nabla_{\vlambda} \DKL{\pi}{q\left(\cdot; \vlambda\right)}
+  = \nabla_{\vlambda} \mathbb{H}\left[\pi, q\left(\cdot; \vlambda\right)\right]
+  = -\Esub{\rvvz \sim \pi\left(\cdot\right)}{ \vs\,(\vlambda; \rvvz) } 
 \end{align*}
 }%
 %\vspace{-0.05in}
 %
-where \(\vs\,(\vlambda;\vz) = \nabla_{\vlambda} \log q\,(\vz; \vlambda)\) is known as the \textit{score gradient}.
-
-Since the optimization target is equivalent to ascending towards the direction of the score, \citet{NEURIPS2020_b2070693} coined the term score climbing.
-To better conform with the optimization literature, we instead call this approach \textit{score ascent} (as in gradient ascent).
+\looseness=-1
+where \(\mathbb{H}\left[\pi, q\left(\cdot; \vlambda\right)\right]\) is the cross-entropy between \(\pi\) and \(q\left(\cdot; \vlambda\right)\), which shows the close connection with cross-entropy methods~\citep{}.
+\(\vs\,(\vlambda;\vz) = \nabla_{\vlambda} \log q\,(\vz; \vlambda)\) is known as the \textit{score gradient}.
+Since inclusive KL minimization with SGD is equivalent to ascending towards the direction of the score, \citet{NEURIPS2020_b2070693} coined the term score climbing.
+To better conform with the optimization literature, we instead call this approach \textit{score ascent} as in gradient ascent.
 
 %\vspace{-0.05in}
 %% \subsection{Estimating the Score with Importance Sampling}\label{section:is}
@@ -52,7 +57,7 @@ To better conform with the optimization literature, we instead call this approac
 \subsection{Markov Chain Gradient Descent}\label{section:mcgd}
 \vspace{-0.05in}
 \paragraph{\textbf{Overview of MCGD}}
-Markov chain gradient descent (MCGD, \citealt{duchi_ergodic_2012, NEURIPS2018_1371bcce}) is a family of algorithm that optimize a function \(f\) defined as \(f\left(\vlambda\right) = \int f\left(\vlambda, \veta\right) \, \Pi\left(d\veta\right)\) where \(\Pi\left(d\veta\right)\) is a probability measure.
+Markov chain gradient descent (MCGD, \citealt{duchi_ergodic_2012, NEURIPS2018_1371bcce}) is a family of algorithms that optimize a function \(f\) defined as \(f\left(\vlambda\right) = \int f\left(\vlambda, \veta\right) \, \Pi\left(d\veta\right)\) where \(\Pi\left(d\veta\right)\) is a probability measure.
 MCGD repeats the steps 
 {%\small
 \begin{align}
