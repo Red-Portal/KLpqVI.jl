@@ -29,8 +29,7 @@ For inclusive KL minimization, \(\vg\) should be set as
 %\vspace{-0.05in}
 %
 \looseness=-1
-where \(\mathbb{H}\left[\pi, q\left(\cdot; \vlambda\right)\right]\) is the cross-entropy between \(\pi\) and \(q\left(\cdot; \vlambda\right)\), which shows the close connection with cross-entropy methods~\citep{}.
-\(\vs\,(\vlambda;\vz) = \nabla_{\vlambda} \log q\,(\vz; \vlambda)\) is known as the \textit{score gradient}.
+where \(\mathbb{H}\left[\pi, q\left(\cdot; \vlambda\right)\right]\) is the cross-entropy between \(\pi\) and \(q\left(\cdot; \vlambda\right)\), which shows the connection with cross-entropy methods~\citep{deboer_tutorial_2005}, and \(\vs\,(\vlambda;\vz) = \nabla_{\vlambda} \log q\,(\vz; \vlambda)\) is known as the \textit{score gradient}.
 Since inclusive KL minimization with SGD is equivalent to ascending towards the direction of the score, \citet{NEURIPS2020_b2070693} coined the term score climbing.
 To better conform with the optimization literature, we instead call this approach \textit{score ascent} as in gradient ascent.
 
@@ -61,19 +60,19 @@ Markov chain gradient descent (MCGD, \citealt{duchi_ergodic_2012, NEURIPS2018_13
 MCGD repeats the steps 
 {%\small
 \begin{align}
-  \vlambda_{t+1}    = \vlambda_{t} + \gamma_t \, \vg\left(\vlambda_t, \veta_{t}\right),\quad 
+  \vlambda_{t+1}    = \vlambda_{t} - \gamma_t \, \vg\left(\vlambda_t, \veta_{t}\right),\quad 
   \rvveta_{t}  \sim P_{\vlambda_{t-1}}\left( \veta_{t-1}, \cdot \right)\label{eq:mcgd}
 \end{align}
 }%
-where \(P_{\vlambda_{t-1}}\) is a \(\Pi\)-invariant Markov chain kernel that could depend on \(\vlambda_{t-1}\).
+where \(P_{\vlambda_{t-1}}\) is a \(\Pi\)-invariant Markov chain kernel that may depend on \(\vlambda_{t-1}\).
 The noise of the gradient is Markovian and non-asymptotically biased, departing from vanilla SGD.
 %Unlike vanilla SGD where the gradient noise is assumed to be \textit{i.i.d.} and unbiased, it is now .
-Non-asymptotic convergence on this general setting has recently been studied by~\citet{duchi_ergodic_2012, NEURIPS2018_1371bcce, pmlr-v99-karimi19a, doan_finitetime_2020, doan_convergence_2020, debavelaere_convergence_2021}.
+Non-asymptotic convergence of this general algorithm has recently started to gather attention as by~\citet{duchi_ergodic_2012, NEURIPS2018_1371bcce, pmlr-v99-karimi19a, doan_finitetime_2020, doan_convergence_2020, debavelaere_convergence_2021}.
 
 \vspace{-0.1in}
 \paragraph{\textbf{Applications of MCGD}}
 MCGD encompasses an extensive range of problems, including distributed optimization~\citep{ram_incremental_2009}, reinforcement learning~\citep{tadic_asymptotic_2017, doan_convergence_2020, Xiong_Xu_Liang_Zhang_2021}, and expectation-minimization~\citep{pmlr-v99-karimi19a}, to name a few.
-In this paper, we will extend this list to include VI through the MCSA framework.
+This paper extends this list with inclusive KL VI through the MCSA framework.
 
 %%% Local Variables:
 %%% TeX-master: "master"

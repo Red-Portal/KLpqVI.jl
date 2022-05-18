@@ -9,9 +9,9 @@
   Then, by defining the target function \(f\) and the gradient estimator \(\vg\) to be 
   {\small
   \begin{align*}
-    f\left(\vlambda, \veta\right) =  \frac{1}{N} \sum^{N}_{n=1} \log q\left(\vz^{(n)}; \vlambda\right) + \mathbb{H}\left[\,\pi\,\right], 
+    f\left(\vlambda, \veta\right) =  -\frac{1}{N} \sum^{N}_{n=1} \log q\left(\vz^{(n)}; \vlambda\right) - \mathbb{H}\left[\,\pi\,\right], 
     \quad\text{and}\quad
-    \vg\left(\vlambda, \veta\right) =  \frac{1}{N} \sum^{N}_{n=1} \vs\left(\vz^{(n)}; \vlambda\right)
+    \vg\left(\vlambda, \veta\right) =  -\frac{1}{N} \sum^{N}_{n=1} \vs\left(\vz^{(n)}; \vlambda\right)
   \end{align*}
   }
   where \(\mathbb{H}\left[\,\pi\,\right]\) is the entropy of \(\pi\), MCGD results in inclusive KL minimization as
@@ -34,17 +34,31 @@
     \nonumber
     \\
     &\quad=
-    \int \left( \frac{1}{N} \sum^{N}_{n=1} \log q\left(\vz^{(n)}; \vlambda\right) + \mathbb{H}\left[\,\pi\,\right]\right) \, \pi\left(\vz^{(1:N)}\right) \, d\vz^{(1:N)}
+    \int \left(- \frac{1}{N} \sum^{N}_{n=1} \log q\left(\vz^{(n)}; \vlambda\right) - \mathbb{H}\left[\,\pi\,\right]\right) \, \pi\left(\vz^{(1:N)}\right) \, d\vz^{(1:N)}
     \nonumber
     \\
     &\quad=
-     \frac{1}{N} \sum^{N}_{n=1} \left\{ \int \big(\, \log q\,(\,\vz^{(n)}; \vlambda\,) + \mathbb{H}\,[\,\pi\,] \,\big) \, \pi\left(\vz^{(1:N)}\right) \, d\vz^{(1:N)} \right\}
+    \int \left(- \frac{1}{N} \sum^{N}_{n=1} \log q\left(\vz^{(n)}; \vlambda\right)\right) \, \pi\left(\vz^{(1:N)}\right) \, d\vz^{(1:N)} - \mathbb{H}\left[\,\pi\,\right]
+     &&\quad{\text{\textit{Pulled out constant}}}
+    \nonumber
+    \\
+    &\quad=
+     \frac{1}{N} \sum^{N}_{n=1} \left\{ \int \big(-\log q\,(\,\vz^{(n)}; \vlambda\,)\,\big) \, \pi\left(\vz^{(1:N)}\right) \, d\vz^{(1:N)} \right\} - \mathbb{H}\,[\,\pi\,] 
      &&\quad{\text{\textit{Swapped integral and sum}}}
     \nonumber
     \\
     &\quad=
-    \frac{1}{N} \sum^{N}_{n=1} \int \big(\, \log q\,(\,\vz^{(n)}; \vlambda\,) + \mathbb{H}\,[\,\pi\,] \,\big) \, \pi\left(\vz^{(n)}\right) \, d\vz^{(n)}
+    \frac{1}{N} \sum^{N}_{n=1} \int \big( -\log q\,(\,\vz^{(n)}; \vlambda\,) \,\big) \, \pi\left(\vz^{(n)}\right) \, d\vz^{(n)} - \mathbb{H}\,[\,\pi\,]
     &&\quad{\text{\textit{Marginalized \(\vz^{(m)}\) for all \(m \neq n\)}}}
+    \nonumber
+    \\
+    &\quad=
+    \frac{1}{N} \sum^{N}_{n=1} \int \big( -\log q\,(\,\vz^{(n)}; \vlambda\,) + \log\pi\left(\vz^{(n)}\right) \,\big) \, \pi\left(\vz^{(n)}\right) \, d\vz^{(n)}
+    &&\quad{\text{\textit{Definition of entropy \(\mathbb{H}\left[\pi\right]\)}}}
+    \nonumber
+    \\
+    &\quad=
+    \frac{1}{N} \sum^{N}_{n=1} \int \pi\left(\vz^{(n)}\right) \, \log \frac{\pi\left(\vz^{(n)}\right)}{q\,(\,\vz^{(n)}; \vlambda\,)}  \, d\vz^{(n)}
     \nonumber
     \\
     &\quad=
@@ -57,7 +71,7 @@
   \end{alignat}
   For \(\Esub{\Pi}{ \vg\left(\vlambda, \rvveta\right) }\), note that 
   \begin{align}
-    \nabla_{\vlambda} f\left(\vlambda, \veta\right) = \frac{1}{N} \sum^{N}_{n=1} \vs\left(\vz^{(n)}; \vlambda\right) = \vg\left(\vlambda, \veta\right).\label{eq:F_grad_G}
+    \nabla_{\vlambda} f\left(\vlambda, \veta\right) = -\frac{1}{N} \sum^{N}_{n=1} \nabla_{\vlambda} \log q\left(\vz^{(n)}; \vlambda\right) = -\frac{1}{N} \sum^{N}_{n=1} \vs\left(\vz^{(n)}; \vlambda\right) = \vg\left(\vlambda, \veta\right).\label{eq:F_grad_G}
   \end{align}
   Therefore, it suffices to show that
   \begin{align*}

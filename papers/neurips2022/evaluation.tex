@@ -116,11 +116,13 @@ Overall, most MCSA methods seem to be the most stable with ADAM, which points ou
   \vspace{-0.1in}
 \subsection{Bayesian Neural Network Regression}\label{section:bnn}
   \vspace{-0.07in}
+\looseness=-1
 \paragraph{Setup}
 For realistic experiments, we train Bayesian neural networks (BNN, \citealt{neal_bayesian_1996}) for regression.
 We use datasets from the UCI repository~\citep{Dua:2019} with 90\% random train-test splits.
 We run all methods with \(T=5\cdot10^4\) iterations.
 For the model, we use the priors and forward propagation method of~\citet{pmlr-v37-hernandez-lobatoc15} with a \(50\)-unit hidden layer (see \cref{section:model_bnn}).
+% \looseness=-1
 
 \vspace{-0.1in}
 \paragraph{Results}

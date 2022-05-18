@@ -40,16 +40,16 @@
   For simplicity, we denote the rejection state as \(\vz^{(1)} = \vz_{t-1} \).
   Then,
   \begin{alignat}{2}
-    &\E{ \norm{ \vg\left(\vlambda, \rvveta\right) }_{2} \,\middle|\, \mathcal{F}_{t} }
+    &\E{ \norm{ \vg\left(\vlambda, \rvveta\right) }_{*}^2 \,\middle|\, \mathcal{F}_{t} }
     \nonumber
     \\
     &\;=
-    \E{ \norm{ \vg\left(\vlambda, \rvveta\right) }_2 \,\middle|\, \mathcal{F}_{t}}
+    \E{ \norm{ \vg\left(\vlambda, \rvveta\right) }_{*}^2 \,\middle|\, \mathcal{F}_{t}}
     \nonumber
     \\
     &\;=
     \Esub{\rvvz \sim K_{\vlambda_{t-1}}\left(\vz_{t-1}, \cdot\right)}{
-      \norm{ \vs\left(\vlambda; \rvvz\right) }_{*} \,\middle|\,
+      \norm{ \vs\left(\vlambda; \rvvz\right) }_{*}^2 \,\middle|\,
       \vlambda_{t-1}, \vz_{t-1}
     }
     \nonumber
@@ -60,7 +60,7 @@
     \frac{
       w\left(\vz^{(n)}\right)
     }{
-      \sum^{N}_{m=1} w\left(\vz^{(n)}\right)
+      \sum^{N}_{m=1} w\left(\vz^{(m)}\right)
     }
     \norm{ \vs\left(\cdot; \vz^{(n)}\right) }^2_{*}
     \prod^{N}_{n=2}
@@ -75,7 +75,7 @@
     \frac{
       w\left(\vz^{(n)}\right)
     }{
-      \sum^{N}_{m=1} w\left(\vz^{(n)}\right)
+      \sum^{N}_{m=1} w\left(\vz^{(m)}\right)
     }
     \prod^{N}_{n=2}
     q\left(d\vz^{(n)}; \vlambda_{t-1}\right)
