@@ -194,13 +194,13 @@ To show the geometric ergodicity of the implicit kernel \(P\), we utilize the ge
 Furthermore, to derive an upper bound on the gradient variance, we use the exact \(n\)-step marginal IMH kernel derived by~\citet{Smith96exacttransition} as
 {\small
   \begin{align}
-  K^n_{\vlambda}\left(\vz, d\vz\prime\right) 
-  = T_n\left(\, w\left(\vz\right) \vee w\left(\vz\prime\right)\,\right) \, \pi\left(\vz\prime\right) \, d\vz\prime
-  + \lambda^n\left(w\left(\vz\right)\right) \, \delta_{\vz}\left(d\vz\prime\right)
+  K^n_{\vlambda}\left(\vz, d\vz^{\prime}\right) 
+  = T_n\left(\, w\left(\vz\right) \vee w\left(\vz^{\prime}\right)\,\right) \, \pi\left(\vz^{\prime}\right) \, d\vz^{\prime}
+  + \lambda^n\left(w\left(\vz\right)\right) \, \delta_{\vz}\left(d\vz^{\prime}\right)
   \label{eq:imh_exact_kernel}
   \end{align}
 }%
-where {\(w\left(\vz\right) = \pi\left(\vz\right)/q_{\text{def.}}\left(\vz; \vlambda\right)\), \(x \vee y = \max\left(x, y\right)\)}, and for {\(R\left(w\right) = \{\, \vz\prime \mid w\,\left(\vz\prime\right) \leq w \,\}\)}, 
+where {\(w\left(\vz\right) = \pi\left(\vz\right)/q_{\text{def.}}\left(\vz; \vlambda\right)\), \(x \vee y = \max\left(x, y\right)\)}, and for {\(R\left(w\right) = \{\, \vz^{\prime} \mid w\,\left(\vz^{\prime}\right) \leq w \,\}\)}, 
 {\small
   \begin{align}
     T_n\left(w\right)      = \int_w^{\infty}
@@ -210,9 +210,9 @@ where {\(w\left(\vz\right) = \pi\left(\vz\right)/q_{\text{def.}}\left(\vz; \vlam
     \quad\text{and}\quad
     \lambda\left(w\right) =
     \int_{R\left(w\right)}
-    \left( 1 - \frac{w\left(\vz\prime\right)}{w}  \right)
-    %\left( 1 - w\left(\vz\prime\right)/w  \right)
-    \pi\left(d\vz\prime\right).\label{eq:T_lambda}
+    \left( 1 - \frac{w\left(\vz^{\prime}\right)}{w}  \right)
+    %\left( 1 - w\left(\vz^{\prime}\right)/w  \right)
+    \pi\left(d\vz^{\prime}\right).\label{eq:T_lambda}
   \end{align}
 }%
 \input{lemmas_imh}

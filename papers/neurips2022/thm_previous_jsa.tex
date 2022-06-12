@@ -3,15 +3,15 @@
   JSA~\citep{pmlr-v124-ou20a} is obtained by defining 
   {\small
   \begin{align*}
-  P_{\vlambda}^n\left(\veta, d\veta\prime\right)
+  P_{\vlambda}^n\left(\veta, d\veta^{\prime}\right)
   = 
-  K_{\vlambda}^{N\,\left(n-1\right) + 1}\left(\vz^{(1)}, d\vz\prime^{(1)}\right)
+  K_{\vlambda}^{N\,\left(n-1\right) + 1}\left(\vz^{(1)}, d\vz^{\prime\;(1)}\right)
   \,
-  K_{\vlambda}^{N\,\left(n-1\right) + 2}\left(\vz^{(2)}, d\vz\prime^{(2)}\right)
+  K_{\vlambda}^{N\,\left(n-1\right) + 2}\left(\vz^{(2)}, d\vz^{\prime\;(2)}\right)
   \cdot
   \ldots 
   \cdot
-  K_{\vlambda}^{N\,\left(n-1\right) + N}\left(\vz^{(N)}, d\vz\prime^{(N)}\right)
+  K_{\vlambda}^{N\,\left(n-1\right) + N}\left(\vz^{(N)}, d\vz^{\prime\;(N)}\right)
   \end{align*}
   }
   with \(\veta_t = \left(\vz_t^{(1)}, \vz_t^{(2)}, \ldots, \vz_t^{(N)}\right)\).
@@ -59,15 +59,15 @@
   where \(K_{\vlambda}\left(\vz, \cdot\right)\) is an IMH kernel.
   Therefore, the \(n\)-step transition kernel for the vector of the Markov-chain samples \(\veta = \vz^{(1:N)}\) is represented as
   \begin{align*}
-  P_{\vlambda}^n\left(\veta, d\veta\prime\right)
+  P_{\vlambda}^n\left(\veta, d\veta^{\prime}\right)
   = 
-  K_{\vlambda}^{N\,\left(n-1\right) + 1}\left(\vz_1, d\vz\prime_1\right)
+  K_{\vlambda}^{N\,\left(n-1\right) + 1}\left(\vz_1, d\vz^{\prime}_1\right)
   \,
-  K_{\vlambda}^{N\,\left(n-1\right) + 2}\left(\vz_2, d\vz\prime_2\right)
+  K_{\vlambda}^{N\,\left(n-1\right) + 2}\left(\vz_2, d\vz^{\prime}_2\right)
   \cdot
   \ldots 
   \cdot
-  K_{\vlambda}^{N\,\left(n-1\right) + N}\left(\vz_N, d\vz\prime_N\right).
+  K_{\vlambda}^{N\,\left(n-1\right) + N}\left(\vz_N, d\vz^{\prime}_N\right).
   \end{align*}
 
 %%   For example, let us assume that we use a batch size of 1 and that \(m=1\) is selected at \(t=1\) and \(m=2\) is selected at \(t=2\).
@@ -129,11 +129,11 @@
     \sup_{A}
     \Bigg|
     \int_{A}
-      \pi\left(d\vz\prime^{(1)}\right) \times \ldots \times \pi\left(d\vz\prime^{(N)}\right)
+      \pi\left(d\vz^{\prime\;(1)}\right) \times \ldots \times \pi\left(d\vz^{\prime\;(N)}\right)
     \nonumber
       \\
       &\qquad\qquad\qquad-
-      K^{(n-1)\,N\,+1}_{\vlambda}\left(\vz^{(1)}, d\vz\prime^{(1)}\right) \times \ldots \times K^{n\,N}_{\vlambda}\left(\vz^{(N)}, d\vz\prime^{(N)}\right)
+      K^{(n-1)\,N\,+1}_{\vlambda}\left(\vz^{(1)}, d\vz^{\prime\;(1)}\right) \times \ldots \times K^{n\,N}_{\vlambda}\left(\vz^{(N)}, d\vz^{\prime\;(N)}\right)
     \,\Bigg|
     \nonumber
     \\
@@ -142,7 +142,7 @@
     \sum_{n=1}^N
     \abs{
     \int_{A}
-      \pi\left(d\vz^{(n)}\right) - K^{(n-1)\,N + n}_{\vlambda}\left(\vz^{(n)}, d\vz\prime^{(n)}\right) 
+      \pi\left(d\vz^{(n)}\right) - K^{(n-1)\,N + n}_{\vlambda}\left(\vz^{(n)}, d\vz^{\prime\;(n)}\right) 
     }
     &&\quad\text{\textit{\cref{thm:product_measure_bound}}}
     \nonumber

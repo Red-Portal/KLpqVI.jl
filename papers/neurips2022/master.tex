@@ -17,7 +17,7 @@
 
 % to avoid loading the natbib package, add option nonatbib:
 %\usepackage[nonatbib]{neurips_2021}
-\usepackage[nonatbib]{neurips_2022}
+\usepackage[preprint,nonatbib]{neurips_2022}
 \usepackage[sort&compress,round]{natbib}
 \bibliographystyle{authordate1}
 
@@ -79,42 +79,38 @@
 % authors names on the first line, and the last on the second line, try using
 % \AND instead of \And before the third author name.
 
-\author{%
-%   Kyurae Kim, Jisu Oh, Hongseok Kim \\
-%   Sogang University \\
-%   \texttt{\{msca8h, \}@sogang.ac.kr} \\
-}
-
 %% \author{%
-%%   David S.~Hippocampus\thanks{Use footnote for providing further information
-%%     about author (webpage, alternative address)---\emph{not} for acknowledging
-%%     funding agencies.} \\
-%%   Department of Computer Science\\
-%%   Cranberry-Lemon University\\
-%%   Pittsburgh, PA 15213 \\
-%%   \texttt{hippo@cs.cranberry-lemon.edu} \\
-%%   % examples of more authors
-%%   % \And
-%%   % Coauthor \\
-%%   % Affiliation \\
-%%   % Address \\
-%%   % \texttt{email} \\
-%%   % \AND
-%%   % Coauthor \\
-%%   % Affiliation \\
-%%   % Address \\
-%%   % \texttt{email} \\
-%%   % \And
-%%   % Coauthor \\
-%%   % Affiliation \\
-%%   % Address \\
-%%   % \texttt{email} \\
-%%   % \And
-%%   % Coauthor \\
-%%   % Affiliation \\
-%%   % Address \\
-%%   % \texttt{email} \\
+%%   Kyurae Kim, Jisu Oh, Hongseok Kim \\
+%%   Sogang University \\
+%%   \texttt{\{msca8h, \}@sogang.ac.kr} \\
 %% }
+
+\author{%
+  Kyurae Kim \\
+  Sogang University\\
+  \texttt{msca8h@sogang.ac.kr} \\
+  % examples of more authors
+  \And
+  Jisu Oh \\
+  Sogang University \\
+  % Address \\
+  \texttt{jisuoh@sogang.ac.kr} \\
+  \AND
+  Jacob R. Gardner  \\
+  University of Pennsylvania \\
+  % Address \\
+  \texttt{jacobrg@seas.upenn.edu} \\
+  \And
+  Adji Bousso Dieng \\
+  Princeton University \\
+  % Address \\
+  \texttt{adji@princeton.edu} \\
+  \And
+  Hongseok Kim\thanks{Corresponding author.} \\
+  Sogang University \\
+  % Address \\
+  \texttt{hongseok@sogang.ac.kr} \\
+}
 
 \begin{document}
 
@@ -133,12 +129,15 @@
 
 %\section*{Broader Impact}
 
-%% \begin{ack}
-%% \end{ack}
-\newpage
+\begin{ack}
+  This work initially started in the process of understanding the performance of Markovian score climbing.
+  We thank Hongseok Yang for pointing us to a relevant related work, Guanyang Wang for insightful discussions about the independent Metropolis-Hastings algorithm, Geon Park and Kwanghee Choi for constructive comments that enriched this paper.
+  We also acknowledge the Computer Science Department of Sogang University for providing computational resources.
+\end{ack}
+%\newpage
 \bibliography{references}
-\newpage
-\input{checklist}
+%% \newpage
+%% \input{checklist}
 
 \newpage
 \appendix

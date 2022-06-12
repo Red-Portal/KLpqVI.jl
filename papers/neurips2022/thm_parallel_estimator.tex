@@ -3,15 +3,15 @@
   pMCSA, our proposed scheme, is obtained by setting
   {\small
   \begin{align*}
-    P_{\vlambda}^n\left(\veta, d\veta\prime\right)
+    P_{\vlambda}^n\left(\veta, d\veta^{\prime}\right)
     = 
-    K_{\vlambda}^n\left(\vz^{(1)}, d\vz\prime^{(1)}\right)
+    K_{\vlambda}^n\left(\vz^{(1)}, d\vz^{\prime\; (1)}\right)
     \,
-    K_{\vlambda}^n\left(\vz^{(2)}, d\vz\prime^{(2)}\right)
+    K_{\vlambda}^n\left(\vz^{(2)}, d\vz^{\prime\; (2)}\right)
     \cdot
     \ldots 
     \cdot
-    K_{\vlambda}^n\left(\vz^{(N)}, d\vz\prime^{(N)}\right)
+    K_{\vlambda}^n\left(\vz^{(N)}, d\vz^{\prime\; (N)}\right)
   \end{align*}
   }
   with \(\veta = \left(\vz^{(1)}, \vz^{(2)}, \ldots, \vz^{(N)}\right)\).
@@ -38,15 +38,15 @@
   \paragraph{Ergodicity of the Markov Chain}
   Since our kernel operates the same MCMC kernel \(K_{\vlambda}\) for each of the \(N\) parallel Markov chains, the \(n\)-step marginal kernel \(P_{\vlambda}\) can be represented as
   \begin{align*}
-    P_{\vlambda}^n\left(\veta, d\veta\prime\right)
+    P_{\vlambda}^n\left(\veta, d\veta^{\prime}\right)
     = 
-    K_{\vlambda}^n\left(\vz^{(1)}, d\vz\prime^{(1)}\right)
+    K_{\vlambda}^n\left(\vz^{(1)}, d\vz^{\prime\; (1)}\right)
     \,
-    K_{\vlambda}^n\left(\vz^{(2)}, d\vz\prime^{(2)}\right)
+    K_{\vlambda}^n\left(\vz^{(2)}, d\vz^{\prime\; (2)}\right)
     \cdot
     \ldots 
     \cdot
-    K_{\vlambda}^n\left(\vz^{(N)}, d\vz\prime^{(N)}\right).
+    K_{\vlambda}^n\left(\vz^{(N)}, d\vz^{\prime\; (N)}\right).
   \end{align*}
   Then, the convergence in total variation \(d_{\mathrm{TV}}\left(\cdot, \cdot\right)\) can be shown to decrease geometrically as
   \begin{alignat}{2}
@@ -67,11 +67,11 @@
     \sup_{A}
     \big|\;
     \int_{A}
-      \pi\left(d\vz\prime_1\right) \cdot \ldots \cdot \pi\left(d\vz\prime_N\right)
+      \pi\left(d\vz^{\prime}_1\right) \cdot \ldots \cdot \pi\left(d\vz^{\prime}_N\right)
     \nonumber
       \\
       &\qquad\qquad\qquad-
-      K^n_{\vlambda}\left(\vz_1, d\vz\prime_1\right) \cdot \ldots \cdot K^n_{\vlambda}\left(\vz_N, d\vz\prime_N\right)
+      K^n_{\vlambda}\left(\vz_1, d\vz^{\prime}_1\right) \cdot \ldots \cdot K^n_{\vlambda}\left(\vz_N, d\vz^{\prime}_N\right)
     \;\big|
     \nonumber
     \\
@@ -80,7 +80,7 @@
     \sum_{n=1}^N
     \abs{
     \int_{A}
-      \pi\left(d\vz\prime_k\right) - K^{n}_{\vlambda}\left(\vz_n, d\vz\prime_n\right) 
+      \pi\left(d\vz^{\prime}_k\right) - K^{n}_{\vlambda}\left(\vz_n, d\vz^{\prime}_n\right) 
     }
     &&\quad\text{\textit{\cref{thm:product_measure_bound}}}
     \nonumber

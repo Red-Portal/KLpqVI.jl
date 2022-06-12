@@ -3,7 +3,7 @@
 
 This code base is using the Julia Language and [DrWatson](https://juliadynamics.github.io/DrWatson.jl/stable/)
 to make a reproducible scientific project named
->  Markov-Chain Monte Carlo Score Estimators for Variational Inference with Score Climbing
+> Markov Chain Score Ascent: A Unifying Framework of Variational Inference with Markovian Gradients
 
 ## Project Structure
 | Path  | Description  |
@@ -17,16 +17,8 @@ to make a reproducible scientific project named
 ## Installation
 To (locally) reproduce this project, do the following:
 
-0. Download this code base. Notice datasets are not included and need to be downloaded independently.
-Please refer to the `load_dataset(task)` function in the respective task in `scripts/task` to see how to set up the datasets.
-The datasets used in this work are as follows: 
-   * [German credit](https://archive.ics.uci.edu/ml/datasets/statlog+(german+credit+data))
-   * [Pima indians diabetes](https://www.kaggle.com/uciml/pima-indians-diabetes-database)
-   * [Heart disease](https://archive.ics.uci.edu/ml/datasets/heart+disease)
-   * [Sonar](https://archive.ics.uci.edu/ml/datasets/Connectionist+Bench+(Sonar,+Mines+vs.+Rocks))
-   * [Ionosphere](https://archive.ics.uci.edu/ml/datasets/ionosphere)
-   * [Breast](https://archive.ics.uci.edu/ml/datasets/breast+cancer+wisconsin+%28original%29)
-   * [Radon](https://github.com/stan-dev/example-models/blob/master/ARM/Ch.19/radon.data.R)
+0. Download this code base. Notice datasets are not included and need to be downloaded independently from the [UCI repository](https://archive.ics.uci.edu/ml/datasets.php).
+Please refer to the `load_dataset(task)` function in `scripts/task/datasets.jl` to see how to set up the datasets.
 
 1. Open a Julia console and do:
    ```
