@@ -1,14 +1,14 @@
 
-mutable struct MSC_PIMH <: AdvancedVI.VariationalObjective
+mutable struct PMCSA <: AdvancedVI.VariationalObjective
     zs::Vector{RV{Float64}}
     iter::Int
 end
 
-function MSC_PIMH()
-    MSC_PIMH(Array{RV{Float64}}(undef, 0), 1)
+function PMCSA()
+    PMCSA(Array{RV{Float64}}(undef, 0), 1)
 end
 
-function init_state!(msc::MSC_PIMH, rng::Random.AbstractRNG, rand_q, λ0, ℓπ, n_mc)
+function init_state!(msc::PMCSA, rng::Random.AbstractRNG, rand_q, λ0, ℓπ, n_mc)
     zs     = [rand_q(rng, λ0) for i = 1:n_mc]
     ℓπs    = ℓπ.(zs) 
     msc.zs = RV{Float64}.(zs, ℓπs)
@@ -16,7 +16,7 @@ end
 
 function grad!(
     rng::Random.AbstractRNG,
-    vo::MSC_PIMH,
+    vo::PMCSA,
     ℓq,
     ℓq_def,
     rand_q,

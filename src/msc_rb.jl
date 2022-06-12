@@ -4,7 +4,7 @@ mutable struct MSC_RB <: AdvancedVI.VariationalObjective
     iter::Int
 end
 
-function MSC_CISRB()
+function MSC_RB()
     z = RV(Array{Float64}(undef, 0), -Inf)
     return MSC_RB(z, 1)
 end

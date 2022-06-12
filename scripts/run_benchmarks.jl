@@ -39,16 +39,16 @@ dispatch_optimizer(opt::String, stepsize) = begin
 end
 
 dispatch_inference_method(method::String) = begin
-    if (method == "MSC_PIMH")
-        MSC_PIMH()
-    elseif (method == "MSC_SIMH")
-        MSC_SIMH()
+    if (method == "PMCSA")
+        PMCSA()
+    elseif (method == "JSA")
+        JSA()
     elseif (method == "ELBO")
         ELBO()
-    elseif (method == "MSC_CIS")
-        MSC_CIS()
-    elseif (method == "MSC_CISRB")
-        MSC_CISRB()
+    elseif (method == "MSC")
+        MSC()
+    elseif (method == "MSC_RB")
+        MSC_RB()
     elseif (method == "SNIS")
         SNIS()
     end
@@ -143,7 +143,7 @@ function gaussian_stepsize()
     for ϵ ∈ exp10.(range(log10(0.001), log10(1.0); length = 20))
         for decay ∈ [true, false]
             for defensive ∈ [0.0, 0.001]
-                for method ∈ ["MSC_SIMH", "MSC_PIMH", "MSC_CIS"]
+                for method ∈ ["JSA", "PMCSA", "MSC"]
                     for optimizer ∈ ["ADAM", "RMSProp", "Momentum", "Nesterov", "SGD"]
                         seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
                         prng = Random123.Philox4x(UInt64, seed, 8)
@@ -189,19 +189,12 @@ function general_benchmarks()
         "gas",
         "airfoil",
         "sml",
-        "sonar_hlr",
-        "ionosphere_hlr",
-        "australian_hlr",
-        "german_hlr",
-        "heart_hlr",
-        "breast_hlr",
-        "kin40k",
     ]
         for (method, n_samples) ∈ [
-            ("MSC_PIMH",  10),
-            ("MSC_CIS",   10),
-            ("MSC_CISRB", 10),
-            ("MSC_SIMH",  10),
+            ("PMCSA",  10),
+            ("MSC",   10),
+            ("MSC_RB", 10),
+            ("JSA",  10),
             ("SNIS",      10),
             ("ELBO",       1),
             ("ELBO",      10),
@@ -246,10 +239,10 @@ function general_benchmarks_gpu()
         "energy_gpu",
         "airfoil_gpu",
     ]
-        for (method, n_samples) ∈ [("MSC_PIMH", 10),
-                                   ("MSC_CIS", 10),
-                                   ("MSC_CISRB", 10),
-                                   ("MSC_SIMH", 10),
+        for (method, n_samples) ∈ [("PMCSA", 10),
+                                   ("MSC", 10),
+                                   ("MSC_RB", 10),
+                                   ("JSA", 10),
                                    ("SNIS", 10),
                                    ("ELBO", 1),
                                    ]
@@ -277,7 +270,7 @@ function general_benchmarks_gpu()
 end
 
 function hyperparameter_tuning()
-    for method ∈ ["MSC_PIMH"]
+    for method ∈ ["PMCSA"]
         for task ∈ ["boston", "sonar"]
             for defensive ∈ [nothing, 0.001]
                 for decay ∈ [true, false]
@@ -316,7 +309,7 @@ function gaussian_stepsize()
     for ϵ ∈ exp10.(range(log10(0.001), log10(1.0); length = 20))
         for decay ∈ [true, false]
             for defensive ∈ [0.0, 0.001]
-                for method ∈ ["MSC_SIMH", "MSC_PIMH", "MSC_CIS"]
+                for method ∈ ["PMCSA", "JSA", "MSC"]
                     for optimizer ∈ ["ADAM", "RMSProp", "Momentum", "Nesterov", "SGD"]
                         seed = (0x97dcb950eaebcfba, 0x741d36b68bef6415)
                         prng = Random123.Philox4x(UInt64, seed, 8)

@@ -1,21 +1,21 @@
 
-mutable struct MSC_SIMH <: AdvancedVI.VariationalObjective
+mutable struct JSA <: AdvancedVI.VariationalObjective
     z::RV{Float64}
     iter::Int
 end
 
-function MSC_SIMH()
-    MSC_SIMH(RV{Float64}(Vector{Float64}(), 0), 1)
+function JSA()
+    JSA(RV{Float64}(Vector{Float64}(), 0), 1)
 end
 
-function init_state!(msc::MSC_SIMH, rng::Random.AbstractRNG, rand_q, λ0, ℓπ, n_mc)
+function init_state!(msc::JSA, rng::Random.AbstractRNG, rand_q, λ0, ℓπ, n_mc)
     z        = rand_q(rng, λ0)
     msc.z    = RV{Float64}(z, ℓπ(z))
 end
 
 function grad!(
     rng::Random.AbstractRNG,
-    vo::MSC_SIMH,
+    vo::JSA,
     ℓq,
     ℓq_def,
     rand_q,
