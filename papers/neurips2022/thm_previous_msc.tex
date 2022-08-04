@@ -3,16 +3,16 @@
   MSC~\citep{NEURIPS2020_b2070693} is obtained by defining 
   {\small
   \begin{align*}
-  P_{\lambda}^n\left(\veta, d\veta^{\prime}\right)
+  P_{\lambda}^k\left(\veta, d\veta^{\prime}\right)
   = 
-  K_{\lambda}^n\left(\vz, d\vz^{\prime}\right)
+  K_{\lambda}^k\left(\vz, d\vz^{\prime}\right)
   \end{align*}
   }
-  with  \(\veta_t = \vz_t\) where \(K_{\vlambda}\left(\vz, \cdot\right)\) is the CIS kernel with \(q_{def.}\left(\cdot; \vlambda\right)\) as its proposal distribution.
+  with  \(\veta_t = \vz_t\) where \(K_{\vlambda}\left(\vz, \cdot\right)\) is the CIS kernel with \(q_{\text{def.}}\left(\cdot; \vlambda\right)\) as its proposal distribution.
   Then, given~\cref{thm:bounded_weight,thm:bounded_score}, the mixing rate and the gradient bounds are given as
   {\small
   \begin{align*}
-  \DTV{P_{\vlambda}^n\left(\veta, \cdot\right)}{\Pi} \leq  {\left(1 - \frac{N - 1}{2 w^* + N - 2}\right)}^n\quad \text{and}\quad
+  \DTV{P_{\vlambda}^k\left(\veta, \cdot\right)}{\Pi} \leq  {\left(1 - \frac{N - 1}{2 w^* + N - 2}\right)}^k\quad \text{and}\quad
   {\small
   \E{ \norm{ \vg\left(\vlambda, \rvveta\right) }_{*}^2 \,\middle|\, \mathcal{F}_{t} } \leq  L^2,
   }
@@ -28,11 +28,11 @@
   The ergodic convergence rate of \(P_{\vlambda}\) is equal to that of \(K_{\vlambda}\), the CIS kernel proposed by~\citet{NEURIPS2020_b2070693}. 
   Although not mentioned by~\citet{NEURIPS2020_b2070693}, this kernel has been previously proposed as the iterated sequential importance resampling (i-SIR) by \citet{andrieu_uniform_2018} with its corresponding geometric convergence rate as
   \begin{alignat*}{2}
-    \DTV{P^{n}_{\vlambda}\left(\veta, \cdot\right)}{\Pi}
+    \DTV{P^{k}_{\vlambda}\left(\veta, \cdot\right)}{\Pi}
     =
-    \DTV{K^{n}_{\vlambda}\left(\vz, \cdot\right)}{\pi}
+    \DTV{K^{k}_{\vlambda}\left(\vz, \cdot\right)}{\pi}
     \leq
-    {\left(1 - \frac{N - 1}{2 w^* + N - 2}\right)}^n.
+    {\left(1 - \frac{N - 1}{2 w^* + N - 2}\right)}^k.
   \end{alignat*}
 
   \paragraph{\textbf{Bound on the Gradient Variance}}

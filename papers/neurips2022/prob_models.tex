@@ -3,12 +3,12 @@
 \subsection{Bayesian Neural Network Regression}\label{section:model_bnn}
 We use the BNN model of~\citet{pmlr-v37-hernandez-lobatoc15} defined as
 \begin{align*}
-  \lambda^{-1} &\sim \text{Inverse-Gamma}\left(\alpha=6, \beta=6\right) \\
-  \gamma^{-1}  &\sim \text{Inverse-Gamma}\left(\alpha=6, \beta=6\right) \\
+  \lambda^{-1} &\sim \mathsf{inverse\text{-}gamma}\left(\alpha=6, \beta=6\right) \\
+  \gamma^{-1}  &\sim \mathsf{inverse\text{-}gamma}\left(\alpha=6, \beta=6\right) \\
   \mW_1       &\sim \mathcal{N}\left(\mathbf{0}, \lambda^{-1} \mI \right) \\
-  \vz         &= \mathrm{ReLU}\left(\mW_1 \vx_i\right) \\
+  \vz         &= \mathsf{ReLU}\left(\mW_1 \vx_i\right) \\
   \mW_2       &\sim \mathcal{N}\left(\mathbf{0}, \lambda^{-1} \mI \right) \\
-  \widehat{y} &= \mathrm{ReLU}\left(\mW_2 \vz\right) \\
+  \widehat{y} &= \mathsf{ReLU}\left(\mW_2 \vz\right) \\
   y_i         &\sim \mathcal{N}\left(\widehat{y}, \gamma^{-1}\right)
 \end{align*}
 where \(\vx_i\) and \(y_i\) are the feature vector and target value of the \(i\)th datapoint.
@@ -16,16 +16,16 @@ Given the variational distribution of \(\lambda^{-1}, \gamma^{-1}, \mW_1, \mW_2\
 We apply z-standardization (whitening) to the features \(\vx_i\) and the target values \(y_i\), and unwhiten the predictive distribution.
 
 \subsection{Robust Gaussian Process Logistic Regression}\label{section:model_rgp}
-We perform robust Gaussian process regression by using a Student-T prior with a latent Gaussian process prior.
+We perform robust Gaussian process regression by using a student-t prior with a latent Gaussian process prior.
 The model is defined as
 \begin{align*}
    \log \sigma_f &\sim \mathcal{N}(0, 4) \\
    \log \epsilon &\sim \mathcal{N}(0, 4) \\
    \log \ell_i   &\sim \mathcal{N}(0, 0.2) \\
    f   &\sim \mathcal{GP}\left(\mathbf{0}, \mSigma_{\sigma_f, \mathbf{\ell}} + \left(\delta + \epsilon^2\right)\,\mI \right) \\
-   \nu &\sim \mathrm{Gamma}\left(\alpha=4, \beta=1/10\right) \\
+   \nu &\sim \mathsf{gamma}\left(\alpha=4, \beta=1/10\right) \\
    \log \sigma_y &\sim \mathcal{N}(0, 4) \\
-   y_i &\sim \text{Student-T}\left(  f\left( \vx_i \right), \sigma_y, \nu  \right).
+   y_i &\sim \mathsf{student\text{-}t}\left(  f\left( \vx_i \right), \sigma_y, \nu  \right).
 \end{align*}
 The covariance \(\mSigma\) is computed using a kernel \(k\left(\cdot, \cdot\right)\) such that \({[\mSigma]}_{i,j} = k\left( \vx_{i}, \vx_{j} \right) \) where \(\vx_i\) and \(\vx_j\) are data points in the dataset.
 For the kernel, we use the Matern 5/2 kernel with automatic relevance determination~\citep{neal_bayesian_1996} defined as

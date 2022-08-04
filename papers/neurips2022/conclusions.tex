@@ -1,12 +1,12 @@
 
 \vspace{-0.1in}
 \section{Discussions}\label{section:discussion}
-\vspace{-0.1in}
+\vspace{-0.12in}
 This paper presented a new theoretical framework for analyzing inclusive KL divergence minimization methods based on running SGD with Markov chains.
 Furthermore, we proposed pMCSA, a new MCSA method that enjoys substantially low variance.
 We have shown that this theoretical improvement translates into better empirical performance.
 
-\vspace{-0.1in}
+\vspace{-0.12in}
 \paragraph{Limitations}
 Our work has two main limitations.
 Firstly, since our work aims to understand existing MCSA methods, it inherits the current limitations of MCSA methods.
@@ -14,7 +14,7 @@ For example, minibatch subsampling is challenging for models with non-factorizab
 Secondly, our theoretical analysis in~\cref{section:comparison} requires~\cref{thm:bounded_score}, which is strong, but required to connect with MCGD.
 An important future direction would be to relax the assumptions needed by MCGD.
 
-\vspace{-0.1in}
+\vspace{-0.12in}
 \paragraph{Towards Alternative Divergences}
 In \cref{section:eval}, we have shown that minimizing the \textit{inclusive} KL is competitive against  minimizing the \textit{exclusive} KL on general Bayesian inference problems.
 Although~\citet{dhaka_challenges_2021} has shown that the inclusive KL fails on high-dimensional problems, this is only the case under the presence of strong correlations.

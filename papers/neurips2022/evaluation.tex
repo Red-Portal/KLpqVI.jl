@@ -17,20 +17,21 @@
 \begin{figure*}
   \vspace{-0.27in}
   \centering
-  \includegraphics[scale=1.0]{figures/gaussian_02.pdf}
+%%   \includegraphics[scale=1.0]{figures/gaussian_02.pdf}
+  \includegraphics[scale=1.0]{figures/gaussian_03.pdf}
   \vspace{-0.08in}
-  \caption{\textbf{
-      KL divergence and gradient variance.
+  \caption{\textbf{Gradient variance versus iteration and computational budget (\(N\)).
       pMCSA not only achieves the least gradient variance, but its variance also scales better with \(N\).
     }
-    The target distribution is a 20-D multivariate Gaussian with \(\nu = 100\).
-    The error bands are the 80\% quantiles, while the solid lines are the median of 20 replications.
+    The colors range from light (\(N=2^3\)) to dark (\(N=2^7\)) representing the computational budgets \(N \in [2^3, 2^4, 2^5, 2^6, 2^7]\).
+    The target distribution is a 50-D multivariate Gaussian with \(\nu = 500\).
+    The error bands are the 80\% quantiles obtained from 8 replications.
   }\label{fig:gaussian}
 \end{figure*}
 \begin{figure*}
   \vspace{-0.15in}
   \centering
-  \includegraphics[scale=1.0]{figures/stepsize_02.pdf}
+  \includegraphics[scale=1.0]{figures/stepsize_01.pdf}
   \vspace{-0.05in}
   \caption{\textbf{Optimizer stepsize (\(\gamma\)) versus final KL.
       pMCSA is the least sensitive to optimizer hyperparameters and results in stable convergence.}
@@ -47,7 +48,7 @@
 \subsection{Experimental Setup}
 \vspace{-0.09in}
 \paragraph{Implementation}
-For the realistic experiments, we implemented MCSA methods on top of the Turing~\citep{ge2018t} probabilistic programming framework\footnote{Available at \url{https://github.com/Red-Portal/KLpqVI.jl}}.
+For the realistic experiments, we implemented MCSA methods on top of the Turing~\citep{ge2018t} probabilistic programming framework.%\footnote{Available at \url{https://github.com/Red-Portal/KLpqVI.jl}}.
 For the variational family, we use diagonal multivariate Gaussians with the support transformation of~\citet{JMLR:v18:16-107}.
 We use the ADAM optimizer by~\citet{kingma_adam_2015} with a stepsize of 0.01 in all experiments.
 The budget is set to \(N=10\) for all experiments unless specified.
@@ -138,7 +139,7 @@ Additional experimental results can be found in~\cref{section:bnn_additional}
   \vspace{-0.07in}
 \paragraph{Setup}
 We train Gaussian processes (GP) with a Student-T likelihood for robust regression.
-We datasets from the UCI repository~\citep{Dua:2019} with 90\% random train-test splits.
+We use datasets from the UCI repository~\citep{Dua:2019} with 90\% random train-test splits.
 We use the Mat\'ern 5/2 covariance kernel with automatic relevance determination~\citep{neal_bayesian_1996} (see \cref{section:model_rgp}).
 We run all methods with \(T=2\cdot10^4\) iterations.
 For prediction, we use the mode of \(q\left(\cdot; \vlambda\right)\) for the hyperparameters and marginalize the latent function over \(q\left(\cdot; \vlambda\right)\)~\citep{rasmussen_gaussian_2006}.

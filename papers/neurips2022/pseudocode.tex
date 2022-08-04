@@ -1,5 +1,5 @@
 
-\section{Pseudocodes}
+\section{Pseudocodes}\label{section:pseudocode}
 \subsection{Markov Chain Kernels}
 
 
@@ -63,8 +63,8 @@
       stepsize schedule \(\gamma_t\)}
     \For{\textcolor{black}{\(t = 1, 2, \ldots, T\)}}{
       \( \vz_{t} \sim K_{\vlambda_{t-1}}(\vz_{t-1}, \cdot) \)\;
-      \( \vg\left(\vlambda\right) = \vs\,(\vlambda; \vz_{t}) \)\;
-      \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t\, \vg\left(\vlambda_{t-1}\right) \)\;
+      \( \vg\left(\vlambda\right) = -\vs\,(\vlambda; \vz_{t}) \)\;
+      \( \vlambda_{t} = \vlambda_{t-1} - \gamma_t\, \vg\left(\vlambda_{t-1}\right) \)\;
     }
     \caption{Markovian Score Climbing}\label{alg:msc}
   \end{algorithm2e}
@@ -87,8 +87,8 @@
         \For{\(n = 1, 2, \ldots, N\)}{
           \(\vz_{t}^{(n)} \sim K_{\vlambda_{t-1}}(\vz_{t}^{(n-1)}, \cdot)\)\;
         }
-        \( \vg\left(\vlambda\right) = \frac{1}{N} \sum^{N}_{n=1} \vs\,(\vlambda; \vz_{t}^{(n)}) \)\;
-        \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t \, \vg\left(\vlambda_{t-1}\right) \,
+        \( \vg\left(\vlambda\right) = -\frac{1}{N} \sum^{N}_{n=1} \vs\,(\vlambda; \vz_{t}^{(n)}) \)\;
+        \( \vlambda_{t} = \vlambda_{t-1} - \gamma_t \, \vg\left(\vlambda_{t-1}\right) \,
         \)\;
       }
       \caption{Joint Stochastic Approximation}\label{alg:jsa}
@@ -111,8 +111,8 @@
         \For{\(n = 1, 2, \ldots, N\)}{
           \(\vz^{(n)}_{t} \sim K_{\vlambda_{t-1}}(\vz^{(n)}_{t-1}, \cdot)\)\;
       }
-      \( \vg\left(\vlambda\right) = \frac{1}{N} \sum^{N}_{i=1} \vs\,(\vlambda; \vz_{t}^{(i)}) \)\;
-      \( \vlambda_{t} = \vlambda_{t-1} + \gamma_t\, \vg\left(\vlambda_{t-1}\right) \)\;
+      \( \vg\left(\vlambda\right) = -\frac{1}{N} \sum^{N}_{n=1} \vs\,(\vlambda; \vz_{t}^{(n)}) \)\;
+      \( \vlambda_{t} = \vlambda_{t-1} - \gamma_t\, \vg\left(\vlambda_{t-1}\right) \)\;
     }
     \caption{Parallel Markov Chain Score Ascent}\label{alg:pmcsa}
   \end{algorithm2e}

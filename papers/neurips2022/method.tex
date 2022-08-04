@@ -44,7 +44,7 @@ An exception is the analysis of~\citet{debavelaere_convergence_2021} where they 
 \paragraph{Non-Asymptotic Convergence}
 Through~\cref{thm:product_kernel,thm:kernel_conditions} and some technical assumptions on the objective function, we can apply the existing convergence results of MCGD to MCSA.
 \cref{table:convergence} provides a list of relevant results.
-Apart from properties of the objective function (such as Lipschitz smoothness), the convergence rates are stated in terms of the gradient bound \(G\), kernel mixing rate \(\rho\), and the number of MCGD iteration \(T\).
+Apart from properties of the objective function (such as Lipschitz smoothness), the convergence rates are stated in terms of the gradient bound \(G\), kernel mixing rate \(\rho\), and the number of MCGD iterations \(T\).
 We focus on \(G\) and \(\rho\) as they are closely related to the design choices of different MCSA algorithms.
 
 \vspace{-0.1in}
@@ -164,7 +164,7 @@ We empirically justify the bounds obtained using~\cref{thm:bounded_score} in \cr
 \vspace{-0.07in}
 \subsection{Markovian Score Climbing}
 \vspace{-0.07in}
-MSC (\cref{alg:msc}) is a simple instance of MCSA where \(\eta_t = \vz_t\) and \(P_{\vlambda_t} = K_{\vlambda_t}\), where \(K_{\vlambda_t}\) is the conditional importance sampling (CIS) kernel (originally proposed by~\citet{andrieu_uniform_2018}) where the proposals are generated from \(q\left(\cdot; \vlambda_t\right)\).
+MSC (\cref{alg:msc} in~\cref{section:pseudocode}) is a simple instance of MCSA where \(\eta_t = \vz_t\) and \(P_{\vlambda_t} = K_{\vlambda_t}\), where \(K_{\vlambda_t}\) is the conditional importance sampling (CIS) kernel (originally proposed by~\citet{andrieu_uniform_2018}) where the proposals are generated from \(q\left(\cdot; \vlambda_t\right)\).
 Although MSC uses only a single sample for the Markov chain, the CIS kernel internally uses \(N\) proposals to generate a single sample.
 Therefore, \(N\) in MSC has a different meaning, but it still indicates the computational budget.
 
@@ -174,7 +174,7 @@ Therefore, \(N\) in MSC has a different meaning, but it still indicates the comp
 
 \vspace{-0.15in}
 \paragraph{Discussion}
-\cref{thm:msc} shows that the gradient variance of MSA is insensitive to \(N\).
+\cref{thm:msc} shows that the gradient variance of MSC is insensitive to \(N\).
 Although the mixing rate does improve with \(N\), when \(w^*\) is large due to model misspecification and lack of convergence (see the discussion in \cref{section:assumption}), this will be marginal.
 Overall, \textit{the performance of MSC cannot be improved by increasing the computational budget \(N\)}.
 Even under stationarity, the variance of \(\veta\) is equal to that of a \textit{single} posterior sample at best.
@@ -182,7 +182,8 @@ Even under stationarity, the variance of \(\veta\) is equal to that of a \textit
 \vspace{-0.1in}
 \subsection{Joint Stochastic Approximation}
 \vspace{-0.1in}
-JSA (\cref{alg:jsa}) was proposed for deep generative models where the likelihood factorizes into each datapoint, for which subsampling can be used through a random-scan version of the independent Metropolis-Hastings (IMH, \citealt{hastings_monte_1970}) kernel.
+JSA (\cref{alg:jsa} in~\cref{section:pseudocode}) was proposed for deep generative models where the likelihood factorizes into each datapoint.
+Then, subsampling can be used through a random-scan version of the independent Metropolis-Hastings (IMH, \citealt{hastings_monte_1970}) kernel.
 Instead, we consider the general version of JSA with the vanilla IMH kernel since it can be used with any type of likelihood.
 At each MCGD step, JSA performs multiple Markov chain transitions and estimates the gradient by averaging all the intermediate states, which is closer to traditional MCMC estimation.
 
@@ -243,7 +244,7 @@ We turn to leverage this understanding to overcome the limitations of previous M
 \vspace{-0.1in}
 \subsection{Parallel Markov Chain Score Ascent}
 \vspace{-0.07in}
-We propose a novel scheme, \textit{parallel Markov chain score ascent} (pMCSA,~\cref{alg:pmcsa}), that embraces a slower mixing rate in order to consistently achieve an \(\mathcal{O}\left(\nicefrac{1}{N}\right)\) variance reduction, even on challenging problems with in a large \(w^*\),  
+We propose a novel scheme, \textit{parallel Markov chain score ascent} (pMCSA,~\cref{alg:pmcsa} in \cref{section:pseudocode}), that embraces a slower mixing rate in order to consistently achieve an \(\mathcal{O}\left(\nicefrac{1}{N}\right)\) variance reduction, even on challenging problems with in a large \(w^*\),  
 
 %\jrg{can we motivate this more strongly? Specifically, can we say that, by tying MCSA theory to MCGD theory, we can observe that the mixing rate isn't as important, so we develop a new scheme to exploit this previously not understood property.} 
 
