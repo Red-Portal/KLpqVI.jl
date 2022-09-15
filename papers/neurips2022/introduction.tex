@@ -35,7 +35,7 @@ In this paper, we address these theoretical gaps by casting MSC and JSA into a g
 This enables the application of the non-asymptotic convergence results of MCGD~\citep{duchi_ergodic_2012, NEURIPS2018_1371bcce, pmlr-v99-karimi19a, doan_finitetime_2020, doan_convergence_2020, Xiong_Xu_Liang_Zhang_2021, debavelaere_convergence_2021}.
 For MCGD methods, the fundamental properties affecting the convergence rate are the ergodic convergence rate (\(\rho\)) of the MCMC kernel and the gradient variance (\(G\)).
 We analyze \(\rho\) and \(G\) of MSC and JSA, enabling their practical comparison given a fixed computational budget (\(N\)).
-Furthermore, based on the recent insight that the mixing rate does not affect the convergence rate of MCGD~\citet{doan_convergence_2020,doan_finitetime_2020}, we propose a novel scheme, parallel MCSA (pMCSA), which achieves lower variance by trading off the mixing rate.
+Furthermore, based on the recent insight that the mixing rate does not affect the convergence rate of MCGD~\citep{doan_convergence_2020,doan_finitetime_2020}, we propose a novel scheme, parallel MCSA (pMCSA), which achieves lower variance by trading off the mixing rate.
 We verify our theoretical analysis through numerical simulations and compare MSC, JSA, and pMCSA on general Bayesian inference problems.
 Our experiments show that our proposed method outperforms previous MCSA approaches.
 %Furthermore, MSCA is competitive against evidence lower-bound (ELBO) maximization within our experiments.

@@ -14,8 +14,8 @@
 %%   }
 %% \end{figure*}
 
-\begin{figure*}
-  \vspace{-0.27in}
+\begin{figure*}[b]
+  \vspace{-0.1in}
   \centering
 %%   \includegraphics[scale=1.0]{figures/gaussian_02.pdf}
   \includegraphics[scale=1.0]{figures/gaussian_03.pdf}
@@ -28,8 +28,9 @@
     The error bands are the 80\% quantiles obtained from 8 replications.
   }\label{fig:gaussian}
 \end{figure*}
-\begin{figure*}
-  \vspace{-0.15in}
+
+\begin{figure*}[t]
+  \vspace{-0.10in}
   \centering
   \includegraphics[scale=1.0]{figures/stepsize_01.pdf}
   \vspace{-0.05in}
@@ -39,14 +40,15 @@
       The target distribution is a 100-D Gaussian with \(\nu = 500\).
       The error bands are the 80\% quantiles, while the solid lines are the median of 20 replications.
   }\label{fig:stepsize}
-  \vspace{-0.2in}
+  \vspace{-0.1in}
 \end{figure*}
 
-\vspace{-0.12in}
+
+\vspace{-0.1in}
 \section{Evaluations}\label{section:eval}
-\vspace{-0.12in}
+\vspace{-0.1in}
 \subsection{Experimental Setup}
-\vspace{-0.09in}
+\vspace{-0.05in}
 \paragraph{Implementation}
 For the realistic experiments, we implemented MCSA methods on top of the Turing~\citep{ge2018t} probabilistic programming framework.%\footnote{Available at \url{https://github.com/Red-Portal/KLpqVI.jl}}.
 For the variational family, we use diagonal multivariate Gaussians with the support transformation of~\citet{JMLR:v18:16-107}.
@@ -82,6 +84,9 @@ We make the following observations:
 \begin{enumerate*}[label=\textbf{(\roman*)}]
   \item pMCSA has the lowest variance overall, and it consistently benefits from increasing \(N\).
   \item MSC does not benefit from increasing \(N\) whatsoever.
+    \textcolor{blue}{
+  \item MSC-RB does not benefit much from increasing \(N\) until the divergence of \(q\left(\cdot; \vlambda\right)\) has become small.
+    }
   \item JSA does not benefit from increasing \(N\) until \(q\left(\cdot; \vlambda\right)\) has sufficiently converged (when \(w^*\) has become small).
 \end{enumerate*}
 These results confirm our theoretical results in~\cref{section:comparison,section:pmcsa}.
@@ -100,10 +105,6 @@ Overall, most MCSA methods seem to be the most stable with ADAM, which points ou
 %% 10\% of the data points were randomly selected in each of the 100 repetitions as test data.
 
 % \input{gp_table.tex}
-
-\input{bnn_table.tex}
-
-\input{pgp_table.tex}
 
 %% %
 
@@ -125,6 +126,8 @@ We run all methods with \(T=5\cdot10^4\) iterations.
 For the model, we use the priors and forward propagation method of~\citet{pmlr-v37-hernandez-lobatoc15} with a \(50\)-unit hidden layer (see \cref{section:model_bnn}).
 % \looseness=-1
 
+\input{bnn_table.tex}
+
 \vspace{-0.1in}
 \paragraph{Results}
 The results are shown in~\cref{table:bnn}.
@@ -144,6 +147,8 @@ We use the Mat\'ern 5/2 covariance kernel with automatic relevance determination
 We run all methods with \(T=2\cdot10^4\) iterations.
 For prediction, we use the mode of \(q\left(\cdot; \vlambda\right)\) for the hyperparameters and marginalize the latent function over \(q\left(\cdot; \vlambda\right)\)~\citep{rasmussen_gaussian_2006}.
 We consider ELBO with only \(N=1\) since differentiating through the likelihood makes its per-iteration cost comparable to MCSA methods with \(N=10\).
+
+\input{pgp_table.tex}
 
 \vspace{-0.1in}
 \paragraph{Results}

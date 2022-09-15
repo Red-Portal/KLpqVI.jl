@@ -8,11 +8,23 @@ We have shown that this theoretical improvement translates into better empirical
 
 \vspace{-0.12in}
 \paragraph{Limitations}
-Our work has two main limitations.
-Firstly, since our work aims to understand existing MCSA methods, it inherits the current limitations of MCSA methods.
+Our work has three main limitations.
+Firstly, since our work aims to understand existing MCSA methods, it inherits their current limitations.
 For example, minibatch subsampling is challenging for models with non-factorizable likelihoods~\citep{NEURIPS2020_b2070693}.
 Secondly, our theoretical analysis in~\cref{section:comparison} requires~\cref{thm:bounded_score}, which is strong, but required to connect with MCGD.
 An important future direction would be to relax the assumptions needed by MCGD.
+\textcolor{blue}{%
+ Lastly, our MCSA framework does not include models with parameterized posteriors such as variational autoencoders.
+}
+
+\textcolor{blue}{
+\vspace{-0.12in}
+\paragraph{Parameterized Posteriors}
+On problems with parameterized posteriors, the target posterior moves around.
+Therefore, quickly chasing the moving posterior with fast converging MCMC kernels is as important as achieving low variance.
+Because of this, trading bias and variance is less straightforward compared to the ``static'' setting we consider.
+Furthermore, the usage of computationally expensive but fast converging MCMC kernels could be beneficial as suggested by \citet{zhang_transport_2022}.
+}
 
 \vspace{-0.12in}
 \paragraph{Towards Alternative Divergences}

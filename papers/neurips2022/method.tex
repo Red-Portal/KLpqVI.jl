@@ -13,53 +13,8 @@ As shown in~\cref{eq:mcgd}, the basic ingredients of MCGD are the target functio
 Obtaining MCSA from MCGD boils down to designing \(\vg\) and \(P_{\vlambda}\) such that \(f\left(\vlambda\right) = \DKL{\pi}{q\left(\cdot; \vlambda\right)} \).
 The following proposition provides sufficient conditions on \(\vg\) and \(P_{\vlambda}\) to achieve this goal.
 
-\vspace{0.07in}
-\input{thm_product_kernel}
-
-This simple connection between MCGD and VI paves the way toward the non-asymptotic analysis of JSA and MSC.
-%We will later propose a third novel scheme that conforms to~\cref{thm:product_kernel}.
-Note that \(N\) here can be regarded as the computational budget of each MCGD iteration since the cost of
-\begin{enumerate*}[label=\textbf{(\roman*)}]
-  \item generating the Markov chain samples \(\vz^{(1)}, \ldots, \vz^{(N)}\) and
-  \item computing the gradient \(\vg\)
-\end{enumerate*}
-will linearly increase with \(N\).
-
-In addition, the MCGD framework often assumes \(P\) to be geometrically ergodic.
-An exception is the analysis of~\citet{debavelaere_convergence_2021} where they work with polynomially ergodic kernels.
-\begin{assumption}{(Markov chain kernel)}\label{thm:kernel_conditions}
-\vspace{-0.05in}
-  The Markov chain kernel \(P\) is geometrically ergodic as
-  {%\small
-  \[
-  \DTV{P_{\vlambda}^{n}\left(\veta, \cdot\right)}{ \Pi } \leq C \, \rho^{n}
-  \]
-  }
-  for some positive constant \(C\).
-\end{assumption}
-
-\vspace{-0.07in}
-\subsection{Non-Asymptotic Convergence of Markov Chain Score Ascent}%\label{}
-\vspace{-0.05in}
-\paragraph{Non-Asymptotic Convergence}
-Through~\cref{thm:product_kernel,thm:kernel_conditions} and some technical assumptions on the objective function, we can apply the existing convergence results of MCGD to MCSA.
-\cref{table:convergence} provides a list of relevant results.
-Apart from properties of the objective function (such as Lipschitz smoothness), the convergence rates are stated in terms of the gradient bound \(G\), kernel mixing rate \(\rho\), and the number of MCGD iterations \(T\).
-We focus on \(G\) and \(\rho\) as they are closely related to the design choices of different MCSA algorithms.
-
+\begin{table*}[b]
 \vspace{-0.1in}
-\paragraph{Convergence and the Mixing Rate \(\rho\)}
-\citet{duchi_ergodic_2012} was the first to provide an analysis of the general MCGD setting.
-Their convergence rate is dependent on the mixing rate through the \(1 / \log \rho^{-1}\) term.
-For MCSA, this results in an overly conservative rate since, on challenging problems, mixing can be slow such that \(\rho \approx 1\).
-Fortunately, \citet{doan_convergence_2020,doan_finitetime_2020} have recently shown that it is possible to obtain a rate independent of the mixing rate \(\rho\).
-For example, in the result of~\citet{doan_finitetime_2020}, the influence of \(\rho\) decreases in a rate of \(\mathcal{O}\left(\nicefrac{1}{T^2}\right)\).
-%The fact that the convergence rate can be independent of the mixing rate is critical.
-This observation is critical since it implies that \textit{trading ``lower gradient variance'' with a ``slower mixing rate'' could be profitable}.
-We exploit this observation in our novel MCSA scheme in~\cref{section:pmcsa}.
-
-\begin{table*}
-\vspace{-0.27in}
 \centering
 \caption{Convergence Rates of MCGD Algorithms}\label{table:convergence}
 \vspace{-0.05in}
@@ -105,6 +60,53 @@ We exploit this observation in our novel MCSA scheme in~\cref{section:pmcsa}.
 \end{threeparttable}
 \vspace{-0.2in}
 \end{table*}
+
+
+\vspace{0.07in}
+\input{thm_product_kernel}
+
+This simple connection between MCGD and VI paves the way toward the non-asymptotic analysis of JSA and MSC.
+%We will later propose a third novel scheme that conforms to~\cref{thm:product_kernel}.
+Note that \(N\) here can be regarded as the computational budget of each MCGD iteration since the cost of
+\begin{enumerate*}[label=\textbf{(\roman*)}]
+  \item generating the Markov chain samples \(\vz^{(1)}, \ldots, \vz^{(N)}\) and
+  \item computing the gradient \(\vg\)
+\end{enumerate*}
+will linearly increase with \(N\).
+
+In addition, the MCGD framework often assumes \(P\) to be geometrically ergodic.
+An exception is the analysis of~\citet{debavelaere_convergence_2021} where they work with polynomially ergodic kernels.
+\begin{assumption}{(Markov chain kernel)}\label{thm:kernel_conditions}
+\vspace{-0.05in}
+  The Markov chain kernel \(P\) is geometrically ergodic as
+  {%\small
+  \[
+  \DTV{P_{\vlambda}^{n}\left(\veta, \cdot\right)}{ \Pi } \leq C \, \rho^{n}
+  \]
+  }
+  for some positive constant \(C\).
+\end{assumption}
+
+
+\vspace{-0.07in}
+\subsection{Non-Asymptotic Convergence of Markov Chain Score Ascent}%\label{}
+\vspace{-0.05in}
+\paragraph{Non-Asymptotic Convergence}
+Through~\cref{thm:product_kernel,thm:kernel_conditions} and some technical assumptions on the objective function, we can apply the existing convergence results of MCGD to MCSA.
+\cref{table:convergence} provides a list of relevant results.
+Apart from properties of the objective function (such as Lipschitz smoothness), the convergence rates are stated in terms of the gradient bound \(G\), kernel mixing rate \(\rho\), and the number of MCGD iterations \(T\).
+We focus on \(G\) and \(\rho\) as they are closely related to the design choices of different MCSA algorithms.
+
+\vspace{-0.1in}
+\paragraph{Convergence and the Mixing Rate \(\rho\)}
+\citet{duchi_ergodic_2012} was the first to provide an analysis of the general MCGD setting.
+Their convergence rate is dependent on the mixing rate through the \(1 / \log \rho^{-1}\) term.
+For MCSA, this results in an overly conservative rate since, on challenging problems, mixing can be slow such that \(\rho \approx 1\).
+Fortunately, \citet{doan_convergence_2020,doan_finitetime_2020} have recently shown that it is possible to obtain a rate independent of the mixing rate \(\rho\).
+For example, in the result of~\citet{doan_finitetime_2020}, the influence of \(\rho\) decreases in a rate of \(\mathcal{O}\left(\nicefrac{1}{T^2}\right)\).
+%The fact that the convergence rate can be independent of the mixing rate is critical.
+This observation is critical since it implies that \textit{trading ``lower gradient variance'' with a ``slower mixing rate'' could be profitable}.
+We exploit this observation in our novel MCSA scheme in~\cref{section:pmcsa}.
 
 \vspace{-0.1in}
 \paragraph{Gradient Bound \(G\)}
@@ -165,7 +167,7 @@ We empirically justify the bounds obtained using~\cref{thm:bounded_score} in \cr
 \subsection{Markovian Score Climbing}
 \vspace{-0.07in}
 MSC (\cref{alg:msc} in~\cref{section:pseudocode}) is a simple instance of MCSA where \(\eta_t = \vz_t\) and \(P_{\vlambda_t} = K_{\vlambda_t}\), where \(K_{\vlambda_t}\) is the conditional importance sampling (CIS) kernel (originally proposed by~\citet{andrieu_uniform_2018}) where the proposals are generated from \(q\left(\cdot; \vlambda_t\right)\).
-Although MSC uses only a single sample for the Markov chain, the CIS kernel internally uses \(N\) proposals to generate a single sample.
+Although MSC uses only a single sample for the Markov chain, the CIS kernel internally operates \(N-1\) proposals.
 Therefore, \(N\) in MSC has a different meaning, but it still indicates the computational budget.
 
 \input{lemmas_previous_mcsa}
@@ -180,12 +182,54 @@ Overall, \textit{the performance of MSC cannot be improved by increasing the com
 Even under stationarity, the variance of \(\veta\) is equal to that of a \textit{single} posterior sample at best.
 
 \vspace{-0.1in}
+\paragraph{Rao-Blackwellization}
+\textcolor{blue}{
+Meanwhile, \citeauthor{NEURIPS2020_b2070693} also provide a Rao-Blackwellized version of MSC we denote as MSC-RB.
+Instead of selecting a single \(\vz_t\) by resampling over the \(N\) internal proposals, they suggest using the importance-weighted estimate%
+}
+{
+\begin{align*}
+        \vg_{\text{MSC-RB}}\left(\vlambda\right) = - \sum^{N}_{n=1} \frac{w\left(\vz^{(n)}\right)}{ \sum^{N}_{n^{\prime}=1} w\left(\vz^{(n^{\prime})}\right)} \, \vs\left(\vlambda;\vz^{(n)}\right),
+\end{align*}%
+}%
+\textcolor{blue}{
+where \(\vz^{(1)} = \vz_{t-1}\) is the previous (rejection) state.
+The self-normalized structure of this estimator makes its variance very difficult to analyze as it is a ratio of random variables.
+However, if we assume that \(\vz_{t-1}\) approximately follows \(q\left(\cdot; \vlambda\right)\), its variance should be similar to that of the self-normalized importance sampling (SNIS) estimator, which has been approximated by~\citet{kong_note_1992, kong_sequential_1994, elvira_rethinking_2022} as%
+}
+\begin{align}
+\V{ \vg_{\text{MSC-RB}}\left(\vlambda\right) } \approx
+\frac{
+    \sigma^2
+}{
+    N
+}
+\left(1 + \Vsub{\rvvz \sim q\left(\cdot; \vlambda\right)}{ w\left(\rvvz\right) }\right)
+=
+\frac{
+    \sigma^2
+}{
+    N
+}
+\left( 1 + \DChi{\pi}{q\left(\cdot; \vlambda\right)} \right),\label{eq:snis_var}
+\end{align}
+\textcolor{blue}{
+where \(\sigma^2 = \Vsub{\rvvz \sim \pi\left(\cdot\right)}{ -\vs\left(\vlambda; \rvvz \right) }\) is the variance with respect to the true posterior, and \(\DChi{\pi}{q\left(\cdot; \vlambda\right)}\) is the \(\chi^2\) divergence from \(\pi\) to \(q\left(\cdot; \vlambda\right)\).
+Although~\cref{eq:snis_var} suggests a \(\mathcal{O}\left(\nicefrac{1}{N}\right)\) variance reduction rate, the bound
+\[
+\exp\left( \DKL{\pi}{q\left(\cdot; \vlambda\right)} \right) - 1 \leq  d_{\chi^2}\left(\pi \parallel q\left(\cdot; \vlambda\right) \right)
+\]
+shows that, under realistic conditions, the variance would be too large to counter by increasing \(N\).
+Therefore, both MSC and MSC-RB should perform poorly on challenging problems.
+}
+
+\vspace{-0.1in}
 \subsection{Joint Stochastic Approximation}
 \vspace{-0.1in}
 JSA (\cref{alg:jsa} in~\cref{section:pseudocode}) was proposed for deep generative models where the likelihood factorizes into each datapoint.
 Then, subsampling can be used through a random-scan version of the independent Metropolis-Hastings (IMH, \citealt{hastings_monte_1970}) kernel.
-Instead, we consider the general version of JSA with the vanilla IMH kernel since it can be used with any type of likelihood.
-At each MCGD step, JSA performs multiple Markov chain transitions and estimates the gradient by averaging all the intermediate states, which is closer to traditional MCMC estimation.
+Instead, we consider the general version of JSA with a vanilla IMH kernel since it can be used for any type of likelihood.
+At each MCGD step, JSA performs multiple Markov chain transitions and estimates the gradient by averaging all the intermediate states, which is closer to traditional MCMC.
 
 \vspace{-0.1in}
 \paragraph{Independent Metropolis-Hastings}
@@ -193,7 +237,7 @@ At each MCGD step, JSA performs multiple Markov chain transitions and estimates 
 Similarly to MSC, the IMH kernel in JSA generates proposals from \(q\left(\cdot; \vlambda_t\right)\).
 To show the geometric ergodicity of the implicit kernel \(P\), we utilize the geometric convergence rate of IMH kernels provided by~\citet[Theorem 2.1]{10.2307/2242610} and~\citet{wang_exact_2020}.
 Furthermore, to derive an upper bound on the gradient variance, we use the exact \(n\)-step marginal IMH kernel derived by~\citet{Smith96exacttransition} as
-{\small
+{%\small
   \begin{align}
   K^n_{\vlambda}\left(\vz, d\vz^{\prime}\right) 
   = T_n\left(\, w\left(\vz\right) \vee w\left(\vz^{\prime}\right)\,\right) \, \pi\left(\vz^{\prime}\right) \, d\vz^{\prime}
@@ -202,7 +246,7 @@ Furthermore, to derive an upper bound on the gradient variance, we use the exact
   \end{align}
 }%
 where {\(w\left(\vz\right) = \pi\left(\vz\right)/q_{\text{def.}}\left(\vz; \vlambda\right)\), \(x \vee y = \max\left(x, y\right)\)}, and for {\(R\left(w\right) = \{\, \vz^{\prime} \mid w\,\left(\vz^{\prime}\right) \leq w \,\}\)}, 
-{\small
+{%\small
   \begin{align}
     T_n\left(w\right)      = \int_w^{\infty}
     \frac{n}{v^2}
@@ -241,10 +285,33 @@ However, \(\rho\) and \(G\) do not impact convergence equally.
 In particular, we noted in \cref{section:convergence} that recent results on MCGD suggest that MCSA depends more on the gradient variance than the mixing rate.
 We turn to leverage this understanding to overcome the limitations of previous MCSA methods.
 
+\begin{center}
+\begin{minipage}[c]{0.8\textwidth}
+  \begin{algorithm2e}[H]
+    \DontPrintSemicolon
+    \SetAlgoLined
+    \KwIn{MCMC kernel \(K_{\vlambda}(\vz,\cdot)\),
+      initial samples \(\vz_0^{(1)},\, \ldots,\, \vz_0^{(N)}\),
+      initial parameter \(\vlambda_0\),
+      number of iterations \(T\),
+      stepsize schedule \(\gamma_t\)
+    }
+    \For{\(t = 1, 2, \ldots, T\)}{
+        \For{\(n = 1, 2, \ldots, N\)}{
+          \(\vz^{(n)}_{t} \sim K_{\vlambda_{t-1}}(\vz^{(n)}_{t-1}, \cdot)\)\;
+      }
+      \( \vg\left(\vlambda\right) = -\frac{1}{N} \sum^{N}_{n=1} \vs\,(\vlambda; \vz_{t}^{(n)}) \)\;
+      \( \vlambda_{t} = \vlambda_{t-1} - \gamma_t\, \vg\left(\vlambda_{t-1}\right) \)\;
+    }
+    \caption{Parallel Markov Chain Score Ascent}\label{alg:pmcsa}
+  \end{algorithm2e}
+\end{minipage}
+\end{center}
+
 \vspace{-0.1in}
 \subsection{Parallel Markov Chain Score Ascent}
 \vspace{-0.07in}
-We propose a novel scheme, \textit{parallel Markov chain score ascent} (pMCSA,~\cref{alg:pmcsa} in \cref{section:pseudocode}), that embraces a slower mixing rate in order to consistently achieve an \(\mathcal{O}\left(\nicefrac{1}{N}\right)\) variance reduction, even on challenging problems with in a large \(w^*\),  
+We propose a novel scheme, \textit{parallel Markov chain score ascent} (pMCSA,~\cref{alg:pmcsa}), that embraces a slower mixing rate in order to consistently achieve an \(\mathcal{O}\left(\nicefrac{1}{N}\right)\) variance reduction, even on challenging problems with a large \(w^*\),  
 
 %\jrg{can we motivate this more strongly? Specifically, can we say that, by tying MCSA theory to MCGD theory, we can observe that the mixing rate isn't as important, so we develop a new scheme to exploit this previously not understood property.} 
 
@@ -287,7 +354,7 @@ This is because
 
 \begin{wraptable}{r}{0.5\textwidth}
   \centering
-  \vspace{-0.4in}
+  \vspace{-0.45in}
   \input{table_cost}
   \vspace{-0.2in}
 \end{wraptable}

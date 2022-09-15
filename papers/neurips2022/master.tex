@@ -13,10 +13,10 @@
 %     \usepackage[preprint]{neurips_2020}
 
 % to compile a camera-ready version, add the [final] option, e.g.:
-%     \usepackage[final]{neurips_2020}
+\usepackage[final,nonatbib]{neurips_2022}
 
 % to avoid loading the natbib package, add option nonatbib:
-\usepackage[nonatbib]{neurips_2022}
+%\usepackage[nonatbib]{neurips_2022}
 %% \usepackage[preprint,nonatbib]{neurips_2022}
 \usepackage[sort&compress,round]{natbib}
 \bibliographystyle{authordate1}
@@ -86,12 +86,12 @@
 %% }
 
 \author{%
-  Kyurae Kim \\
+  Kyurae Kim\thanks{K. Kim is currently with the University of Pennsylvania.} \\
   Sogang University\\
   \texttt{msca8h@sogang.ac.kr} \\
   % examples of more authors
   \And
-  Jisu Oh \\
+  Jisu Oh\thanks{J. Oh is currently with North Carolina State University.} \\
   Sogang University \\
   % Address \\
   \texttt{jisuoh@sogang.ac.kr} \\
@@ -131,8 +131,10 @@
 
 \begin{ack}
   This work initially started in the process of understanding the performance of Markovian score climbing.
-  We thank Hongseok Yang for pointing us to a relevant related work, Guanyang Wang for insightful discussions about the independent Metropolis-Hastings algorithm, Geon Park and Kwanghee Choi for constructive comments that enriched this paper.
-  We also acknowledge the Computer Science Department of Sogang University for providing computational resources.
+  We thank Hongseok Yang for pointing us to a relevant related work, Guanyang Wang for insightful discussions about the independent Metropolis-Hastings algorithm, Geon Park and Kwanghee Choi for constructive comments that enriched this paper, and Christian A. Naesseth for comments about Rao-Blackwellized MSC.
+  We also acknowledge the Department of Computer Science and Engineering of Sogang University for providing computational resources.
+
+  K. Kim was supported in part by the EPSRC through the Big Hypotheses grant [EP/R018537/1].
 \end{ack}
 %\newpage
 \bibliography{references}
