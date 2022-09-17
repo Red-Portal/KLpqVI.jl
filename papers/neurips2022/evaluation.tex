@@ -1,23 +1,10 @@
 
-%% \begin{figure*}
-%%   \centering
-%%   \subfloat[Optimizer Sensitivity]{
-%%     \includegraphics[scale=1.0]{figures/stepsize_01.pdf}
-%%   } \\
-%%   \subfloat[Gradient Variance]{
-%%     \includegraphics[scale=1.0]{figures/gaussian_01.pdf}
-%%   }
-%%   \caption{\textbf{Optimizer stepsize (\(\gamma\)) versus final KL. pMCSA is the least sensitive to optimizer hyperparameters and results in stable convergence.}
-%%       The final KL is obtained at the \(10^4\)th iteration.
-%%       The target distribution is a 100-D Gaussian with \(\nu = 500\).
-%%       The error bands are the 80\% quantiles while the solid lines are the median of 20 replications.
-%%   }
-%% \end{figure*}
-
 %\vspace{-0.1in}
+\vspace{-1.5ex}
 \section{Evaluations}\label{section:eval}
-\vspace{-0.1in}
+\vspace{-1.5ex}
 \subsection{Experimental Setup}
+\vspace{-1.ex}
 %\vspace{-0.05in}
 \paragraph{Implementation}
 For the realistic experiments, we implemented MCSA methods on top of the Turing~\citep{ge2018t} probabilistic programming framework.%\footnote{Available at \url{https://github.com/Red-Portal/KLpqVI.jl}}.
@@ -25,12 +12,12 @@ For the variational family, we use diagonal multivariate Gaussians with the supp
 We use the ADAM optimizer by~\citet{kingma_adam_2015} with a stepsize of 0.01 in all experiments.
 The budget is set to \(N=10\) for all experiments unless specified.
 
-\begin{figure*}[t]
-  \vspace{-2ex}
+\begin{figure*}[b]
+  \vspace{-1ex}
   \centering
 %%   \includegraphics[scale=1.0]{figures/gaussian_02.pdf}
   \includegraphics[scale=1.0]{figures/gaussian_03.pdf}
-  %\vspace{-0.08in}
+  \vspace{-0.5ex}
   \caption{\textbf{Gradient variance versus iteration and computational budget (\(N\)).
       pMCSA not only achieves the least gradient variance, but its variance also scales better with \(N\).
     }
@@ -39,6 +26,27 @@ The budget is set to \(N=10\) for all experiments unless specified.
     The error bands are the 80\% quantiles obtained from 8 replications.
   }\label{fig:gaussian}
 \end{figure*}
+
+\vspace{-1.ex}
+\paragraph{Baselines}
+We compare
+\begin{enumerate*}[label=\textbf{(\roman*)}]
+  \item \textbf{pMCSA} (ours,~\cref{section:pmcsa}),
+  \item \textbf{JSA}~\citep{pmlr-v124-ou20a},
+  \item \textbf{MSC}~\citep{NEURIPS2020_b2070693},
+  \item MSC with with Rao-Blackwellization (\textbf{MSC-RB},~\citealt{NEURIPS2020_b2070693}), and
+  %\item adaptive importance sampling (IS) with the self-normalized IS estimator (\textbf{SNIS},~\citealt{robert_monte_2004}), and
+  \item evidence lower-bound maximization (\textbf{ELBO},~\citealt{pmlr-v33-ranganath14, JMLR:v18:16-107}) with the path derivative estimator~\citep{NIPS2017_e91068ff}.
+\end{enumerate*}
+
+\vspace{-1.5ex}
+\subsection{Simulations}\label{section:simulation}
+\vspace{-1ex}
+\paragraph{Setup}
+First, we verify our theoretical analysis on multivariate Gaussians with full-rank covariances sampled from Wishart distribution with \(\nu\) degrees of freedom (values of \(\nu\) are in the figure captions).
+This problem is challenging since an IMH (used by pMCSA, JSA) or CIS (used by MSC, MSC-RB) kernel with a diagonal Gaussian proposal will mix slowly due to a large \(w^*\).
+% Since the exact KL divergence between the target and the varitional approximation is available, accurate evaluation is possible.
+
 
 \begin{figure*}[t]
   \vspace{-2ex}
@@ -54,28 +62,7 @@ The budget is set to \(N=10\) for all experiments unless specified.
   \vspace{-2ex}
 \end{figure*}
 
-
-\vspace{-0.1in}
-\paragraph{Baselines}
-We compare
-\begin{enumerate*}[label=\textbf{(\roman*)}]
-  \item \textbf{pMCSA} (ours,~\cref{section:pmcsa}),
-  \item \textbf{JSA}~\citep{pmlr-v124-ou20a},
-  \item \textbf{MSC}~\citep{NEURIPS2020_b2070693},
-  \item MSC with with Rao-Blackwellization (\textbf{MSC-RB},~\citealt{NEURIPS2020_b2070693}), and
-  %\item adaptive importance sampling (IS) with the self-normalized IS estimator (\textbf{SNIS},~\citealt{robert_monte_2004}), and
-  \item evidence lower-bound maximization (\textbf{ELBO},~\citealt{pmlr-v33-ranganath14, JMLR:v18:16-107}) with the path derivative estimator~\citep{NIPS2017_e91068ff}.
-\end{enumerate*}
-
-\vspace{-0.1in}
-\subsection{Simulations}\label{section:simulation}
-%\vspace{-0.1in}
-\paragraph{Setup}
-First, we verify our theoretical analysis on multivariate Gaussians with full-rank covariances sampled from Wishart distribution with \(\nu\) degrees of freedom (values of \(\nu\) are in the figure captions).
-This problem is challenging since an IMH (used by pMCSA, JSA) or CIS (used by MSC, MSC-RB) kernel with a diagonal Gaussian proposal will mix slowly due to a large \(w^*\).
-% Since the exact KL divergence between the target and the varitional approximation is available, accurate evaluation is possible.
-
-\vspace{-0.1in}
+\vspace{-1ex}
 \paragraph{Gradient Variance}
 We evaluate our theoretical analysis of the gradient variance.
 The variance is estimated from \(512\) independent Markov chains using the parameters generated by the main MCSA procedure.
@@ -92,8 +79,8 @@ We make the following observations:
 \end{enumerate*}
 These results confirm our theoretical results in~\cref{section:comparison,section:pmcsa}.
 
+
 \input{bnn_table.tex}
-\input{pgp_table.tex}
 
 \vspace{-0.1in}
 \paragraph{Robustness Against Optimizers}
@@ -119,6 +106,8 @@ Overall, most MCSA methods seem to be the most stable with ADAM, which points ou
 %% While the test accuracy suggests that ELBO converges quickly around \(t=2000\) (\cref{fig:german_acc}), in terms of uncertainty estimate, it takes much longer to converge (\cref{fig:german_lpd}).
 %% This shows that inclusive KL minimization chooses a path that has better density coverage as expected.
 
+\input{pgp_table.tex}
+
   \vspace{-0.1in}
 \subsection{Bayesian Neural Network Regression}\label{section:bnn}
   \vspace{-0.07in}
@@ -130,7 +119,7 @@ We run all methods with \(T=5\cdot10^4\) iterations.
 For the model, we use the priors and forward propagation method of~\citet{pmlr-v37-hernandez-lobatoc15} with a \(50\)-unit hidden layer (see \cref{section:model_bnn}).
 % \looseness=-1
 
-\vspace{-0.1in}
+\vspace{-1.5ex}
 \paragraph{Results}
 The results are shown in~\cref{table:bnn}.
 pMCSA achieves the best performance compared to all other MCSA methods.
@@ -138,33 +127,35 @@ Also, its overall performance is comparable to exclusive KL minimization methods
 Furthermore, on \textsf{airfoil} and \textsf{energy}, pMCSA improves over ELBO by 0.29 \texttt{nat} and 0.48 \texttt{nat}.
 %
 \begin{wrapfigure}[12]{r}{0.5\textwidth}
-  \vspace{-4ex}
+  \vspace{-4.ex}
   \centering
   \includegraphics[scale=0.9]{figures/pruning_01.pdf}
   \vspace{-2ex}
   \caption{\textbf{
       Distribution of the variational posterior mean of the BNN weights.
-      pMCSA restuls in significantly less pruning.
+      pMCSA results in much less pruning.
     }
     The density was estimated with a Gaussian kernel and the bandwidth was selected with Silverman's rule.
-  }\label{fig:gaussian}
+  }\label{fig:pruning}
 \end{wrapfigure}
 %
 Even on \textsf{gas} where pMCSA did not beat ELBO, its performance is comparable, and it dominates all other MCSA methods by roughly 0.4 \texttt{nat}.
-Additional experimental results can be found in~\cref{section:bnn_additional}
+Additional experimental results, \textcolor{blue}{including plots with respect to the wallclock time}, can be found in~\cref{section:bnn_additional}
 
-\vspace{-6ex}
+\vspace{-5ex}
 \textcolor{blue}{
 \paragraph{Weight Pruning}
-For BNNs, ELBO maximization has recently been dis to result in many of the weights being concentrated around zero.
-For MCSA, 
-This suggests that weight pruning is an artifact of using exclusive KL minimization rather
-For BNNs, ELBO maximization has recently been dis to result in many of the weights being concentrated around zero.
+When using VI, BNNs tend to underfit data.
+\citet{mackay_local_2001,pmlr-v70-hoffman17a,trippe_overpruning_2017} associate this with ``weight pruning'', that is, the variational posterior converges to the zero-mean prior.
+Furthermore,~\citet{coker_wide_2022,huix_variational_2022} have shown that this is guarenteed to happen under certain conditions.
+However, these results are exclusively based on exclusive KL minimization.
+\cref{fig:pruning} shows that MCSA does not suffer from weight pruning, which suggest that pruning is an artifact of using the exclusive KL.
+Additional plots are shown in \cref{fig:pruning_additional} (\cref{section:bnn_additional}).
 }
 
-\vspace{-0.1in}
+\vspace{-1.5ex}
 \subsection{Robust Gaussian Process Regression}\label{section:bgp}
-\vspace{-0.07in}
+\vspace{-1.5ex}
 \paragraph{Setup}
 We train Gaussian processes (GP) with a Student-T likelihood for robust regression.
 We use datasets from the UCI repository~\citep{Dua:2019} with 90\% random train-test splits.
@@ -173,14 +164,14 @@ We run all methods with \(T=2\cdot10^4\) iterations.
 For prediction, we use the mode of \(q\left(\cdot; \vlambda\right)\) for the hyperparameters and marginalize the latent function over \(q\left(\cdot; \vlambda\right)\)~\citep{rasmussen_gaussian_2006}.
 We consider ELBO with only \(N=1\) since differentiating through the likelihood makes its per-iteration cost comparable to MCSA methods with \(N=10\).
 
-\vspace{-0.1in}
+\vspace{-1.8ex}
 \paragraph{Results}
 The results are shown in~\cref{table:gp}.
 Except for \textsf{gas}, pMCSA achieves better performance than all other methods.
 This suggests that, overall, the exclusive KL may be less effective for GP posteriors.
 Although ELBO achieves the best performance on \textsf{gas}, pMCSA dominates other MCSA methods.
 Our encouraging regression results suggest that incorporating methods such as inducing points~\citep{NIPS2005_4491777b} into MCSA may lead to an important new class of GP models.
-Additional experimental results can be found in~\cref{section:gp_additional}.
+Additional experimental results, \textcolor{blue}{including plots with respect to the wallclock time}, can be found in~\cref{section:gp_additional}.
 
 %%% Local Variables:
 %%% TeX-master: "master"

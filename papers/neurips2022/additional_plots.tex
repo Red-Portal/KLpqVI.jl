@@ -64,6 +64,18 @@
 \end{figure}
 
 \newpage
+\begin{figure}[H]
+  \vspace{-0.10in}
+  \centering
+  \includegraphics[scale=0.9]{figures/pruning_02.pdf}
+  \vspace{-0.05in}
+  \caption{\textbf{
+      Distribution of the variational posterior mean of the BNN weights.
+    }
+    The density was estimated using a Gaussian kernel with Silverman's rule.
+  }\label{fig:pruning_additional}
+\end{figure}
+
 \subsection{Robust Gaussian Process Regression}\label{section:gp_additional}
 \begin{figure}[h]
   \centering
@@ -79,16 +91,16 @@
     \includegraphics[scale=0.9]{figures/boston_pgp_01.pdf}
     \vspace{-0.1in}
   }\vspace{0.05in}\\
-  \subfloat[\textsf{energy}]{
-    \includegraphics[scale=0.9]{figures/energy_pgp_01.pdf}
-    \vspace{-0.1in}
-  } 
   \caption{\textbf{Test root-mean-square error (RMSE) and test log predictive density (LPD) on robust Gaussian process regression.}
   The error bands shows the 95\% bootstrap confidence interval obtained from 20 repetitions.}
 \end{figure}
 %
 \newpage
 \begin{figure}[ht]
+  \subfloat[\textsf{energy}]{
+    \includegraphics[scale=0.9]{figures/energy_pgp_01.pdf}
+    \vspace{-0.1in}
+  }\vspace{0.05in}\\ 
   \subfloat[\textsf{concrete}]{
     \includegraphics[scale=0.9]{figures/concrete_pgp_01.pdf}
     \vspace{-0.1in}
@@ -103,18 +115,6 @@
   }
   \caption{\textbf{(continued) Test root-mean-square error (RMSE) and test log predictive density (LPD) on robust Gaussian process regression.}
   The error bands show the 95\% bootstrap confidence intervals obtained from 20 independent 90\% train-test splits.
-  }
-\end{figure}
-%
-\begin{figure}[H]
-  \vspace{-0.10in}
-  \centering
-  \includegraphics[scale=0.9]{figures/pruning_02.pdf}
-  \vspace{-0.05in}
-  \caption{\textbf{
-      Density of the mode of the learned BNN weights.
-    }
-    The density was estimated using a Gaussian kernel with Silverman's rule.
   }
 \end{figure}
 

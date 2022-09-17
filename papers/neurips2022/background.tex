@@ -1,19 +1,21 @@
 
+\vspace{-2ex}
 \section{Background}
-\vspace{-0.05in}
+\vspace{-2ex}
 \subsection{Inclusive Kullback-Leibler Minimization with Stochastic Gradients}\label{section:ivi_previous}
 \vspace{-0.05in}
 \paragraph{VI with SGD}
-The goal of VI is to find the optimal variational parameter \(\vlambda\) identifying \(q\left(\cdot; \vlambda\right) \in \mathcal{Q}\) that minimizes some discrepancy measure \(D\left(\pi, q\left(\cdot; \vlambda\right)\right)\).
-A typical way to perform VI is to use stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951}), provided that \textit{unbiased} gradient estimates of the optimization target \(\vg\,(\vlambda)\) are available such that we can repeat the update
+The goal of VI is to find the optimal variational parameters \(\vlambda\) identifying \(q\left(\cdot; \vlambda\right) \in \mathcal{Q}\) that minimizes some discrepancy measure \(D\left(\pi, q\left(\cdot; \vlambda\right)\right)\).
+A typical way to perform VI is to use stochastic gradient descent (SGD,~\citealt{robbins_stochastic_1951}), provided that the optimization objective provides \textit{unbiased} gradient estimates \(\vg\,(\vlambda)\) such that we can repeat the update
 %\vspace{-0.05in}
 {%\small
 \begin{align*}
-  \vlambda_{t} = \vlambda_{t-1} - \gamma_{t} \, \vg\left(\vlambda_{t-1}\right)
+  \vlambda_{t} = \vlambda_{t-1} - \gamma_{t} \, \vg\left(\vlambda_{t-1}\right),
 \end{align*}
 }%
-where \(\gamma_1, \ldots, \gamma_T\) is a step-size schedule.
+where \(\gamma_1, \ldots, \gamma_T\) is a stepsize schedule.
 
+\vspace{-2ex}
 \paragraph{Inclusive KL Minimization with SGD}
 For inclusive KL minimization, \(\vg\) should be set as
 %
@@ -51,16 +53,16 @@ To better conform with the optimization literature, we instead call this approac
 %% A more stable alternative is to use the normalized weight, which results in the self-normalized IS (SNIS) approximation.
 %% Unfortunately, SNIS still fails to converge even on moderate dimensional objectives and unlike IS, it is no longer unbiased~\citep{robert_monte_2004}.
 
-\vspace{-0.05in}
+\vspace{-2ex}
 \subsection{Markov Chain Gradient Descent}\label{section:mcgd}
-\vspace{-0.05in}
+\vspace{-1.0ex}
 \paragraph{\textbf{Overview of MCGD}}
-Markov chain gradient descent (MCGD, \citealt{duchi_ergodic_2012, NEURIPS2018_1371bcce}) is a family of algorithms that optimize a function \(f\) defined as \(f\left(\vlambda\right) = \int f\left(\vlambda, \veta\right) \, \Pi\left(d\veta\right)\) where \(\Pi\left(d\veta\right)\) is a probability measure.
+Markov chain gradient descent (MCGD, \citealt{duchi_ergodic_2012, NEURIPS2018_1371bcce}) is a family of algorithms that minimize a function \(f\) defined as \(f\left(\vlambda\right) = \int f\left(\vlambda, \veta\right) \, \Pi\left(d\veta\right)\), where \(\veta\) is random noise, and \(\Pi\left(d\veta\right)\) is its probability measure.
 MCGD repeats the steps 
 {%\small
 \begin{align}
   \vlambda_{t+1}    = \vlambda_{t} - \gamma_t \, \vg\left(\vlambda_t, \veta_{t}\right),\quad 
-  \rvveta_{t}  \sim P_{\vlambda_{t-1}}\left( \veta_{t-1}, \cdot \right)\label{eq:mcgd}
+  \rvveta_{t}  \sim P_{\vlambda_{t-1}}\left( \veta_{t-1}, \cdot \right),\label{eq:mcgd}
 \end{align}
 }%
 where \(P_{\vlambda_{t-1}}\) is a \(\Pi\)-invariant Markov chain kernel that may depend on \(\vlambda_{t-1}\).
@@ -68,7 +70,7 @@ The noise of the gradient is Markovian and non-asymptotically biased, departing 
 %Unlike vanilla SGD where the gradient noise is assumed to be \textit{i.i.d.} and unbiased, it is now .
 Non-asymptotic convergence of this general algorithm has recently started to gather attention as by~\citet{duchi_ergodic_2012, NEURIPS2018_1371bcce, pmlr-v99-karimi19a, doan_finitetime_2020, doan_convergence_2020, debavelaere_convergence_2021}.
 
-\vspace{-0.1in}
+\vspace{-1.5ex}
 \paragraph{\textbf{Applications of MCGD}}
 MCGD encompasses an extensive range of problems, including distributed optimization~\citep{ram_incremental_2009}, reinforcement learning~\citep{tadic_asymptotic_2017, doan_convergence_2020, Xiong_Xu_Liang_Zhang_2021}, and expectation-minimization~\citep{pmlr-v99-karimi19a}, to name a few.
 This paper extends this list with inclusive KL VI through the MCSA framework.

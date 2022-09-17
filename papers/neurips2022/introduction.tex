@@ -2,7 +2,7 @@
 \section{Introduction}\label{section:intro}
 Bayesian inference aims to analyze the posterior distribution of an unknown latent variable \(\vz\) from which data \(\vx\) is observed.
 By assuming a model \(p\,(\vx\,|\,\vz)\), the posterior \(\pi\,(\vz)\) is given by Bayes' rule such that \(\pi\,(\vz) \propto {p\,(\vx\,|\,\vz)\,p\,(\vz)}\) where \(p\,(\vz)\) represents our prior belief on \(\vz\).
-Instead of working directly with \(\pi\), variational inference (VI,~\citealt{blei_variational_2017}) seeks a \textit{variational approximation} \(q\,(\vz; \vlambda)\) that is the most similar to \(\pi\) according to a discrepancy measure \(d\,(\pi,\, q\,(\cdot; \vlambda))\).
+Instead of working directly with \(\pi\), variational inference (VI,~\citealt{blei_variational_2017}) seeks a \textit{variational approximation} \(q\,(\vz; \vlambda) \in \mathcal{Q}\), where \(\mathcal{Q}\) is a variational family and \(\vlambda\) are the variational parameters, that is the most similar to \(\pi\) according to a discrepancy measure \(d\,(\pi,\, q\,(\cdot; \vlambda))\).
 
 %% Naturally, choosing an appropriate discrepancy measure is key, which has led to a quest for suitable divergence measures~\citep{ NIPS2016_7750ca35, NIPS2017_35464c84, NEURIPS2018_1cd138d0, NEURIPS2020_c928d86f, regli_alphabeta_2018, pmlr-v48-hernandez-lobatob16, NIPS2016_7750ca35 }.
 \looseness=-1
@@ -41,18 +41,18 @@ Our experiments show that our proposed method outperforms previous MCSA approach
 %Furthermore, MSCA is competitive against evidence lower-bound (ELBO) maximization within our experiments.
 %We further discuss this result in relation with the conclusions of~\citet{dhaka_challenges_2021} in~\cref{section:discussion}.
 
-\vspace{-0.1in}
+\vspace{-1.7ex}
 \paragraph{Contribution Summary}
 %\jrg{Item one should be something along the lines of we provide the first non-asymptotic analysis of MSC and JSA. Item two should be we accomplish this by showing it's a special case (basically point 1 below). I've sketched this out -- maybe we add back in the appropriate sec/thm references?}
 %\vspace{-0.2in}
 %% \begin{enumerate*}[label=\textbf{(\roman*)}]
 \setlength\itemsep{0.01in}
 \begin{enumerate}[leftmargin=7mm,listparindent=\parindent]
-    \vspace{-0.05in}
-    \item \textbf{\cref{section:comparison}:} We provide the first non-asymptotic theoretical analysis of two recently proposed inclusive KL minimization methods, MSC~\textbf{(\cref{thm:msc})} and JSA~\textbf{(\cref{thm:jsa})}.
-    \item \textbf{\cref{section:mcsa}:} To do this, we show that both methods can be viewed as what we call ``Markov chain score ascent'' (MCSA) methods, which are a special case of MCGD~\textbf{(\cref{thm:product_kernel})}.
-    \item \textbf{\cref{section:pmcsa}:} In light of this, we develop a novel MCSA method which we call parallel MCSA (pMCSA) that achieves lower gradient variance \textbf{(\cref{thm:pmcsa})}.
-    \item \textbf{\cref{section:eval}:} We demonstrate that the improved theoretical performance of pMCSA translates to superior empirical performance across a variety of Bayesian inference tasks.
+    \vspace{-1.5ex}
+    \item[\ding{182}] \textbf{\cref{section:comparison}:} We provide the first non-asymptotic theoretical analysis of two recently proposed inclusive KL minimization methods, MSC~\textbf{(\cref{thm:msc})} and JSA~\textbf{(\cref{thm:jsa})}.
+    \item[\ding{183}] \textbf{\cref{section:mcsa}:} To do this, we show that both methods can be viewed as what we call ``Markov chain score ascent'' (MCSA) methods, which are a special case of MCGD~\textbf{(\cref{thm:product_kernel})}.
+    \item[\ding{184}] \textbf{\cref{section:pmcsa}:} In light of this, we develop a novel MCSA method which we call parallel MCSA (pMCSA) that achieves lower gradient variance \textbf{(\cref{thm:pmcsa})}.
+    \item[\ding{185}] \textbf{\cref{section:eval}:} We demonstrate that the improved theoretical performance of pMCSA translates to superior empirical performance across a variety of Bayesian inference tasks.
 \end{enumerate}
 
 %%% Local Variables:
