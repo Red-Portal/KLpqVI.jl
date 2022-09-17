@@ -3,7 +3,7 @@
 %\begin{table}
 %\centering
 \caption{Computational Costs}\label{table:cost}
-\setlength{\tabcolsep}{0.5pt}
+%\setlength{\tabcolsep}{0.5pt}
   \begin{threeparttable}
 \begin{tabular}{lccccc}\toprule
 & \multicolumn{3}{c}{\footnotesize Applying \(P_{\vlambda}\)} & \multicolumn{2}{c}{\footnotesize Estimating \(\vg\)} \\
@@ -22,7 +22,7 @@
 %
 \\\midrule
 %
-{\footnotesize
+{%\footnotesize
 ELBO
 }
 & \(0\)
@@ -32,17 +32,27 @@ ELBO
 & \(N\)
 \\\arrayrulecolor{black!30}\midrule
 %
-{\footnotesize
+{%\footnotesize
 MSC
 }
 & \(N-1\)
 & \(N\)
 & \(N-1\)
 & \(0\)
-& \(1\)\tnote{1}\;\;{\footnotesize{or}}\,\(N\)\tnote{2}
+& \(1\)
 \\
 %
-{\footnotesize
+{%\footnotesize
+MSC-RB
+}
+& \(N-1\)
+& \(N\)
+& \(N-1\)
+& \(0\)
+& \(N\)
+\\
+%
+{%\footnotesize
 JSA
 }
 & \(N\)
@@ -52,7 +62,7 @@ JSA
 & \(N\)
 \\
 %
-{\footnotesize
+{%\footnotesize
 {\textbf{pMCSA}}
 }
 & \(N\)
@@ -62,8 +72,5 @@ JSA
 & \(N\)
 \\\bottomrule
 \end{tabular}
-  \begin{tablenotes}[flushleft]
-    \item[]{\footnotesize\textbf{\textit{Note}:} We assume that the variables are cached as much as possible. \(^1\)Vanilla CIS kernel. \(^2\)Rao-Blackwellized CIS kernel.}
-  \end{tablenotes}
-  \end{threeparttable}
+\end{threeparttable}
 %\end{table}

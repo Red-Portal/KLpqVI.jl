@@ -163,10 +163,35 @@ Therefore, \(w^*\) will be large
 Although this assumption is strong, it enables us to compare the gradient variance of MCSA methods.
 We empirically justify the bounds obtained using~\cref{thm:bounded_score} in \cref{section:simulation}.
 
+\newpage
+
 \vspace{-0.07in}
 \subsection{Markovian Score Climbing}
 \vspace{-0.07in}
-MSC (\cref{alg:msc} in~\cref{section:pseudocode}) is a simple instance of MCSA where \(\eta_t = \vz_t\) and \(P_{\vlambda_t} = K_{\vlambda_t}\), where \(K_{\vlambda_t}\) is the conditional importance sampling (CIS) kernel (originally proposed by~\citet{andrieu_uniform_2018}) where the proposals are generated from \(q\left(\cdot; \vlambda_t\right)\).
+
+\begin{wrapfigure}[9]{r}{0.37\textwidth}
+\vspace{-5ex}
+\begin{minipage}[c]{0.37\textwidth}
+  \centering
+  \begin{algorithm2e}[H]
+    \DontPrintSemicolon
+    \SetAlgoLined
+    \KwIn{%\footnotesize
+      initial sample \(\vz_0\), \linebreak
+      initial parameter \(\vlambda_0\), \linebreak
+      number of iterations \(T\), \linebreak
+      stepsize schedule \(\gamma_t\)}
+    \For{\textcolor{black}{\(t = 1, 2, \ldots, T\)}}{
+      \( \vz_{t} \sim K_{\vlambda_{t-1}}(\vz_{t-1}, \cdot) \)\;
+      \( \vg\left(\vlambda\right) = -\vs\,(\vlambda; \vz_{t}) \)\;
+      \( \vlambda_{t} = \vlambda_{t-1} - \gamma_t\, \vg\left(\vlambda_{t-1}\right) \)\;
+    }
+    \caption{MSC}\label{alg:msc}
+  \end{algorithm2e}
+\end{minipage}
+\end{wrapfigure}
+%
+MSC (\cref{alg:msc}) is a simple instance of MCSA where \(\eta_t = \vz_t\) and \(P_{\vlambda_t} = K_{\vlambda_t}\), where \(K_{\vlambda_t}\) is the conditional importance sampling (CIS) kernel (originally proposed by~\citet{andrieu_uniform_2018}) where the proposals are generated from \(q\left(\cdot; \vlambda_t\right)\).
 Although MSC uses only a single sample for the Markov chain, the CIS kernel internally operates \(N-1\) proposals.
 Therefore, \(N\) in MSC has a different meaning, but it still indicates the computational budget.
 
@@ -189,7 +214,10 @@ Instead of selecting a single \(\vz_t\) by resampling over the \(N\) internal pr
 }
 {
 \begin{align*}
-        \vg_{\text{MSC-RB}}\left(\vlambda\right) = - \sum^{N}_{n=1} \frac{w\left(\vz^{(n)}\right)}{ \sum^{N}_{n^{\prime}=1} w\left(\vz^{(n^{\prime})}\right)} \, \vs\left(\vlambda;\vz^{(n)}\right),
+        \vg_{\text{MSC-RB}}\left(\vlambda\right) = - \sum^{N}_{n=1} {
+        \textstyle
+\frac{w\left(\vz^{(n)}\right)}{ \sum^{N}_{n^{\prime}=1} w\left(\vz^{(n^{\prime})}\right)}
+} \, \vs\left(\vlambda;\vz^{(n)}\right),
 \end{align*}%
 }%
 \textcolor{blue}{
@@ -213,9 +241,37 @@ However, if we assume that \(\vz_{t-1}\) approximately follows \(q\left(\cdot; \
 }
 \left( 1 + \DChi{\pi}{q\left(\cdot; \vlambda\right)} \right),\label{eq:snis_var}
 \end{align}
+%
+\begin{wrapfigure}[17]{r}{0.37\textwidth}
+  \vspace{-3ex}
+  \begin{minipage}[c]{0.37\textwidth}
+    \begin{algorithm2e}[H]
+      \DontPrintSemicolon
+      \SetAlgoLined
+      \KwIn{
+        initial sample \(\vz_0^{(N)}\),\linebreak
+        initial parameter \(\vlambda_0\),\linebreak
+        number of iterations \(T\),\linebreak
+        stepsize schedule \(\gamma_t\)
+      }
+      \For{\(t = 1, 2, \ldots, T\)}{
+        \(\vz_{t}^{(0)} = \vz_{t-1}^{(N)}\)\;
+        \For{\(n = 1, 2, \ldots, N\)}{
+          \(\vz_{t}^{(n)} \sim K_{\vlambda_{t-1}}(\vz_{t}^{(n-1)}, \cdot)\)\;
+        }
+        \( \vg\left(\vlambda\right) = -\frac{1}{N} \sum^{N}_{n=1} \vs\,(\vlambda; \vz_{t}^{(n)}) \)\;
+        \( \vlambda_{t} = \vlambda_{t-1} - \gamma_t \, \vg\left(\vlambda_{t-1}\right) \,
+        \)\;
+      }
+      \caption{JSA}\label{alg:jsa}
+    \end{algorithm2e}
+  \end{minipage}
+\end{wrapfigure}
+%
 \textcolor{blue}{
 where \(\sigma^2 = \Vsub{\rvvz \sim \pi\left(\cdot\right)}{ -\vs\left(\vlambda; \rvvz \right) }\) is the variance with respect to the true posterior, and \(\DChi{\pi}{q\left(\cdot; \vlambda\right)}\) is the \(\chi^2\) divergence from \(\pi\) to \(q\left(\cdot; \vlambda\right)\).
 Although~\cref{eq:snis_var} suggests a \(\mathcal{O}\left(\nicefrac{1}{N}\right)\) variance reduction rate, the bound
+%
 \[
 \exp\left( \DKL{\pi}{q\left(\cdot; \vlambda\right)} \right) - 1 \leq  d_{\chi^2}\left(\pi \parallel q\left(\cdot; \vlambda\right) \right)
 \]
@@ -226,7 +282,7 @@ Therefore, both MSC and MSC-RB should perform poorly on challenging problems.
 \vspace{-0.1in}
 \subsection{Joint Stochastic Approximation}
 \vspace{-0.1in}
-JSA (\cref{alg:jsa} in~\cref{section:pseudocode}) was proposed for deep generative models where the likelihood factorizes into each datapoint.
+JSA (\cref{alg:jsa}) was proposed for deep generative models where the likelihood factorizes into each datapoint.
 Then, subsampling can be used through a random-scan version of the independent Metropolis-Hastings (IMH, \citealt{hastings_monte_1970}) kernel.
 Instead, we consider the general version of JSA with a vanilla IMH kernel since it can be used for any type of likelihood.
 At each MCGD step, JSA performs multiple Markov chain transitions and estimates the gradient by averaging all the intermediate states, which is closer to traditional MCMC.
@@ -261,10 +317,9 @@ where {\(w\left(\vz\right) = \pi\left(\vz\right)/q_{\text{def.}}\left(\vz; \vlam
   \end{align}
 }%
 \input{lemmas_imh}
-\vspace{-0.05in}
 \input{thm_previous_jsa}
 %
-\vspace{-0.1in}
+\vspace{-0.05in}
 \paragraph{Discussion}
 According to~\cref{thm:jsa}, JSA benefits from increasing \(N\) both in terms of faster mixing rate and lower gradient variance.
 However, similarly to MSC, under lack of convergence and model misspecification (large \(w^*\)), the improvement becomes marginal.
@@ -275,9 +330,9 @@ This inefficiency persists even under stationarity unless \(\pi\left(\cdot\right
 %Intuitively, the inefficiency comes from the rejections persisting even under stationarity.
 %On challenging problems with a large \(w^*\), the performance of JSA will also be poor.
 
-\vspace{-0.05in}
+%\vspace{-0.05in}
 \section{Parallel Markov Chain Score Ascent}\label{section:pmcsa}
-\vspace{-0.12in}
+%\vspace{-0.12in}
 Our analysis in~\cref{section:comparison} suggests that the statistical performance of both MSC and JSA are heavily affected by model specification and the state of convergence through \(w^*\).
 This affects both the mixing rate \(\rho\) and the gradient variance \(G\).
 Furthermore, a large \(w^*\) abolishes our ability to counterbalance the inefficiency by increasing the computational budget \(N\).
@@ -285,15 +340,17 @@ However, \(\rho\) and \(G\) do not impact convergence equally.
 In particular, we noted in \cref{section:convergence} that recent results on MCGD suggest that MCSA depends more on the gradient variance than the mixing rate.
 We turn to leverage this understanding to overcome the limitations of previous MCSA methods.
 
-\begin{center}
-\begin{minipage}[c]{0.8\textwidth}
+%\begingroup
+%\setlength{\intextsep}{0pt}%
+\begin{wrapfigure}[12]{r}{0.43\textwidth}
+\vspace{-6ex}
+\begin{minipage}[c]{0.43\textwidth}
   \begin{algorithm2e}[H]
     \DontPrintSemicolon
     \SetAlgoLined
-    \KwIn{MCMC kernel \(K_{\vlambda}(\vz,\cdot)\),
-      initial samples \(\vz_0^{(1)},\, \ldots,\, \vz_0^{(N)}\),
-      initial parameter \(\vlambda_0\),
-      number of iterations \(T\),
+    \KwIn{initial samples \(\vz_0^{(1)},\, \ldots,\, \vz_0^{(N)}\),\linebreak
+      initial parameter \(\vlambda_0\), \linebreak
+      number of iterations \(T\), \linebreak
       stepsize schedule \(\gamma_t\)
     }
     \For{\(t = 1, 2, \ldots, T\)}{
@@ -303,24 +360,26 @@ We turn to leverage this understanding to overcome the limitations of previous M
       \( \vg\left(\vlambda\right) = -\frac{1}{N} \sum^{N}_{n=1} \vs\,(\vlambda; \vz_{t}^{(n)}) \)\;
       \( \vlambda_{t} = \vlambda_{t-1} - \gamma_t\, \vg\left(\vlambda_{t-1}\right) \)\;
     }
-    \caption{Parallel Markov Chain Score Ascent}\label{alg:pmcsa}
+    \caption{pMCSA}\label{alg:pmcsa}
   \end{algorithm2e}
 \end{minipage}
-\end{center}
-
-\vspace{-0.1in}
+\end{wrapfigure}
+%\endgroup
+%
+%
+%\vspace{-0.1in}
 \subsection{Parallel Markov Chain Score Ascent}
-\vspace{-0.07in}
 We propose a novel scheme, \textit{parallel Markov chain score ascent} (pMCSA,~\cref{alg:pmcsa}), that embraces a slower mixing rate in order to consistently achieve an \(\mathcal{O}\left(\nicefrac{1}{N}\right)\) variance reduction, even on challenging problems with a large \(w^*\),  
 
 %\jrg{can we motivate this more strongly? Specifically, can we say that, by tying MCSA theory to MCGD theory, we can observe that the mixing rate isn't as important, so we develop a new scheme to exploit this previously not understood property.} 
 
-\vspace{-0.12in}
+\vspace{-0.1in}
 \paragraph{Algorithm Description}
 Unlike JSA, that uses \(N\) \textit{sequential} Markov chain states, pMCSA operates \(N\) parallel Markov chains.
 To maintain a similar per-iteration cost with JSA, it performs only a single Markov chain transition for each chain.
 Since the chains are independent, the Metropolis-Hastings rejections do not affect the variance of pMCSA.
-\vspace{0.1in}
+
+\newpage
 
 \input{thm_parallel_estimator}
 
@@ -352,12 +411,17 @@ This is because
 %% Therefore, reducing the variance is much more effective for accelerating convergence.
 %% We empirically show this fact on the bias and variance in~\cref{section:simulation}.
 
-\begin{wraptable}{r}{0.5\textwidth}
+\begin{table*}[t]
+  \vspace{-2ex}
   \centering
-  \vspace{-0.45in}
   \input{table_cost}
-  \vspace{-0.2in}
-\end{wraptable}
+  \vspace{-1ex}
+\end{table*}
+%% \begin{wraptable}[10]{r}{0.5\textwidth}
+%%   \centering
+%%   \vspace{-7ex}
+%%   %\vspace{-0.2in}
+%% \end{wraptable}
 %
 \vspace{-0.05in}
 \subsection{Computational Cost Comparison}

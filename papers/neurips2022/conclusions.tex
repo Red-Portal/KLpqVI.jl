@@ -14,16 +14,17 @@ For example, minibatch subsampling is challenging for models with non-factorizab
 Secondly, our theoretical analysis in~\cref{section:comparison} requires~\cref{thm:bounded_score}, which is strong, but required to connect with MCGD.
 An important future direction would be to relax the assumptions needed by MCGD.
 \textcolor{blue}{%
- Lastly, our MCSA framework does not include models with parameterized posteriors such as variational autoencoders.
+Lastly, our MCSA framework does not include models with parameterized posteriors such as variational autoencoders.
 }
 
+\vspace{-4ex}
 \textcolor{blue}{
 \vspace{-0.12in}
 \paragraph{Parameterized Posteriors}
 On problems with parameterized posteriors, the target posterior moves around.
 Therefore, quickly chasing the moving posterior with fast converging MCMC kernels is as important as achieving low variance.
 Because of this, trading bias and variance is less straightforward compared to the ``static'' setting we consider.
-Furthermore, the usage of computationally expensive but fast converging MCMC kernels could be beneficial as suggested by \citet{zhang_transport_2022}.
+Furthermore, the usage of expensive MCMC kernels could be beneficial as suggested by \citet{zhang_transport_2022}.
 }
 
 \vspace{-0.12in}

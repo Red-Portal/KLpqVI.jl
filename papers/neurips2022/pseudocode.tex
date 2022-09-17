@@ -2,7 +2,6 @@
 \section{Pseudocodes}\label{section:pseudocode}
 \subsection{Markov Chain Kernels}
 
-
   \begin{center}
 \begin{minipage}[c]{0.63\textwidth}
   \begin{algorithm2e}[H]
@@ -48,53 +47,53 @@
 \end{minipage}
   \end{center}
 
-\subsection{Markov Chain Score Ascent Algorithms}
+%% \subsection{Markov Chain Score Ascent Algorithms}
 
-\begin{center}
-\begin{minipage}[c]{0.6\textwidth}
-  \centering
-  \begin{algorithm2e}[H]
-    \DontPrintSemicolon
-    \SetAlgoLined
-    \KwIn{MCMC kernel \(K_{\vlambda}(\vz,\cdot)\),
-      initial sample \(\vz_0\),
-      initial parameter \(\vlambda_0\),
-      number of iterations \(T\),
-      stepsize schedule \(\gamma_t\)}
-    \For{\textcolor{black}{\(t = 1, 2, \ldots, T\)}}{
-      \( \vz_{t} \sim K_{\vlambda_{t-1}}(\vz_{t-1}, \cdot) \)\;
-      \( \vg\left(\vlambda\right) = -\vs\,(\vlambda; \vz_{t}) \)\;
-      \( \vlambda_{t} = \vlambda_{t-1} - \gamma_t\, \vg\left(\vlambda_{t-1}\right) \)\;
-    }
-    \caption{Markovian Score Climbing}\label{alg:msc}
-  \end{algorithm2e}
-\end{minipage}
-\end{center}
+%% \begin{center}
+%% \begin{minipage}[c]{0.6\textwidth}
+%%   \centering
+%%   \begin{algorithm2e}[H]
+%%     \DontPrintSemicolon
+%%     \SetAlgoLined
+%%     \KwIn{MCMC kernel \(K_{\vlambda}(\vz,\cdot)\),
+%%       initial sample \(\vz_0\),
+%%       initial parameter \(\vlambda_0\),
+%%       number of iterations \(T\),
+%%       stepsize schedule \(\gamma_t\)}
+%%     \For{\textcolor{black}{\(t = 1, 2, \ldots, T\)}}{
+%%       \( \vz_{t} \sim K_{\vlambda_{t-1}}(\vz_{t-1}, \cdot) \)\;
+%%       \( \vg\left(\vlambda\right) = -\vs\,(\vlambda; \vz_{t}) \)\;
+%%       \( \vlambda_{t} = \vlambda_{t-1} - \gamma_t\, \vg\left(\vlambda_{t-1}\right) \)\;
+%%     }
+%%     \caption{Markovian Score Climbing}\label{alg:msc}
+%%   \end{algorithm2e}
+%% \end{minipage}
+%% \end{center}
 
-  \begin{center}
-  \begin{minipage}[c]{0.63\textwidth}
-    \begin{algorithm2e}[H]
-      \DontPrintSemicolon
-      \SetAlgoLined
-      \KwIn{MCMC kernel \(K_{\vlambda}(\vz,\cdot)\),
-        initial sample \(\vz_0^{(N)}\),
-        initial parameter \(\vlambda_0\),
-        number of iterations \(T\),
-        stepsize schedule \(\gamma_t\)
-      }
-      \For{\(t = 1, 2, \ldots, T\)}{
-        \(\vz_{t}^{(0)} = \vz_{t-1}^{(N)}\)\;
-        \For{\(n = 1, 2, \ldots, N\)}{
-          \(\vz_{t}^{(n)} \sim K_{\vlambda_{t-1}}(\vz_{t}^{(n-1)}, \cdot)\)\;
-        }
-        \( \vg\left(\vlambda\right) = -\frac{1}{N} \sum^{N}_{n=1} \vs\,(\vlambda; \vz_{t}^{(n)}) \)\;
-        \( \vlambda_{t} = \vlambda_{t-1} - \gamma_t \, \vg\left(\vlambda_{t-1}\right) \,
-        \)\;
-      }
-      \caption{Joint Stochastic Approximation}\label{alg:jsa}
-    \end{algorithm2e}
-  \end{minipage}
-  \end{center}
+%%   \begin{center}
+%%   \begin{minipage}[c]{0.63\textwidth}
+%%     \begin{algorithm2e}[H]
+%%       \DontPrintSemicolon
+%%       \SetAlgoLined
+%%       \KwIn{MCMC kernel \(K_{\vlambda}(\vz,\cdot)\),
+%%         initial sample \(\vz_0^{(N)}\),
+%%         initial parameter \(\vlambda_0\),
+%%         number of iterations \(T\),
+%%         stepsize schedule \(\gamma_t\)
+%%       }
+%%       \For{\(t = 1, 2, \ldots, T\)}{
+%%         \(\vz_{t}^{(0)} = \vz_{t-1}^{(N)}\)\;
+%%         \For{\(n = 1, 2, \ldots, N\)}{
+%%           \(\vz_{t}^{(n)} \sim K_{\vlambda_{t-1}}(\vz_{t}^{(n-1)}, \cdot)\)\;
+%%         }
+%%         \( \vg\left(\vlambda\right) = -\frac{1}{N} \sum^{N}_{n=1} \vs\,(\vlambda; \vz_{t}^{(n)}) \)\;
+%%         \( \vlambda_{t} = \vlambda_{t-1} - \gamma_t \, \vg\left(\vlambda_{t-1}\right) \,
+%%         \)\;
+%%       }
+%%       \caption{Joint Stochastic Approximation}\label{alg:jsa}
+%%     \end{algorithm2e}
+%%   \end{minipage}
+%%   \end{center}
 
 %%% Local Variables:
 %%% TeX-master: "master"

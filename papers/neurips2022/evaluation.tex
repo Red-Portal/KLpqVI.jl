@@ -14,12 +14,23 @@
 %%   }
 %% \end{figure*}
 
-\begin{figure*}[b]
-  \vspace{-0.1in}
+%\vspace{-0.1in}
+\section{Evaluations}\label{section:eval}
+\vspace{-0.1in}
+\subsection{Experimental Setup}
+%\vspace{-0.05in}
+\paragraph{Implementation}
+For the realistic experiments, we implemented MCSA methods on top of the Turing~\citep{ge2018t} probabilistic programming framework.%\footnote{Available at \url{https://github.com/Red-Portal/KLpqVI.jl}}.
+For the variational family, we use diagonal multivariate Gaussians with the support transformation of~\citet{JMLR:v18:16-107}.
+We use the ADAM optimizer by~\citet{kingma_adam_2015} with a stepsize of 0.01 in all experiments.
+The budget is set to \(N=10\) for all experiments unless specified.
+
+\begin{figure*}[t]
+  \vspace{-2ex}
   \centering
 %%   \includegraphics[scale=1.0]{figures/gaussian_02.pdf}
   \includegraphics[scale=1.0]{figures/gaussian_03.pdf}
-  \vspace{-0.08in}
+  %\vspace{-0.08in}
   \caption{\textbf{Gradient variance versus iteration and computational budget (\(N\)).
       pMCSA not only achieves the least gradient variance, but its variance also scales better with \(N\).
     }
@@ -30,30 +41,19 @@
 \end{figure*}
 
 \begin{figure*}[t]
-  \vspace{-0.10in}
+  \vspace{-2ex}
   \centering
   \includegraphics[scale=1.0]{figures/stepsize_01.pdf}
-  \vspace{-0.05in}
+  %\vspace{-0.05in}
   \caption{\textbf{Optimizer stepsize (\(\gamma\)) versus final KL.
       pMCSA is the least sensitive to optimizer hyperparameters and results in stable convergence.}
       The final KL is obtained at the \(10^4\)th iteration.
       The target distribution is a 100-D Gaussian with \(\nu = 500\).
       The error bands are the 80\% quantiles, while the solid lines are the median of 20 replications.
   }\label{fig:stepsize}
-  \vspace{-0.1in}
+  \vspace{-2ex}
 \end{figure*}
 
-
-\vspace{-0.1in}
-\section{Evaluations}\label{section:eval}
-\vspace{-0.1in}
-\subsection{Experimental Setup}
-\vspace{-0.05in}
-\paragraph{Implementation}
-For the realistic experiments, we implemented MCSA methods on top of the Turing~\citep{ge2018t} probabilistic programming framework.%\footnote{Available at \url{https://github.com/Red-Portal/KLpqVI.jl}}.
-For the variational family, we use diagonal multivariate Gaussians with the support transformation of~\citet{JMLR:v18:16-107}.
-We use the ADAM optimizer by~\citet{kingma_adam_2015} with a stepsize of 0.01 in all experiments.
-The budget is set to \(N=10\) for all experiments unless specified.
 
 \vspace{-0.1in}
 \paragraph{Baselines}
@@ -69,7 +69,7 @@ We compare
 
 \vspace{-0.1in}
 \subsection{Simulations}\label{section:simulation}
-\vspace{-0.1in}
+%\vspace{-0.1in}
 \paragraph{Setup}
 First, we verify our theoretical analysis on multivariate Gaussians with full-rank covariances sampled from Wishart distribution with \(\nu\) degrees of freedom (values of \(\nu\) are in the figure captions).
 This problem is challenging since an IMH (used by pMCSA, JSA) or CIS (used by MSC, MSC-RB) kernel with a diagonal Gaussian proposal will mix slowly due to a large \(w^*\).
@@ -91,6 +91,9 @@ We make the following observations:
   \item JSA does not benefit from increasing \(N\) until \(q\left(\cdot; \vlambda\right)\) has sufficiently converged (when \(w^*\) has become small).
 \end{enumerate*}
 These results confirm our theoretical results in~\cref{section:comparison,section:pmcsa}.
+
+\input{bnn_table.tex}
+\input{pgp_table.tex}
 
 \vspace{-0.1in}
 \paragraph{Robustness Against Optimizers}
@@ -127,20 +130,41 @@ We run all methods with \(T=5\cdot10^4\) iterations.
 For the model, we use the priors and forward propagation method of~\citet{pmlr-v37-hernandez-lobatoc15} with a \(50\)-unit hidden layer (see \cref{section:model_bnn}).
 % \looseness=-1
 
-\input{bnn_table.tex}
-
 \vspace{-0.1in}
 \paragraph{Results}
 The results are shown in~\cref{table:bnn}.
 pMCSA achieves the best performance compared to all other MCSA methods.
 Also, its overall performance is comparable to exclusive KL minimization methods (ELBO) unlike other MCSA methods.
 Furthermore, on \textsf{airfoil} and \textsf{energy}, pMCSA improves over ELBO by 0.29 \texttt{nat} and 0.48 \texttt{nat}.
+%
+\begin{wrapfigure}[12]{r}{0.5\textwidth}
+  \vspace{-4ex}
+  \centering
+  \includegraphics[scale=0.9]{figures/pruning_01.pdf}
+  \vspace{-2ex}
+  \caption{\textbf{
+      Distribution of the variational posterior mean of the BNN weights.
+      pMCSA restuls in significantly less pruning.
+    }
+    The density was estimated with a Gaussian kernel and the bandwidth was selected with Silverman's rule.
+  }\label{fig:gaussian}
+\end{wrapfigure}
+%
 Even on \textsf{gas} where pMCSA did not beat ELBO, its performance is comparable, and it dominates all other MCSA methods by roughly 0.4 \texttt{nat}.
 Additional experimental results can be found in~\cref{section:bnn_additional}
 
-  \vspace{-0.1in}
+\vspace{-6ex}
+\textcolor{blue}{
+\paragraph{Weight Pruning}
+For BNNs, ELBO maximization has recently been dis to result in many of the weights being concentrated around zero.
+For MCSA, 
+This suggests that weight pruning is an artifact of using exclusive KL minimization rather
+For BNNs, ELBO maximization has recently been dis to result in many of the weights being concentrated around zero.
+}
+
+\vspace{-0.1in}
 \subsection{Robust Gaussian Process Regression}\label{section:bgp}
-  \vspace{-0.07in}
+\vspace{-0.07in}
 \paragraph{Setup}
 We train Gaussian processes (GP) with a Student-T likelihood for robust regression.
 We use datasets from the UCI repository~\citep{Dua:2019} with 90\% random train-test splits.
@@ -148,8 +172,6 @@ We use the Mat\'ern 5/2 covariance kernel with automatic relevance determination
 We run all methods with \(T=2\cdot10^4\) iterations.
 For prediction, we use the mode of \(q\left(\cdot; \vlambda\right)\) for the hyperparameters and marginalize the latent function over \(q\left(\cdot; \vlambda\right)\)~\citep{rasmussen_gaussian_2006}.
 We consider ELBO with only \(N=1\) since differentiating through the likelihood makes its per-iteration cost comparable to MCSA methods with \(N=10\).
-
-\input{pgp_table.tex}
 
 \vspace{-0.1in}
 \paragraph{Results}
