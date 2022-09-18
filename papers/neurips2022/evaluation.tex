@@ -1,6 +1,5 @@
 
-%\vspace{-0.1in}
-\vspace{-1.5ex}
+\vspace{-1ex}
 \section{Evaluations}\label{section:eval}
 \vspace{-1.5ex}
 \subsection{Experimental Setup}
@@ -12,8 +11,8 @@ For the variational family, we use diagonal multivariate Gaussians with the supp
 We use the ADAM optimizer by~\citet{kingma_adam_2015} with a stepsize of 0.01 in all experiments.
 The budget is set to \(N=10\) for all experiments unless specified.
 
-\begin{figure*}[b]
-  \vspace{-1ex}
+\begin{figure*}[t]
+  \vspace{-2ex}
   \centering
 %%   \includegraphics[scale=1.0]{figures/gaussian_02.pdf}
   \includegraphics[scale=1.0]{figures/gaussian_03.pdf}
@@ -25,7 +24,24 @@ The budget is set to \(N=10\) for all experiments unless specified.
     The target distribution is a 50-D multivariate Gaussian with \(\nu = 500\).
     The error bands are the 80\% quantiles obtained from 8 replications.
   }\label{fig:gaussian}
+  \vspace{-1ex}
 \end{figure*}
+
+\begin{figure*}[t]
+  \vspace{-1ex}
+  \centering
+  \includegraphics[scale=1.0]{figures/stepsize_01.pdf}
+  %\vspace{-0.05in}
+  \caption{\textbf{Optimizer stepsize (\(\gamma\)) versus final KL.
+      pMCSA is the least sensitive to optimizer hyperparameters and results in stable convergence.}
+      The final KL is obtained at the \(10^4\)th iteration.
+      The target distribution is a 100-D Gaussian with \(\nu = 500\).
+      The error bands are the 80\% quantiles, while the solid lines are the median of 20 replications.
+  }\label{fig:stepsize}
+  \vspace{-2ex}
+\end{figure*}
+
+\input{bnn_table.tex}
 
 \vspace{-1.ex}
 \paragraph{Baselines}
@@ -39,7 +55,8 @@ We compare
   \item evidence lower-bound maximization (\textbf{ELBO},~\citealt{pmlr-v33-ranganath14, JMLR:v18:16-107}) with the path derivative estimator~\citep{NIPS2017_e91068ff}.
 \end{enumerate*}
 
-\vspace{-1.5ex}
+
+\vspace{-1ex}
 \subsection{Simulations}\label{section:simulation}
 \vspace{-1ex}
 \paragraph{Setup}
@@ -47,20 +64,6 @@ First, we verify our theoretical analysis on multivariate Gaussians with full-ra
 This problem is challenging since an IMH (used by pMCSA, JSA) or CIS (used by MSC, MSC-RB) kernel with a diagonal Gaussian proposal will mix slowly due to a large \(w^*\).
 % Since the exact KL divergence between the target and the varitional approximation is available, accurate evaluation is possible.
 
-
-\begin{figure*}[t]
-  \vspace{-2ex}
-  \centering
-  \includegraphics[scale=1.0]{figures/stepsize_01.pdf}
-  %\vspace{-0.05in}
-  \caption{\textbf{Optimizer stepsize (\(\gamma\)) versus final KL.
-      pMCSA is the least sensitive to optimizer hyperparameters and results in stable convergence.}
-      The final KL is obtained at the \(10^4\)th iteration.
-      The target distribution is a 100-D Gaussian with \(\nu = 500\).
-      The error bands are the 80\% quantiles, while the solid lines are the median of 20 replications.
-  }\label{fig:stepsize}
-  \vspace{-2ex}
-\end{figure*}
 
 \vspace{-1ex}
 \paragraph{Gradient Variance}
@@ -80,9 +83,7 @@ We make the following observations:
 These results confirm our theoretical results in~\cref{section:comparison,section:pmcsa}.
 
 
-\input{bnn_table.tex}
-
-\vspace{-0.1in}
+\vspace{-1.5ex}
 \paragraph{Robustness Against Optimizers}
 Since the convergence of most sophisticated SGD optimizers has yet to be established for MCGD, we empirically investigate their effectiveness.
 The results using SGD~\citep{robbins_stochastic_1951, bottou_optimization_2018a}, Momentum~\citep{polyak_methods_1964}, Nesterov~\citep{nesterov_method_1983}, ADAM~\citep{kingma_adam_2015}, and varying stepsizes are shown in~\cref{fig:stepsize}.
@@ -114,9 +115,8 @@ Overall, most MCSA methods seem to be the most stable with ADAM, which points ou
 \looseness=-1
 \paragraph{Setup}
 For realistic experiments, we train Bayesian neural networks (BNN, \citealt{neal_bayesian_1996}) for regression.
-We use datasets from the UCI repository~\citep{Dua:2019} with 90\% random train-test splits.
-We run all methods with \(T=5\cdot10^4\) iterations.
-For the model, we use the priors and forward propagation method of~\citet{pmlr-v37-hernandez-lobatoc15} with a \(50\)-unit hidden layer (see \cref{section:model_bnn}).
+We use datasets from the UCI repository~\citep{Dua:2019} with 90\% random train-test splits and run for \(T=5\cdot10^4\) iterations.
+We use the model and forward propagation method of~\citet{pmlr-v37-hernandez-lobatoc15} with a \(50\)-unit hidden layer (see \cref{section:model_bnn}).
 % \looseness=-1
 
 \vspace{-1.5ex}
@@ -146,7 +146,7 @@ Additional experimental results, \textcolor{blue}{including plots with respect t
 \textcolor{blue}{
 \paragraph{Weight Pruning}
 When using VI, BNNs tend to underfit data.
-\citet{mackay_local_2001,pmlr-v70-hoffman17a,trippe_overpruning_2017} associate this with ``weight pruning'', that is, the variational posterior converges to the zero-mean prior.
+\citet{mackay_local_2001,pmlr-v70-hoffman17a,trippe_overpruning_2017} associate this with ``weight pruning,'' that is, the variational posterior converges to the zero-mean prior.
 Furthermore,~\citet{coker_wide_2022,huix_variational_2022} have shown that this is guarenteed to happen under certain conditions.
 However, these results are exclusively based on exclusive KL minimization.
 \cref{fig:pruning} shows that MCSA does not suffer from weight pruning, which suggest that pruning is an artifact of using the exclusive KL.
