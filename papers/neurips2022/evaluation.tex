@@ -80,7 +80,7 @@ We make the following observations:
     }
   \item JSA does not benefit from increasing \(N\) until \(q\left(\cdot; \vlambda\right)\) has sufficiently converged (when \(w^*\) has become small).
 \end{enumerate*}
-These results confirm our theoretical results in~\cref{section:comparison,section:pmcsa}.
+These results confirm our theoretical analyses in~\cref{section:comparison,section:pmcsa}.
 
 
 \vspace{-1.5ex}
@@ -142,9 +142,9 @@ Furthermore, on \textsf{airfoil} and \textsf{energy}, pMCSA improves over ELBO b
 Even on \textsf{gas} where pMCSA did not beat ELBO, its performance is comparable, and it dominates all other MCSA methods by roughly 0.4 \texttt{nat}.
 Additional experimental results, \textcolor{blue}{including plots with respect to the wallclock time}, can be found in~\cref{section:bnn_additional}
 
-\vspace{-5ex}
-\textcolor{blue}{
+\vspace{-1.5ex}
 \paragraph{Weight Pruning}
+\textcolor{blue}{
 When using VI, BNNs tend to underfit data.
 \citet{mackay_local_2001,pmlr-v70-hoffman17a,trippe_overpruning_2017} associate this with ``weight pruning,'' that is, the variational posterior converges to the zero-mean prior.
 Furthermore,~\citet{coker_wide_2022,huix_variational_2022} have shown that this is guarenteed to happen under certain conditions.

@@ -6,11 +6,12 @@
 First, we develop Markov chain score ascent (MCSA), a framework for inclusive KL minimization with MCGD.
 This framework will establish the connection between MSC/JSA and MCGD.
 
-\vspace{-1.5ex}
-{
-\paragraph{Notation}
-\(\mathcal{F}_t\) is the \(\sigma\)-field formed by the iterates \(\veta_t\) up to the \(t\)th MCGD iteration, \(\norm{\vx}_* \) is the dual norm of \(\vx\) such that, \(\norm{\vx}_* = \sup_{\norm{\vz} \leq 1} \iprod{\vx}{\vz}\), \(d_{\text{TV}}\left(\pi, q\right)\) is the total-variation (TV) distance between \(\pi\) and \(q\) such that \(d_{\text{TV}}\left(\pi, q\right) = \nicefrac{1}{2} \int \abs{d\pi - dq} \), and \(\DChi{\pi}{q}\) is the \(\chi^2\) divergence from \(\pi\) to \(q\) such that \(\DChi{\pi}{q} = \int {\left(\nicefrac{d\pi}{dq} - 1\right)}^2 dq\).
-}
+\vspace{-1.5ex}%
+{%
+\paragraph{Notation}%
+\textcolor{blue}{%
+\(\mathcal{F}_t\) is the \(\sigma\)-field formed by the iterates \(\veta_t\) up to the \(t\)th MCGD iteration, \(\norm{\vx}_* \) is the dual norm of \(\vx\) such that, \(\norm{\vx}_* = \sup_{\norm{\vz} \leq 1} \iprod{\vx}{\vz}\), \(d_{\text{TV}}\left(\pi, q\right)\) is the total-variation (TV) distance between \(\pi\) and \(q\) such that \(d_{\text{TV}}\left(\pi, q\right) = \nicefrac{1}{2} \int \abs{\pi\left(d\vz\right) - q\left(d\vz\right)} \), and \(\DChi{\pi}{q}\) is the \(\chi^2\) divergence from \(\pi\) to \(q\) such that \(\DChi{\pi}{q} = \int {\left(\nicefrac{\pi\left(d\vz\right)}{q\left(d\vz\right)} - 1\right)}^2 q\left(d\vz\right)\).
+}}
 
 \vspace{-1.ex}
 \subsection{Markov Chain Score Ascent as a Special Case of Markov Chain Gradient Descent}\label{section:convergence}
@@ -165,28 +166,6 @@ Therefore, \(w^*\) will be large
   The score gradient is bounded for \(\forall \vlambda \in \Lambda\) and \(\forall \vz \in \mathcal{Z}\) such that \(\norm{\vs\left(\vlambda; \vz\right)}_* \leq L \) for some finite constant \(L > 0\).
 \end{assumption}
 %
-\begin{wrapfigure}[11]{r}{0.37\textwidth}
-%\vspace{-6ex}
-\begin{minipage}[c]{0.37\textwidth}
-  \centering
-  \begin{algorithm2e}[H]
-    \DontPrintSemicolon
-    \SetAlgoLined
-    \KwIn{%\footnotesize
-      initial sample \(\vz_0\), \linebreak
-      initial parameter \(\vlambda_0\), \linebreak
-      number of iterations \(T\), \linebreak
-      stepsize schedule \(\gamma_t\)}
-    \For{\textcolor{black}{\(t = 1, 2, \ldots, T\)}}{
-      \( \vz_{t} \sim K_{\vlambda_{t-1}}(\vz_{t-1}, \cdot) \)\;
-      \( \vg\left(\vlambda\right) = -\vs\,(\vlambda; \vz_{t}) \)\;
-      \( \vlambda_{t} = \vlambda_{t-1} - \gamma_t\, \vg\left(\vlambda_{t-1}\right) \)\;
-    }
-    \caption{MSC}\label{alg:msc}
-  \end{algorithm2e}
-\end{minipage}
-\end{wrapfigure}
-%
 Although this assumption is strong, it enables us to compare the gradient variance of MCSA methods.
 We empirically justify the bounds obtained using~\cref{thm:bounded_score} in \cref{section:simulation}.
 
@@ -195,7 +174,7 @@ We empirically justify the bounds obtained using~\cref{thm:bounded_score} in \cr
 \subsection{Markovian Score Climbing}
 \vspace{-0.07in}
 
-MSC (\cref{alg:msc}) is a simple instance of MCSA where \(\eta_t = \vz_t\) and \(P_{\vlambda_t} = K_{\vlambda_t}\) is the conditional importance sampling (CIS) kernel (originally proposed by~\citet{andrieu_uniform_2018}) where the proposals are generated from \(q\left(\cdot; \vlambda_t\right)\).
+MSC (\cref{alg:msc} in \cref{section:pseudocode}) is a simple instance of MCSA where \(\eta_t = \vz_t\) and \(P_{\vlambda_t} = K_{\vlambda_t}\) is the conditional importance sampling (CIS) kernel (originally proposed by~\citet{andrieu_uniform_2018}) where the proposals are generated from \(q\left(\cdot; \vlambda_t\right)\).
 Although MSC uses only a single sample for the Markov chain, the CIS kernel internally operates \(N-1\) proposals.
 Therefore, \(N\) in MSC has a different meaning, but it still indicates the computational budget.
 
@@ -214,82 +193,19 @@ Even under stationarity, the variance of \(\veta\) is equal to that of a \textit
 \paragraph{Rao-Blackwellization}
 \textcolor{blue}{
 Meanwhile, \citeauthor{NEURIPS2020_b2070693} also provide a Rao-Blackwellized version of MSC we denote as MSC-RB.
-Instead of selecting a single \(\vz_t\) by resampling over the \(N\) internal proposals, they suggest using the importance-weighted estimate%
+Instead of selecting a single \(\vz_t\) by resampling over the \(N\) internal proposals, they suggest reusing the resampling weights to form an importance-weighted estimate.
+The theoretical properties of this estimator have been concurrently analyzed by~\citet{cardoso_brsnis_2022} under the name of bias reduced self-normalized importance sampling (BR-SNIS).
+We modified their proof to match our desired result.
 }
-{
-\begin{align*}
-\textstyle
-        \vg_{\text{MSC-RB}}\left(\vlambda\right) = - \sum^{N}_{n=1} {
-        %\textstyle
-\frac{w\left(\vz^{(n)}\right)}{ \sum^{N}_{n^{\prime}=1} w\left(\vz^{(n^{\prime})}\right)}
-} \, \vs\left(\vlambda;\vz^{(n)}\right),
-\end{align*}%
-}%
-\textcolor{blue}{
-where \(\vz^{(1)} = \vz_{t-1}\) is the previous (rejection) state.
-The self-normalized structure of this estimator makes its variance very difficult to analyze as it is a ratio of random variables.
-However, if we assume that \(\vz_{t-1}\) approximately follows \(q\left(\cdot; \vlambda\right)\), its variance should be similar to that of the self-normalized importance sampling (SNIS) estimator, which has been approximated by~\citet{kong_note_1992, kong_sequential_1994, elvira_rethinking_2022} as%
-}
-\begin{align}
-\V{ \vg_{\text{MSC-RB}}\left(\vlambda\right) } \approx
-\frac{
-    \sigma^2
-}{
-    N
-}
-\left(1 + \Vsub{\rvvz \sim q\left(\cdot; \vlambda\right)}{ w\left(\rvvz\right) }\right)
-=
-\frac{
-    \sigma^2
-}{
-    N
-}
-\left( 1 + \DChi{\pi}{q\left(\cdot; \vlambda\right)} \right),\label{eq:snis_var}
-\end{align}
-%
-\begin{wrapfigure}[17]{r}{0.4\textwidth}
-  \vspace{-2ex}
-  \begin{minipage}[c]{0.4\textwidth}
-    \begin{algorithm2e}[H]
-      \DontPrintSemicolon
-      \SetAlgoLined
-      \KwIn{
-        initial sample \(\vz_0^{(N)}\),\linebreak
-        initial parameter \(\vlambda_0\),\linebreak
-        number of iterations \(T\),\linebreak
-        stepsize schedule \(\gamma_t\)
-      }
-      \For{\(t = 1, 2, \ldots, T\)}{
-        \(\vz_{t}^{(0)} = \vz_{t-1}^{(N)}\)\;
-        \For{\(n = 1, 2, \ldots, N\)}{
-          \(\vz_{t}^{(n)} \sim K_{\vlambda_{t-1}}(\vz_{t}^{(n-1)}, \cdot)\)\;
-        }
-        \( \vg\left(\vlambda\right) = -\frac{1}{N} \sum^{N}_{n=1} \vs\,(\vlambda; \vz_{t}^{(n)}) \)\;
-        \( \vlambda_{t} = \vlambda_{t-1} - \gamma_t \, \vg\left(\vlambda_{t-1}\right) \,
-        \)\;
-      }
-      \caption{JSA}\label{alg:jsa}
-    \end{algorithm2e}
-  \end{minipage}
-\end{wrapfigure}
-%
-\textcolor{blue}{
-where \(\sigma^2 = \Vsub{\rvvz \sim \pi\left(\cdot\right)}{ -\vs\left(\vlambda; \rvvz \right) }\) is the variance with respect to the true posterior, and \(\DChi{\pi}{q\left(\cdot; \vlambda\right)}\) is the \(\chi^2\) divergence from \(\pi\) to \(q\left(\cdot; \vlambda\right)\).
-Although~\cref{eq:snis_var} suggests a \(\mathcal{O}\left(\nicefrac{1}{N}\right)\) variance reduction rate, the bound
-%
-\[
-\exp\left( \DKL{\pi}{q\left(\cdot; \vlambda\right)} \right) - 1 \leq  d_{\chi^2}\left(\pi \parallel q\left(\cdot; \vlambda\right) \right)
-\]
-shows that, on challenging problems, the variance would be too large to counter by increasing \(N\).
-}
+
+\input{thm_previous_mscrb}
 
 \vspace{-0.1in}
 \subsection{Joint Stochastic Approximation}
 \vspace{-0.1in}
-JSA (\cref{alg:jsa}) was proposed for deep generative models where the likelihood factorizes into each datapoint.
+JSA (\cref{alg:jsa} in \cref{section:pseudocode}) was proposed for deep generative models where the likelihood factorizes into each datapoint.
 Then, subsampling can be used through a random-scan version of the independent Metropolis-Hastings (IMH, \citealt{hastings_monte_1970}) kernel.
 Instead, we consider the general version of JSA with a vanilla IMH kernel since it can be used for any type of likelihood.
-\pagebreak
 At each MCGD step, JSA performs multiple Markov chain transitions and estimates the gradient by averaging all the intermediate states, which is closer to traditional MCMC.
 
 \vspace{-0.1in}
@@ -383,8 +299,6 @@ We propose a novel scheme, \textit{parallel Markov chain score ascent} (pMCSA,~\
 Unlike JSA that uses \(N\) \textit{sequential} Markov chain states, pMCSA operates \(N\) \textit{parallel} Markov chains.
 To maintain a similar per-iteration cost with JSA, it performs only a single Markov chain transition for each chain.
 Since the chains are independent, the Metropolis-Hastings rejections do not affect the variance of pMCSA.
-
-\pagebreak
 
 \input{thm_parallel_estimator}
 
