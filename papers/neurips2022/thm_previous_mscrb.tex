@@ -65,8 +65,8 @@
   Rao-Blackwellization of the CIS kernel is to reuse the importance weights \(w\left(\vz\right) = \pi\left(\vz\right) / q_{\text{def.}}\left(\vz\right)\) internally used by the kernel when forming the estimator.
   That is, the gradient is estimated as
   \begin{align*}
-    \rvvz^{(n)} \mid \rvvlambda_{t-1} &\sim q\left(\cdot; \rvvlambda_{t-1}\right) \\
-    \rvvg_{\text{MSC-RB}} &= -\sum^{N}_{n=2} \frac{w\left(\rvvz^{(n)}\right)}{\sum^{N}_{m=2}w\left(\rvvz^{(n)}\right) + w\left(\rvvz_{t-1}\right)} \vs\left(\rvvz^{(n)}\right) + \frac{w\left(\rvvz_{t-1}\right)}{\sum^{N}_{m=2}w\left(\rvvz^{(n)}\right) + w\left(\rvvz_{t-1}\right)} \vs\left(\rvvz_{t-1}\right).
+    &\rvvz^{(n)} \mid \rvvlambda_{t-1} \sim q\left(\cdot; \rvvlambda_{t-1}\right) \\
+    &\rvvg_{\text{MSC-RB}} = -\sum^{N}_{n=2} \frac{w\left(\rvvz^{(n)}\right)}{\sum^{N}_{m=2}w\left(\rvvz^{(n)}\right) + w\left(\rvvz_{t-1}\right)} \vs\left(\rvvz^{(n)}\right) + \frac{w\left(\rvvz_{t-1}\right)}{\sum^{N}_{m=2}w\left(\rvvz^{(n)}\right) + w\left(\rvvz_{t-1}\right)} \vs\left(\rvvz_{t-1}\right).
   \end{align*}
   \citet[Theorem 3]{cardoso_brsnis_2022} show that the variance of this estimator, which they call bias reduced self-normalized importance sampling, is bounded as
   \begin{align*}
