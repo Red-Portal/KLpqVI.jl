@@ -14,7 +14,7 @@
   K_{\vlambda}^{N\,\left(k-1\right) + N}\left(\vz^{(N)}, d\vz^{\prime\;(N)}\right)
   \end{align*}
   }
-  with \(\veta_t = \left(\vz_t^{(1)}, \vz_t^{(2)}, \ldots, \vz_t^{(N)}\right)\).
+  with \(\veta_t = \big(\vz_t^{(1)}, \vz_t^{(2)}, \ldots, \vz_t^{(N)}\big)\).
   Then, given~\cref{thm:bounded_weight,thm:bounded_score}, the mixing rate and the gradient variance bounds are
   {%\small
   \begin{align*}
@@ -23,21 +23,37 @@
     C\left(\rho, N\right)\,{\rho}^{k\,N}
     \quad\text{and}\quad
    % 
-    \E{ \norm{ \vg_{\mathrm{JSA}}\left(\vlambda, \rvveta\right) }^2_{*} \,\middle|\, \mathcal{F}_{t} }
+    \E{ \norm{ \vg_{\mathrm{JSA}}}^2 \,\middle|\, \mathcal{F}_{t} }
     \leq
     L^2 \,
     \left[\,
     \frac{1}{2} + \frac{3}{2}\,\frac{1}{N}
     + \mathcal{O}\left(\nicefrac{1}{w^*}\right)
-    \,\right],
+    \,\right]
+    +
+    C_{\text{cov}}
   \end{align*}
   }%
-  where \(w^* = \sup_{\vz} \pi\left(\vz\right) / q_{\text{def.}}\left(\vz;\vlambda\right)\) and \(C\left(\rho, N\right) > 0\) is a finite constant depending on \(\rho\) and \(N\).
+  where
+  \[\textstyle
+  C_{\text{cov}} = \frac{1}{N^2} \sum^{N}_{n=2} \sum^{n-1}_{m = 1} \Cov{\vs\left(\vlambda; \rvvz^{(n)}\right), \vs\left(\vlambda; \rvvz^{(m)}\right) \,\middle|\, \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} }
+  \] is the sum of the covariance between the samples, \(w^* = \sup_{\vz} \pi\left(\vz\right) / q_{\text{def.}}\left(\vz;\vlambda\right)\), and \(C\left(\rho, N\right) > 0\) is a finite constant depending on \(\rho\) and \(N\).
 \end{theoremEnd}
 \begin{proofEnd}
 
   JSA is described in~\cref{alg:jsa}. 
   At each iteration, it performs \(N\) MCMC transitions, and uses the \(N\) samples to estimate the gradient.
+  That is,
+  \begin{align*}
+    \rvvz^{(1)}_{t} \mid \rvvz_{t-1}^{(N)}, \rvvlambda_{t-1} &\sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t-1}^{(N)}, \cdot\right) \\
+    \rvvz^{(2)}_{t} \mid \rvvz^{(1)}_{t}, \rvvlambda_{t-1}  &\sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t}^{(1)}, \cdot\right) \\
+    &\vdots
+    \\
+    \rvvz^{(N)}_{t} \mid \rvvz^{(N-1)}_{t}, \rvvlambda_{t-1}  &\sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t}^{(N-1)}, \cdot\right)
+    \\
+    \rvvg_{\text{JSA}} &= \frac{1}{N}\,\sum^{N}_{n=1} \, \vs\left(\vlambda, \rvvz^{(n)}_t\right),
+  \end{align*}
+  where \(K_{\rvvlambda_{t-1}}^n\) is an \(n\)-transition IMH kernel using \(q_{\text{def.}}\left(\cdot; \rvvlambda_{t-1}\right)\).
 
   \paragraph{Ergodicity of the Markov Chain}
   The state transitions of the Markov chain samples \(\vz^{(1:N)}\) are visualized as 
@@ -182,53 +198,66 @@
   Fortunately, specifically for the IMH kernel,~\citet{Smith96exacttransition} have shown that the \(n\)-step marginal IMH kernel is given as~\cref{eq:imh_exact_kernel}.
   From this, we show that
   \begin{alignat}{2}
-    &\E{ \norm{ \vg_{\mathrm{JSA}}\left(\vlambda, \rvveta\right) }^2_{*} \,\middle|\, \mathcal{F}_{t} }
+    &\V{ \vg_{\mathrm{JSA}} \,\middle|\, \mathcal{F}_{t} }
     \nonumber
     \\
     &\quad=
-    \E{ \norm{ \vg_{\mathrm{JSA}}\left(\vlambda, \rvveta\right) }^2_{*} \,\middle|\, \vz_{t-1}^{(N)},\, \vlambda_{t-1} }
+    \V{ \vg_{\mathrm{JSA}} \,\middle|\, \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} }
     \nonumber
     \\
     &\quad=
-    \E{ \norm{ \frac{1}{N}\sum^{N}_{n=1} \vs\left(\vlambda; \rvvz^{(n)}\right) }^2_{*} \,\middle|\, \vz_{t-1}^{(N)},\, \vlambda_{t-1} }
+    \V{ \frac{1}{N}\,\sum^{N}_{n=1}\vs\left(\vlambda; \rvvz^{(n)}\right)  \,\middle|\, \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} }
+    \nonumber
+    \\
+    &\quad=
+    \frac{1}{N^2} \sum^{N}_{n=1} \V{ \vs\left(\vlambda; \rvvz^{(n)}\right)  \,\middle|\, \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} }
     \nonumber
     \\
     &\quad\leq
-    \E{ \frac{1}{N^2} \sum^{N}_{n=1} \norm{\vs\left(\vlambda; \rvvz^{(n)}\right) }^2_{*} \,\middle|\, \vz_{t-1}^{(N)},\, \vlambda_{t-1} }
-    &&\quad\text{\textit{Triangle inequality}}
+    \frac{1}{N}\sum^{N}_{n=1} \E{ \norm{ \vs\left(\vlambda; \rvvz^{(n)}\right) }^2 \,\middle|\, \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} } + C_{\text{cov}}
     \nonumber
     \\
     &\quad=
-    \frac{1}{N^2}\sum^{N}_{n=1} \Esub{\rvvz^{(n)} \sim K^n\left(\vz_{t-1}, \cdot\right)}{ \norm{\vs\left(\vlambda; \rvvz^{(n)}\right) }^2_{*} \,\middle|\,  \vz_{t-1}^{(N)},\, \vlambda_{t-1} }
-    &&\quad\text{\textit{Linearity of expectation}}
+    \frac{1}{N^2}\sum^{N}_{n=1} \Esub{\rvvz^{(n)} \sim K^n_{\rvvlambda_{t-1}}\left(\vz_{t-1}, \cdot\right)}{ \norm{\vs\left(\vlambda; \rvvz^{(n)}\right) }^2 \,\middle|\,  \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} }
+    + 
+    C_{\text{cov}}
     \nonumber
     \\
     &\quad\leq
     \frac{1}{N^2}\sum^{N}_{n=1}
-      n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1}
-      \Esub{\rvvz^{(n)} \sim q_{\text{def.}}\left(\cdot; \vlambda\right)}{ \norm{\vs\left(\vlambda; \rvvz^{(n)} \right)}_{*}^2 }
-      \nonumber
-      \\
-      &\qquad+ 
-        {\left(1 - \frac{1}{w^*}\right)}^{n} \, \norm{\vs\left(\vlambda; \vz_{t-1}^{(N)} \right)}_{*}^2
+    \left\{\,
+      n \, {\rho}^{n-1}
+      \Esub{\rvvz \sim q_{\text{def.}}\left(\cdot; \rvvlambda_{t-1}\right)}{ \norm{\vs\left(\vlambda; \rvvz \right)}^2 }
+      + 
+      {\rho}^{n} \, \norm{\vs\left(\vlambda; \rvvz_{t-1}^{(N)} \right)}^2
+      \,\right\}
+      +
+    C_{\text{cov}}
     &&\quad\text{\textit{\cref{thm:imh_expecation}}}
     \nonumber
     \\
     &\quad\leq
     \frac{1}{N^2}\sum^{N}_{n=1}
+    \left\{\,
       n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1}  \, L^2
       +
       {\left(1 - \frac{1}{w^*}\right)}^{n} \, L^2
+      \,\right\}
+      +
+    C_{\text{cov}}
     &&\quad\text{\textit{\cref{thm:bounded_score}}}
     \nonumber
     \\
     &\quad=
     \frac{L^2}{N^2}\sum^{N}_{n=1}
+    \left\{\,
       n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1}
       +
       {\left(1 - \frac{1}{w^*}\right)}^{n} 
+      \,\right\}
+      +
+    C_{\text{cov}}
     \nonumber
-    &&\quad\text{\textit{Moved constant forward}}
     \\
     &\quad=
     \frac{L^2}{N^2} \,
@@ -240,8 +269,9 @@
         {\left(w^*\right)}^2 + w^* + N\,w^*
       \right)
     \,\right]
+    +
+    C_{\text{cov}}
     \nonumber
-    &&\quad\text{\textit{Solved sum}}
     \\
     &\quad=
     \frac{L^2}{N^2} \,
@@ -249,6 +279,8 @@
     \frac{1}{2} N^2 + \frac{3}{2}\,N 
     + \mathcal{O}\left(1/w^*\right)
     \,\right]
+    +
+    C_{\text{cov}}
     \nonumber
     &&\quad\text{\textit{Laurent series expansion at \(w^* \rightarrow \infty\)}}
     \\
@@ -257,10 +289,12 @@
     \left[\,
     \frac{1}{2} + \frac{3}{2}\,\frac{1}{N}
     + \mathcal{O}\left(1/w^*\right)
-    \,\right].
+    \,\right] + C_{\text{cov}},
     \nonumber
   \end{alignat}
-  The Laurent approximation becomes exact as \(w^* \rightarrow \infty\), which is useful as a consequence of \cref{thm:wstar}.
+  where \[
+  C_\text{cov} = {\textstyle\frac{1}{N^2} \sum^{N}_{n=2} \sum^{n-1}_{m = 1} \Cov{\vs\left(\vlambda; \rvvz^{(n)}\right), \vs\left(\vlambda; \rvvz^{(m)}\right) \,\middle|\, \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} }}.\]
+  The Laurent approximation becomes exact as \(w^* \rightarrow \infty\), which is useful considering \cref{thm:wstar}.
 \end{proofEnd}
 
 %%% Local Variables:

@@ -38,12 +38,12 @@
 \begin{theoremEnd}[all end]{lemma}\label{thm:imh_expecation}
   For a positive test function \(f : \mathcal{Z} \rightarrow \mathbb{R}^{+}\), the estimate of a \(\pi\)-invariant independent Metropolis-Hastings kernel with a proposal \(q\) is bounded as
   \begin{align*}
-    \Esub{K^n\left(\vz, \cdot\right)}{ f \,\middle|\, \vz }
+    \Esub{K^n\left(\vz, \cdot\right)}{ f \,\middle|\, \rvvz }
     \leq
-    n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} 
+    n \, \rho^{n-1} 
     \Esub{q}{f}
     +
-    {\left(1 - \frac{1}{w^*}\right)}^n \, f\left(\vz\right)
+    {\rho}^n \, f\left(\rvvz\right)
     %% \leq
     %% n \, \left(
     %% \Esub{q}{f}
@@ -51,7 +51,7 @@
     %% \frac{1}{n} \, f\left(\vz\right)
     %% \right) 
   \end{align*}
-  where \(w\left(\vz\right) = \pi\left(\vz\right) / q\left(\vz\right)\) and \(w^* = \sup_{\vz} w\left(\vz\right) \).
+  where \(w\left(\vz\right) = \pi\left(\vz\right) / q\left(\vz\right)\) and \(\rho = 1 - \nicefrac{1}{w^*}\) for \(w^* = \sup_{\vz} w\left(\vz\right) \).
 \end{theoremEnd}
 \begin{proofEnd}
   \begin{alignat*}{2}
@@ -60,47 +60,47 @@
     &\quad=
     \int T_n\left(w\left(\vz\right) \vee w\left(\vz^{\prime}\right)\right) \, f\left(\vz^{\prime}\right) \, \pi\left(\vz^{\prime}\right) d\vz^{\prime}
     +
-    \lambda^{n}\left(w\left(\vz\right)\right) \, f\left(\vz\right)
+    \lambda^{n}\left(w\left(\rvvz\right)\right) \, f\left(\rvvz\right)
     &&\quad{\text{\textit{\cref{eq:imh_exact_kernel}}}}
     \\
     &\quad\leq
     \int \frac{n}{w\left(\vz\right) \vee w\left(\vz^{\prime}\right)} \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} \, f\left(\vz^{\prime}\right) \, \pi\left(\vz^{\prime}\right) d\vz^{\prime}
     +
-    \lambda^{n}\left(w\left(\vz\right)\right) \, f\left(\vz\right)
+    \lambda^{n}\left(w\left(\rvvz\right)\right) \, f\left(\rvvz\right)
     &&\quad{\text{\textit{\cref{thm:tn_bound}}}}
     \\
     &\quad\leq
     \int \frac{n}{w\left(\vz^{\prime}\right)} \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} \, f\left(\vz^{\prime}\right) \, \pi\left(\vz^{\prime}\right) d\vz^{\prime}
     +
-    \lambda^{n}\left(w\left(\vz\right)\right) \, f\left(\vz\right)
+    \lambda^{n}\left(w\left(\rvvz\right)\right) \, f\left(\rvvz\right)
     &&\quad{\frac{1}{w\left(\vz\right) \vee w\left(\vz^{\prime}\right)} \leq \frac{1}{w\left(\vz^{\prime}\right)}}
     \\
     &\quad=
     n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} \, 
     \int \frac{1}{w\left(\vz^{\prime}\right)} \, f\left(\vz^{\prime}\right) \, \pi\left(\vz^{\prime}\right) d\vz^{\prime}
     +
-    \lambda^{n}\left(w\left(\vz\right)\right) \, f\left(\vz\right)
+    \lambda^{n}\left(w\left(\rvvz\right)\right) \, f\left(\rvvz\right)
     &&\quad{\text{\textit{Pulled out constant}}}
     \\
     &\quad=
     n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} \, 
     \int f\left(\vz^{\prime}\right) \, q\left(\vz^{\prime}\right) d\vz^{\prime}
     +
-    \lambda^{n}\left(w\left(\vz\right)\right) \, f\left(\vz\right)
+    \lambda^{n}\left(w\left(\rvvz\right)\right) \, f\left(\rvvz\right)
     &&\quad{\text{\textit{Definition of \(w\left(\vz\right)\)}}}
     \\
     &\quad\leq
     n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} \, 
     \int f\left(\vz^{\prime}\right) \, q\left(\vz^{\prime}\right) d\vz^{\prime}
     +
-    {\left(1 - \frac{1}{w^*}\right)}^{n} \, f\left(\vz\right)
+    {\left(1 - \frac{1}{w^*}\right)}^{n} \, f\left(\rvvz\right)
     &&\quad{\text{\textit{\cref{thm:lambda_bound}}}}
     \\
     &\quad=
     n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1} 
     \Esub{q}{f}
     +
-    {\left(1 - \frac{1}{w^*}\right)}^n \, f\left(\vz\right).
+    {\left(1 - \frac{1}{w^*}\right)}^n \, f\left(\rvvz\right).
   \end{alignat*}
 \end{proofEnd}
 

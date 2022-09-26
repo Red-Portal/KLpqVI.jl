@@ -1,12 +1,12 @@
 
-\vspace{-0.1in}
+\vspace{-1.5ex}
 \section{Discussions}\label{section:discussion}
-\vspace{-0.12in}
+\vspace{-1.5ex}
 This paper presented a new theoretical framework for analyzing inclusive KL divergence minimization methods based on running SGD with Markov chains.
 Furthermore, we proposed pMCSA, a new MCSA method that enjoys substantially low variance.
 We have shown that this theoretical improvement translates into better empirical performance.
 
-\vspace{-0.12in}
+\vspace{-1.5ex}
 \paragraph{Limitations}
 Our work has three main limitations.
 Firstly, since our work aims to understand existing MCSA methods, it inherits their current limitations.
@@ -19,7 +19,7 @@ Lastly, our MCSA framework does not include models with parameterized posteriors
 
 \vspace{-4ex}
 \textcolor{blue}{
-\vspace{-0.12in}
+\vspace{-1.5ex}
 \paragraph{Parameterized Posteriors}
 On problems with parameterized posteriors, the target posterior moves around.
 Therefore, quickly chasing the moving posterior with fast converging MCMC kernels is as important as achieving low variance.
@@ -27,7 +27,7 @@ Because of this, trading bias and variance is less straightforward compared to t
 Furthermore, the usage of expensive MCMC kernels could be beneficial as suggested by \citet{zhang_transport_2022}.
 }
 
-\vspace{-0.12in}
+\vspace{-1.5ex}
 \paragraph{Towards Alternative Divergences}
 In \cref{section:eval}, we have shown that minimizing the \textit{inclusive} KL is competitive against  minimizing the \textit{exclusive} KL on general Bayesian inference problems.
 Although~\citet{dhaka_challenges_2021} has shown that the inclusive KL fails on high-dimensional problems, this is only the case under the presence of strong correlations.

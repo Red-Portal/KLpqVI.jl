@@ -15,7 +15,7 @@
     \textstyle
   \DTV{P_{\vlambda}^k\left(\veta, \cdot\right)}{\Pi} \leq  {\left(1 - \frac{N - 1}{2 w^* + N - 2}\right)}^k\quad \text{and}\quad
   {\small
-  \E{ \norm{ \vg\left(\vlambda, \rvveta\right) }_{*}^2 \,\middle|\, \mathcal{F}_{t} } \leq  L^2,
+  \V{ \rvvg_{\text{MSC}} \,\middle|\, \mathcal{F}_{t-1} } \leq  L^2,
   }
   \end{align*}
   }
@@ -24,6 +24,13 @@
 \begin{proofEnd}
   MSC is described in~\cref{alg:msc}. 
   At each iteration, it performs a single MCMC transition with the CIS kernel where it internally uses \(N\) proposals.
+  That is,
+  \begin{align*}
+    \rvvz \mid \rvvz_{t-1}, \rvvlambda_{t-1} &\sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t-1}, \cdot\right)
+    \\
+    \rvvg_{\text{MSC}} &= \vs\left(\vlambda, \rvvz\right),
+  \end{align*}
+  where \(K_{\rvvlambda_{t-1}}\) is the CIS kernel using \(q_{\text{def.}}\left(\cdot; \rvvlambda_{t-1}\right)\).
 
   \paragraph{Ergodicity of the Markov Chain}
   The ergodic convergence rate of \(P_{\vlambda}\) is equal to that of \(K_{\vlambda}\), the CIS kernel proposed by~\citet{NEURIPS2020_b2070693}. 
@@ -41,17 +48,17 @@
   For simplicity, we denote the rejection state as \(\vz^{(1)} = \vz_{t-1} \).
   Then,
   \begin{alignat}{2}
-    &\E{ \norm{ \vg\left(\vlambda, \rvveta\right) }_{*}^2 \,\middle|\, \mathcal{F}_{t} }
+    &\V{ \rvvg_{\text{MSC}} \,\middle|\, \mathcal{F}_{t-1} }
+    \nonumber
+    \\
+    &\;\leq
+    \E{ \norm{ \rvvg_{\text{MSC}} }^2 \,\middle|\, \mathcal{F}_{t-1}}
     \nonumber
     \\
     &\;=
-    \E{ \norm{ \vg\left(\vlambda, \rvveta\right) }_{*}^2 \,\middle|\, \mathcal{F}_{t}}
-    \nonumber
-    \\
-    &\;=
-    \Esub{\rvvz \sim K_{\vlambda_{t-1}}\left(\vz_{t-1}, \cdot\right)}{
-      \norm{ \vs\left(\vlambda; \rvvz\right) }_{*}^2 \,\middle|\,
-      \vlambda_{t-1}, \vz_{t-1}
+    \Esub{\rvvz \sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t-1}, \cdot\right)}{
+      \norm{ \vs\left(\vlambda; \rvvz\right) }^2 \,\middle|\,
+      \rvvlambda_{t-1}, \rvvz_{t-1}
     }
     \nonumber
     \\
@@ -63,9 +70,9 @@
     }{
       \sum^{N}_{m=1} w\left(\vz^{(m)}\right)
     }
-    \norm{ \vs\left(\cdot; \vz^{(n)}\right) }^2_{*}
+    \norm{ \vs\left(\vlambda; \vz^{(n)}\right) }^2
     \prod^{N}_{n=2}
-    q\left(d\vz^{(n)}; \vlambda_{t-1}\right)
+    q\left(d\vz^{(n)}; \rvvlambda_{t-1}\right)
     \nonumber
     &&\quad\text{\textit{\citet{andrieu_uniform_2018}}}
     \\
@@ -79,7 +86,7 @@
       \sum^{N}_{m=1} w\left(\vz^{(m)}\right)
     }
     \prod^{N}_{n=2}
-    q\left(d\vz^{(n)}; \vlambda_{t-1}\right)
+    q\left(d\vz^{(n)}; \rvvlambda_{t-1}\right)
     \nonumber
     &&\quad\text{\textit{\cref{thm:bounded_score}}}
     \\
@@ -87,7 +94,7 @@
     L^2 \,
     \int
     \prod^{N}_{n=2}
-    q\left(d\vz^{(n)}; \vlambda_{t-1}\right)
+    q\left(d\vz^{(n)}; \rvvlambda_{t-1}\right)
     \nonumber
    &&\quad\text{\textit{The sum of weights is 1}}
     \\

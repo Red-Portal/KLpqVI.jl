@@ -69,6 +69,13 @@
 \tikzexternalize
 \tikzexternaldisable
 
+\newcommand\blfootnote[1]{%
+  \begingroup
+  \renewcommand\thefootnote{}\footnote{#1}%
+  \addtocounter{footnote}{-1}%
+  \endgroup
+}
+
 \title{\textsc{Markov Chain Score Ascent}: \\ A Unifying Framework of \\ Variational Inference with Markovian Gradients}
 
 % The \author macro works with any number of authors. There are two commands
@@ -134,13 +141,13 @@
   We thank Hongseok Yang for pointing us to a relevant related work, Guanyang Wang for insightful discussions about the independent Metropolis-Hastings algorithm, Geon Park and Kwanghee Choi for constructive comments that enriched this paper, Christian A. Naesseth for comments about Rao-Blackwellized MSC, and Gabriel V. Cardoso for comments about BR-SNIS.
   We also acknowledge the Department of Computer Science and Engineering of Sogang University for providing computational resources.
 
-  K. Kim is supported in part by the EPSRC through the Big Hypotheses grant [EP/R018537/1].
+  K. Kim was supported in part by the EPSRC through the Big Hypotheses grant [EP/R018537/1].
   J. R. Gardner is supported by NSF award [IIS-2145644].
 \end{ack}
 %\newpage
 \bibliography{references}
-%\newpage
-%\input{checklist}
+\newpage
+\input{checklist}
 
 \newpage
 \appendix

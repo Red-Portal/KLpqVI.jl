@@ -22,7 +22,7 @@
     \leq
     C\left(N\right)\,{\rho^k}
     \quad\text{and}\quad
-    \E{ \norm{ \vg_{\mathrm{pMCSA}}\left(\vlambda, \rvveta\right) }^2_{*} \,\middle|\, \mathcal{F}_{t} }
+    \V{ \vg_{\mathrm{pMCSA}} \,\middle|\, \mathcal{F}_{t-1} }
     \leq
     L^2 \left[\; \frac{1}{N} + \frac{1}{N}\,\left(1 - \frac{1}{w^*}\right) \;\right],
   \end{align*}
@@ -33,7 +33,17 @@
 
   Our proposed scheme, pMCSA, is described in~\cref{alg:jsa}. 
   At each iteration, our scheme performs a single MCMC transition for each of the \(N\) samples, or chains, to estimate the gradient.
-  Similarly to JSA, we use the IMH kernel \(K_{\vlambda}\).
+  That is,
+  \begin{align*}
+    \rvvz^{(1)}_{t} \mid \rvvz_{t-1}^{(1)}, \rvvlambda_{t-1} &\sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t-1}^{(1)}, \cdot\right) \\
+    \rvvz^{(2)}_{t} \mid \rvvz_{t-1}^{(2)}, \rvvlambda_{t-1}  &\sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t-1}^{(2)}, \cdot\right) \\
+    &\vdots
+    \\
+    \rvvz^{(N)}_{t} \mid \rvvz^{(N)}_{t-1}, \rvvlambda_{t-1}  &\sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t-1}^{(N)}, \cdot\right)
+    \\
+    \rvvg_{\text{pMCSA}} &= \frac{1}{N}\,\sum^{N}_{n=1} \, \vs\left(\vlambda, \rvvz^{(n)}_t\right),
+  \end{align*}
+  where \(K_{\rvvlambda_{t-1}}^n\) is an \(n\)-transition IMH kernel using \(q_{\text{def.}}\left(\cdot; \rvvlambda_{t-1}\right)\).
 
   \paragraph{Ergodicity of the Markov Chain}
   Since our kernel operates the same MCMC kernel \(K_{\vlambda}\) for each of the \(N\) parallel Markov chains, the \(n\)-step marginal kernel \(P_{\vlambda}\) can be represented as
@@ -106,32 +116,35 @@
   \paragraph{\textbf{Bound on the Gradient Variance}}
   The bound on the gradient variance can be derived in similar manner to JSA as
   \begin{alignat}{2}
-    &\E{ \norm{ \vg_{\mathrm{pMCSA}}\left(\vlambda, \rvveta\right) }^2_{*} \,\middle|\, \mathcal{F}_{t} }
+    &\V{ \vg_{\mathrm{pMCSA}} \,\middle|\, \mathcal{F}_{t-1} }
     \nonumber
     \\
     &\quad=
-    \E{ \norm{ \vg_{\mathrm{pMCSA}}\left(\vlambda, \rvveta\right) }^2_{*} \,\middle|\, \vz_{t-1}^{(1:N)},\, \vlambda_{t-1} }
+    \V{ \vg_{\mathrm{pMCSA}} \,\middle|\, \rvvz_{t-1}^{(1:N)},\, \rvvlambda_{t-1} }
     \nonumber
     \\
     &\quad=
-    \E{ \norm{ \frac{1}{N}\sum^{N}_{n=1} \vs\left(\vlambda; \rvvz_{n}\right) }^2_{*} \,\middle|\, \vz_{t-1}^{(1:N)},\, \vlambda_{t-1} }
+    \V{ \frac{1}{N}\sum^{N}_{n=1} \vs\left(\vlambda; \rvvz^{(n)}\right) \,\middle|\, \rvvz_{t-1}^{(1:N)},\, \rvvlambda_{t-1} }
+    \nonumber
+    \\
+    &\quad=
+    \frac{1}{N}\sum^{N}_{n=1} \V{ \vs\left(\vlambda; \rvvz^{(n)}\right) \,\middle|\, \rvvz_{t-1}^{(1:N)},\, \rvvlambda_{t-1} }
+    &&\quad\text{\textit{\(\rvvz^{(i)} \,\bot\, \rvvz^{(j)}\) for \(i \neq j\)}}
     \nonumber
     \\
     &\quad\leq
-    \E{  \frac{1}{N^2} \sum^{N}_{n=1} \norm{\vs\left(\vlambda; \rvvz_{n}\right) }^2_{*} \,\middle|\, \vz_{t-1}^{(1:N)},\, \vlambda_{t-1} }
-    &&\quad\text{\textit{Triangle inequality}}
+    \frac{1}{N^2}\sum^{N}_{n=1} \E{ \norm{\vs\left(\vlambda; \rvvz^{(n)}\right) }^2 \,\middle|\, \rvvz_{t-1}^{(1:N)},\, \rvvlambda_{t-1} }
     \nonumber
     \\
     &\quad=
-    \frac{1}{N^2}\sum^{N}_{n=1} \Esub{\rvvz_{n} \sim K_{\vlambda_{t-1}}\left(\vz_{t-1}^{(n)}, \cdot\right)}{ \norm{\vs\left(\vlambda; \rvvz_{n}\right) }^2_{*} \,\middle|\,  \vz_{t-1}^{(1:N)},\, \vlambda_{t-1} }
-    &&\quad\text{\textit{Linearity of expectation}}
+    \frac{1}{N^2}\sum^{N}_{n=1} \Esub{\rvvz^{(n)} \sim K_{\rvvlambda_{t-1}}\left(\vz_{t-1}^{(n)}, \cdot\right)}{ \norm{\vs\left(\vlambda; \rvvz^{(n)}\right) }^2 \,\middle|\,  \rvvz_{t-1}^{(1:N)},\, \rvvlambda_{t-1} }
     \nonumber
     \\
     &\quad\leq
     \frac{1}{N^2}\sum^{N}_{n=1}
-      \Esub{\rvvz_n \sim q_{\text{def.}}\left(\cdot;\vlambda_{t-1}\right)}{ \norm{\vs\left(\vlambda; \rvvz_n \right)}_{*}^2 }
+      \Esub{\rvvz^{(n)} \sim q_{\text{def.}}\left(\cdot;\rvvlambda_{t-1}\right)}{ \norm{\vs\left(\vlambda; \rvvz^{(n)} \right)}^2 }
       +
-      {\left(1 - \frac{1}{w^*}\right)} \, \norm{\vs\left(\vlambda; \vz_{t-1}^{(n)} \right)}_{*}^2
+      {\rho} \, \norm{\vs\left(\vlambda; \rvvz_{t-1}^{(n)} \right)}^2
     &&\quad\text{\textit{\cref{thm:imh_expecation}}}
     \nonumber
     \\
@@ -145,12 +158,10 @@
     \frac{L^2}{N^2} \sum^{N}_{n=1}
       1 + {\left(1 - \frac{1}{w^*}\right)}
     \nonumber
-    &&\quad\text{\textit{Moved constant forward}}
     \\
     &\quad=
     L^2 \left[ \frac{1}{N} + \frac{1}{N}\,{\left(1 - \frac{1}{w^*}\right)} \right].
     \nonumber
-    &&\quad\text{\textit{Solved sum}}
   \end{alignat}
   %Therefore, the gradient decreases at a solid \(\mathcal{O}\left(1/N\right)\) rate.
 \end{proofEnd}

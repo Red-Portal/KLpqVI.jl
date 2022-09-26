@@ -6,13 +6,6 @@
 First, we develop Markov chain score ascent (MCSA), a framework for inclusive KL minimization with MCGD.
 This framework will establish the connection between MSC/JSA and MCGD.
 
-\vspace{-1.5ex}%
-{%
-\paragraph{Notation}%
-\textcolor{blue}{%
-\(\mathcal{F}_t\) is the \(\sigma\)-field formed by the iterates \(\veta_t\) up to the \(t\)th MCGD iteration, \(\norm{\vx}_* \) is the dual norm of \(\vx\) such that, \(\norm{\vx}_* = \sup_{\norm{\vz} \leq 1} \iprod{\vx}{\vz}\), \(d_{\text{TV}}\left(\pi, q\right)\) is the total-variation (TV) distance between \(\pi\) and \(q\) such that \(d_{\text{TV}}\left(\pi, q\right) = \nicefrac{1}{2} \int \abs{\pi\left(d\vz\right) - q\left(d\vz\right)} \), and \(\DChi{\pi}{q}\) is the \(\chi^2\) divergence from \(\pi\) to \(q\) such that \(\DChi{\pi}{q} = \int {\left(\nicefrac{\pi\left(d\vz\right)}{q\left(d\vz\right)} - 1\right)}^2 q\left(d\vz\right)\).
-}}
-
 \vspace{-1.ex}
 \subsection{Markov Chain Score Ascent as a Special Case of Markov Chain Gradient Descent}\label{section:convergence}
 \vspace{-1.ex}
@@ -23,7 +16,7 @@ The following proposition provides sufficient conditions on \(\vg\) and \(P_{\vl
 \vspace{0.07in}
 \input{thm_product_kernel}
 
-\begin{table*}[b]
+\begin{table*}[t]
 \vspace{-1ex}
 \centering
 \caption{Convergence Rates of MCGD Algorithms}\label{table:convergence}
@@ -34,7 +27,7 @@ The following proposition provides sufficient conditions on \(\vg\) and \(P_{\vl
     \multicolumn{1}{c}{\footnotesize\textbf{Algorithm}} & \multicolumn{1}{c}{\footnotesize\textbf{Stepsize Rule}} & \multicolumn{1}{c}{\footnotesize\textbf{Gradient Assumption}} & {\footnotesize\textbf{Rate}} & {\footnotesize\textbf{Reference}} \\\midrule
     \multirow{2}{*}{\small Mirror Descent\tnote{1}}
     & \multirow{2}{*}{\small\(\gamma_t = \gamma / \sqrt{t}\)}
-    & \multirow{2}{*}{\small\(\E{ {\|\, \vg\left(\vlambda, \veta\right) \,\|}_*^2 \mid \mathcal{F}_t } < G^2\)}
+    & \multirow{2}{*}{\small\(\E{ {\|\, \vg\left(\rvvlambda, \rvveta\right) \,\|}_*^2 \mid \mathcal{F}_{t-1} } < G^2\)}
     & \multirow{2}{*}{\small\(\mathcal{O}\left(\frac{G^2 \log T}{ \log \rho^{-1} \sqrt{T}}\right)\)}
     & {\footnotesize\citet{duchi_ergodic_2012}}
     \\
@@ -42,7 +35,7 @@ The following proposition provides sufficient conditions on \(\vg\) and \(P_{\vl
     \\\cdashlinelr{1-5}
     \multirow{2}{*}{\small SGD-Nesterov\tnote{2}}
     & {\small\(\gamma_t = 2/(t + 1)\)}
-    & \multirow{2}{*}{\footnotesize\( {\|\vg\left(\vlambda, \veta\right)\|}_2 < G \)}
+    & \multirow{2}{*}{\footnotesize\( {\|\vg\left(\rvvlambda, \rvveta\right)\|}_2 < G \)}
     & \multirow{2}{*}{\small\(\mathcal{O}\left(\frac{G^2 \log T}{ \sqrt{T}}\right)\)}
     & {\footnotesize\citet{doan_convergence_2020}}
     \\
@@ -51,7 +44,7 @@ The following proposition provides sufficient conditions on \(\vg\) and \(P_{\vl
     \\\cdashlinelr{1-5}
     \multirow{2}{*}{\small SGD\tnote{3}}
     & {\footnotesize\(\gamma_t = \gamma/t\)}
-    & \multirow{2}{*}{\footnotesize\( {\|\,\vg\left(\vlambda, \veta\right)\|}_* < G \left( \norm{\vlambda}_2 + 1 \right) \)}
+    & \multirow{2}{*}{\footnotesize\( {\|\,\vg\left(\rvvlambda, \rvveta\right)\|}_* < G \left( \norm{\vlambda}_2 + 1 \right) \)}
     & \multirow{2}{*}{\small\(\mathcal{O}\left(\frac{G^2 \log T}{ T}\right)\)}
     & {\footnotesize\citet{doan_finitetime_2020}}
     \\ 
@@ -62,8 +55,9 @@ The following proposition provides sufficient conditions on \(\vg\) and \(P_{\vl
   \begin{tablenotes}[flushleft]
   \item[]{%
     \footnotesize\textbf{\textit{Notation}:}
-    \(^2\)\(\beta_t\) is the stepsize of the momentum.
-    \(^2\)\(^3\)\(L\) is the Lipschitz smoothness constant.
+    \(^1\)\(\mathcal{F}_t\) is the \(\sigma\)-field formed by the iterates \(\veta_t\) up to the \(t\)th MCGD iteration, \(\norm{\vx}_* \) is the dual norm of \(\vx\);
+    \(^2\)\(\beta_t\) is the stepsize of the momentum;
+    \(^2\)\(^3\)\(L\) is the Lipschitz smoothness constant;
     \(^3\)\(\mu\) is the strong convexity constant.
   }
   \end{tablenotes}
@@ -163,7 +157,7 @@ Therefore, \(w^*\) will be large
 %In practice, for practical it is fair to expect \(w^*\) will be large.
 
 \begin{assumption}{(Bounded Score)}\label{thm:bounded_score}
-  The score gradient is bounded for \(\forall \vlambda \in \Lambda\) and \(\forall \vz \in \mathcal{Z}\) such that \(\norm{\vs\left(\vlambda; \vz\right)}_* \leq L \) for some finite constant \(L > 0\).
+  The score gradient is bounded for \(\forall \vlambda \in \Lambda\) and \(\forall \vz \in \mathcal{Z}\) such that \(\norm{\vs\left(\vlambda; \vz\right)} \leq L \) for some finite constant \(L > 0\).
 \end{assumption}
 %
 Although this assumption is strong, it enables us to compare the gradient variance of MCSA methods.
@@ -187,18 +181,24 @@ Therefore, \(N\) in MSC has a different meaning, but it still indicates the comp
 \cref{thm:msc} shows that the gradient variance of MSC is insensitive to \(N\).
 Although the mixing rate does improve with \(N\), when \(w^*\) is large due to model misspecification and lack of convergence (see the discussion in \cref{section:assumption}), this will be marginal.
 Overall, \textit{the performance of MSC cannot be improved by increasing the computational budget \(N\)}.
-Even under stationarity, the variance of \(\veta\) is equal to that of a \textit{single} posterior sample at best.
 
 \vspace{-0.1in}
 \paragraph{Rao-Blackwellization}
 \textcolor{blue}{
 Meanwhile, \citeauthor{NEURIPS2020_b2070693} also provide a Rao-Blackwellized version of MSC we denote as MSC-RB.
-Instead of selecting a single \(\vz_t\) by resampling over the \(N\) internal proposals, they suggest reusing the resampling weights to form an importance-weighted estimate.
-The theoretical properties of this estimator have been concurrently analyzed by~\citet{cardoso_brsnis_2022} under the name of bias reduced self-normalized importance sampling (BR-SNIS).
+Instead of selecting a single \(\vz_t\) by resampling over the \(N\) internal proposals, they suggest to form an importance-weighted estimate~\citep{robert_monte_2004}.
+The theoretical properties of this estimator have been concurrently analyzed by~\citet{cardoso_brsnis_2022}.
 We modified their proof to match our desired result.
 }
 
 \input{thm_previous_mscrb}
+
+\textcolor{blue}{
+In this case, the variance does improve with \(N\), but the first term depends on the \(\chi^2\) divergence, which is bounded below exponentially by the KL divergence~\citep{10.1214/17-STS611}.
+This means that its variance will be large on challenging problems.
+Note that, if we bound the actual variance instead of just the second moment, one can obtain a tighter {\small\(\mathcal{O}\left({\left(N-1\right)}^{-1}\right)\)} bound~\citep{cardoso_brsnis_2022} (the second term can be made to decrease in an {\(\mathcal{O}\left(N^{-2/3}\right)\)} rate).
+However, the linear dependence on the \(\chi^2\) divergence still persists.
+}
 
 \vspace{-0.1in}
 \subsection{Joint Stochastic Approximation}
@@ -214,7 +214,7 @@ At each MCGD step, JSA performs multiple Markov chain transitions and estimates 
 Similarly to MSC, the IMH kernel in JSA generates proposals from \(q\left(\cdot; \vlambda_t\right)\).
 To show the geometric ergodicity of the implicit kernel \(P\), we utilize the geometric convergence rate of IMH kernels provided by~\citet[Theorem 2.1]{10.2307/2242610} and~\citet{wang_exact_2020}.
 Furthermore, to derive an upper bound on the gradient variance, we use the exact \(n\)-step marginal IMH kernel derived by~\citet{Smith96exacttransition} as
-{%\small
+{
   \begin{align}
   K^n_{\vlambda}\left(\vz, d\vz^{\prime}\right) 
   = T_n\left(\, w\left(\vz\right) \vee w\left(\vz^{\prime}\right)\,\right) \, \pi\left(\vz^{\prime}\right) \, d\vz^{\prime}
@@ -225,7 +225,7 @@ Furthermore, to derive an upper bound on the gradient variance, we use the exact
 where {\(w\left(\vz\right) = \pi\left(\vz\right)/q_{\text{def.}}\left(\vz; \vlambda\right)\), \(x \vee y = \max\left(x, y\right)\)}, and for {\(R\left(v\right) = \{\, \vz^{\prime} \mid w\,\left(\vz^{\prime}\right) \leq v \,\}\)}, 
 {%\small
   \begin{align}
-        %\textstyle
+                \textstyle
     T_n\left(w\right)      = \int_w^{\infty}
     \frac{n}{v^2}
     %\left(n / v^2\right)
@@ -315,28 +315,9 @@ This is because
   \item the mixing rate will improve naturally as MCSA converges.
 \end{enumerate*}
 
-%% \paragraph{Bias v.s. Variance}
-%% While our proposed scheme achievs superior variance reduction, the mixing rate is worse.
-%% In a MCMC estimation perspective, this translates into higher bias.
-%% However, we note that
-%% \begin{enumerate*}[label=\textbf{(\roman*)}]
-%%   \item the constant \(C\left(\rho, N\right)\) depends on \(\rho\), 
-%%   \item all of the ergodic convergence rate are close to 1 as \(w^* \rightarrow \infty\), and
-%%   \item the mixing rate is a conservative global bound with respect to \(\vlambda\).
-%% \end{enumerate*}
-%% Therefore, in general, the superior ergodic convergence rate of JSA does not translate into faster convergence of MCSA.
-%% In fact, as MCSA converges, \(w^*\) also decreases, dramatically improving the mixing rate.
-%% In contrast, the relative variance does not improve too much with \(w^*\).
-%% Therefore, reducing the variance is much more effective for accelerating convergence.
-%% We empirically show this fact on the bias and variance in~\cref{section:simulation}.
+\pagebreak
 
-%% \begin{table*}[t]
-%%   \vspace{-2ex}
-%%   \centering
-%%   \input{table_cost}
-%%   \vspace{-3ex}
-%% \end{table*}
-\begin{wraptable}[13]{r}{0.55\textwidth}
+\begin{wraptable}[11]{r}{0.55\textwidth}
   \vspace{-5ex}
   \centering
   \input{table_cost}
