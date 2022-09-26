@@ -188,16 +188,13 @@ Overall, \textit{the performance of MSC cannot be improved by increasing the com
 Meanwhile, \citeauthor{NEURIPS2020_b2070693} also provide a Rao-Blackwellized version of MSC we denote as MSC-RB.
 Instead of selecting a single \(\vz_t\) by resampling over the \(N\) internal proposals, they suggest to form an importance-weighted estimate~\citep{robert_monte_2004}.
 The theoretical properties of this estimator have been concurrently analyzed by~\citet{cardoso_brsnis_2022}.
-We modified their proof to match our desired result.
 }
 
 \input{thm_previous_mscrb}
 
 \textcolor{blue}{
-In this case, the variance does improve with \(N\), but the first term depends on the \(\chi^2\) divergence, which is bounded below exponentially by the KL divergence~\citep{10.1214/17-STS611}.
-This means that its variance will be large on challenging problems.
-Note that, if we bound the actual variance instead of just the second moment, one can obtain a tighter {\small\(\mathcal{O}\left({\left(N-1\right)}^{-1}\right)\)} bound~\citep{cardoso_brsnis_2022} (the second term can be made to decrease in an {\(\mathcal{O}\left(N^{-2/3}\right)\)} rate).
-However, the linear dependence on the \(\chi^2\) divergence still persists.
+Now, the variance decreases as \(\mathcal{O}\left(\nicefrac{1}{N-1}\right)\), but the first term depends on the \(\chi^2\) divergence, which is exponentially bigger than the KL divergence~\citep{10.1214/17-STS611}, and the second term depends quadratically on \(w^*\).
+Therefore, the variance of MSC-RB will be large on challenging problems such that \(w^*\) and the \(\chi^2\) divergence are large.
 }
 
 \vspace{-0.1in}
@@ -213,7 +210,11 @@ At each MCGD step, JSA performs multiple Markov chain transitions and estimates 
 %A key element of JSA~\citep{pmlr-v124-ou20a} is that it uses the IMH kernel.
 Similarly to MSC, the IMH kernel in JSA generates proposals from \(q\left(\cdot; \vlambda_t\right)\).
 To show the geometric ergodicity of the implicit kernel \(P\), we utilize the geometric convergence rate of IMH kernels provided by~\citet[Theorem 2.1]{10.2307/2242610} and~\citet{wang_exact_2020}.
-Furthermore, to derive an upper bound on the gradient variance, we use the exact \(n\)-step marginal IMH kernel derived by~\citet{Smith96exacttransition} as
+\textcolor{blue}{
+The gradient variance, on the other hand, is difficult to analyze, especially the covariance between the samples.
+However, we show that, even if we ignore the covariance terms, the variance reduction with respect to \(N\) is severly limited in the large \(w^*\) regime.
+}
+To do this, we use the exact \(n\)-step marginal IMH kernel derived by~\citet{Smith96exacttransition} as
 {
   \begin{align}
   K^n_{\vlambda}\left(\vz, d\vz^{\prime}\right) 
@@ -225,7 +226,7 @@ Furthermore, to derive an upper bound on the gradient variance, we use the exact
 where {\(w\left(\vz\right) = \pi\left(\vz\right)/q_{\text{def.}}\left(\vz; \vlambda\right)\), \(x \vee y = \max\left(x, y\right)\)}, and for {\(R\left(v\right) = \{\, \vz^{\prime} \mid w\,\left(\vz^{\prime}\right) \leq v \,\}\)}, 
 {%\small
   \begin{align}
-                \textstyle
+    %\textstyle
     T_n\left(w\right)      = \int_w^{\infty}
     \frac{n}{v^2}
     %\left(n / v^2\right)
@@ -243,10 +244,12 @@ where {\(w\left(\vz\right) = \pi\left(\vz\right)/q_{\text{def.}}\left(\vz; \vlam
 %
 \vspace{-1ex}
 \paragraph{Discussion}
-According to~\cref{thm:jsa}, JSA benefits from increasing \(N\) both in terms of faster mixing rate and lower gradient variance.
-However, similarly to MSC, under lack of convergence and model misspecification (large \(w^*\)), the improvement becomes marginal.
+As shown in~\cref{thm:jsa} JSA benefits from increasing \(N\) in terms of faster mixing rate.
+\textcolor{blue}{
+However, for the variance, under lack of convergence and model misspecification (large \(w^*\)), the variance improvement becomes marginal.
 More importantly, \textit{in the large \(w^*\) regime, the variance reduction is limited by the constant \(1/2\) term}.
-This is because a large \(w^*\) results in more Metropolis-Hastings rejections, increasing the correlation between the \(N\) samples.
+This is true even if we completely ignore the covariance between the samples \(C_{\text{cov}}\) which, in practice, will only increase variance.
+}
 This inefficiency persists even under stationarity unless \(\pi\left(\cdot\right) \in \mathcal{Q}\).
 
 %Intuitively, the inefficiency comes from the rejections persisting even under stationarity.
@@ -314,8 +317,6 @@ This is because
   \item the mixing rate \(\rho\) is a conservative \textit{global} bound and 
   \item the mixing rate will improve naturally as MCSA converges.
 \end{enumerate*}
-
-\pagebreak
 
 \begin{wraptable}[11]{r}{0.55\textwidth}
   \vspace{-5ex}

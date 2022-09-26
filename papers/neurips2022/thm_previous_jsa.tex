@@ -13,7 +13,7 @@
   \cdot
   K_{\vlambda}^{N\,\left(k-1\right) + N}\left(\vz^{(N)}, d\vz^{\prime\;(N)}\right)
   \end{align*}
-  }
+  }%
   with \(\veta_t = \big(\vz_t^{(1)}, \vz_t^{(2)}, \ldots, \vz_t^{(N)}\big)\).
   Then, given~\cref{thm:bounded_weight,thm:bounded_score}, the mixing rate and the gradient variance bounds are
   {%\small
@@ -23,7 +23,7 @@
     C\left(\rho, N\right)\,{\rho}^{k\,N}
     \quad\text{and}\quad
    % 
-    \E{ \norm{ \vg_{\mathrm{JSA}}}^2 \,\middle|\, \mathcal{F}_{t} }
+    \V{ \vg_{\mathrm{JSA}} \,\middle|\, \mathcal{F}_{t-1} }
     \leq
     L^2 \,
     \left[\,
@@ -35,9 +35,9 @@
   \end{align*}
   }%
   where
-  \[\textstyle
-  C_{\text{cov}} = \frac{1}{N^2} \sum^{N}_{n=2} \sum^{n-1}_{m = 1} \Cov{\vs\left(\vlambda; \rvvz^{(n)}\right), \vs\left(\vlambda; \rvvz^{(m)}\right) \,\middle|\, \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} }
-  \] is the sum of the covariance between the samples, \(w^* = \sup_{\vz} \pi\left(\vz\right) / q_{\text{def.}}\left(\vz;\vlambda\right)\), and \(C\left(\rho, N\right) > 0\) is a finite constant depending on \(\rho\) and \(N\).
+  \(\small\textstyle
+  C_{\text{cov}} = \frac{1}{N^2} \sum^{N}_{n=2} \sum^{n-1}_{m = 1} \Cov{\vs\left(\vlambda; \rvvz^{(n)}\right), \vs\left(\vlambda; \rvvz^{(m)}\right) \,\middle|\, \mathcal{F}_{t-1} }
+  \) is the sum of the covariance between the samples, \(w^* = \sup_{\vz} \pi\left(\vz\right) / q_{\text{def.}}\left(\vz;\vlambda\right)\), and \(C\left(\rho, N\right) > 0\) is a finite constant depending on \(\rho\) and \(N\).
 \end{theoremEnd}
 \begin{proofEnd}
 
@@ -51,7 +51,7 @@
     \\
     \rvvz^{(N)}_{t} \mid \rvvz^{(N-1)}_{t}, \rvvlambda_{t-1}  &\sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t}^{(N-1)}, \cdot\right)
     \\
-    \rvvg_{\text{JSA}} &= \frac{1}{N}\,\sum^{N}_{n=1} \, \vs\left(\vlambda, \rvvz^{(n)}_t\right),
+    \rvvg_{\text{JSA}} &= -\frac{1}{N}\,\sum^{N}_{n=1} \, \vs\left(\vlambda, \rvvz^{(n)}_t\right),
   \end{align*}
   where \(K_{\rvvlambda_{t-1}}^n\) is an \(n\)-transition IMH kernel using \(q_{\text{def.}}\left(\cdot; \rvvlambda_{t-1}\right)\).
 

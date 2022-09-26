@@ -1,138 +1,30 @@
 
-\begin{theoremEnd}[all end]{lemma}\label{thm:iw_integral}
-  For \(w\left(\vz\right) = \pi\left(\vz\right)/q\left(\vz\right)\),
-  \begin{align*}
-    \Esub{\rvvz^{(n)} \sim q\left(\cdot\right)}{
-      w\left(\rvvz^{(n)}\right) 
-    }
-    = 1.
-  \end{align*}
-\end{theoremEnd}
-\begin{proofEnd}
-  \begin{align*}
-    \Esub{\rvvz \sim q\left(\cdot\right)}{
-      w\left(\rvvz\right) 
-    }
-    =
-    \Esub{\rvvz \sim q\left(\cdot\right)}{
-      \frac{\pi\left(\rvvz\right)}{q\left(\rvvz\right)}
-    }
-    = 
-    \int 
-    \frac{\pi\left(\vz\right)}{q\left(\vz\right)}
-    \, q\left(d\vz\right)
-    = 
-    \int 
-    \pi\left(d\vz\right)
-    =
-    1
-  \end{align*}
-\end{proofEnd}
-
-\begin{theoremEnd}[all end]{lemma}\label{thm:iw_bound}
-  For \(w\left(\vz\right) = \pi\left(\vz\right)/q\left(\vz\right)\), let \(\rvvz^{(n)} \sim q\left(\cdot\right)\) for \(n=2, \ldots, N\) and \(\vz_{t-1}\) be a non-random variable.
-  Then, the expectation of \( \mu_{\mathrm{IS}}^N\left(w\right) = \frac{1}{N}\left(\sum^N_{n=2} w\left(\rvvz^{(n)}\right) + w\left(\vz_{t-1}\right) \right)\) is 
-  \begin{align*}
-    \mathbb{E}{
-      \mu_{\mathrm{IS}}^N\left(w\right)
-    }
-    = \frac{N-1}{N} + \frac{1}{N} \, w\left(\rvvz_{t-1}\right).
-  \end{align*}
-\end{theoremEnd}
-\begin{proofEnd}
-  \begin{alignat}{2}
-    \mathbb{E}{
-      \mu_{\mathrm{IS}}^N\left(w\right)
-    }
-    &\;=
-    \E{
-      \frac{1}{N} \left( \sum^N_{n=2}
-        w\left(\rvvz\right) 
-        + w\left(\rvvz_{t-1}\right) \right)
-    }
-    \nonumber
-    \\
-    &\;=
-    \frac{1}{N} \left( \sum^N_{n=2}  \Esub{q}{
-      w\left(\rvvz\right) 
-    }
-    + w\left(\rvvz_{t-1}\right) \right)
-    &&\quad\text{\textit{\(\rvvz^{(i)} \,\bot\, \rvvz^{(j)}\) for \(i \neq j\)}}
-    \nonumber
-    \\
-    &\;=
-    \frac{1}{N}
-    \left(
-    \sum^N_{n=2} 1
-    + w\left(\rvvz_{t-1}\right) 
-    \right)
-    \nonumber
-    &&\quad\text{\textit{\cref{thm:iw_integral}}}
-    \\
-    &\;=
-    \frac{1}{N}
-    \big(
-    \left(N-1\right) + w\left(\rvvz_{t-1}\right) 
-    \big).
-    \nonumber
-    &&\quad\text{\textit{Solved sum}}
-  \end{alignat}
-\end{proofEnd}
-
 \begin{theoremEnd}[all end]{lemma}\label{thm:iw_variance}
   Let the importance weight be defined as \(w\left(\vz\right) = \pi\left(\vz\right)/q\left(\vz\right)\).
-  Furthermore, let \(\rvvz^{(n)} \sim q\left(\cdot\right)\) for \(n = 2, \ldots, N\) be \(N-1\) random variables while \(\vz_{t-1}\) is a non-random variable.
-  Then, the variance of
-  \( \mu_{\mathrm{IS}}^N\left(\rvw\right) = \frac{1}{N}\left(\sum^{N}_{n=2} w\left(\rvvz^{(n)}\right) + w\left(\vz_{t-1}\right) \right) \) is related with the \(\chi^2\) divergence as
+  The variance of the importance weight is related with the \(\chi^2\) divergence as
   \begin{align*}
-    \mathbb{V}{\mu_{\mathrm{IS}}^N}
+    \mathbb{V}_{q}{w\left(\rvvz\right)}
     =
-    \frac{N-1}{N^2}\,
     \DChi{\pi}{q}.
   \end{align*}
 \end{theoremEnd}
 \begin{proofEnd}
+  {
   \begin{alignat}{2}
-    \mathbb{V}\mu_{\mathrm{IS}}^N
+    \mathbb{V}_{q}{w\left(\rvvz\right)}
     &=
-    \V{
-      \frac{1}{N} \, \left( \sum^{N}_{n=2} \rvw\left(\vz^{(n)}\right) + w_{t-1} \right)
-    }
-    \nonumber
-    \\
-    &=
-    \frac{1}{N^2}\,
-    \sum^{N}_{n=2}
-    \Vsub{q}{
-       \rvw\left(\vz\right)
-    }
-    &&\quad\text{\textit{\(\rvvz^{(i)}\,\bot\,\rvvz^{(j)}\) for \(i \neq j\)}}
-    \nonumber
-    \\
-    &=
-    \frac{N-1}{N^2}\,
-    \Vsub{q}{
-       \rvw\left(\rvvz\right)
-    }
-    &&\quad\text{\textit{Solved sum}}
-    \nonumber
-    \\
-    &=
-    \frac{N-1}{N^2}\,
     \Esub{q}{
       {\left(
-      \rvw\left(\rvvz\right)
+        w\left(\rvvz\right)
       -
       \Esub{q}{
-        \rvw\left(\rvvz\right)
+        w\left(\rvvz\right)
       }
       \right)}^2
     }
-    &&\quad\text{\textit{Definition of variance}}
     \nonumber
     \\
     &=
-    \frac{N-1}{N^2}\,
     \Esub{q}{
       {\left(
       w\left(\rvvz\right)
@@ -140,588 +32,82 @@
       1
       \right)}^2
     }
-    &&\quad\text{\textit{\cref{thm:iw_integral}}}
     \nonumber
     \\
     &=
-    \frac{N-1}{N^2}\,
     \int {\left( \frac{\pi\left(\vz\right)}{q\left(\vz\right)}  - 1 \right)}^2 q\left(d\vz\right)
     \nonumber
     \\
     &=
-    \frac{N-1}{N^2}\,
     \DChi{\pi}{q}
     \nonumber
   \end{alignat}
+  }
 \end{proofEnd}
 
-\begin{theoremEnd}[all end]{lemma}\label{thm:is_bound}
-Let \(\rvw_n\), \(\rvvf_n\) respectively be scalar-valued and vector-valued random variables for \(n = 2, \ldots, N\) and \(w_1\), \(\vf_1\) respectively be a scalar and a vector.
-Furthermore, we assume that \(\norm{\rvvf_n}\leq L\), \(\norm{\vf_1} \leq L\), \(\mathbb{E}\rvw_n = 1\), \(w_1 \leq w^*\).
-Then, the random variable
-  \(
-    \mu_{\mathrm{IS}}^N\left(\rvw\rvvf\right) = \frac{1}{N}\,\left(\sum^{N}_{n=2} \rvw_n\,\rvvf_n  + w_1\,\vf_1\right)
-  \)
-  is bounded as
-  \begin{align*}
-    \norm{
-    \mathbb{E}\mu_{\mathrm{IS}}^N\left(\rvw\rvvf\right)
-    }
-    \leq
-    L \left[ \frac{N - 1}{N} + \frac{w^*}{N} \right].
-  \end{align*}
-\end{theoremEnd}
-\begin{proofEnd}
-  \begin{alignat}{2}
-    \norm{
-      \mathbb{E}{
-        \mu^{N}_{\mathrm{IS}}\left(\rvw\rvvf\right)
-      }
-    }
-    &\;=
-    \norm{
-      \E{\textstyle
-        \frac{1}{N} \left( \sum_{n=2}^N \rvw_n \rvvf_n + w_1 \vf_1 \right)
-      }
-    }
-    \nonumber
-    \\
-    &\;\leq
-    \E{\textstyle
-      \frac{1}{N} \left( \sum_{n=2}^N \rvw_n \norm{\rvvf_n} + w_1 \norm{\vf_1} \right)
-    }
-    \nonumber
-    &&\quad\text{\textit{Triangle inequality}}
-    \\
-    &\;\leq
-    \E{\textstyle
-      \frac{1}{N} \left( \sum_{n=2}^N \rvw_n \,L + w_1 \,L \right)
-    }
-    \nonumber
-    &&\quad\text{\textit{Assumption that \(\norm{\vf_n} \leq L\)}}
-    \\
-    &\;=
-    L\,\E{\textstyle
-      \frac{1}{N} \left( \sum_{n=2}^N \rvw_n  + w_1 \right)
-    }
-    \nonumber
-    &&\quad\text{\textit{Pulled out constants}}
-    \\
-    &\;=
-    L\,\left[\textstyle
-      \frac{1}{N} \left( \sum_{n=2}^N \mathbb{E}\rvw_n  + w_1 \right)
-    \right]
-    \nonumber
-    &&\quad\text{\textit{Linearity of expectation}}
-    \\
-    &\;=
-    L\,\left[\textstyle
-      \frac{1}{N} \left( \sum_{n=2}^N 1  + w_1 \right)
-    \right]
-    \nonumber
-    &&\quad\text{\textit{Assumption that \(\mathbb{E}w_n = 1\)}}
-    \\
-    &\;=
-    L\,\left[\textstyle
-      \frac{1}{N} \left( N-1  + w_1 \right)
-    \right]
-    \nonumber
-    &&\quad\text{\textit{Solved sum}}
-    \\
-    &\;\leq
-    L\,\left[\textstyle
-      \frac{1}{N} \left( N-1  + w^* \right)
-    \right]
-    \nonumber
-    &&\quad\text{\textit{Assumption that \(w_n \leq w^*\)}}
-  \end{alignat}
-\end{proofEnd}
-
-\begin{theoremEnd}[all end]{lemma}\label{thm:is_variance_ratio}
-  Let \(\rvw_n\), \(\rvvf_n\) respectively be scalar-valued and vector-valued random variables for \(n = 2, \ldots, N\) and \(w_1\), \(\vf_1\) respectively be a scalar and a vector.
-  Furthermore, we assume that \(\norm{\rvvf_n}\leq L\), \(\vf_1 \leq L\) and define the random variables
-  \begin{align*}
-    \mu_{\mathrm{IS}}^N\left(\rvw\rvvf\right) = \frac{1}{N}\,\left(\sum^{N}_{n=2} \rvw_n\,\rvvf_n  + w_1\,\vf_1\right),\quad 
-    \mu_{\mathrm{IS}}^N\left(\rvw\right)  = \frac{1}{N}\,\left(\sum^{N}_{n=2} \rvw_n  + w_1\right).
-  \end{align*}
-  Then,
-  \begin{align*}
-    &\mathbb{E}{
-      \norm{
-        \mu_{\mathrm{IS}}^N\left(\rvw\rvvf\right)
-        -
-        \mathbb{E}\mu_{\mathrm{IS}}^N\left(\rvw\rvvf\right)
-      }^2
-    }
-    \leq
-    L^2\,
-    \big(
-    \mathbb{E}{
-      \mu_{\mathrm{IS}}^N\left(\rvw\right)
-      -
-      \mathbb{E}\mu_{\mathrm{IS}}^N\left(\rvw\right)
-    }
-    \big).
-  \end{align*}
-\end{theoremEnd}
-\begin{proofEnd}
-  \begin{alignat}{2}
-    &\mathbb{E}{
-      \norm{
-        \mu_{\mathrm{IS}}^N\left(\rvw\rvvf\right)
-        -
-        \mathbb{E}\mu_{\mathrm{IS}}^N\left(\rvw\rvvf\right)
-      }^2
-    }
-    \nonumber
-    \\
-    &=
-    \E{
-      \norm{\textstyle
-      \frac{1}{N}\,\left(\sum^{N}_{n=2} \left(\rvw_n\,\rvvf_n  + w_1\,\vf_1\right)\right)
-      -
-      \E{\frac{1}{N}\,\left( \sum^{N}_{n=2} \rvw_n\,\rvvf_n  + w_1\,\vf_1\right)}
-      }^2
-    }
-    \nonumber
-    \\
-    &\leq
-    \E{\textstyle
-    {\left\{\,
-    \frac{1}{N}\,\left(\sum^{N}_{n=2} \left(\rvw_n\,\norm{\rvvf_n}  + w_1\,\norm{\vf_1}\right)\right)
-    -
-    \E{\frac{1}{N}\,\left( \sum^{N}_{n=2} \rvw_n\,\norm{\rvvf_n}  + w_1\,\norm{\vf_1}\right)}
-    \,\right\}}^2
-    }
-    &&\quad\text{\textit{Triangle inequality}}
-    \nonumber
-    \\
-    &=
-    \E{\textstyle
-    {\left\{\,
-    \frac{1}{N}\,\left(\sum^{N}_{n=2} \left(\rvw_n\,L  + w_1\,L\right)\right)
-    -
-    \E{\frac{1}{N}\,\left( \sum^{N}_{n=2} \rvw_n\,L  + w_1\,L\right)}
-    \,\right\}}^2
-    }
-    &&\quad\text{\textit{Assumption that \(\norm{\vf_n} \leq L\)}}
-    \nonumber
-    \\
-    &=
-    L^2\,\E{\textstyle
-    {\left\{\,
-    \frac{1}{N}\,\left(\sum^{N}_{n=2} \left(\rvw_n  + w_1\right)\right)
-    -
-    \E{\frac{1}{N}\,\left( \sum^{N}_{n=2} \rvw_n  + w_1\right)}
-    \,\right\}}^2
-    }
-    &&\quad\text{\textit{Pulled out constant}}
-    \nonumber
-  \end{alignat}
-\end{proofEnd}
-
-\begin{theoremEnd}[all end]{lemma}\label{thm:ratio_variance_bound}
-  Let \(\rvvx, \rvy\) respectively be vector-valued and scalar-valued random variables.
-  Assume that they satisfy \(\norm{\rvvx/\rvy} \leq L\) and \(\mathbb{E}\norm{\mathbb{E}\rvvx - \rvvx}^2 \leq L^2\,\mathbb{E}\norm{\mathbb{E}\rvy - \rvy}^2 \).
-  Then,
-  \begin{align*}
-    \E{
-      \norm{
-        \frac{\rvvx}{\rvy}
-        -
-        \frac{\mathbb{E}\rvvx}{\mathbb{E}\rvy}
-      }^2
-    }
-    \leq
-    \frac{4\,L^2}{\mathbb{E}\rvy^2}\,
-    \mathbb{V}{
-      \rvy
-    }.
-  \end{align*}
-\end{theoremEnd}
-\begin{proofEnd}
-  As done by \citet{10.1214/17-STS611, cardoso_brsnis_2022}, we apply the equality
-  \begin{align}
-    \frac{\va}{b} - \frac{\vc}{d}
-    = \frac{1}{d} \left( \frac{\va}{b}\left(d - b\right) - \left(\vc - \va\right)\right) 
-    \label{eq:ratio_equality}
-  \end{align}
-  as
-  \begin{alignat}{2}
-    &\E{
-      \norm{
-        \frac{\rvvx}{\rvy}
-        -
-        \frac{\mathbb{E}\rvvx}{\mathbb{E}\rvy}
-      }^2
-    }
-    \nonumber
-    \\
-    &\;=
-    \frac{1}{\mathbb{E}\rvy^2}\,
-    \E{
-      \norm{
-        \frac{\rvvx}{\rvy}
-        \left(
-        \E{\rvy} - \rvy
-        \right)
-        -
-        \left(
-        \frac{\mathbb{E}\rvvx}{\mathbb{E}\rvy}
-        \right)
-      }^2
-    }
-    &&\quad\text{\textit{\cref{eq:ratio_equality}}}
-    \nonumber
-    \\
-    &\;\leq
-    \frac{2}{\mathbb{E}\rvy^2}\,
-    \E{
-      \norm{
-        \frac{\rvvx}{\rvy}
-        \left(
-        \mathbb{E}\rvy - \rvy
-        \right)
-      }^2
-      +
-      \norm{
-        \left(
-        \mathbb{E}\rvvx - \rvvx
-        \right)
-      }^2
-    }
-    &&\quad\text{\textit{Applied \(\norm{\va + \vb}^2 \leq 2\left(\norm{\va}^2 + \norm{\vb}^2\right)\)}}
-    \nonumber
-    \\
-    &\;=
-    \frac{2}{\mathbb{E}\rvy^2}\,
-    \left(
-    \E{
-      \norm{
-        \frac{\rvvx}{\rvy}
-      }^2
-      {\left(
-        \mathbb{E}\rvy - \rvy
-      \right)}^2
-    }
-    +
-    \E{
-      \norm{
-        \mathbb{E}\rvvx - \rvvx
-      }^2
-    }
-    \right)
-    &&\quad\text{\textit{Linearity of expectation}}
-    \nonumber
-    \\
-    &\;\leq
-    \frac{2\,}{\mathbb{E}\rvy^2}\,
-    \left(
-    L^2 \,
-    \E{
-      {\left(
-        \mathbb{E}\rvy - \rvy
-      \right)}^2
-    }
-    +
-    \E{
-      \norm{
-        \mathbb{E}\rvvx - \rvvx
-      }^2
-    }
-    \right)
-    &&\quad\text{\textit{Assumption that \( \norm{\rvvx/\rvy} \leq L \)}}
-    \nonumber
-    \\
-    &\;=
-    \frac{2\,L^2}{\mathbb{E}\rvy^2}\,
-    \left(
-    L^2 \,
-    \E{
-      {\left(
-        \mathbb{E}\rvy - \rvy
-      \right)}^2
-    }
-    +
-    L^2 \,
-    \E{
-      \norm{
-        \mathbb{E}\rvy - \rvy
-      }^2
-    }
-    \right)
-    \nonumber
-    &&\quad\text{\textit{Assumption that \(\mathbb{E}\norm{\mathbb{E}\rvvx - \rvvx}^2 \leq L^2\,\mathbb{E}\norm{\mathbb{E}\rvy - \rvy}^2 \)}}
-    \\
-    &\;=
-    \frac{4\,L^2}{\mathbb{E}\rvy^2}\,
-    \E{
-      {\left(
-        \mathbb{E}\rvy - \rvy
-      \right)}^2
-    }
-    \nonumber
-    \\
-    &\;=
-    \frac{4\,L^2}{\mathbb{E}\rvy^2}\,
-    \mathbb{V}{\rvy}.
-    &&\quad\text{\textit{Definition of variance}}
-    \nonumber
-  \end{alignat}
-\end{proofEnd}
-
-\begin{theoremEnd}{theorem}\label{thm:mscrb}
-  The gradient variance of MSC with Rao-Blackwellization is bounded as
+\begin{theoremEnd}{theorem}{\citep{cardoso_brsnis_2022}}\label{thm:mscrb}
+  The gradient variance of MSC-RB is bounded as
   \begin{align*}
   {\textstyle\small
-    \E{ \norm{ \vg_{\mathrm{MSC-RB}}\left(\vlambda, \rvveta\right) }^2 \,\middle|\, \mathcal{F}_{t} } \leq
-    L^2 \, \left[
-    \frac{8}{N-1}\,\DChi{\pi}{q\left(\cdot; \vlambda_{t-1}\right)}
+    \V{ \vg_{\mathrm{MSC\text{-}RB}} \,\middle|\, \mathcal{F}_{t-1} } \leq
+    4\,L^2 \, \left[
+    \frac{1}{N-1}\,\DChi{\pi}{q\left(\cdot; \vlambda_{t-1}\right)}
     +
-    \frac{{2\,\left(N - 1 + w^*\right)}^2}{{\left(N - 1\right)}^2}
+    \frac{1}{N} {\left(1 + w^*\right)}^2
+    +
+    \mathcal{O}\left({\left(N-1\right)}^{-2}\right)
     \right],
   }
   \end{align*}
   where \(w^* = \sup_{\vz} \pi\left(\vz\right) / q_{\text{def.}}\left(\vz;\vlambda\right)\).
 \end{theoremEnd}
 \begin{proofEnd}
-  %\citet[Theorem 3]{cardoso_brsnis_2022} have analyzed the bias and variance of the bias reduced self-normalized importance sampling estimator (BR-SNIS), which is identical to the CIS kernel with Rao-Blackwellization.
-
-  We modify the proof of~\citet[Theorem 3]{cardoso_brsnis_2022} to match our desired statistic.
-  For clarity, we use a notation similar to that of \citet{10.1214/17-STS611} and define the \(N\)-sample estimators
+  Rao-Blackwellization of the CIS kernel is to reuse the importance weights \(w\left(\vz\right) = \pi\left(\vz\right) / q_{\text{def.}}\left(\vz\right)\) internally used by the kernel when forming the estimator.
+  That is, the gradient is estimated as
   \begin{align*}
-    \mu^{N}_{\text{IS}}\left(w\right)
-    &= 
-    \frac{1}{N} \sum^{N}_{n=1} w\left(\rvvz^{(n)}\right),
-    \\
-    \mu^{N}_{\text{IS}}\left(w\vs\right)
-    &= 
-    \frac{1}{N} \sum^{N}_{n=1} w\left(\rvvz^{(n)}\right) \vs\left(\rvvz^{(n)}\right),
-    \\
-    \mu^{N}_{\text{SNIS}}\left(w\vs\right)
-    &= 
-    \sum^{N}_{n=1} {\textstyle\frac{w\left(\rvvz^{(n)}\right)}{ \sum^{N}_{n^{\prime}=1} w\left(\rvvz^{(n^{\prime})}\right) }} \vs\left(\rvvz^{(n)}\right),
+    \rvvz^{(n)} \mid \rvvlambda_{t-1} &\sim q\left(\cdot; \rvvlambda_{t-1}\right) \\
+    \rvvg_{\text{MSC-RB}} &= -\sum^{N}_{n=2} \frac{w\left(\rvvz^{(n)}\right)}{\sum^{N}_{m=2}w\left(\rvvz^{(n)}\right) + w\left(\rvvz_{t-1}\right)} \vs\left(\rvvz^{(n)}\right) + \frac{w\left(\rvvz_{t-1}\right)}{\sum^{N}_{m=2}w\left(\rvvz^{(n)}\right) + w\left(\rvvz_{t-1}\right)} \vs\left(\rvvz_{t-1}\right).
   \end{align*}
-  %
-  given \(\rvvz^{(n)} \sim q\left(\cdot; \vlambda\right)\) for \(n=2, \ldots, N\) and \(\rvvz^{(1)} = \rvvz_{t-1}\) is the ``rejection state.''
-  These translate into the notation of \citet{cardoso_brsnis_2022} as
+  \citet[Theorem 3]{cardoso_brsnis_2022} show that the variance of this estimator, which they call bias reduced self-normalized importance sampling, is bounded as
   \begin{align*}
-    {\Gamma_N}f\left(\rvvz^{(1:N)}\right) &= 
-    \mu^{N}_{\text{IS}}\left(w\vs\right),
-    \\
-    {\Gamma_N}1\left(\rvvz^{(1:N)}\right) &=
-    \mu^{N}_{\text{IS}}\left(w\right),
-    \\
-    {\Pi_N}f\left(\rvvz^{(1:N)}\right) &=
-    \mu^{N}_{\text{SNIS}}\left(w\vs\right),
-    \\
-    a_N\left(\rvvz_{t-1}, \vlambda_{t-1}\right) 
-    &= 
-    \E{ \mu^{N}_{\text{IS}}\left(w\vs\right) \mid \rvvz_{t-1}, \vlambda_{t-1} },
-    \\
-    b_N\left(\rvvz_{t-1}, \vlambda_{t-1}\right)
-    &= 
-    \E{ \mu^{N}_{\text{IS}}\left(w\right) \mid \rvvz_{t-1}, \vlambda_{t-1} }.
+    \V{ \rvvg_{\text{MSC-RB}} \,\middle|\, \mathcal{F}_{t-1} } \leq
+    4\,L^2 \, \Big[\,&
+     \left( 1 + \epsilon^2 \right)\, \frac{1}{N-1}\,\Vsub{\rvvz \sim q_{\text{def.}}\left(\cdot; \rvvlambda_{t-1}\right)}{w\left(\rvvz\right) \mid \rvvlambda_{t-1}} 
+     \\
+     &+
+     \left(1 + \epsilon^{-2} \right)\, \frac{1}{N^2} {\left(1 + w^*\right)}^2 
+    \,\Big],
   \end{align*}
+  for some arbitrary constant \(\epsilon^2\).
+  The first term is identical to the variance of a \(N-1\)-sample self-normalized importance sampling estimator~\citep{10.1214/17-STS611}, while the second term is the added variance due to ``rejections.''
 
-  First, \(\vg_{\text{MSC-RB}}\) is bounded as
-  {\small
-  \begin{align}
-    &\E{\norm{ \vg_{\text{MSC-RB}}}^2 \,\middle|\, \mathcal{F}_t }
+  Since the variance of the importance weights is well known to be related with the \(\chi^2\) divergence,
+  \begin{alignat}{2}
+    \V{ \vg_{\text{MSC-RB}} \,\middle|\, \mathcal{F}_{t-1} } \leq
+    4\,L^2 \, \Big[\,&
+     \left( 1 + \epsilon^2 \right)\, \frac{1}{N-1}\,\DChi{\pi}{q\left(\cdot; \rvvlambda_{t-1}\right)}
     \nonumber
-    \\
-    &=
-    \E{\norm{ \vg_{\text{MSC-RB}}}^2 \,\middle|\, \rvvz_{t-1}, \vlambda_{t-1} }
+     \\
+     &+
+     \left(1 + \epsilon^{-2} \right)\, \frac{1}{N^2} {\left(1 + w^*\right)}^2 
+    \,\Big].
+    &&\quad\text{\textit{\cref{thm:iw_variance}}}
     \nonumber
-    \\
-    &=
-    \E{
-    \norm{
-      \sum^{N}_{n=1} {
-        \frac{w\left(\rvvz^{(n)}\right)}{\sum^{N}_{n^{\prime}=1} w\left(\rvvz^{(n^{\prime})}\right) }
-      } \vs\left(\rvvz^{(n)}\right)
-    }^2
-    \,\middle|\, \rvvz_{t-1}, \vlambda_{t-1}
-    }
-    \nonumber
-    \\
-    &=
-    \E{
-    \norm{
-      \frac{\mu^{N}_{\mathrm{IS}}\left(w\vs\right)}{\mu^{N}_{\mathrm{IS}}\left(w\right)}
-      -
-      \frac{
-        \E{ \mu^{N}_{\mathrm{IS}}\left(w\vs\right) \mid \rvvz_{t-1}, \vlambda_{t-1} }
-      }{
-        \E{ \mu^{N}_{\mathrm{IS}}\left(w\right) \mid \rvvz_{t-1}, \vlambda_{t-1} }
-      }
+  \end{alignat}
+
+  For \(\epsilon^2\), \citeauthor{cardoso_brsnis_2022} choose \(\epsilon^2 = \sqrt{N-1}\), which results in their stated bound. 
+  For the alternative choice of \(\epsilon^2 = N-1\), it is possible to make the smaller terms decrease in a faster rate, and show that both \({\left(1 + w^*\right)}^2\) and \(\DChi{\pi}{q\left(\cdot; \vlambda_{t-1}\right)}\) similarly contribute to the variance such that
+  \begin{align*}
+    \V{ \vg_{\text{MSC-RB}} \,\middle|\, \mathcal{F}_{t-1} } \leq
+    4\,L^2 \, \Big[\,
+      \frac{1}{N-1}\,\DChi{\pi}{q\left(\cdot; \vlambda_{t-1}\right)}
       +
-      \frac{
-        \E{ \mu^{N}_{\mathrm{IS}}\left(w\vs\right) \mid \rvvz_{t-1}, \vlambda_{t-1} }
-      }{
-        \E{ \mu^{N}_{\mathrm{IS}}\left(w\right) \mid \rvvz_{t-1}, \vlambda_{t-1} }
-      }
-    }^2
-    \,\middle|\, \rvvz_{t-1}, \vlambda_{t-1}
-    }
-    \nonumber
-    \\
-    &\leq
-    2\,\Bigg\{\,
-    \underbrace{
-      \E{
-      \norm{
-        \frac{\mu^{N}_{\mathrm{IS}}\left(w\vs\right)}{\mu^{N}_{\mathrm{IS}}\left(w\right)}
-        -
-        \frac{
-          \E{ \mu^{N}_{\mathrm{IS}}\left(w\vs\right) \mid \rvvz_{t-1}, \vlambda_{t-1} }
-        }{
-          \E{ \mu^{N}_{\mathrm{IS}}\left(w\right) \mid \rvvz_{t-1}, \vlambda_{t-1} }
-        }
-      }^2
-      \,\middle|\, \rvvz_{t-1}, \vlambda_{t-1}
-      }
-    }_{\text{\ding{182}}}
-    +
-      \underbrace{
-        \norm{
-          \frac{
-            \E{ \mu^{N}_{\mathrm{IS}}\left(w\vs\right) \mid \rvvz_{t-1}, \vlambda_{t-1} }
-          }{
-            \E{ \mu^{N}_{\mathrm{IS}}\left(w\right) \mid \rvvz_{t-1}, \vlambda_{t-1} }
-          }
-        }^2
-      }_{\text{\ding{183}}}
-      \,\Bigg\},
-      \label{eq:mscrb_term0}
-  \end{align}
-  }%
-  where the last inequality uses \(\norm{\va + \vb}^2 \leq 2 \left( \norm{\va}^2 + \norm{\vb}^2\right) \).
-  Alternatively, it is possible to obtain a tighter bound by invoking the triangle inequality and then computing the outer quadratic.
-  However, the resulting bound in qualititatively similar and only increases the number of terms.
-
-Term \ding{182} is bounded as
-\begin{alignat}{2}
-  &\E{
-    \norm{
-      \frac{\mu^{N}_{\mathrm{IS}}\left(w\vs\right)}{\mu^{N}_{\mathrm{IS}}\left(w\right)}
-      -
-      \frac{
-        \E{ \mu^{N}_{\mathrm{IS}}\left(w\vs\right) \mid \rvvz_{t-1}, \vlambda_{t-1} }
-      }{
-        \E{ \mu^{N}_{\mathrm{IS}}\left(w\right) \mid \rvvz_{t-1}, \vlambda_{t-1} }
-      }
-    }^2
-    \,\middle|\, \rvvz_{t-1}, \vlambda_{t-1}
-  }
-  \nonumber
-  \\
-  &\leq
-  \frac{4\,L^2}{\E{ \mu^{N}_{\mathrm{IS}}\left(w\right) \mid \rvvz_{t-1}, \vlambda_{t-1} }^2}
-  \,
-  \V{
-    \mu^{N}_{\mathrm{IS}}\left(w\right)   
-    \mid
-    \rvvz_{t-1}, \vlambda_{t-1} 
-  }
-  &&\quad\text{\textit{\cref{thm:ratio_variance_bound,thm:is_variance_ratio}}}
-  \nonumber
-  \\
-  &=
-  \frac{4\,L^2}{\E{ \mu^{N}_{\mathrm{IS}}\left(w\right) \mid \rvvz_{t-1}, \vlambda_{t-1} }^2}
-  \,
-  \frac{N-1}{N^2}\,
-  \DChi{\pi}{q}.
-  &&\quad\text{\textit{\cref{thm:iw_variance}}}
-  \label{eq:mscrb_term1}
-\end{alignat}
-
-Meanwhile, Term \ding{183} is bounded as
-\begin{alignat}{2}
-  &\norm{
-    \frac{
-      \E{ \mu^{N}_{\mathrm{IS}}\left(w\vs\right) \mid \rvvz_{t-1}, \vlambda_{t-1} }
-    }{
-      \E{ \mu^{N}_{\mathrm{IS}}\left(w\right) \mid \rvvz_{t-1}, \vlambda_{t-1} }
-    }
-  }^2
-  \nonumber
-  \\
-  &=
-  \frac{
-    1
-  }{
-    \E{ \mu^{N}_{\mathrm{IS}}\left(w\right) \mid \rvvz_{t-1}, \vlambda_{t-1} }^2
-  }\,
-  \norm{
-    \E{ \mu^{N}_{\mathrm{IS}}\left(w\vs\right) \mid \rvvz_{t-1}, \vlambda_{t-1} }
-  }^2
-  &&\quad\text{\textit{Pulled out constant}}
-  \nonumber
-  \\
-  &\leq
-  \frac{
-    L^2
-  }{
-    \E{ \mu^{N}_{\mathrm{IS}}\left(w\right) \mid \rvvz_{t-1}, \vlambda_{t-1} }^2
-  }\,
-  {\left(\frac{N - 1}{N} + \frac{w^*}{N}\right)}^2.
-  &&\quad\text{\textit{\cref{thm:is_bound,thm:iw_integral}}}
-  \label{eq:mscrb_term2}
-\end{alignat}
-
-Combining \cref{eq:mscrb_term1,eq:mscrb_term2},
-\begin{alignat}{2}
-  &\E{\norm{ \vg_{\text{MSC-RB}}}^2 \,\middle|\, \mathcal{F}_t }
-  \nonumber
-  \\
-  &\leq
-  2\,\Bigg\{
-  \frac{4\,L^2}{\E{ \mu^{N}_{\mathrm{IS}}\left(w\right) \mid \rvvz_{t-1}, \vlambda_{t-1} }^2}
-  \,
-  \frac{N-1}{N^2}\,
-  \DChi{\pi}{q}
-  \nonumber
-  \\
-  &\quad\quad+
-  \frac{
-    L^2
-  }{
-    \E{ \mu^{N}_{\mathrm{IS}}\left(w\right) \mid \rvvz_{t-1}, \vlambda_{t-1} }^2
-  }\,
-  {\left(\frac{N - 1}{N} + \frac{w^*}{N}\right)}^2
-  \Bigg\}
-  \nonumber
-  &&\quad\text{\textit{\cref{eq:mscrb_term0,eq:mscrb_term1,eq:mscrb_term2}}}
-  \\
-  &=
-  \frac{L^2}{\E{ \mu^{N}_{\mathrm{IS}}\left(w\right) \mid \rvvz_{t-1}, \vlambda_{t-1} }^2}
-  \Bigg\{
-  \frac{8\,\left(N-1\right)}{N^2} \, \DChi{\pi}{q\left(\cdot; \vlambda_{t-1}\right)}
-  +
-  \frac{2}{N^2}\,{\left(N - 1 + w^*\right)}^2
-  \Bigg\}
-  &&\quad\text{\textit{Pulled out constant}}
-  \nonumber
-  \\
-  &\leq
-  \frac{L^2\,N^2}{{\left(N - 1\right)}^2}
-  \Bigg\{
-  \frac{8\,\left(N-1\right)}{N^2} \, \DChi{\pi}{q\left(\cdot; \vlambda_{t-1}\right)}
-  +
-  \frac{2}{N^2}\,{\left(N - 1 + w^*\right)}^2
-  \Bigg\}
-  &&\quad\text{\textit{\cref{thm:iw_bound}}}
-  \nonumber
-  \\
-  &=
-  L^2 \, \left[
-    \frac{8}{N-1}\,\DChi{\pi}{q\left(\cdot; \vlambda_{t-1}\right)}
-    +
-    \frac{{2\,\left(N - 1 + w^*\right)}^2}{{\left(N - 1\right)}^2}
-  \right].
-  \nonumber
-\end{alignat}
+      \frac{1}{N} {\left(1 + w^*\right)}^2
+      +
+      \mathcal{O}\left({\left(N-1\right)}^{-2}\right)
+    \,\Big],
+  \end{align*}
+  But now, the \({\left(1+w^*\right)}^2\) term decreases in a slower rate.
 \end{proofEnd}
 
 %%% Local Variables:
