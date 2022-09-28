@@ -254,5 +254,96 @@ is bounded below exponentially by the KL divergence as
     \;\Bigg|.
     &&\quad\text{\textit{Applied \(p_n\left(A\right), q_n\left(A\right) \leq 1 \)}}
     \nonumber
+\end{alignat}
+\end{proofEnd}
+
+\begin{theoremEnd}[all end]{lemma}\label{thm:second_moment_bound}
+  Let \(\rvvg\) be a vector-valued, biased estimator of \(\vmu\), where the bias is denoted as \(\mathsf{Bias}\left[\rvvg\right] = \norm{ \mathbb{E}\rvvg - \vmu }_2\) and the mean-squared error is denoted as \(\mathsf{MSE}\left[\rvvg\right] = \mathbb{E}\norm{\rvvg - \vmu }_2^2\).
+  Then, the second moment of \(\rvvg\) is bounded as
+  \begin{enumerate}
+  \item[\ding{182}]
+  \(
+    \mathbb{E}\norm{\rvvg}^2 
+    \leq
+    \mathbb{V}{\rvvg} + {\mathsf{Bias}\left[\rvvg\right]}^2 + 2\, \mathsf{Bias}\left[\rvvg\right] \norm{\vmu}_2 + \norm{\vmu}^2_2,
+  \)
+  \item[\ding{183}]
+  \(
+    \mathbb{E}\norm{\rvvg}^2 
+    \leq
+    \mathsf{MSE}\left[{\rvvg}\right] + 2\, \mathsf{Bias}\left[\rvvg\right] \norm{\vmu}_2 + \norm{\vmu}^2_2,
+  \)
+  \end{enumerate}
+  where \(\mathbb{V}\rvvg = \mathbb{E}\norm{ \rvvg - \vmu }_2^2\) is the variance of the estimator.
+\end{theoremEnd}
+\begin{proofEnd}
+  \ding{182} follows from the decomposition
+  {%\small
+  \begin{alignat}{2}
+    \E{ \norm{\rvvg}^2_{2} }
+    &\;=
+    \mathbb{V}{ \rvvg }
+    +
+    \norm{ \mathbb{E}{ \rvvg } }_2^2
+    \nonumber
+    \\
+    &\;=
+    \mathbb{V}{ \rvvg }
+    +
+    \norm{
+      \mathbb{E}{ \rvvg } - \vmu  + \vmu
+    }_2^2
+    \nonumber
+    \\
+    &\;=
+    \mathbb{V}{ \rvvg }
+    +
+    \norm{
+      \mathbb{E}{ \rvvg } - \vmu  
+    }_2^2
+    \nonumber
+    +
+    2 \, {\left(
+      \mathbb{E}\rvvg - \vmu 
+    \right)}^{\top}
+    \vmu
+    + 
+    \norm{\vmu}^2
+    &&\quad\text{\textit{Expanded quadratic}}
+    \nonumber
+    \\
+    &\;\leq
+    \mathbb{V}{ \rvvg }
+    +
+    \norm{
+      \mathbb{E}{ \rvvg   } - \vmu 
+    }_2^2
+    +
+    2 \,\norm{
+      \mathbb{E}{ \rvvg  } - \vmu
+    }_2
+    \norm{\vmu}_2
+    + 
+    \norm{
+      \vmu
+    }_2^2
+    \nonumber
+    &&\quad\text{\textit{Cauchy-Shwarz inequality}}
+    \\
+    &\;=
+    \mathbb{V}{ \rvvg  }
+    +
+    \mathsf{Bias}\left[\rvvg\right]^2
+    +
+    2 \,\mathsf{Bias}\left[\rvvg\right]
+    \norm{\vmu}_2
+    + 
+    \norm{
+      \vmu
+    }_2^2.
+    \nonumber
+    &&\quad\text{\textit{Definition of bias}}
   \end{alignat}
+  }
+  Meanwhile, by the well-known bias-variance decomposition formula of the mean-squared error, \ding{183} directly follows from \ding{182}.
 \end{proofEnd}

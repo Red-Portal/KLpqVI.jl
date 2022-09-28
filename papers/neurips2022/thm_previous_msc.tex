@@ -15,7 +15,7 @@
     \textstyle
   \DTV{P_{\vlambda}^k\left(\veta, \cdot\right)}{\Pi} \leq  {\left(1 - \frac{N - 1}{2 w^* + N - 2}\right)}^k\quad \text{and}\quad
   {\small
-  \V{ \rvvg_{\text{MSC}} \,\middle|\, \mathcal{F}_{t-1} } \leq  L^2,
+  \E{ {\parallel\,\rvvg_{t,\text{MSC}}\,\parallel}^2 \,\middle|\, \mathcal{F}_{t-1} } \leq  L^2,
   }
   \end{align*}
   }
@@ -26,9 +26,9 @@
   At each iteration, it performs a single MCMC transition with the CIS kernel where it internally uses \(N\) proposals.
   That is,
   \begin{align*}
-    \rvvz \mid \rvvz_{t-1}, \rvvlambda_{t-1} &\sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t-1}, \cdot\right)
+    \rvvz_t \mid \rvvz_{t-1}, \rvvlambda_{t-1} &\sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t-1}, \cdot\right)
     \\
-    \rvvg_{\text{MSC}} &= \vs\left(\vlambda, \rvvz\right),
+    \rvvg_{t,\text{MSC}} &= -\vs\left(\vlambda, \rvvz_t\right),
   \end{align*}
   where \(K_{\rvvlambda_{t-1}}\) is the CIS kernel using \(q_{\text{def.}}\left(\cdot; \rvvlambda_{t-1}\right)\).
 
@@ -45,19 +45,15 @@
 
   \paragraph{\textbf{Bound on the Gradient Variance}}
   The bound on the gradient variance is straightforward given \cref{thm:bounded_score}.
-  For simplicity, we denote the rejection state as \(\vz^{(1)} = \vz_{t-1} \).
+  For simplicity, we denote the rejection state as \(\vz^{(1)}_t = \vz_{t-1} \).
   Then,
   \begin{alignat}{2}
-    &\V{ \rvvg_{\text{MSC}} \,\middle|\, \mathcal{F}_{t-1} }
-    \nonumber
-    \\
-    &\;\leq
-    \E{ \norm{ \rvvg_{\text{MSC}} }^2 \,\middle|\, \mathcal{F}_{t-1}}
+    &\E{ \norm{\rvvg_{t,\text{MSC}}}^2 \,\middle|\, \mathcal{F}_{t-1} }
     \nonumber
     \\
     &\;=
-    \Esub{\rvvz \sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t-1}, \cdot\right)}{
-      \norm{ \vs\left(\vlambda; \rvvz\right) }^2 \,\middle|\,
+    \Esub{\rvvz_t \sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t-1}, \cdot\right)}{
+      \norm{ \vs\left(\vlambda; \rvvz_t\right) }^2 \,\middle|\,
       \rvvlambda_{t-1}, \rvvz_{t-1}
     }
     \nonumber
@@ -66,13 +62,13 @@
     \int
     \sum^{N}_{n=1}
     \frac{
-      w\left(\vz^{(n)}\right)
+      w\left(\vz^{(n)}_t\right)
     }{
-      \sum^{N}_{m=1} w\left(\vz^{(m)}\right)
+      \sum^{N}_{m=1} w\left(\vz^{(m)}_t\right)
     }
-    \norm{ \vs\left(\vlambda; \vz^{(n)}\right) }^2
+    \norm{ \vs\left(\vlambda; \vz^{(n)}_t\right) }^2
     \prod^{N}_{n=2}
-    q\left(d\vz^{(n)}; \rvvlambda_{t-1}\right)
+    q\left(d\vz^{(n)}_t; \rvvlambda_{t-1}\right)
     \nonumber
     &&\quad\text{\textit{\citet{andrieu_uniform_2018}}}
     \\
@@ -81,12 +77,12 @@
     \int
     \sum^{N}_{n=1}
     \frac{
-      w\left(\vz^{(n)}\right)
+      w\left(\vz^{(n)}_t\right)
     }{
-      \sum^{N}_{m=1} w\left(\vz^{(m)}\right)
+      \sum^{N}_{m=1} w\left(\vz^{(m)}_t\right)
     }
     \prod^{N}_{n=2}
-    q\left(d\vz^{(n)}; \rvvlambda_{t-1}\right)
+    q\left(d\vz^{(n)}_t; \rvvlambda_{t-1}\right)
     \nonumber
     &&\quad\text{\textit{\cref{thm:bounded_score}}}
     \\
@@ -96,7 +92,6 @@
     \prod^{N}_{n=2}
     q\left(d\vz^{(n)}; \rvvlambda_{t-1}\right)
     \nonumber
-   &&\quad\text{\textit{The sum of weights is 1}}
     \\
     &\;=
     L^2.

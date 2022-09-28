@@ -1,7 +1,7 @@
 
 \begin{theoremEnd}[all end]{lemma}\label{thm:iw_variance}
   Let the importance weight be defined as \(w\left(\vz\right) = \pi\left(\vz\right)/q\left(\vz\right)\).
-  The variance of the importance weight is related with the \(\chi^2\) divergence as
+  The variance of the importance weights is related to the \(\chi^2\) divergence as
   \begin{align*}
     \mathbb{V}_{q}{w\left(\rvvz\right)}
     =
@@ -12,7 +12,7 @@
   {
   \begin{alignat}{2}
     \mathbb{V}_{q}{w\left(\rvvz\right)}
-    &=
+    =
     \Esub{q}{
       {\left(
         w\left(\rvvz\right)
@@ -22,9 +22,7 @@
       }
       \right)}^2
     }
-    \nonumber
-    \\
-    &=
+    =
     \Esub{q}{
       {\left(
       w\left(\rvvz\right)
@@ -32,13 +30,9 @@
       1
       \right)}^2
     }
-    \nonumber
-    \\
-    &=
+    =
     \int {\left( \frac{\pi\left(\vz\right)}{q\left(\vz\right)}  - 1 \right)}^2 q\left(d\vz\right)
-    \nonumber
-    \\
-    &=
+    =
     \DChi{\pi}{q}
     \nonumber
   \end{alignat}
@@ -49,7 +43,7 @@
   The gradient variance of MSC-RB is bounded as
   \begin{align*}
   {\textstyle\small
-    \V{ \vg_{\mathrm{MSC\text{-}RB}} \,\middle|\, \mathcal{F}_{t-1} } \leq
+    \V{ \rvvg_{t,\mathrm{MSC\text{-}RB}} \,\middle|\, \mathcal{F}_{t-1} } \leq
     4\,L^2 \, \left[
     \frac{1}{N-1}\,\DChi{\pi}{q\left(\cdot; \vlambda_{t-1}\right)}
     +
@@ -65,12 +59,23 @@
   Rao-Blackwellization of the CIS kernel is to reuse the importance weights \(w\left(\vz\right) = \pi\left(\vz\right) / q_{\text{def.}}\left(\vz\right)\) internally used by the kernel when forming the estimator.
   That is, the gradient is estimated as
   \begin{align*}
-    &\rvvz^{(n)} \mid \rvvlambda_{t-1} \sim q\left(\cdot; \rvvlambda_{t-1}\right) \\
-    &\rvvg_{\text{MSC-RB}} = -\sum^{N}_{n=2} \frac{w\left(\rvvz^{(n)}\right)}{\sum^{N}_{m=2}w\left(\rvvz^{(n)}\right) + w\left(\rvvz_{t-1}\right)} \vs\left(\rvvz^{(n)}\right) + \frac{w\left(\rvvz_{t-1}\right)}{\sum^{N}_{m=2}w\left(\rvvz^{(n)}\right) + w\left(\rvvz_{t-1}\right)} \vs\left(\rvvz_{t-1}\right).
+    &\rvvz^{(n)}_t \mid \rvvlambda_{t-1} \sim q\left(\cdot; \rvvlambda_{t-1}\right) \\
+    &\rvvg_{t,\text{MSC-RB}} = -\sum^{N}_{n=2} \frac{w\left(\rvvz^{(n)}_t\right)}{\sum^{N}_{m=2}w\left(\rvvz^{(n)}_t\right) + w\left(\rvvz_{t-1}\right)} \vs\left(\rvvz^{(n)}_t\right) + \frac{w\left(\rvvz_{t-1}\right)}{\sum^{N}_{m=2}w\left(\rvvz^{(n)}_t\right) + w\left(\rvvz_{t-1}\right)} \vs\left(\rvvz_{t-1}\right).
   \end{align*}
-  \citet[Theorem 3]{cardoso_brsnis_2022} show that the variance of this estimator, which they call bias reduced self-normalized importance sampling, is bounded as
+
+  By \cref{thm:second_moment_bound}, the second moment of the gradient is bounded as
+  \begin{alignat*}{2}
+    \E{ \norm{ \rvvg_{\text{MSC}} }_2^2 \,\middle|\, \mathcal{F}_{t-1} } 
+    =
+    \mathsf{MSE}\left[ \rvvg_{t, \text{MSC}} \,\middle|\, \mathcal{F}_{t-1} \right]
+    +
+    2 \, {\mathsf{Bias}\left[ \rvvg_{t, \text{MSC}} \,\middle|\, \mathcal{F}_{t-1} \right]}^{\top} \norm{\vmu}
+    + \norm{\mu}^2
+  \end{alignat*}
+  
+  \citet[Theorem 3]{cardoso_brsnis_2022} show that the mean-squared error of this estimator, which they call bias reduced self-normalized importance sampling, is bounded as
   \begin{align*}
-    \V{ \rvvg_{\text{MSC-RB}} \,\middle|\, \mathcal{F}_{t-1} } \leq
+    \mathsf{MSE}\left[ \rvvg_{\text{MSC-RB}} \,\middle|\, \mathcal{F}_{t-1} \right] \leq
     4\,L^2 \, \Big[\,&
      \left( 1 + \epsilon^2 \right)\, \frac{1}{N-1}\,\Vsub{\rvvz \sim q_{\text{def.}}\left(\cdot; \rvvlambda_{t-1}\right)}{w\left(\rvvz\right) \mid \rvvlambda_{t-1}} 
      \\
@@ -79,11 +84,11 @@
     \,\Big],
   \end{align*}
   for some arbitrary constant \(\epsilon^2\).
-  The first term is identical to the variance of a \(N-1\)-sample self-normalized importance sampling estimator~\citep{10.1214/17-STS611}, while the second term is the added variance due to ``rejections.''
+  The first term is identical to the variance of an \(N-1\)-sample self-normalized importance sampling estimator~\citep{10.1214/17-STS611}, while the second term is the added variance due to ``rejections.''
 
-  Since the variance of the importance weights is well known to be related with the \(\chi^2\) divergence,
+  Since the variance of the importance weights is well known to be related to the \(\chi^2\) divergence,
   \begin{alignat}{2}
-    \V{ \vg_{\text{MSC-RB}} \,\middle|\, \mathcal{F}_{t-1} } \leq
+    \mathsf{MSE}\left[ \rvvg_{t,\text{MSC-RB}} \,\middle|\, \mathcal{F}_{t-1} \right] \leq
     4\,L^2 \, \Big[\,&
      \left( 1 + \epsilon^2 \right)\, \frac{1}{N-1}\,\DChi{\pi}{q\left(\cdot; \rvvlambda_{t-1}\right)}
     \nonumber
@@ -95,17 +100,17 @@
     \nonumber
   \end{alignat}
 
-  For \(\epsilon^2\), \citeauthor{cardoso_brsnis_2022} choose \(\epsilon^2 = \sqrt{N-1}\), which results in their stated bound. 
-  For the alternative choice of \(\epsilon^2 = N-1\), it is possible to make the smaller terms decrease in a faster rate, and show that both \({\left(1 + w^*\right)}^2\) and \(\DChi{\pi}{q\left(\cdot; \vlambda_{t-1}\right)}\) similarly contribute to the variance such that
+  For \(\epsilon^2\), \citeauthor{cardoso_brsnis_2022} choose \(\epsilon^2 = {\left(N-1\right)}^{-1/2}\), which results in their stated bound. 
+  For the alternative choice of \(\epsilon^2 = {\left(N-1\right)}^{-1}\), it is possible to make the smaller terms decrease in a faster rate, and show that both \({\left(1 + w^*\right)}^2\) and \(\DChi{\pi}{q\left(\cdot; \vlambda_{t-1}\right)}\) similarly contribute to the variance such that
   \begin{align*}
-    \V{ \vg_{\text{MSC-RB}} \,\middle|\, \mathcal{F}_{t-1} } \leq
+    \mathsf{MSE}\left[ \rvvg_{\text{MSC-RB}} \,\middle|\, \mathcal{F}_{t-1} \right] \leq
     4\,L^2 \, \Big[\,
       \frac{1}{N-1}\,\DChi{\pi}{q\left(\cdot; \vlambda_{t-1}\right)}
       +
       \frac{1}{N} {\left(1 + w^*\right)}^2
       +
       \mathcal{O}\left({\left(N-1\right)}^{-2}\right)
-    \,\Big],
+    \,\Big].
   \end{align*}
   But now, the \({\left(1+w^*\right)}^2\) term decreases in a slower rate.
 \end{proofEnd}

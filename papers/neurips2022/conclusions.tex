@@ -30,8 +30,8 @@ Furthermore, the usage of expensive MCMC kernels could be beneficial as suggeste
 \vspace{-1.5ex}
 \paragraph{Towards Alternative Divergences}
 In \cref{section:eval}, we have shown that minimizing the \textit{inclusive} KL is competitive against  minimizing the \textit{exclusive} KL on general Bayesian inference problems.
-Although~\citet{dhaka_challenges_2021} has shown that the inclusive KL fails on high-dimensional problems, this is only the case under the presence of strong correlations.
-Before entirely ditching the inclusive KL, it is essential to ask, ``how correlated posteriors really are in practice?''
+Although~\citet{dhaka_challenges_2021} have shown that the inclusive KL fails on high-dimensional problems, this is only the case under the presence of strong correlations.
+Before entirely ditching the inclusive KL, it is essential to ask, ``how correlated are posteriors really in practice?''
 Furthermore, the true performance of alternative divergences is often masked by the limitations of the inference procedure~\citep{geffner2021empirical, pmlr-v139-geffner21a}.
 Given that pMCSA significantly advances the best-known performance of inclusive KL minimization, it is possible that similar improvements could be extracted from other divergences.
 To conclude, our results motivate further development of better inference algorithms for alternative divergence measures.

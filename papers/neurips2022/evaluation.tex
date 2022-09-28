@@ -74,7 +74,8 @@ We make the following observations:
   \item MSC does not benefit from increasing \(N\) whatsoever.
     
   \item \textcolor{blue}{
-    MSC-RB does not benefit much from increasing \(N\) until the divergence of \(q\left(\cdot; \vlambda\right)\) has become small.
+    MSC-RB does not benefit much from increasing \(N\) until the 
+\(\chi^2\) divergence between \(\pi\) and \(q\left(\cdot; \vlambda\right)\) has become small.
     }
   \item JSA does not benefit from increasing \(N\) until \(q\left(\cdot; \vlambda\right)\) has sufficiently converged (when \(w^*\) has become small).
 \end{enumerate*}
@@ -136,16 +137,17 @@ pMCSA achieves the best performance compared to all other MCSA methods.
 Also, its overall performance is comparable to exclusive KL minimization methods (ELBO) unlike other MCSA methods.
 Furthermore, on \textsf{airfoil} and \textsf{energy}, pMCSA improves over ELBO by 0.29 \texttt{nat} and 0.48 \texttt{nat}.
 Even on \textsf{gas} where pMCSA did not beat ELBO, its performance is comparable, and it dominates all other MCSA methods by roughly 0.4 \texttt{nat}.
-Additional experimental results, \textcolor{blue}{including plots with respect to the wallclock time}, can be found in~\cref{section:bnn_additional}
+Additional experimental results, \textcolor{blue}{including plots with respect to the wall clock time}, can be found in~\cref{section:bnn_additional}
 
 \vspace{-1.5ex}
 \paragraph{Weight Pruning}
 \textcolor{blue}{
 When using VI, BNNs tend to underfit data.
-\citet{mackay_local_2001,pmlr-v70-hoffman17a,trippe_overpruning_2017} associate this with ``weight pruning,'' that is, the variational posterior converges to the zero-mean prior.
-Furthermore,~\citet{coker_wide_2022,huix_variational_2022} have shown that this is guarenteed to happen under certain conditions.
-However, these results are exclusively based on exclusive KL minimization.
-\cref{fig:pruning} shows that MCSA does not suffer from weight pruning, which suggest that pruning is an artifact of using the exclusive KL.
+\citet{mackay_local_2001,pmlr-v70-hoffman17a,trippe_overpruning_2017} associate this with ``weight pruning.'' 
+That is, the variational posterior converges to the zero-mean prior.
+Furthermore,~\citet{coker_wide_2022,huix_variational_2022} have shown that this is guaranteed to happen under certain conditions.
+However, these results are strictly based on exclusive KL minimization.
+On the other hand,~\cref{fig:pruning} shows that pMCSA does not suffer from weight pruning, which suggests that pruning is an artifact of using the exclusive KL.
 Additional plots are shown in \cref{fig:pruning_additional} (\cref{section:bnn_additional}).
 }%
 %
@@ -170,7 +172,7 @@ Except for \textsf{gas}, pMCSA achieves better performance than all other method
 This suggests that, overall, the exclusive KL may be less effective for GP posteriors.
 Although ELBO achieves the best performance on \textsf{gas}, pMCSA dominates other MCSA methods.
 Our encouraging regression results suggest that incorporating methods such as inducing points~\citep{NIPS2005_4491777b} into MCSA may lead to an important new class of GP models.
-Additional experimental results, \textcolor{blue}{including plots with respect to the wallclock time}, can be found in~\cref{section:gp_additional}.
+Additional experimental results, \textcolor{blue}{including plots with respect to the wall clock time}, can be found in~\cref{section:gp_additional}.
 
 %%% Local Variables:
 %%% TeX-master: "master"

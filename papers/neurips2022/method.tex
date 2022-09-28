@@ -193,8 +193,9 @@ The theoretical properties of this estimator have been concurrently analyzed by~
 \input{thm_previous_mscrb}
 
 \textcolor{blue}{
-Now, the variance decreases as \(\mathcal{O}\left(\nicefrac{1}{N-1}\right)\), but the first term depends on the \(\chi^2\) divergence, which is exponentially bigger than the KL divergence~\citep{10.1214/17-STS611}, and the second term depends quadratically on \(w^*\).
-Therefore, the variance of MSC-RB will be large on challenging problems such that \(w^*\) and the \(\chi^2\) divergence are large.
+The variance of MSC-RB decreases as \(\mathcal{O}\left(\nicefrac{1}{N-1}\right)\), which is more encouraging than vanilla MSC.
+However, the first term depends on the \(\chi^2\) divergence, which is bounded below exponentially by the KL divergence~\citep{10.1214/17-STS611}, and the second term depends quadratically on \(w^*\).
+Therefore, \textit{the variance of MSC-RB will be large on challenging problems such that \(w^*\) and the \(\chi^2\) divergence are large}, although linear variance reduction is possible.
 }
 
 \vspace{-0.1in}
@@ -242,15 +243,17 @@ where {\(w\left(\vz\right) = \pi\left(\vz\right)/q_{\text{def.}}\left(\vz; \vlam
 \input{lemmas_imh}
 \input{thm_previous_jsa}
 %
-\vspace{-1ex}
+\vspace{-1.5ex}
 \paragraph{Discussion}
-As shown in~\cref{thm:jsa} JSA benefits from increasing \(N\) in terms of faster mixing rate.
+As shown in~\cref{thm:jsa}, JSA benefits from increasing \(N\) in terms of a faster mixing rate.
 \textcolor{blue}{
-However, for the variance, under lack of convergence and model misspecification (large \(w^*\)), the variance improvement becomes marginal.
-More importantly, \textit{in the large \(w^*\) regime, the variance reduction is limited by the constant \(1/2\) term}.
-This is true even if we completely ignore the covariance between the samples \(C_{\text{cov}}\) which, in practice, will only increase variance.
+However,  under lack of convergence and model misspecification (large \(w^*\)), the variance improvement becomes marginal.
+Specifically, in the large \(w^*\) regime, the variance reduction is limited by the constant \(1/2\) term.
+This is true even ideally when the covariance between the samples is ignorable such that \(C_{\text{cov}} \approx 0\).
+In practice, however, the covariance term \(C_{\text{cov}}\) will be positive, only increasing variance.
+Therefore, \textit{in the large \(w^*\) regime, JSA will perform poorly, and the variance reduction by increasing \(N\) is fundamentally limited}.
 }
-This inefficiency persists even under stationarity unless \(\pi\left(\cdot\right) \in \mathcal{Q}\).
+%Furthermore, the inefficiency persists even under stationarity unless \(\pi\left(\cdot\right) \in \mathcal{Q}\) such that the rejection rate becomes exactly 0.
 
 %Intuitively, the inefficiency comes from the rejections persisting even under stationarity.
 %On challenging problems with a large \(w^*\), the performance of JSA will also be poor.
@@ -281,11 +284,11 @@ This inefficiency persists even under stationarity unless \(\pi\left(\cdot\right
 %
 \vspace{-1.ex}
 \section{Parallel Markov Chain Score Ascent}\label{section:pmcsa}
-\vspace{-1.ex}
+\vspace{-1.5ex}
 %\vspace{-0.12in}
-Our analysis in~\cref{section:comparison} suggests that the statistical performance of both MSC and JSA are heavily affected by model specification and the state of convergence through \(w^*\).
+Our analysis in~\cref{section:comparison} suggests that the statistical performance of MSC, MSC-RB, and JSA are heavily affected by model specification and the state of convergence through \(w^*\).
 %This affects both the mixing rate \(\rho\) and the gradient variance \(G\).
-Furthermore, a large \(w^*\) abolishes our ability to counterbalance the inefficiency by increasing the computational budget \(N\).
+Furthermore, for JSA, a large \(w^*\) abolishes our ability to counterbalance the inefficiency by increasing the computational budget \(N\).
 However, \(\rho\) and \(G\) do not equally impact convergence; recent results on MCGD suggest that gradient variance is more critical than the mixing rate (see \cref{section:convergence}).
 We turn to leverage this understanding to overcome the limitations of previous methods.
 
@@ -297,7 +300,7 @@ We propose a novel scheme, \textit{parallel Markov chain score ascent} (pMCSA,~\
 
 %\jrg{can we motivate this more strongly? Specifically, can we say that, by tying MCSA theory to MCGD theory, we can observe that the mixing rate isn't as important, so we develop a new scheme to exploit this previously not understood property.} 
 
-\vspace{-1.ex}
+\vspace{-1.5ex}
 \paragraph{Algorithm Description}
 Unlike JSA that uses \(N\) \textit{sequential} Markov chain states, pMCSA operates \(N\) \textit{parallel} Markov chains.
 To maintain a similar per-iteration cost with JSA, it performs only a single Markov chain transition for each chain.
@@ -305,7 +308,7 @@ Since the chains are independent, the Metropolis-Hastings rejections do not affe
 
 \input{thm_parallel_estimator}
 
-\vspace{-1ex}
+\vspace{-1.5ex}
 \paragraph{Discussion}
 Unlike JSA and MSC, the variance reduction rate of pMCSA is independent of \(w^*\).
 Therefore, it should perform significantly better on challenging practical problems.

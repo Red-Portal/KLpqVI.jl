@@ -22,7 +22,7 @@
     \leq
     C\left(N\right)\,{\rho^k}
     \quad\text{and}\quad
-    \V{ \vg_{\mathrm{pMCSA}} \,\middle|\, \mathcal{F}_{t-1} }
+    \V{ \rvvg_{\mathrm{pMCSA}} \,\middle|\, \mathcal{F}_{t-1} }
     \leq
     L^2 \left[\; \frac{1}{N} + \frac{1}{N}\,\left(1 - \frac{1}{w^*}\right) \;\right],
   \end{align*}
@@ -35,11 +35,11 @@
   At each iteration, our scheme performs a single MCMC transition for each of the \(N\) samples, or chains, to estimate the gradient.
   That is,
   \begin{align*}
-    \rvvz^{(1)}_{t} \mid \rvvz_{t-1}^{(1)}, \rvvlambda_{t-1} &\sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t-1}^{(1)}, \cdot\right) \\
-    \rvvz^{(2)}_{t} \mid \rvvz_{t-1}^{(2)}, \rvvlambda_{t-1}  &\sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t-1}^{(2)}, \cdot\right) \\
-    &\vdots
+    \rvvz^{(1)}_{t} &\mid \rvvz_{t-1}^{(1)},\, \rvvlambda_{t-1} \sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t-1}^{(1)}, \cdot\right) \\
+    \rvvz^{(2)}_{t} &\mid \rvvz_{t-1}^{(2)},\, \rvvlambda_{t-1}  \sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t-1}^{(2)}, \cdot\right) \\
+    &\qquad\qquad\vdots
     \\
-    \rvvz^{(N)}_{t} \mid \rvvz^{(N)}_{t-1}, \rvvlambda_{t-1}  &\sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t-1}^{(N)}, \cdot\right)
+    \rvvz^{(N)}_{t} &\mid \rvvz^{(N)}_{t-1},\, \rvvlambda_{t-1}  \sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t-1}^{(N)}, \cdot\right)
     \\
     \rvvg_{\text{pMCSA}} &= -\frac{1}{N}\,\sum^{N}_{n=1} \, \vs\left(\vlambda, \rvvz^{(n)}_t\right),
   \end{align*}
@@ -98,7 +98,7 @@
     &\quad=
     \sum_{n=1}^N
     \DTV{K^k_{\vlambda}\left(\vz_n, \cdot\right)}{\pi}
-    &&\quad\text{\textit{Definition of TV distance}}
+    &&\quad\text{\textit{Definition of \(d_{\text{TV}}\)}}
     \nonumber
     \\
     &\quad\leq
@@ -108,62 +108,147 @@
     \nonumber
     \\
     &\quad=
-    N\,\rho^{k}
-    &&\quad\text{\textit{Solved sum}}.
+    N\,\rho^{k}.
     \nonumber
   \end{alignat}
 
   \paragraph{\textbf{Bound on the Gradient Variance}}
-  The bound on the gradient variance can be derived in similar manner to JSA as
+  Let \(\rvvg\) be the sample mean of the score function with \(N\) samples from the exact posterior such that
+  \begin{align*}
+    &\rvvg = \frac{1}{N} \sum^{N}_{n=1} \vs\left(\vlambda; \rvvz^{(n)}\right),
+    &\rvvz^{(n)} \sim \pi\left(\cdot\right).
+  \end{align*}
+  Then, the bound on the gradient variance can be derived through the decomposition
+  {%\small
   \begin{alignat}{2}
-    &\V{ \vg_{\mathrm{pMCSA}} \,\middle|\, \mathcal{F}_{t-1} }
+    &\E{ \norm{\rvvg_{\mathrm{pMCSA}}}^2_{2} \,\middle|\, \mathcal{F}_{t-1} }
     \nonumber
     \\
     &\quad=
-    \V{ \vg_{\mathrm{pMCSA}} \,\middle|\, \rvvz_{t-1}^{(1:N)},\, \rvvlambda_{t-1} }
+    \V{ \rvvg_{\mathrm{pMCSA}} \,\middle|\, \mathcal{F}_{t-1}  }
+    +
+    \norm{ \E{ \rvvg_{\mathrm{pMCSA}} \,\middle|\, \mathcal{F}_{t-1}  } }_2^2
     \nonumber
     \\
     &\quad=
-    \V{ \frac{1}{N}\sum^{N}_{n=1} \vs\left(\vlambda; \rvvz^{(n)}\right) \,\middle|\, \rvvz_{t-1}^{(1:N)},\, \rvvlambda_{t-1} }
+    \V{ \rvvg_{\mathrm{pMCSA}} \,\middle|\, \mathcal{F}_{t-1}  }
+    +
+    \norm{
+      \E{ \rvvg_{\mathrm{pMCSA}}  \;\,\middle|\, \mathcal{F}_{t-1}  } - \vmu  + \vmu
+    }_2^2
     \nonumber
     \\
     &\quad=
-    \frac{1}{N}\sum^{N}_{n=1} \V{ \vs\left(\vlambda; \rvvz^{(n)}\right) \,\middle|\, \rvvz_{t-1}^{(1:N)},\, \rvvlambda_{t-1} }
+    \V{ \rvvg_{\mathrm{pMCSA}} \,\middle|\, \mathcal{F}_{t-1}  }
+    \nonumber
+    \\
+    &\quad\qquad+
+    \norm{
+      \E{ \rvvg_{\mathrm{pMCSA}}  \;\,\middle|\, \mathcal{F}_{t-1}  } - \vmu  
+    }_2^2
+    \nonumber
+    +
+    2 \, {\left(
+      \E{ \rvvg_{\mathrm{pMCSA}}  \;\,\middle|\, \mathcal{F}_{t-1}  } - \vmu 
+    \right)}^{\top}
+    \vmu
+    + 
+    \norm{\vmu}^2
+    &&\quad\text{\textit{Expanded quadratic}}
+    \nonumber
+    \\
+    &\quad\leq
+    \V{ \rvvg_{\mathrm{pMCSA}} \,\middle|\, \mathcal{F}_{t-1}  }
+    \nonumber
+    \\
+    &\quad\qquad+
+    \norm{
+      \E{ \rvvg_{\mathrm{pMCSA}}  \;\,\middle|\, \mathcal{F}_{t-1}  } - \vmu 
+    }_2^2
+    +
+    2 \,\norm{
+      \E{ \rvvg_{\mathrm{pMCSA}}  \;\,\middle|\, \mathcal{F}_{t-1}  } - \vmu
+    }_2
+    \norm{\vmu}_2
+    + 
+    \norm{
+      \vmu
+    }_2^2
+    \nonumber
+    &&\quad\text{\textit{Cauchy-Shwarz inequality}}
+    \\
+    &\quad=
+    \V{ \rvvg_{\mathrm{pMCSA}} \,\middle|\, \mathcal{F}_{t-1}  }
+    +
+    \mathsf{Bias}\left[\rvvg_{\text{pMCSA}}\right]^2
+    +
+    2 \,\mathsf{Bias}\left[\rvvg_{\text{pMCSA}}\right]
+    \norm{\vmu}_2
+    + 
+    \norm{
+      \vmu
+    }_2^2
+    \nonumber
+    &&\quad\text{\textit{Definition of bias}}
+    \\
+    &\quad=
+    \V{ \rvvg_{\mathrm{pMCSA}} \,\middle|\, \mathcal{F}_{t-1}  }
+    +
+    \mathsf{Bias}\left[\rvvg_{\text{pMCSA}}\right]\,
+    \left(
+    \mathsf{Bias}\left[\rvvg_{\text{pMCSA}}\right]
+    +
+    2\,\norm{\vmu}_2
+    \right)
+    + 
+    \norm{
+      \vmu
+    }_2^2
+    \nonumber
+  \end{alignat}
+  }
+
+  The variance term is bounded as
+  \begin{alignat}{2}
+    &\V{ \frac{1}{N}\sum^{N}_{n=1} \vs\left(\vlambda; \rvvz^{(n)}\right) \,\middle|\, \rvvz_{t-1}^{(1:N)},\, \rvvlambda_{t-1} }
+    \nonumber
+    \\
+    &\quad=
+    \frac{1}{N^2}\sum^{N}_{n=1} \V{ \vs\left(\vlambda; \rvvz^{(n)}\right) \,\middle|\, \rvvz_{t-1}^{(1:N)},\, \rvvlambda_{t-1} }
     &&\quad\text{\textit{\(\rvvz^{(i)} \,\bot\, \rvvz^{(j)}\) for \(i \neq j\)}}
     \nonumber
     \\
     &\quad\leq
-    \frac{1}{N^2}\sum^{N}_{n=1} \E{ \norm{\vs\left(\vlambda; \rvvz^{(n)}\right) }^2 \,\middle|\, \rvvz_{t-1}^{(1:N)},\, \rvvlambda_{t-1} }
+    \frac{1}{N^2}\sum^{N}_{n=1} \E{ \norm{\vs\left(\vlambda; \rvvz^{(n)}\right) }^2_2 \,\middle|\, \rvvz_{t-1}^{(1:N)},\, \rvvlambda_{t-1} }_2
     \nonumber
     \\
     &\quad=
-    \frac{1}{N^2}\sum^{N}_{n=1} \Esub{\rvvz^{(n)} \sim K_{\rvvlambda_{t-1}}\left(\vz_{t-1}^{(n)}, \cdot\right)}{ \norm{\vs\left(\vlambda; \rvvz^{(n)}\right) }^2 \,\middle|\,  \rvvz_{t-1}^{(1:N)},\, \rvvlambda_{t-1} }
+    \frac{1}{N^2}\sum^{N}_{n=1} \Esub{\rvvz^{(n)} \sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t-1}^{(n)}, \cdot\right)}{ \norm{\vs\left(\vlambda; \rvvz^{(n)}\right) }^2_2 \,\middle|\,  \rvvz_{t-1}^{(1:N)},\, \rvvlambda_{t-1} }
     \nonumber
     \\
     &\quad\leq
     \frac{1}{N^2}\sum^{N}_{n=1}
-      \Esub{\rvvz^{(n)} \sim q_{\text{def.}}\left(\cdot;\rvvlambda_{t-1}\right)}{ \norm{\vs\left(\vlambda; \rvvz^{(n)} \right)}^2 }
+      \Esub{\rvvz^{(n)} \sim q_{\text{def.}}\left(\cdot;\rvvlambda_{t-1}\right)}{ \norm{\vs\left(\vlambda; \rvvz^{(n)} \right)}^2_2 }
       +
-      {\rho} \, \norm{\vs\left(\vlambda; \rvvz_{t-1}^{(n)} \right)}^2
+      {\rho} \, \norm{\vs\left(\vlambda; \rvvz_{t-1}^{(n)} \right)}^2_2
     &&\quad\text{\textit{\cref{thm:imh_expecation}}}
     \nonumber
     \\
     &\quad\leq
     \frac{1}{N^2}\sum^{N}_{n=1}
-        L^2 + {\left(1 - \frac{1}{w^*}\right)} \, L^2
+        L^2 + {\rho} \, L^2
     &&\quad\text{\textit{\cref{thm:bounded_score}}}
     \nonumber
     \\
     &\quad=
     \frac{L^2}{N^2} \sum^{N}_{n=1}
-      1 + {\left(1 - \frac{1}{w^*}\right)}
+      1 + {\rho}
     \nonumber
     \\
     &\quad=
     L^2 \left[ \frac{1}{N} + \frac{1}{N}\,{\left(1 - \frac{1}{w^*}\right)} \right].
     \nonumber
   \end{alignat}
-  %Therefore, the gradient decreases at a solid \(\mathcal{O}\left(1/N\right)\) rate.
 \end{proofEnd}
 
 %%% Local Variables:

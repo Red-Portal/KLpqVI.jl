@@ -18,6 +18,7 @@
   Then, given~\cref{thm:bounded_weight,thm:bounded_score}, the mixing rate and the gradient variance bounds are
   {%\small
   \begin{align*}
+    \textstyle
     \DTV{P_{\vlambda}^k\left(\veta, \cdot\right)}{\Pi}
     \leq
     C\left(\rho, N\right)\,{\rho}^{k\,N}
@@ -42,16 +43,16 @@
 \begin{proofEnd}
 
   JSA is described in~\cref{alg:jsa}. 
-  At each iteration, it performs \(N\) MCMC transitions, and uses the \(N\) samples to estimate the gradient.
+  At each iteration, it performs \(N\) MCMC transitions and uses the \(N\) intermediate states to estimate the gradient.
   That is,
   \begin{align*}
-    \rvvz^{(1)}_{t} \mid \rvvz_{t-1}^{(N)}, \rvvlambda_{t-1} &\sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t-1}^{(N)}, \cdot\right) \\
-    \rvvz^{(2)}_{t} \mid \rvvz^{(1)}_{t}, \rvvlambda_{t-1}  &\sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t}^{(1)}, \cdot\right) \\
-    &\vdots
+    \rvvz^{(1)}_{t} &\mid \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} \sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t-1}^{(N)}, \cdot\right) \\
+    \rvvz^{(2)}_{t} &\mid \rvvz^{(1)}_{t},\, \rvvlambda_{t-1}  \sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t}^{(1)}, \cdot\right) \\
+    &\qquad\qquad\vdots
     \\
-    \rvvz^{(N)}_{t} \mid \rvvz^{(N-1)}_{t}, \rvvlambda_{t-1}  &\sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t}^{(N-1)}, \cdot\right)
+    \rvvz^{(N)}_{t} &\mid \rvvz^{(N-1)}_{t},\, \rvvlambda_{t-1}  \sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t}^{(N-1)}, \cdot\right)
     \\
-    \rvvg_{\text{JSA}} &= -\frac{1}{N}\,\sum^{N}_{n=1} \, \vs\left(\vlambda, \rvvz^{(n)}_t\right),
+    \rvvg_{\text{JSA}}  &= -\frac{1}{N}\,\sum^{N}_{n=1} \, \vs\left(\vlambda, \rvvz^{(n)}_t\right),
   \end{align*}
   where \(K_{\rvvlambda_{t-1}}^n\) is an \(n\)-transition IMH kernel using \(q_{\text{def.}}\left(\cdot; \rvvlambda_{t-1}\right)\).
 
@@ -138,7 +139,6 @@
       -
       P^{k}\left(\veta, A\right)
     }
-    &&\quad\text{\textit{Definition of \(d_{\text{TV}}\)}}
     \nonumber
     \\
     &\quad\leq
@@ -147,6 +147,7 @@
     \int_{A}
       \pi\left(d\vz^{\prime\;(1)}\right) \times \ldots \times \pi\left(d\vz^{\prime\;(N)}\right)
     \nonumber
+    &&\quad\text{\textit{Definition of \(d_{\text{TV}}\)}}
       \\
       &\qquad\qquad\qquad-
       K^{(k-1)\,N\,+1}_{\vlambda}\left(\vz^{(1)}, d\vz^{\prime\;(1)}\right) \times \ldots \times K^{k\,N}_{\vlambda}\left(\vz^{(N)}, d\vz^{\prime\;(N)}\right)
@@ -182,7 +183,6 @@
     \rho^{-N}
     \,
     \frac{\rho - \rho^{N+1}}{1 - \rho}
-    &&\quad\text{\textit{Solved sum}}
     \nonumber
     \\
     &\quad=
@@ -198,32 +198,41 @@
   Fortunately, specifically for the IMH kernel,~\citet{Smith96exacttransition} have shown that the \(n\)-step marginal IMH kernel is given as~\cref{eq:imh_exact_kernel}.
   From this, we show that
   \begin{alignat}{2}
-    &\V{ \vg_{\mathrm{JSA}} \,\middle|\, \mathcal{F}_{t} }
+    &\E{ \norm{\rvvg_{\mathrm{JSA}}}_{2}^2 \,\middle|\, \mathcal{F}_{t-1} }
     \nonumber
     \\
-    &\quad=
-    \V{ \vg_{\mathrm{JSA}} \,\middle|\, \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} }
+    &\;=
+    \E{\norm{\frac{1}{N}\,\sum^{N}_{n=1}\vs\left(\vlambda; \rvvz^{(n)}\right)}_2^2  \,\middle|\, \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} }
     \nonumber
     \\
-    &\quad=
-    \V{ \frac{1}{N}\,\sum^{N}_{n=1}\vs\left(\vlambda; \rvvz^{(n)}\right)  \,\middle|\, \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} }
+    &\;=
+    \E{
+      \frac{1}{N^2}\,
+      \sum^{N}_{n=1}
+      \norm{
+        \vs\left(\vlambda; \rvvz^{(n)}\right)
+      }_2^2  
+      +
+      \frac{2}{N^2}
+      \sum^{N}_{n=2}
+      \sum^{n-1}_{m=1}
+      {\vs\left(\vlambda; \rvvz^{(n)}\right)}^{\top}
+      \vs\left(\vlambda; \rvvz^{(m)}\right)
+      \,\middle|\, \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} 
+    }
     \nonumber
     \\
-    &\quad=
-    \frac{1}{N^2} \sum^{N}_{n=1} \V{ \vs\left(\vlambda; \rvvz^{(n)}\right)  \,\middle|\, \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} }
+    &\;=
+    \frac{1}{N^2}\sum^{N}_{n=1} \E{ \norm{ \vs\left(\vlambda; \rvvz^{(n)}\right) }^2 \,\middle|\, \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} } + C_{\text{cov}}
     \nonumber
     \\
-    &\quad\leq
-    \frac{1}{N}\sum^{N}_{n=1} \E{ \norm{ \vs\left(\vlambda; \rvvz^{(n)}\right) }^2 \,\middle|\, \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} } + C_{\text{cov}}
-    \nonumber
-    \\
-    &\quad=
+    &\;=
     \frac{1}{N^2}\sum^{N}_{n=1} \Esub{\rvvz^{(n)} \sim K^n_{\rvvlambda_{t-1}}\left(\vz_{t-1}, \cdot\right)}{ \norm{\vs\left(\vlambda; \rvvz^{(n)}\right) }^2 \,\middle|\,  \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} }
     + 
     C_{\text{cov}}
     \nonumber
     \\
-    &\quad\leq
+    &\;\leq
     \frac{1}{N^2}\sum^{N}_{n=1}
     \left\{\,
       n \, {\rho}^{n-1}
@@ -236,19 +245,19 @@
     &&\quad\text{\textit{\cref{thm:imh_expecation}}}
     \nonumber
     \\
-    &\quad\leq
+    &\;\leq
     \frac{1}{N^2}\sum^{N}_{n=1}
     \left\{\,
-      n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1}  \, L^2
+      n \, {\rho}^{n-1}  \, L^2
       +
-      {\left(1 - \frac{1}{w^*}\right)}^{n} \, L^2
+      {\rho}^{n} \, L^2
       \,\right\}
       +
     C_{\text{cov}}
     &&\quad\text{\textit{\cref{thm:bounded_score}}}
     \nonumber
     \\
-    &\quad=
+    &\;=
     \frac{L^2}{N^2}\sum^{N}_{n=1}
     \left\{\,
       n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1}
@@ -259,7 +268,7 @@
     C_{\text{cov}}
     \nonumber
     \\
-    &\quad=
+    &\;=
     \frac{L^2}{N^2} \,
     \left[\,
       {\left(w^*\right)}^2 + w^*
@@ -273,7 +282,7 @@
     C_{\text{cov}}
     \nonumber
     \\
-    &\quad=
+    &\;=
     \frac{L^2}{N^2} \,
     \left[\,
     \frac{1}{2} N^2 + \frac{3}{2}\,N 
@@ -284,7 +293,7 @@
     \nonumber
     &&\quad\text{\textit{Laurent series expansion at \(w^* \rightarrow \infty\)}}
     \\
-    &\quad=
+    &\;=
     L^2 \,
     \left[\,
     \frac{1}{2} + \frac{3}{2}\,\frac{1}{N}
@@ -293,7 +302,7 @@
     \nonumber
   \end{alignat}
   where \[
-  C_\text{cov} = {\textstyle\frac{1}{N^2} \sum^{N}_{n=2} \sum^{n-1}_{m = 1} \Cov{\vs\left(\vlambda; \rvvz^{(n)}\right), \vs\left(\vlambda; \rvvz^{(m)}\right) \,\middle|\, \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} }}.\]
+  C_\text{cov} = {\frac{2}{N^2} \sum^{N}_{n=2} \sum^{n-1}_{m = 1} \Cov{\vs\left(\vlambda; \rvvz^{(n)}\right), \vs\left(\vlambda; \rvvz^{(m)}\right) \,\middle|\, \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} }}.\]
   The Laurent approximation becomes exact as \(w^* \rightarrow \infty\), which is useful considering \cref{thm:wstar}.
 \end{proofEnd}
 
