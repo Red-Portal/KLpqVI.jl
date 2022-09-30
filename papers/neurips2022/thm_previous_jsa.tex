@@ -16,29 +16,33 @@
   }%
   with \(\veta_t = \big(\vz_t^{(1)}, \vz_t^{(2)}, \ldots, \vz_t^{(N)}\big)\).
   Then, given~\cref{thm:bounded_weight,thm:bounded_score}, the mixing rate and the gradient variance bounds are
-  {%\small
+  {\small
   \begin{align*}
-    \textstyle
+   % \textstyle
     \DTV{P_{\vlambda}^k\left(\veta, \cdot\right)}{\Pi}
     \leq
-    C\left(\rho, N\right)\,{\rho}^{k\,N}
-    \quad\text{and}\quad
+    C\left(r, N\right)\,{r}^{k\,N}
+    \;\;\text{and}\;\;
    % 
-    \V{ \vg_{\mathrm{JSA}} \,\middle|\, \mathcal{F}_{t-1} }
+    \E{ {\lVert\vg_{t,\mathrm{JSA}}\rVert}^2_2 \,\middle|\, \mathcal{F}_{t-1} }
     \leq
     L^2 \,
     \left[\,
     \frac{1}{2} + \frac{3}{2}\,\frac{1}{N}
-    + \mathcal{O}\left(\nicefrac{1}{w^*}\right)
+    + \mathcal{O}\left(\nicefrac{1}{w^* + r^{t\,N}}\right)
     \,\right]
     +
     C_{\text{cov}}
+    +
+    {\lVert\vmu\rVert}^2_2
+    \nonumber
   \end{align*}
   }%
   where
+  \(\vmu = \mathbb{E}_{\pi}\vs\left(\vlambda;\rvvz\right)\), 
   \(\small\textstyle
-  C_{\text{cov}} = \frac{2}{N^2} \sum^{N}_{n=2} \sum^{n-1}_{m = 1} \Cov{\vs\left(\vlambda; \rvvz^{(n)}\right), \vs\left(\vlambda; \rvvz^{(m)}\right) \,\middle|\, \mathcal{F}_{t-1} }
-  \) is the sum of the covariance between the samples, \(w^* = \sup_{\vz} \pi\left(\vz\right) / q_{\text{def.}}\left(\vz;\vlambda\right)\), and \(C\left(\rho, N\right) > 0\) is a finite constant depending on \(\rho\) and \(N\).
+  C_{\text{cov}} = \frac{2}{N^2} \sum^{N}_{n=2} \sum^{n-1}_{m = 1} \Cov{\vs\left(\vlambda; \rvvz^{(n)}_t\right), \vs\left(\vlambda; \rvvz^{(m)}_t\right) \,\middle|\, \mathcal{F}_{t-1} }
+  \) is the sum of the covariance between the samples, \(w^* = \sup_{\vz} \pi\left(\vz\right) / q_{\text{def.}}\left(\vz;\vlambda\right)\), and \(C\left(r, N\right) > 0\) is a finite constant.
 \end{theoremEnd}
 \begin{proofEnd}
 
@@ -52,9 +56,14 @@
     \\
     \rvvz^{(N)}_{t} &\mid \rvvz^{(N-1)}_{t},\, \rvvlambda_{t-1}  \sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t}^{(N-1)}, \cdot\right)
     \\
-    \rvvg_{\text{JSA}}  &= -\frac{1}{N}\,\sum^{N}_{n=1} \, \vs\left(\vlambda, \rvvz^{(n)}_t\right),
+    \rvvg_{t,\text{JSA}}  &= -\frac{1}{N}\,\sum^{N}_{n=1} \, \vs\left(\vlambda, \rvvz^{(n)}_t\right),
   \end{align*}
   where \(K_{\rvvlambda_{t-1}}^n\) is an \(n\)-transition IMH kernel using \(q_{\text{def.}}\left(\cdot; \rvvlambda_{t-1}\right)\).
+  Under \cref{thm:bounded_weight}, an IMH kernel is uniformly geometrically ergodic~\citep{10.2307/2242610, wang_exact_2020} as
+  \begin{align}
+    \DTV{K_{\vlambda}^k\left(\vz, \cdot\right)}{\pi} \leq \rho^{k}\label{eq:imh_ergodicity}
+  \end{align}
+  for any \(\vz \in \mathcal{Z}\).
 
   \paragraph{Ergodicity of the Markov Chain}
   The state transitions of the Markov chain samples \(\vz^{(1:N)}\) are visualized as 
@@ -86,46 +95,6 @@
   \cdot
   K_{\vlambda}^{N\,\left(k-1\right) + N}\left(\vz_N, d\vz^{\prime}_N\right).
   \end{align*}
-
-%%   For example, let us assume that we use a batch size of 1 and that \(m=1\) is selected at \(t=1\) and \(m=2\) is selected at \(t=2\).
-%%   Then, the transitions can be visualized as
-%%   {\small
-%%   \begin{center}
-%%   \bgroup
-%%   \def\arraystretch{1.8}
-%%   \setlength{\tabcolsep}{5pt}
-%%   \begin{tabular}{c|cccccccccccccc}
-%%       t = 1 & \(\vz^{(1,1)}_1\) & \(\vz^{(1,2)}_1\) & \ldots & \(\vz^{(1,N)}_1\) & \ldots & \(\vz^{(2,1)}_1\) & \(\vz^{(2,2)}_1\) & \ldots & \(\vz^{(2,N)}_1\) & \ldots & \(\vz^{(1,N)}_1\) & \(\vz^{(2,N)}_1\) & \ldots & \(\vz^{(M,N)}_1\) \\
-%%       & \(\downarrow\;K_{1,\lambda}\) & \(\downarrow\;K_{1,\lambda}^2\) & \ldots & \(\downarrow\;K_{1,\lambda}^N\)  &  &  &  & &  &  &  &  &  & \\
-%%       t = 2 & \(\vz^{(1,1)}_2\) & \(\vz^{(1,2)}_2\) & \ldots & \(\vz^{(1,N)}_2\) & \ldots & \(\vz^{(2,1)}_2\) & \(\vz^{(2,2)}_2\) & \ldots & \(\vz^{(2,N)}_2\) & \ldots & \(\vz^{(1,N)}_2\) & \(\vz^{(2,N)}_2\) & \ldots & \(\vz^{(M,N)}_2\) \\
-%%       & & & & & & \(\downarrow\;K_{2,\lambda}\) & \(\downarrow\;K_{2,\lambda}^2\) & \ldots & \(\downarrow\;K_{2,\lambda}^N\)  &  &  &  & &  \\
-%%       t = 3 & \(\vz^{(1,1)}_3\) & \(\vz^{(1,2)}_3\) & \ldots & \(\vz^{(1,N)}_3\) & \ldots & \(\vz^{(2,1)}_2\) & \(\vz^{(2,2)}_3\) & \ldots & \(\vz^{(2,N)}_3\) & \ldots & \(\vz^{(1,N)}_3\) & \(\vz^{(2,N)}_3\) & \ldots & \(\vz^{(M,N)}_3\) \\
-%%   \end{tabular}
-%%   \egroup
-%%   \end{center}
-%%   }
-%%   where \(K_{m,\vlambda}\left(\vz, \cdot\right)\) is a componentwise IMH kernel for the \(m\)th component.
-%%   Conceptually, this means that, when a batch \(\vz^{(m,1:N)}\) is selected \(k\) times, it will evolve as
-%%   \begin{alignat*}{2}
-%%     \vz^{(m,1:N)} \sim  K_{m,\vlambda}^{\left(k-1\right)\,N + 1}\left(\vz^{(m,1)}, d\vz^{(m,1)}\right) \, K_{m,\vlambda}^{\left(k-1\right)\,N + 2}\left(\vz^{(m,2)}, d\vz\prime^{(m,2)}\right) \cdot \ldots \cdot K_{m,\vlambda}^{\left(k-1\right)\,N + N}\left(\vz^{(m,N)}, d\vz\prime^{(m,N)}\right).
-%%   \end{alignat*}
-
-%%   The random-scan kernel can be represented as
-%%   \begin{alignat*}{2}
-%%     P_{\vlambda}^k\left(\veta, d\veta\prime\right)
-%%     =
-%%     \sum_{m=1}^M
-%%     r_{m} \,
-%%     \left(
-%%     K_{m,\vlambda}\left(\vz^{(m,1)}, d\vz\prime^{(m,1)}\right) \,
-%%     K_{m,\vlambda}\left(\vz^{(m,2)}, d\vz\prime^{(m,2)}\right)
-%%     \cdot
-%%     \ldots
-%%     \cdot
-%%     K_{m,\vlambda}^N\left(\vz^{(m,N)}, d\vz\prime^{(m,N)}\right)
-%%     \right)
-%%   \end{alignat*}
-%%   where .
 
   Now, the convergence in total variation \(d_{\mathrm{TV}}\left(\cdot, \cdot\right)\) can be shown to decrease geometrically as
   \begin{alignat}{2}
@@ -172,62 +141,94 @@
     \\
     &\quad\leq
     \sum_{n=1}^N
-    \rho^{(k-1)\,N + n}
-    &&\quad\text{\textit{Geometric ergodicity}}
+    r^{(k-1)\,N + n}
+    &&\quad\text{\textit{\cref{eq:imh_ergodicity}}}
     \nonumber
     %\label{eq:used_ergodicity}
     \\
     &\quad=
-    \rho^{k\,N}
+    r^{k\,N}
     \,
-    \rho^{-N}
+    r^{-N}
     \,
-    \frac{\rho - \rho^{N+1}}{1 - \rho}
+    \frac{r - r^{N+1}}{1 - r}
     \nonumber
     \\
     &\quad=
-    \frac{\rho \, \left(1 - \rho^N\right)}{\rho^N \left(1 - \rho\right)}
+    \frac{r \, \left(1 - r^N\right)}{r^N \left(1 - r\right)}
     \,
-    {\left( \rho^{N} \right)}^k.
+    {\left( r^{N} \right)}^k.
     \nonumber
   \end{alignat}
-  Although the constant depends on \(\rho\) and \(N\), the kernel \(P\) is geometrically ergodic and converges \(N\) times faster than the base kernel \(K\).
+  Although the constant depends on \(r\) and \(N\), the kernel \(P\) is geometrically ergodic and converges \(N\) times faster than the base kernel \(K\).
 
   \paragraph{\textbf{Bound on the Gradient Variance}}
-  To analyze the variance of the gradient, we require detailed information about the \(n\)-step marginal transition kernel, which is unavailable in general for most MCMC kernels.
+  To analyze the variance of the gradient, we require detailed information about the \(n\)-step marginal transition kernel, which is unavailable for most MCMC kernels.
   Fortunately, specifically for the IMH kernel,~\citet{Smith96exacttransition} have shown that the \(n\)-step marginal IMH kernel is given as~\cref{eq:imh_exact_kernel}.
-  From this, we show that
+
+  Furthermore, by \cref{thm:second_moment_bound}, the second moment of the gradient is bounded as
   \begin{alignat}{2}
-    &\E{ \norm{\rvvg_{\mathrm{JSA}}}_{2}^2 \,\middle|\, \mathcal{F}_{t-1} }
+    \E{ {\lVert \rvvg_{t,\text{JSA}} \rVert}_2^2 \,\middle|\, \mathcal{F}_{t-1} } 
+    &=
+    \V{\rvvg_{t,\text{JSA}} \mid \mathcal{F}_{t-1}} + {\mathsf{Bias}\left[\rvvg_{t,\text{JSA}} \mid \mathcal{F}_{t-1}\right]}^2 + 2\, \mathsf{Bias}\left[\rvvg_{t,\text{JSA}} \mid \mathcal{F}_{t-1}\right] \norm{\vmu}_2 + \norm{\vmu}^2_2
+    \nonumber
+    \\
+    &\leq
+    \V{ \rvvg_{t,\text{JSA}} \mid \mathcal{F}_{t-1}} + {\mathsf{Bias}\left[\rvvg_{t,\text{JSA}} \mid \mathcal{F}_{t-1}\right]}^2 + 2\,L\,\mathsf{Bias}\left[\rvvg_{t,\text{JSA}} \mid \mathcal{F}_{t-1}\right] + \norm{\vmu}^2_2,
+    \nonumber
+  \end{alignat}
+  where \(\vmu = \mathbb{E}_{\pi}\vs\left(\vlambda; \rvvz\right)\).
+  As shown in \cref{thm:mcmc_bias}, the bias terms decreases in a rate of \(r^{t\,N}\).
+  Therefore, 
+  \begin{alignat}{2}
+    \E{ {\lVert \rvvg_{t,\text{JSA}} \rVert}_2^2 \,\middle|\, \mathcal{F}_{t-1} } 
+    &\leq
+    \V{ \rvvg_{t,\text{JSA}} \mid \mathcal{F}_{t-1}} + \norm{\vmu}^2_2 + \mathcal{O}\left(r^{t\,N}\right).
+    &&\quad\text{\textit{\cref{thm:mcmc_bias}}}
+    \nonumber
+  \end{alignat}
+  Note that it is possible to obtain a tighter bound on the bias terms such that \(\mathcal{O}\left(r^{t\,N}/N\right)\), if we directly use \(\left(K, \rvvz\right)\) to bound the bias instead of the higher-level \(\left(P, \rvveta\right)\) abstraction.
+  The extra looseness comes from the use of \cref{thm:product_measure_bound}.
+
+  For the variance term, we show that
+  \begin{alignat}{2}
+    &\V{ \rvvg_{t,\mathrm{JSA}} \,\middle|\, \mathcal{F}_{t-1} }
     \nonumber
     \\
     &\;=
-    \E{\norm{\frac{1}{N}\,\sum^{N}_{n=1}\vs\left(\vlambda; \rvvz^{(n)}\right)}_2^2  \,\middle|\, \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} }
+    \V{\frac{1}{N}\,\sum^{N}_{n=1}\vs\left(\vlambda; \rvvz^{(n)}_t\right) \,\middle|\, \mathcal{F}_{t-1} }
     \nonumber
     \\
     &\;=
-    \E{
       \frac{1}{N^2}\,
       \sum^{N}_{n=1}
-      \norm{
-        \vs\left(\vlambda; \rvvz^{(n)}\right)
-      }_2^2  
+      \V{
+        \vs\left(\vlambda; \rvvz^{(n)}_t\right)
+        \,\middle|\,
+        \mathcal{F}_{t-1}
+      }
       +
       \frac{2}{N^2}
       \sum^{N}_{n=2}
       \sum^{n-1}_{m=1}
-      {\vs\left(\vlambda; \rvvz^{(n)}\right)}^{\top}
-      \vs\left(\vlambda; \rvvz^{(m)}\right)
-      \,\middle|\, \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} 
-    }
+      \Cov{
+        \vs\left(\vlambda; \rvvz^{(n)}_t\right),
+        \vs\left(\vlambda; \rvvz^{(m)}_t\right)
+        \,\middle|\,
+        \mathcal{F}_{t-1}
+      }
+    \nonumber
+    \\
+    &\;\leq
+    \frac{1}{N^2}\sum^{N}_{n=1} \E{ \norm{ \vs\left(\vlambda; \rvvz^{(n)}_t\right) }^2_2 \,\middle|\, \mathcal{F}_{t-1} } + C_{\text{cov}}
     \nonumber
     \\
     &\;=
-    \frac{1}{N^2}\sum^{N}_{n=1} \E{ \norm{ \vs\left(\vlambda; \rvvz^{(n)}\right) }^2 \,\middle|\, \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} } + C_{\text{cov}}
+    \frac{1}{N^2}\sum^{N}_{n=1} \E{ \norm{ \vs\left(\vlambda; \rvvz^{(n)}_t\right) }^2_2 \,\middle|\, \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} } + C_{\text{cov}}
     \nonumber
     \\
     &\;=
-    \frac{1}{N^2}\sum^{N}_{n=1} \Esub{\rvvz^{(n)} \sim K^n_{\rvvlambda_{t-1}}\left(\vz_{t-1}, \cdot\right)}{ \norm{\vs\left(\vlambda; \rvvz^{(n)}\right) }^2 \,\middle|\,  \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} }
+    \frac{1}{N^2}\sum^{N}_{n=1} \Esub{\rvvz^{(n)}_t \sim K^n_{\rvvlambda_{t-1}}\left(\vz_{t-1}, \cdot\right)}{ \norm{\vs\left(\vlambda; \rvvz^{(n)}_t\right) }^2_2 \,\middle|\,  \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} }
     + 
     C_{\text{cov}}
     \nonumber
@@ -235,10 +236,10 @@
     &\;\leq
     \frac{1}{N^2}\sum^{N}_{n=1}
     \left\{\,
-      n \, {\rho}^{n-1}
-      \Esub{\rvvz \sim q_{\text{def.}}\left(\cdot; \rvvlambda_{t-1}\right)}{ \norm{\vs\left(\vlambda; \rvvz \right)}^2 }
+      n \, {r}^{n-1}
+      \Esub{\rvvz \sim q_{\text{def.}}\left(\cdot; \rvvlambda_{t-1}\right)}{ \norm{\vs\left(\vlambda; \rvvz \right)}^2_2 }
       + 
-      {\rho}^{n} \, \norm{\vs\left(\vlambda; \rvvz_{t-1}^{(N)} \right)}^2
+      {r}^{n} \, \norm{\vs\left(\vlambda; \rvvz_{t-1}^{(N)} \right)}^2_2
       \,\right\}
       +
     C_{\text{cov}}
@@ -248,9 +249,9 @@
     &\;\leq
     \frac{1}{N^2}\sum^{N}_{n=1}
     \left\{\,
-      n \, {\rho}^{n-1}  \, L^2
+      n \, {r}^{n-1}  \, L^2
       +
-      {\rho}^{n} \, L^2
+      {r}^{n} \, L^2
       \,\right\}
       +
     C_{\text{cov}}
@@ -302,7 +303,7 @@
     \nonumber
   \end{alignat}
   where \[
-  C_\text{cov} = {\frac{2}{N^2} \sum^{N}_{n=2} \sum^{n-1}_{m = 1} \Cov{\vs\left(\vlambda; \rvvz^{(n)}\right), \vs\left(\vlambda; \rvvz^{(m)}\right) \,\middle|\, \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} }}.\]
+  C_\text{cov} = {\frac{2}{N^2} \sum^{N}_{n=2} \sum^{n-1}_{m = 1} \Cov{\vs\left(\vlambda; \rvvz^{(n)}_t\right), \vs\left(\vlambda; \rvvz^{(m)}_t\right) \,\middle|\, \rvvz_{t-1}^{(N)},\, \rvvlambda_{t-1} }}.\]
   The Laurent approximation becomes exact as \(w^* \rightarrow \infty\), which is useful considering \cref{thm:wstar}.
 \end{proofEnd}
 

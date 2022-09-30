@@ -6,8 +6,8 @@
 \vspace{-1.5ex}
 %\vspace{-0.05in}
 \paragraph{Implementation}
-For the realistic experiments, we implemented MCSA methods on top of the Turing~\citep{ge2018t} probabilistic programming framework.%\footnote{Available at \url{https://github.com/Red-Portal/KLpqVI.jl}}.
-For the variational family, we use diagonal multivariate Gaussians with the support transformation of~\citet{JMLR:v18:16-107}.
+For the realistic experiments, we implemented\footnote{Available at \url{https://github.com/Red-Portal/KLpqVI.jl}} MCSA methods on top of the Turing~\citep{ge2018t} probabilistic programming framework.
+For the variational family, we use diagonal multivariate Gaussians (mean-field family) with the support transformation of~\citet{JMLR:v18:16-107}.
 We use the ADAM optimizer by~\citet{kingma_adam_2015} with a stepsize of 0.01 in all experiments.
 The budget is set to \(N=10\) for all experiments unless specified.
 
@@ -36,7 +36,7 @@ The budget is set to \(N=10\) for all experiments unless specified.
       The target distribution is a 100-D Gaussian with \(\nu = 500\).
       The error bands are the 80\% quantiles, while the solid lines are the median of 20 replications.
   }\label{fig:stepsize}
-  \vspace{-1.5ex}
+  \vspace{-2ex}
 \end{figure*}
 
 \input{bnn_table.tex}
@@ -137,13 +137,12 @@ pMCSA achieves the best performance compared to all other MCSA methods.
 Also, its overall performance is comparable to exclusive KL minimization methods (ELBO) unlike other MCSA methods.
 Furthermore, on \textsf{airfoil} and \textsf{energy}, pMCSA improves over ELBO by 0.29 \texttt{nat} and 0.48 \texttt{nat}.
 Even on \textsf{gas} where pMCSA did not beat ELBO, its performance is comparable, and it dominates all other MCSA methods by roughly 0.4 \texttt{nat}.
-Additional experimental results, \textcolor{blue}{including plots with respect to the wall clock time}, can be found in~\cref{section:bnn_additional}
+Additional experimental results, \textcolor{blue}{including root mean-square error (RMSE) results and plots with respect to the wall clock time}, can be found in~\cref{section:bnn_additional}
 
 \vspace{-1.5ex}
 \paragraph{Weight Pruning}
 \textcolor{blue}{
-When using VI, BNNs tend to underfit data.
-\citet{mackay_local_2001,pmlr-v70-hoffman17a,trippe_overpruning_2017} associate this with ``weight pruning.'' 
+When using VI, BNNs have been known to underfit data, which~\citet{mackay_local_2001,pmlr-v70-hoffman17a,trippe_overpruning_2017} associated with ``weight pruning.'' 
 That is, the variational posterior converges to the zero-mean prior.
 Furthermore,~\citet{coker_wide_2022,huix_variational_2022} have shown that this is guaranteed to happen under certain conditions.
 However, these results are strictly based on exclusive KL minimization.
@@ -168,11 +167,14 @@ We consider ELBO with only \(N=1\) since differentiating through the likelihood 
 \vspace{-1.8ex}
 \paragraph{Results}
 The results are shown in~\cref{table:gp}.
-Except for \textsf{gas}, pMCSA achieves better performance than all other methods.
-This suggests that, overall, the exclusive KL may be less effective for GP posteriors.
-Although ELBO achieves the best performance on \textsf{gas}, pMCSA dominates other MCSA methods.
+Except for \textsf{gas}, pMCSA achieves better \textcolor{blue}{predictive densities} than all other methods.
+This suggests that, overall, the exclusive KL may be less effective \textcolor{blue}{in terms of uncertainty quantification} for GP posteriors.
+While ELBO achieves the best performance on \textsf{gas}, among MCSA methods, pMCSA dominates.
 Our encouraging regression results suggest that incorporating methods such as inducing points~\citep{NIPS2005_4491777b} into MCSA may lead to an important new class of GP models.
-Additional experimental results, \textcolor{blue}{including plots with respect to the wall clock time}, can be found in~\cref{section:gp_additional}.
+Additional experimental results, \textcolor{blue}{including RMSE results and plots with respect to the wall clock time}, can be found in~\cref{section:gp_additional}.
+\textcolor{blue}{
+Note that in~\cref{section:gp_additional}, MCSA methods appear worse in terms of RMSE compared to the exclusive KL since the inclusive KL puts less probability volume around the posterior mode.
+}
 
 %%% Local Variables:
 %%% TeX-master: "master"

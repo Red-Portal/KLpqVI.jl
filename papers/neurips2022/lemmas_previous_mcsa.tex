@@ -263,13 +263,13 @@ is bounded below exponentially by the KL divergence as
   \begin{enumerate}
   \item[\ding{182}]
   \(
-    \mathbb{E}\norm{\rvvg}^2 
+    \mathbb{E}\norm{\rvvg}^2_2
     \leq
     \mathbb{V}{\rvvg} + {\mathsf{Bias}\left[\rvvg\right]}^2 + 2\, \mathsf{Bias}\left[\rvvg\right] \norm{\vmu}_2 + \norm{\vmu}^2_2,
   \)
   \item[\ding{183}]
   \(
-    \mathbb{E}\norm{\rvvg}^2 
+    \mathbb{E}\norm{\rvvg}^2_2 
     \leq
     \mathsf{MSE}\left[{\rvvg}\right] + 2\, \mathsf{Bias}\left[\rvvg\right] \norm{\vmu}_2 + \norm{\vmu}^2_2,
   \)
@@ -308,7 +308,7 @@ is bounded below exponentially by the KL divergence as
     \right)}^{\top}
     \vmu
     + 
-    \norm{\vmu}^2
+    \norm{\vmu}^2_2
     &&\quad\text{\textit{Expanded quadratic}}
     \nonumber
     \\
@@ -333,7 +333,7 @@ is bounded below exponentially by the KL divergence as
     &\;=
     \mathbb{V}{ \rvvg  }
     +
-    \mathsf{Bias}\left[\rvvg\right]^2
+    {\mathsf{Bias}\left[\rvvg\right]}^2
     +
     2 \,\mathsf{Bias}\left[\rvvg\right]
     \norm{\vmu}_2
@@ -347,3 +347,4 @@ is bounded below exponentially by the KL divergence as
   }
   Meanwhile, by the well-known bias-variance decomposition formula of the mean-squared error, \ding{183} directly follows from \ding{182}.
 \end{proofEnd}
+

@@ -7,7 +7,7 @@
   = 
   K_{\lambda}^k\left(\vz, d\vz^{\prime}\right)
   \end{align*}
-  }
+  }%
   with  \(\veta_t = \vz_t\) where \(K_{\vlambda}\left(\vz, \cdot\right)\) is the CIS kernel with \(q_{\text{def.}}\left(\cdot; \vlambda\right)\) as its proposal distribution.
   Then, given~\cref{thm:bounded_weight,thm:bounded_score}, the mixing rate and the gradient bounds are given as
   {%\small
@@ -15,10 +15,10 @@
     \textstyle
   \DTV{P_{\vlambda}^k\left(\veta, \cdot\right)}{\Pi} \leq  {\left(1 - \frac{N - 1}{2 w^* + N - 2}\right)}^k\quad \text{and}\quad
   {\small
-  \E{ {\parallel\,\rvvg_{t,\text{MSC}}\,\parallel}^2 \,\middle|\, \mathcal{F}_{t-1} } \leq  L^2,
+  \E{ {\lVert\rvvg_{t,\text{MSC}}\rVert}^2 \,\middle|\, \mathcal{F}_{t-1} } \leq  L^2,
   }
   \end{align*}
-  }
+  }%
   where \(w^* = \sup_{\vz} \pi\left(\vz\right) / q_{\text{def.}}\left(\vz;\vlambda\right)\).
 \end{theoremEnd}
 \begin{proofEnd}
@@ -48,7 +48,7 @@
   For simplicity, we denote the rejection state as \(\vz^{(1)}_t = \vz_{t-1} \).
   Then,
   \begin{alignat}{2}
-    &\E{ \norm{\rvvg_{t,\text{MSC}}}^2 \,\middle|\, \mathcal{F}_{t-1} }
+    &\E{ {\lVert\rvvg_{t,\text{MSC}}\rVert}^2 \,\middle|\, \mathcal{F}_{t-1} }
     \nonumber
     \\
     &\;=

@@ -16,18 +16,25 @@
   }
   with \(\veta = \left(\vz^{(1)}, \vz^{(2)}, \ldots, \vz^{(N)}\right)\).
   Then, given~\cref{thm:bounded_weight,thm:bounded_score}, the mixing rate and the gradient variance bounds are
-  {%\small
+  {\small
   \begin{align*}
+    \textstyle
     \DTV{P_{\vlambda}^k\left(\veta, \cdot\right)}{\Pi}
     \leq
-    C\left(N\right)\,{\rho^k}
-    \quad\text{and}\quad
-    \V{ \rvvg_{\mathrm{pMCSA}} \,\middle|\, \mathcal{F}_{t-1} }
+    C\left(N\right)\,{r^k}
+    \;\;\text{and}\;\;
+    \E{ {\lVert\rvvg_{t,\mathrm{pMCSA}}\rVert}^2_2 \,\middle|\, \mathcal{F}_{t-1} }
     \leq
-    L^2 \left[\; \frac{1}{N} + \frac{1}{N}\,\left(1 - \frac{1}{w^*}\right) \;\right],
+    L^2 \left[\; \frac{1}{N} + \frac{1}{N}\,\left(1 - \frac{1}{w^*}\right) \;\right]
+    +
+    \mathcal{O}\left(r^{t}\right)
+    +
+    {\lVert\vmu\rVert}^2_2,
   \end{align*}
-  }
-  where \(w^* = \sup_{\vz} \pi\left(\vz\right) / q_{\text{def.}}\left(\vz;\vlambda\right)\) and \(C\) is some positive constant depending on \(N\).
+  }%
+  where
+  \(\vmu = \mathbb{E}_{\pi}\vs\left(\vlambda;\rvvz\right)\), 
+  \(w^* = \sup_{\vz} \pi\left(\vz\right) / q_{\text{def.}}\left(\vz;\vlambda\right)\) and \(C\left(N\right) > 0\) is a finite constant.
 \end{theoremEnd}
 \begin{proofEnd}
 
@@ -41,7 +48,7 @@
     \\
     \rvvz^{(N)}_{t} &\mid \rvvz^{(N)}_{t-1},\, \rvvlambda_{t-1}  \sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t-1}^{(N)}, \cdot\right)
     \\
-    \rvvg_{\text{pMCSA}} &= -\frac{1}{N}\,\sum^{N}_{n=1} \, \vs\left(\vlambda, \rvvz^{(n)}_t\right),
+    \rvvg_{t,\text{pMCSA}} &= -\frac{1}{N}\,\sum^{N}_{n=1} \, \vs\left(\vlambda, \rvvz^{(n)}_t\right),
   \end{align*}
   where \(K_{\rvvlambda_{t-1}}^n\) is an \(n\)-transition IMH kernel using \(q_{\text{def.}}\left(\cdot; \rvvlambda_{t-1}\right)\).
 
@@ -98,151 +105,83 @@
     &\quad=
     \sum_{n=1}^N
     \DTV{K^k_{\vlambda}\left(\vz_n, \cdot\right)}{\pi}
-    &&\quad\text{\textit{Definition of \(d_{\text{TV}}\)}}
+    &&\quad\text{\textit{\cref{eq:imh_ergodicity}}}
     \nonumber
     \\
     &\quad\leq
     \sum_{n=1}^N
-    \rho^{k}
+    r^{k}
     &&\quad\text{\textit{Geometric ergodicity}}
     \nonumber
     \\
     &\quad=
-    N\,\rho^{k}.
+    N\,r^{k}.
     \nonumber
   \end{alignat}
 
   \paragraph{\textbf{Bound on the Gradient Variance}}
-  Let \(\rvvg\) be the sample mean of the score function with \(N\) samples from the exact posterior such that
-  \begin{align*}
-    &\rvvg = \frac{1}{N} \sum^{N}_{n=1} \vs\left(\vlambda; \rvvz^{(n)}\right),
-    &\rvvz^{(n)} \sim \pi\left(\cdot\right).
-  \end{align*}
-  Then, the bound on the gradient variance can be derived through the decomposition
-  {%\small
+  By \cref{thm:second_moment_bound}, the second moment of the gradient is bounded as
   \begin{alignat}{2}
-    &\E{ \norm{\rvvg_{\mathrm{pMCSA}}}^2_{2} \,\middle|\, \mathcal{F}_{t-1} }
+    \E{ {\lVert \rvvg_{t,\text{pMCSA}} \rVert}_2^2 \,\middle|\, \mathcal{F}_{t-1} } 
+    &=
+    \V{\rvvg_{t,\text{pMCSA}} \mid \mathcal{F}_{t-1}} + {\mathsf{Bias}\left[\rvvg_{t,\text{pMCSA}} \mid \mathcal{F}_{t-1}\right]}^2 + 2\, \mathsf{Bias}\left[\rvvg_{t,\text{pMCSA}} \mid \mathcal{F}_{t-1}\right] \norm{\vmu}_2 + \norm{\vmu}^2_2
     \nonumber
     \\
-    &\quad=
-    \V{ \rvvg_{\mathrm{pMCSA}} \,\middle|\, \mathcal{F}_{t-1}  }
-    +
-    \norm{ \E{ \rvvg_{\mathrm{pMCSA}} \,\middle|\, \mathcal{F}_{t-1}  } }_2^2
-    \nonumber
-    \\
-    &\quad=
-    \V{ \rvvg_{\mathrm{pMCSA}} \,\middle|\, \mathcal{F}_{t-1}  }
-    +
-    \norm{
-      \E{ \rvvg_{\mathrm{pMCSA}}  \;\,\middle|\, \mathcal{F}_{t-1}  } - \vmu  + \vmu
-    }_2^2
-    \nonumber
-    \\
-    &\quad=
-    \V{ \rvvg_{\mathrm{pMCSA}} \,\middle|\, \mathcal{F}_{t-1}  }
-    \nonumber
-    \\
-    &\quad\qquad+
-    \norm{
-      \E{ \rvvg_{\mathrm{pMCSA}}  \;\,\middle|\, \mathcal{F}_{t-1}  } - \vmu  
-    }_2^2
-    \nonumber
-    +
-    2 \, {\left(
-      \E{ \rvvg_{\mathrm{pMCSA}}  \;\,\middle|\, \mathcal{F}_{t-1}  } - \vmu 
-    \right)}^{\top}
-    \vmu
-    + 
-    \norm{\vmu}^2
-    &&\quad\text{\textit{Expanded quadratic}}
-    \nonumber
-    \\
-    &\quad\leq
-    \V{ \rvvg_{\mathrm{pMCSA}} \,\middle|\, \mathcal{F}_{t-1}  }
-    \nonumber
-    \\
-    &\quad\qquad+
-    \norm{
-      \E{ \rvvg_{\mathrm{pMCSA}}  \;\,\middle|\, \mathcal{F}_{t-1}  } - \vmu 
-    }_2^2
-    +
-    2 \,\norm{
-      \E{ \rvvg_{\mathrm{pMCSA}}  \;\,\middle|\, \mathcal{F}_{t-1}  } - \vmu
-    }_2
-    \norm{\vmu}_2
-    + 
-    \norm{
-      \vmu
-    }_2^2
-    \nonumber
-    &&\quad\text{\textit{Cauchy-Shwarz inequality}}
-    \\
-    &\quad=
-    \V{ \rvvg_{\mathrm{pMCSA}} \,\middle|\, \mathcal{F}_{t-1}  }
-    +
-    \mathsf{Bias}\left[\rvvg_{\text{pMCSA}}\right]^2
-    +
-    2 \,\mathsf{Bias}\left[\rvvg_{\text{pMCSA}}\right]
-    \norm{\vmu}_2
-    + 
-    \norm{
-      \vmu
-    }_2^2
-    \nonumber
-    &&\quad\text{\textit{Definition of bias}}
-    \\
-    &\quad=
-    \V{ \rvvg_{\mathrm{pMCSA}} \,\middle|\, \mathcal{F}_{t-1}  }
-    +
-    \mathsf{Bias}\left[\rvvg_{\text{pMCSA}}\right]\,
-    \left(
-    \mathsf{Bias}\left[\rvvg_{\text{pMCSA}}\right]
-    +
-    2\,\norm{\vmu}_2
-    \right)
-    + 
-    \norm{
-      \vmu
-    }_2^2
+    &\leq
+    \V{ \rvvg_{t,\text{pMCSA}} \mid \mathcal{F}_{t-1}} + {\mathsf{Bias}\left[\rvvg_{t,\text{pMCSA}} \mid \mathcal{F}_{t-1}\right]}^2 + 2\,L\,\mathsf{Bias}\left[\rvvg_{t,\text{pMCSA}} \mid \mathcal{F}_{t-1}\right] + \norm{\vmu}^2_2,
     \nonumber
   \end{alignat}
-  }
+  where \(\vmu = \mathbb{E}_{\pi}\vs\left(\vlambda; \rvvz\right)\).
+  As shown in \cref{thm:mcmc_bias}, the bias terms decreases in a rate of \(r^{t}\).
+  Therefore, 
+  \begin{alignat}{2}
+    \E{ {\lVert \rvvg_{t,\text{pMCSA}} \rVert}_2^2 \,\middle|\, \mathcal{F}_{t-1} } 
+    &\leq
+    \V{ \rvvg_{t,\text{pMCSA}} \mid \mathcal{F}_{t-1}} + \norm{\vmu}^2_2 + \mathcal{O}\left(r^{t}\right).
+    &&\quad\text{\textit{\cref{thm:mcmc_bias}}}
+    \nonumber
+  \end{alignat}
+  As noted in the proof of \cref{thm:jsa}, it is possible to obtain a tighter bound on the bias terms such that \(\mathcal{O}\left(r^{t}/N\right)\).
 
   The variance term is bounded as
   \begin{alignat}{2}
-    &\V{ \frac{1}{N}\sum^{N}_{n=1} \vs\left(\vlambda; \rvvz^{(n)}\right) \,\middle|\, \rvvz_{t-1}^{(1:N)},\, \rvvlambda_{t-1} }
+    &\V{ \rvvg_{t,\text{pMCSA}} \mid \mathcal{F}_{t-1}}
     \nonumber
     \\
     &\quad=
-    \frac{1}{N^2}\sum^{N}_{n=1} \V{ \vs\left(\vlambda; \rvvz^{(n)}\right) \,\middle|\, \rvvz_{t-1}^{(1:N)},\, \rvvlambda_{t-1} }
-    &&\quad\text{\textit{\(\rvvz^{(i)} \,\bot\, \rvvz^{(j)}\) for \(i \neq j\)}}
+    \V{ \frac{1}{N}\sum^{N}_{n=1} \vs\left(\vlambda; \rvvz^{(n)}_t\right) \,\middle|\, \rvvz_{t-1}^{(1:N)},\, \rvvlambda_{t-1} }
+    \nonumber
+    \\
+    &\quad=
+    \frac{1}{N^2}\sum^{N}_{n=1} \V{ \vs\left(\vlambda; \rvvz^{(n)}_t\right) \,\middle|\, \rvvz_{t-1}^{(1:N)},\, \rvvlambda_{t-1} }
+    &&\quad\text{\textit{\(\rvvz^{(i)}_t \,\bot\, \rvvz^{(j)}_t\) for \(i \neq j\)}}
     \nonumber
     \\
     &\quad\leq
-    \frac{1}{N^2}\sum^{N}_{n=1} \E{ \norm{\vs\left(\vlambda; \rvvz^{(n)}\right) }^2_2 \,\middle|\, \rvvz_{t-1}^{(1:N)},\, \rvvlambda_{t-1} }_2
+    \frac{1}{N^2}\sum^{N}_{n=1} \E{ \norm{\vs\left(\vlambda; \rvvz^{(n)}_t\right) }^2_2 \,\middle|\, \rvvz_{t-1}^{(1:N)},\, \rvvlambda_{t-1} }_2
     \nonumber
     \\
     &\quad=
-    \frac{1}{N^2}\sum^{N}_{n=1} \Esub{\rvvz^{(n)} \sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t-1}^{(n)}, \cdot\right)}{ \norm{\vs\left(\vlambda; \rvvz^{(n)}\right) }^2_2 \,\middle|\,  \rvvz_{t-1}^{(1:N)},\, \rvvlambda_{t-1} }
+    \frac{1}{N^2}\sum^{N}_{n=1} \Esub{\rvvz^{(n)}_t \sim K_{\rvvlambda_{t-1}}\left(\rvvz_{t-1}^{(n)}, \cdot\right)}{ \norm{\vs\left(\vlambda; \rvvz^{(n)}_t\right) }^2_2 \,\middle|\,  \rvvz_{t-1}^{(1:N)},\, \rvvlambda_{t-1} }
     \nonumber
     \\
     &\quad\leq
     \frac{1}{N^2}\sum^{N}_{n=1}
-      \Esub{\rvvz^{(n)} \sim q_{\text{def.}}\left(\cdot;\rvvlambda_{t-1}\right)}{ \norm{\vs\left(\vlambda; \rvvz^{(n)} \right)}^2_2 }
+      \Esub{\rvvz \sim q_{\text{def.}}\left(\cdot;\rvvlambda_{t-1}\right)}{ \norm{\vs\left(\vlambda; \rvvz \right)}^2_2 }
       +
-      {\rho} \, \norm{\vs\left(\vlambda; \rvvz_{t-1}^{(n)} \right)}^2_2
+      {r} \, \norm{\vs\left(\vlambda; \rvvz_{t-1}^{(n)} \right)}^2_2
     &&\quad\text{\textit{\cref{thm:imh_expecation}}}
     \nonumber
     \\
     &\quad\leq
     \frac{1}{N^2}\sum^{N}_{n=1}
-        L^2 + {\rho} \, L^2
+        L^2 + {r} \, L^2
     &&\quad\text{\textit{\cref{thm:bounded_score}}}
     \nonumber
     \\
     &\quad=
     \frac{L^2}{N^2} \sum^{N}_{n=1}
-      1 + {\rho}
+      1 + {r}
     \nonumber
     \\
     &\quad=

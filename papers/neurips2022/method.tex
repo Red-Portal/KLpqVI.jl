@@ -132,7 +132,7 @@ This will provide insight into their practical non-asymptotic performance.
 To cast previous methods into MCSA, we need some technical assumptions.
 
 \begin{assumption}{(Bounded importance weight)}\label{thm:bounded_weight}
-  The importance weight ratio \(w\left(\vz\right) = \pi\left(\vz\right) / q\left(\vz; \vlambda\right)\) is bounded by some finite constant as \(w^* < \infty\) for all \(\vlambda \in \Lambda\) such that \(\rho = \left(1 - 1/w^*\right) < 1\).
+  The importance weight ratio \(w\left(\vz\right) = \pi\left(\vz\right) / q\left(\vz; \vlambda\right)\) is bounded by some finite constant as \(w^* < \infty\) for all \(\vlambda \in \Lambda\) such that \(r = \left(1 - 1/w^*\right) < 1\).
 \end{assumption}
 \vspace{-0.05in}
 This assumption is necessary to ensure~\cref{thm:kernel_conditions}, and can be practically ensured by using a variational family with heavy tails~\citep{NEURIPS2018_25db67c5} or using a defensive mixture~\citep{hesterberg_weighted_1995, holden_adaptive_2009} as
@@ -144,7 +144,7 @@ This assumption is necessary to ensure~\cref{thm:kernel_conditions}, and can be 
 where \(0 < \alpha < 1\) and \(\nu\left(\cdot\right)\) is a heavy tailed distribution such that \(\sup_{\vz \in \mathcal{Z}} \pi\left(\vz\right) / \nu\left(\vz\right) < \infty\).
 Note that \(q_{\text{def.}}\) is only used in the Markov chain kernels and \(q\left(\cdot;\vlambda\right)\) is still the output of the VI procedure.
 While these tricks help escape slowly mixing regions, this benefit quickly vanishes as \(\lambda\) converges.
-Therefore, ensuring \cref{thm:bounded_weight} seems unnecessary in practice unless we absolutely care about ergodicity (\textit{e.g.} adaptive MCMC,~\citealt{holden_adaptive_2009, pmlr-v151-brofos22a}).
+Therefore, ensuring \cref{thm:bounded_weight} seems unnecessary in practice unless we absolutely care about ergodicity. (Think of the adaptive MCMC setting for example.~\citealt{holden_adaptive_2009, pmlr-v151-brofos22a}).
 
 \vspace{-0.1in}
 \paragraph{\textbf{Model (Variational Family) Misspecification and \(w^*\)}}
@@ -157,7 +157,7 @@ Therefore, \(w^*\) will be large
 %In practice, for practical it is fair to expect \(w^*\) will be large.
 
 \begin{assumption}{(Bounded Score)}\label{thm:bounded_score}
-  The score gradient is bounded for \(\forall \vlambda \in \Lambda\) and \(\forall \vz \in \mathcal{Z}\) such that \(\norm{\vs\left(\vlambda; \vz\right)} \leq L \) for some finite constant \(L > 0\).
+  The score gradient is bounded for \(\forall \vlambda \in \Lambda\) and \(\forall \vz \in \mathcal{Z}\) such that \(\norm{\vs\left(\vlambda; \vz\right)}_2 \leq L \) for some finite constant \(L > 0\).
 \end{assumption}
 %
 Although this assumption is strong, it enables us to compare the gradient variance of MCSA methods.
@@ -168,7 +168,7 @@ We empirically justify the bounds obtained using~\cref{thm:bounded_score} in \cr
 \subsection{Markovian Score Climbing}
 \vspace{-0.07in}
 
-MSC (\cref{alg:msc} in \cref{section:pseudocode}) is a simple instance of MCSA where \(\eta_t = \vz_t\) and \(P_{\vlambda_t} = K_{\vlambda_t}\) is the conditional importance sampling (CIS) kernel (originally proposed by~\citet{andrieu_uniform_2018}) where the proposals are generated from \(q\left(\cdot; \vlambda_t\right)\).
+MSC (\cref{alg:msc} in \cref{section:pseudocode}) is a simple instance of MCSA where \(\veta_t = \vz_t\) and \(P_{\vlambda_t} = K_{\vlambda_t}\) is the conditional importance sampling (CIS) kernel (originally proposed by~\citet{andrieu_uniform_2018}) where the proposals are generated from \(q\left(\cdot; \vlambda_t\right)\).
 Although MSC uses only a single sample for the Markov chain, the CIS kernel internally operates \(N-1\) proposals.
 Therefore, \(N\) in MSC has a different meaning, but it still indicates the computational budget.
 
@@ -194,8 +194,8 @@ The theoretical properties of this estimator have been concurrently analyzed by~
 
 \textcolor{blue}{
 The variance of MSC-RB decreases as \(\mathcal{O}\left(\nicefrac{1}{N-1}\right)\), which is more encouraging than vanilla MSC.
-However, the first term depends on the \(\chi^2\) divergence, which is bounded below exponentially by the KL divergence~\citep{10.1214/17-STS611}, and the second term depends quadratically on \(w^*\).
-Therefore, \textit{the variance of MSC-RB will be large on challenging problems such that \(w^*\) and the \(\chi^2\) divergence are large}, although linear variance reduction is possible.
+However, the first term depends on the \(\chi^2\) divergence, which is bounded below exponentially by the KL divergence~\citep{10.1214/17-STS611}.
+Therefore, \textit{the variance of MSC-RB will be large on challenging problems where the \(\chi^2\) divergence is large}, although linear variance reduction is possible.
 }
 
 \vspace{-0.1in}
@@ -204,7 +204,7 @@ Therefore, \textit{the variance of MSC-RB will be large on challenging problems 
 JSA (\cref{alg:jsa} in \cref{section:pseudocode}) was proposed for deep generative models where the likelihood factorizes into each datapoint.
 Then, subsampling can be used through a random-scan version of the independent Metropolis-Hastings (IMH, \citealt{hastings_monte_1970}) kernel.
 Instead, we consider the general version of JSA with a vanilla IMH kernel since it can be used for any type of likelihood.
-At each MCGD step, JSA performs multiple Markov chain transitions and estimates the gradient by averaging all the intermediate states, which is closer to traditional MCMC.
+At each MCGD step, JSA performs multiple Markov chain transitions and estimates the gradient by averaging all the intermediate states, which is closer to how traditional MCMC is used.
 
 \vspace{-0.1in}
 \paragraph{Independent Metropolis-Hastings}
@@ -249,7 +249,7 @@ As shown in~\cref{thm:jsa}, JSA benefits from increasing \(N\) in terms of a fas
 \textcolor{blue}{
 However,  under lack of convergence and model misspecification (large \(w^*\)), the variance improvement becomes marginal.
 Specifically, in the large \(w^*\) regime, the variance reduction is limited by the constant \(1/2\) term.
-This is true even ideally when the covariance between the samples is ignorable such that \(C_{\text{cov}} \approx 0\).
+This is true even when, ideally, the covariance between the samples is ignorable such that \(C_{\text{cov}} \approx 0\).
 In practice, however, the covariance term \(C_{\text{cov}}\) will be positive, only increasing variance.
 Therefore, \textit{in the large \(w^*\) regime, JSA will perform poorly, and the variance reduction by increasing \(N\) is fundamentally limited}.
 }
@@ -330,7 +330,7 @@ This is because
 \vspace{-1.5ex}
 \subsection{Computational Cost Comparison}
 \vspace{-1.5ex}
-The three schemes using the CIS and IMH kernels have different computational costs depending on \(N\) as organized in~\cref{table:cost}.
+The four schemes using the CIS and IMH kernels have different costs depending on \(N\) as organized in~\cref{table:cost}.
 
 \vspace{-1.5ex}
 \paragraph{Cost of Sampling Proposals}
@@ -342,8 +342,8 @@ However, this added cost is minimal since it is dominated by that of evaluating 
 \vspace{-1.5ex}
 \paragraph{Cost of Estimating the Score}
 When estimating the score, MSC computes \(\nabla_{\vlambda} \log q\,(\vz; \vlambda)\) only once, while JSA and our proposed scheme compute it \(N\) times.
-However,~\cite{NEURIPS2020_b2070693} also discuss a Rao-Blackwellized version of the CIS kernel, which also computes the score \(N\) times.
-Lastly, notice that MCSA methods do not need to differentiate through the likelihood \(p\,(\vz,\vx)\), unlike ELBO maximization, making its per-iteration cost significantly cheaper.
+However, MSC-RB also computes the score \(N\) times.
+Lastly, notice that MCSA methods do not differentiate through the likelihood \(p\,(\vz,\vx)\), unlike ELBO maximization, making its per-iteration cost significantly cheaper.
 
 %%% Local Variables:
 %%% TeX-master: "master"

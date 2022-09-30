@@ -41,19 +41,22 @@
 
 \begin{theoremEnd}{theorem}{\citep{cardoso_brsnis_2022}}\label{thm:mscrb}
   The gradient variance of MSC-RB is bounded as
+  {%\small
   \begin{align*}
-  {\textstyle\small
-    \V{ \rvvg_{t,\mathrm{MSC\text{-}RB}} \,\middle|\, \mathcal{F}_{t-1} } \leq
-    4\,L^2 \, \left[
-    \frac{1}{N-1}\,\DChi{\pi}{q\left(\cdot; \vlambda_{t-1}\right)}
+  {\textstyle
+    \E{ {\lVert \rvvg_{t,\mathrm{MSC\text{-}RB}} \rVert}_2^2  \,\middle|\, \mathcal{F}_{t-1} }
+    \leq
+    4 \, L^2 \,\left[
+    \frac{1}{N-1}\,\DChi{\pi}{q\left(\cdot; \rvvlambda_{t-1}\right)} 
     +
-    \frac{1}{N} {\left(1 + w^*\right)}^2
+    \mathcal{O}\left(N^{-3/2} + \nicefrac{\gamma^{t-1}}{N-1}\right)
+    \right]
     +
-    \mathcal{O}\left({\left(N-1\right)}^{-2}\right)
-    \right],
+    {\lVert\vmu\rVert}^2_2
   }
   \end{align*}
-  where \(w^* = \sup_{\vz} \pi\left(\vz\right) / q_{\text{def.}}\left(\vz;\vlambda\right)\).
+  }%
+  where \(\vmu = \mathbb{E}_{\pi}\vs\left(\vlambda;\rvvz\right)\) and \(\gamma = 2 w^* / \left(2 w^* + N - 2\right)\) is the mixing rate of the Rao-Blackwellized CIS kernel.
 \end{theoremEnd}
 \begin{proofEnd}
   Rao-Blackwellization of the CIS kernel is to reuse the importance weights \(w\left(\vz\right) = \pi\left(\vz\right) / q_{\text{def.}}\left(\vz\right)\) internally used by the kernel when forming the estimator.
@@ -64,18 +67,26 @@
   \end{align*}
 
   By \cref{thm:second_moment_bound}, the second moment of the gradient is bounded as
-  \begin{alignat*}{2}
-    \E{ \norm{ \rvvg_{\text{MSC}} }_2^2 \,\middle|\, \mathcal{F}_{t-1} } 
-    =
-    \mathsf{MSE}\left[ \rvvg_{t, \text{MSC}} \,\middle|\, \mathcal{F}_{t-1} \right]
+  \begin{alignat}{2}
+    \E{ {\parallel \rvvg_{t,\text{MSC-RB}} \parallel}_2^2 \,\middle|\, \mathcal{F}_{t-1} } 
+    &=
+    \mathsf{MSE}\left[ \rvvg_{t, \text{MSC-RB}} \,\middle|\, \mathcal{F}_{t-1} \right]
     +
-    2 \, {\mathsf{Bias}\left[ \rvvg_{t, \text{MSC}} \,\middle|\, \mathcal{F}_{t-1} \right]}^{\top} \norm{\vmu}
-    + \norm{\mu}^2
-  \end{alignat*}
+    2 \, {\mathsf{Bias}\left[ \rvvg_{t, \text{MSC-RB}} \,\middle|\, \mathcal{F}_{t-1} \right]}^{\top} \norm{\vmu}_2
+    + \norm{\vmu}^2_2
+    \nonumber
+    \\
+    &\leq
+    \mathsf{MSE}\left[ \rvvg_{t, \text{MSC-RB}} \,\middle|\, \mathcal{F}_{t-1} \right]
+    +
+    2 \, L \, {\mathsf{Bias}\left[ \rvvg_{t, \text{MSC-RB}} \,\middle|\, \mathcal{F}_{t-1} \right]}^{\top}
+    + \norm{\vmu}^2_2.
+    \label{eq:mscrb_decomp}
+  \end{alignat}
   
   \citet[Theorem 3]{cardoso_brsnis_2022} show that the mean-squared error of this estimator, which they call bias reduced self-normalized importance sampling, is bounded as
   \begin{align*}
-    \mathsf{MSE}\left[ \rvvg_{\text{MSC-RB}} \,\middle|\, \mathcal{F}_{t-1} \right] \leq
+    \mathsf{MSE}\left[ \rvvg_{t,\text{MSC-RB}} \,\middle|\, \mathcal{F}_{t-1} \right] \leq
     4\,L^2 \, \Big[\,&
      \left( 1 + \epsilon^2 \right)\, \frac{1}{N-1}\,\Vsub{\rvvz \sim q_{\text{def.}}\left(\cdot; \rvvlambda_{t-1}\right)}{w\left(\rvvz\right) \mid \rvvlambda_{t-1}} 
      \\
@@ -100,19 +111,43 @@
     \nonumber
   \end{alignat}
 
-  For \(\epsilon^2\), \citeauthor{cardoso_brsnis_2022} choose \(\epsilon^2 = {\left(N-1\right)}^{-1/2}\), which results in their stated bound. 
-  For the alternative choice of \(\epsilon^2 = {\left(N-1\right)}^{-1}\), it is possible to make the smaller terms decrease in a faster rate, and show that both \({\left(1 + w^*\right)}^2\) and \(\DChi{\pi}{q\left(\cdot; \vlambda_{t-1}\right)}\) similarly contribute to the variance such that
+  For \(\epsilon^2\), \citeauthor{cardoso_brsnis_2022} choose \(\epsilon^2 = {\left(N-1\right)}^{-1/2}\), which results in their stated bound
   \begin{align*}
-    \mathsf{MSE}\left[ \rvvg_{\text{MSC-RB}} \,\middle|\, \mathcal{F}_{t-1} \right] \leq
+    \mathsf{MSE}\left[ \rvvg_{t,\text{MSC-RB}} \,\middle|\, \mathcal{F}_{t-1} \right] \leq
     4\,L^2 \, \Big[\,
-      \frac{1}{N-1}\,\DChi{\pi}{q\left(\cdot; \vlambda_{t-1}\right)}
+      \frac{1}{N-1}\,\DChi{\pi}{q\left(\cdot; \rvvlambda_{t-1}\right)}
       +
-      \frac{1}{N} {\left(1 + w^*\right)}^2
-      +
-      \mathcal{O}\left({\left(N-1\right)}^{-2}\right)
+      \mathcal{O}\left(N^{-3/2}\right)
     \,\Big].
   \end{align*}
-  But now, the \({\left(1+w^*\right)}^2\) term decreases in a slower rate.
+
+  Furthermore, they show that the bias term is bounded as
+  \begin{align*}
+    \mathsf{Bias}\left[ \rvvg_{t,\text{MSC-RB}} \right]
+    \leq
+    \frac{4 \, L}{N-1} \left( \DChi{\pi}{q\left(\cdot; \rvvlambda_{t-1}\right)} + 1 + w^*\right) {\left( \frac{2 w^*}{ 2 w^* + N - 2 } \right)}^{t-1}.
+  \end{align*}
+  Combining both the bias and the mean-squared error to \cref{eq:mscrb_decomp}, we obtain the bound
+  \begin{align*}
+    &\E{ {\lVert \rvvg_{t,\text{MSC-RB}} \rVert}_2^2 \,\middle|\, \mathcal{F}_{t-1} }
+    \\
+    &\;\leq 
+    4\,L^2\,\bigg[
+    \frac{1}{N-1}\,\DChi{\pi}{q\left(\cdot; \rvvlambda_{t-1}\right)}
+    \\
+    &\qquad+
+    \frac{1}{N-1} \left( \DChi{\pi}{q\left(\cdot; \rvvlambda_{t-1}\right)} + 1 + w^*\right) {\left( \frac{2 w^*}{ 2 w^* + N - 2 } \right)}^{t-1}
+    +
+    \mathcal{O}\left(N^{-3/2}\right)
+    \bigg]
+    \\
+    &=
+    4 \, L^2 \,\bigg[
+    \frac{1 + \gamma^{t-1}}{N-1}\,\DChi{\pi}{q\left(\cdot; \rvvlambda_{t-1}\right)} + \frac{\gamma^{t-1}}{N-1} + \frac{\gamma^{t-1} w^*}{N-1}
+    +
+    \mathcal{O}\left(N^{-3/2}\right)
+    \bigg].
+  \end{align*}
 \end{proofEnd}
 
 %%% Local Variables:

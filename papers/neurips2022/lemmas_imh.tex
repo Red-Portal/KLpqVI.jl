@@ -30,18 +30,17 @@
     \\
     &= \frac{n}{w} \, {\left(1 - \frac{1}{w^*}\right)}^{n-1}.
   \end{alignat*}
-  This upper bound is in general difficult to improve unless we impose stronger assumptions on \(\pi\) and \(q\).
 \end{proofEnd}
 
 \begin{theoremEnd}[all end]{lemma}\label{thm:imh_expecation}
-  For a positive test function \(f : \mathcal{Z} \rightarrow \mathbb{R}^{+}\), the estimate of a \(\pi\)-invariant independent Metropolis-Hastings kernel with a proposal \(q\) is bounded as
+  For a positive test function \(f : \mathcal{Z} \rightarrow \mathbb{R}^{+}\), the estimate of a \(\pi\)-invariant independent Metropolis-Hastings kernel \(K\) with a proposal \(q\) is bounded as
   \begin{align*}
     \Esub{K^n\left(\vz, \cdot\right)}{ f \,\middle|\, \rvvz }
     \leq
-    n \, \rho^{n-1} 
+    n \, r^{n-1} 
     \Esub{q}{f}
     +
-    {\rho}^n \, f\left(\rvvz\right)
+    {r}^n \, f\left(\rvvz\right)
     %% \leq
     %% n \, \left(
     %% \Esub{q}{f}
@@ -49,7 +48,7 @@
     %% \frac{1}{n} \, f\left(\vz\right)
     %% \right) 
   \end{align*}
-  where \(w\left(\vz\right) = \pi\left(\vz\right) / q\left(\vz\right)\) and \(\rho = 1 - \nicefrac{1}{w^*}\) for \(w^* = \sup_{\vz} w\left(\vz\right) \).
+  where \(w\left(\vz\right) = \pi\left(\vz\right) / q\left(\vz\right)\) and \(r = 1 - \nicefrac{1}{w^*}\) for \(w^* = \sup_{\vz} w\left(\vz\right) \).
 \end{theoremEnd}
 \begin{proofEnd}
   \begin{alignat*}{2}
@@ -99,6 +98,66 @@
     +
     {\left(1 - \frac{1}{w^*}\right)}^n \, f\left(\rvvz\right).
   \end{alignat*}
+\end{proofEnd}
+
+\begin{theoremEnd}[all end]{lemma}\label{thm:mcmc_bias}
+  Let a \(\Pi\)-invariant Markov chain kernel \(P\) be geometrically ergodic as
+  \begin{align*}
+    \DTV{P^{n}\left(\veta_0, \cdot\right)}{ \Pi } \leq C \, \rho^{n}.
+  \end{align*}
+  Furthermore, let \(\widehat{\rvvg} = \vg\left(\rvveta\right)\) with \(\rvveta \sim P^n\left(\veta_0, \cdot\right)\) be the estimator of \(\mathbb{E}_{\Pi}\rvvg\) for some function \(\vg : \Eta \rightarrow \mathbb{R}^{D}\) bounded as \( \norm{\rvvg}_{2} \leq L \).
+  The bias of \(\rvvg\), defined as
+  \(
+    \mathsf{Bias}\left[ \widehat{\rvvg} \right] = \mathbb{E}\parallel \widehat{\rvvg} - \mathbb{E}_{\pi}\rvvg \parallel
+  \),
+  is bounded as
+  \begin{alignat*}{2}
+    \mathsf{Bias}\left[ \hat{\rvvg} \right]
+    \leq
+    2 \, \sqrt{D} \, L \, C \, \rho^{n}
+  \end{alignat*}
+\end{theoremEnd}
+\begin{proofEnd}
+  \begin{alignat}{2}
+    \mathsf{Bias}\left[ \hat{\rvvg} \right]
+    &=
+    \norm{
+      \mathbb{E}_{P^n\left(\veta_0, \cdot\right)}\vg
+      -
+      \mathbb{E}_{\Pi}\vg
+    }_2
+    \nonumber
+    \\
+    &\leq
+    \sqrt{D}\,\norm{
+      \mathbb{E}_{P^n\left(\veta_0, \cdot\right)}\vg
+      -
+      \mathbb{E}_{\Pi}\vg
+    }_{\infty}
+    &&\quad\text{\textit{for  \(\vx \in \mathbb{R}^D\), \(\norm{\vx}_2 \leq \sqrt{D}\norm{\vx}_{\infty}\)}}
+    \nonumber
+    \\
+    &\leq
+    \sqrt{D}\,L\,\sup_{\abs{h} \leq 1}
+    \abs{
+      \mathbb{E}_{P^n\left(\veta_0, \cdot\right)}h
+      -
+      \mathbb{E}_{\Pi}h
+    }
+    &&\quad\text{\textit{\(\norm{\vg}_{\infty} \leq \norm{\vg}_2 \leq L\)}}
+    \nonumber
+    \\
+    &=
+    2 \,  \sqrt{D} \, L \,
+    \DTV{P^{n}\left(\veta^{(0)}, \cdot\right)}{\pi}
+    &&\quad\text{\textit{Definition of \(d_{\mathrm{TV}}\)}}
+    \nonumber
+    \\
+    &=
+    2 \, \sqrt{D} \, L \, C \, \rho^{n}.
+    &&\quad\text{\textit{Geometric ergodicity}}
+    \nonumber
+  \end{alignat}
 \end{proofEnd}
 
 
