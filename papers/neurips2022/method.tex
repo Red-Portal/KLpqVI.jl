@@ -210,7 +210,7 @@ At each MCGD step, JSA performs multiple Markov chain transitions and estimates 
 \paragraph{Independent Metropolis-Hastings}
 %A key element of JSA~\citep{pmlr-v124-ou20a} is that it uses the IMH kernel.
 Similarly to MSC, the IMH kernel in JSA generates proposals from \(q\left(\cdot; \vlambda_t\right)\).
-To show the geometric ergodicity of the implicit kernel \(P\), we utilize the geometric convergence rate of IMH kernels provided by~\citet[Theorem 2.1]{10.2307/2242610} and~\citet{wang_exact_2020}.
+To show the geometric ergodicity of the implicit kernel \(P\), we utilize the geometric convergence rate of IMH kernels provided by~\citet[Theorem 2.1]{10.2307/2242610} and~\citet{wang_exact_2022}.
 \textcolor{blue}{
 The gradient variance, on the other hand, is difficult to analyze, especially the covariance between the samples.
 However, we show that, even if we ignore the covariance terms, the variance reduction with respect to \(N\) is severly limited in the large \(w^*\) regime.
