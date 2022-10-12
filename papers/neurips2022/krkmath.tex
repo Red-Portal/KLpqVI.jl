@@ -2,25 +2,51 @@
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{mathtools}
 
-\usepackage{fontspec}
-%\usepackage{fouriernc}
-\usepackage{unicode-math}
-\setmathfont{STIXTwoMath-Regular.otf}
-\setmainfont[
-         BoldFont={STIXTwoText-Bold.otf}, 
-         ItalicFont={STIXTwoText-Italic.otf},
-         BoldItalicFont={STIXTwoText-BoldItalic.otf}
-         ]{STIXTwoText-Regular.otf}
+% Math and main text font nonsense
+\ifxetex
+  \usepackage{fontspec}
+  \usepackage{microtype}
+  \usepackage{unicode-math}
+  \setmathfont{STIXTwoMath-Regular.otf}
+  \setmainfont[
+    BoldFont={STIXTwoText-Bold.otf}, 
+    ItalicFont={STIXTwoText-Italic.otf},
+    BoldItalicFont={STIXTwoText-BoldItalic.otf}]{STIXTwoText-Regular.otf}
+  %\setmainfont{Times New Roman}
+  %\setmathfont{Erewhon-Math.otf}
 
-%\setmainfont{Times New Roman}
-%\setmathfont{Erewhon-Math.otf}
+  %\setmainfont{TeX Gyre Schola}[Scale=0.90] % Text
+  % Math: mix of Erewhon and Schola
+  %\setmathfont{Erewhon-Math.otf}
+  % \setmathfont{TeX Gyre Schola Math}[Scale=0.93,
+  %%     range={up/{latin,Latin,num}, it/{latin,Latin,num},
+  %%            bfup/{latin,Latin,num}, bfit{latin,Latin,num}}]
 
-%\setmainfont{TeX Gyre Schola}[Scale=0.90] % Text
-% Math: mix of Erewhon and Schola
-%\setmathfont{Erewhon-Math.otf}
-% \setmathfont{TeX Gyre Schola Math}[Scale=0.93,
-%%     range={up/{latin,Latin,num}, it/{latin,Latin,num},
-%%            bfup/{latin,Latin,num}, bfit{latin,Latin,num}}]
+  \newcommand{\mathmat}[1]{\symbfup{#1}}
+  \newcommand{\mathvec}[1]{\symbfup{#1}}
+  \newcommand{\mathvecgreek}[1]{\symbfup{#1}}
+  \newcommand{\mathmatgreek}[1]{\symbfup{#1}}
+
+  \newcommand{\mathrv}[1]{\mathsf{#1}}
+  \newcommand{\mathrvvec}[1]{\mathbfsf{#1}}
+  \newcommand{\mathrvgreek}[1]{\mathsf{#1}}
+  \newcommand{\mathrvvecgreek}[1]{\mathbfsf{#1}}
+\else
+  \usepackage[T1]{fontenc}
+  \usepackage[notext,lcgreekalpha]{stix2}
+  \usepackage{newtxtext}
+  \usepackage{textcomp}
+
+  \newcommand{\mathmat}[1]{\mathbf{#1}}
+  \newcommand{\mathvec}[1]{\mathbf{#1}}
+  \newcommand{\mathvecgreek}[1]{\mathbf{#1}}
+  \newcommand{\mathmatgreek}[1]{\mathbf{#1}}
+
+  \newcommand{\mathrv}[1]{\mathsf{#1}}
+  \newcommand{\mathrvvec}[1]{\mathbfsf{#1}}
+  \newcommand{\mathrvgreek}[1]{\mathsf{#1}}
+  \newcommand{\mathrvvecgreek}[1]{\mathbfsf{#1}}
+\fi
 
 \usepackage{booktabs,threeparttable,arydshln}
 \usepackage{multirow}
@@ -69,11 +95,9 @@
 \newmdtheoremenv{framedproposition}{\textbf{Proposition}}
 \newmdtheoremenv{framedlemma}{\textbf{Lemma}}
 
-
 \usepackage{url}
 \usepackage{hyperref}
 \usepackage[noabbrev, capitalise, nameinlink]{cleveref}
-
 
 \crefname{assumption}{Assumption}{Assumption}
 \crefname{condition}{Condition}{Condition}
@@ -96,16 +120,6 @@
   \noalign{\global\let\adl@draw\@dashdrawstore
            \vskip\belowrulesep}}
 \makeatother
-
-%% \newcommand*{\figref}[2][]{%
-%%   \hyperref[{#2}]{%
-%%     Figure~\ref*{#2}%
-%%     \ifx\\#1\\%
-%%     \else
-%%       \,#1%
-%%     \fi
-%%   }%
-%% }
 
 \pgfkeys{/prAtEnd/global custom defaults/.style={
     %proof at the end,
@@ -154,158 +168,154 @@
 \newcommand{\abs}[1]{{\left|\,#1\,\right|}}
 \newcommand{\DTV}[2]{{d_{\mathrm{TV}}\left(#1, #2\right)}}
 
-%\DeclarePairedDelimiter\norm{\lVert}{\rVert}
-%\newcommand{\symbfup}[1]{\mathbf{#1}}
-%\newcommand{\symbf}[1]{\mathbf{#1}}
+\newcommand{\vX}{\mathrv{X}}
+\newcommand{\vY}{\mathrv{Y}}
+\newcommand{\vZ}{\mathrv{Z}}
 
-\newcommand{\vX}{\symbfup{X}}
-\newcommand{\vY}{\symbfup{Y}}
-\newcommand{\vZ}{\symbfup{Z}}
+\newcommand{\va}{\mathvec{a}}
+\newcommand{\vb}{\mathvec{b}}
+\newcommand{\vc}{\mathvec{c}}
+\newcommand{\vd}{\mathvec{d}}
+\newcommand{\ve}{\mathvec{e}}
+\newcommand{\vf}{\mathvec{f}}
+\newcommand{\vg}{\mathvec{g}}
+\newcommand{\vh}{\mathvec{h}}
+\newcommand{\vi}{\mathvec{i}}
+\newcommand{\vj}{\mathvec{j}}
+\newcommand{\vk}{\mathvec{k}}
+\newcommand{\vl}{\mathvec{l}}
+\newcommand{\vm}{\mathvec{m}}
+\newcommand{\vn}{\mathvec{n}}
+\newcommand{\vo}{\mathvec{o}}
+\newcommand{\vp}{\mathvec{p}}
+\newcommand{\vq}{\mathvec{q}}
+\newcommand{\vr}{\mathvec{r}}
+\newcommand{\vs}{\mathvec{s}}
+\newcommand{\vt}{\mathvec{t}}
+\newcommand{\vu}{\mathvec{u}}
+\newcommand{\vv}{\mathvec{v}}
+\newcommand{\vw}{\mathvec{w}}
+\newcommand{\vx}{\mathvec{x}}
+\newcommand{\vy}{\mathvec{y}}
+\newcommand{\vz}{\mathvec{z}}
+\newcommand{\valpha}{\mathvecgreek{\alpha}}
+\newcommand{\veta}{\mathvecgreek{\eta}}
+\newcommand{\vmu}{\mathvecgreek{\mu}}
+\newcommand{\vtheta}{\mathvecgreek{\theta}}
+\newcommand{\vlambda}{\mathvecgreek{\lambda}}
+\newcommand{\vxi}{\mathvecgreek{\xi}}
 
-\newcommand{\va}{\symbfup{a}}
-\newcommand{\vb}{\symbfup{b}}
-\newcommand{\vc}{\symbfup{c}}
-\newcommand{\vd}{\symbfup{d}}
-\newcommand{\ve}{\symbfup{e}}
-\newcommand{\vf}{\symbfup{f}}
-\newcommand{\vg}{\symbfup{g}}
-\newcommand{\vh}{\symbfup{h}}
-\newcommand{\vi}{\symbfup{i}}
-\newcommand{\vj}{\symbfup{j}}
-\newcommand{\vk}{\symbfup{k}}
-\newcommand{\vl}{\symbfup{l}}
-\newcommand{\vm}{\symbfup{m}}
-\newcommand{\vn}{\symbfup{n}}
-\newcommand{\vo}{\symbfup{o}}
-\newcommand{\vp}{\symbfup{p}}
-\newcommand{\vq}{\symbfup{q}}
-\newcommand{\vr}{\symbfup{r}}
-\newcommand{\vs}{\symbfup{s}}
-\newcommand{\vt}{\symbfup{t}}
-\newcommand{\vu}{\symbfup{u}}
-\newcommand{\vv}{\symbfup{v}}
-\newcommand{\vw}{\symbfup{w}}
-\newcommand{\vx}{\symbfup{x}}
-\newcommand{\vy}{\symbfup{y}}
-\newcommand{\vz}{\symbfup{z}}
-\newcommand{\valpha}{\symbfup{\alpha}}
-\newcommand{\veta}{\symbfup{\eta}}
-\newcommand{\vmu}{\symbfup{\mu}}
-\newcommand{\vtheta}{\symbfup{\theta}}
-\newcommand{\vlambda}{\symbfup{\lambda}}
-\newcommand{\vxi}{\symbfup{\xi}}
+\newcommand{\rva}{\mathrv{a}}
+\newcommand{\rvb}{\mathrv{b}}
+\newcommand{\rvc}{\mathrv{c}}
+\newcommand{\rvd}{\mathrv{d}}
+\newcommand{\rve}{\mathrv{e}}
+\newcommand{\rvf}{\mathrv{f}}
+\newcommand{\rvg}{\mathrv{g}}
+\newcommand{\rvh}{\mathrv{h}}
+\newcommand{\rvi}{\mathrv{i}}
+\newcommand{\rvj}{\mathrv{j}}
+\newcommand{\rvk}{\mathrv{k}}
+\newcommand{\rvl}{\mathrv{l}}
+\newcommand{\rvm}{\mathrv{m}}
+\newcommand{\rvn}{\mathrv{n}}
+\newcommand{\rvo}{\mathrv{o}}
+\newcommand{\rvp}{\mathrv{p}}
+\newcommand{\rvq}{\mathrv{q}}
+\newcommand{\rvr}{\mathrv{r}}
+\newcommand{\rvs}{\mathrv{s}}
+\newcommand{\rvt}{\mathrv{t}}
+\newcommand{\rvu}{\mathrv{u}}
+\newcommand{\rvv}{\mathrv{v}}
+\newcommand{\rvw}{\mathrv{w}}
+\newcommand{\rvx}{\mathrv{x}}
+\newcommand{\rvy}{\mathrv{y}}
+\newcommand{\rvz}{\mathrv{z}}
+\newcommand{\rvA}{\mathrv{A}}
+\newcommand{\rvB}{\mathrv{B}}
+\newcommand{\rvC}{\mathrv{C}}
+\newcommand{\rvD}{\mathrv{D}}
+\newcommand{\rvE}{\mathrv{E}}
+\newcommand{\rvF}{\mathrv{F}}
+\newcommand{\rvG}{\mathrv{G}}
+\newcommand{\rvH}{\mathrv{H}}
+\newcommand{\rvI}{\mathrv{I}}
+\newcommand{\rvJ}{\mathrv{J}}
+\newcommand{\rvK}{\mathrv{K}}
+\newcommand{\rvL}{\mathrv{L}}
+\newcommand{\rvM}{\mathrv{M}}
+\newcommand{\rvN}{\mathrv{N}}
+\newcommand{\rvO}{\mathrv{O}}
+\newcommand{\rvP}{\mathrv{P}}
+\newcommand{\rvQ}{\mathrv{Q}}
+\newcommand{\rvR}{\mathrv{R}}
+\newcommand{\rvS}{\mathrv{S}}
+\newcommand{\rvT}{\mathrv{T}}
+\newcommand{\rvU}{\mathrv{U}}
+\newcommand{\rvV}{\mathrv{V}}
+\newcommand{\rvW}{\mathrv{W}}
+\newcommand{\rvX}{\mathrv{X}}
+\newcommand{\rvY}{\mathrv{Y}}
+\newcommand{\rvZ}{\mathrv{Z}}
+\newcommand{\rveta}{\mathrvgreek{\eta}}
+\newcommand{\rvlambda}{\mathrvgreek{\lambda}}
 
-\newcommand{\rva}{\mathsf{a}}
-\newcommand{\rvb}{\mathsf{b}}
-\newcommand{\rvc}{\mathsf{c}}
-\newcommand{\rvd}{\mathsf{d}}
-\newcommand{\rve}{\mathsf{e}}
-\newcommand{\rvf}{\mathsf{f}}
-\newcommand{\rvg}{\mathsf{g}}
-\newcommand{\rvh}{\mathsf{h}}
-\newcommand{\rvi}{\mathsf{i}}
-\newcommand{\rvj}{\mathsf{j}}
-\newcommand{\rvk}{\mathsf{k}}
-\newcommand{\rvl}{\mathsf{l}}
-\newcommand{\rvm}{\mathsf{m}}
-\newcommand{\rvn}{\mathsf{n}}
-\newcommand{\rvo}{\mathsf{o}}
-\newcommand{\rvp}{\mathsf{p}}
-\newcommand{\rvq}{\mathsf{q}}
-\newcommand{\rvr}{\mathsf{r}}
-\newcommand{\rvs}{\mathsf{s}}
-\newcommand{\rvt}{\mathsf{t}}
-\newcommand{\rvu}{\mathsf{u}}
-\newcommand{\rvv}{\mathsf{v}}
-\newcommand{\rvw}{\mathsf{w}}
-\newcommand{\rvx}{\mathsf{x}}
-\newcommand{\rvy}{\mathsf{y}}
-\newcommand{\rvz}{\mathsf{z}}
-\newcommand{\rvA}{\mathsf{A}}
-\newcommand{\rvB}{\mathsf{B}}
-\newcommand{\rvC}{\mathsf{C}}
-\newcommand{\rvD}{\mathsf{D}}
-\newcommand{\rvE}{\mathsf{E}}
-\newcommand{\rvF}{\mathsf{F}}
-\newcommand{\rvG}{\mathsf{G}}
-\newcommand{\rvH}{\mathsf{H}}
-\newcommand{\rvI}{\mathsf{I}}
-\newcommand{\rvJ}{\mathsf{J}}
-\newcommand{\rvK}{\mathsf{K}}
-\newcommand{\rvL}{\mathsf{L}}
-\newcommand{\rvM}{\mathsf{M}}
-\newcommand{\rvN}{\mathsf{N}}
-\newcommand{\rvO}{\mathsf{O}}
-\newcommand{\rvP}{\mathsf{P}}
-\newcommand{\rvQ}{\mathsf{Q}}
-\newcommand{\rvR}{\mathsf{R}}
-\newcommand{\rvS}{\mathsf{S}}
-\newcommand{\rvT}{\mathsf{T}}
-\newcommand{\rvU}{\mathsf{U}}
-\newcommand{\rvV}{\mathsf{V}}
-\newcommand{\rvW}{\mathsf{W}}
-\newcommand{\rvX}{\mathsf{X}}
-\newcommand{\rvY}{\mathsf{Y}}
-\newcommand{\rvZ}{\mathsf{Z}}
-\newcommand{\rveta}{\mathsf{\eta}}
-\newcommand{\rvlambda}{\mathsf{\lambda}}
+\newcommand{\rvva}{\mathrvvec{a}}
+\newcommand{\rvvb}{\mathrvvec{b}}
+\newcommand{\rvvc}{\mathrvvec{c}}
+\newcommand{\rvvd}{\mathrvvec{d}}
+\newcommand{\rvve}{\mathrvvec{e}}
+\newcommand{\rvvf}{\mathrvvec{f}}
+\newcommand{\rvvg}{\mathrvvec{g}}
+\newcommand{\rvvh}{\mathrvvec{h}}
+\newcommand{\rvvi}{\mathrvvec{i}}
+\newcommand{\rvvj}{\mathrvvec{j}}
+\newcommand{\rvvk}{\mathrvvec{k}}
+\newcommand{\rvvl}{\mathrvvec{l}}
+\newcommand{\rvvm}{\mathrvvec{m}}
+\newcommand{\rvvn}{\mathrvvec{n}}
+\newcommand{\rvvo}{\mathrvvec{o}}
+\newcommand{\rvvp}{\mathrvvec{p}}
+\newcommand{\rvvq}{\mathrvvec{q}}
+\newcommand{\rvvr}{\mathrvvec{r}}
+\newcommand{\rvvs}{\mathrvvec{s}}
+\newcommand{\rvvt}{\mathrvvec{t}}
+\newcommand{\rvvu}{\mathrvvec{u}}
+\newcommand{\rvvv}{\mathrvvec{v}}
+\newcommand{\rvvw}{\mathrvvec{w}}
+\newcommand{\rvvx}{\mathrvvec{x}}
+\newcommand{\rvvy}{\mathrvvec{y}}
+\newcommand{\rvvz}{\mathrvvec{z}}
+\newcommand{\rvvlambda}{\mathrvvecgreek{\lambda}}
+\newcommand{\rvveta}{\mathrvvecgreek{\eta}}
 
-\newcommand{\rvva}{\mathbfsf{a}}
-\newcommand{\rvvb}{\mathbfsf{b}}
-\newcommand{\rvvc}{\mathbfsf{c}}
-\newcommand{\rvvd}{\mathbfsf{d}}
-\newcommand{\rvve}{\mathbfsf{e}}
-\newcommand{\rvvf}{\mathbfsf{f}}
-\newcommand{\rvvg}{\mathbfsf{g}}
-\newcommand{\rvvh}{\mathbfsf{h}}
-\newcommand{\rvvi}{\mathbfsf{i}}
-\newcommand{\rvvj}{\mathbfsf{j}}
-\newcommand{\rvvk}{\mathbfsf{k}}
-\newcommand{\rvvl}{\mathbfsf{l}}
-\newcommand{\rvvm}{\mathbfsf{m}}
-\newcommand{\rvvn}{\mathbfsf{n}}
-\newcommand{\rvvo}{\mathbfsf{o}}
-\newcommand{\rvvp}{\mathbfsf{p}}
-\newcommand{\rvvq}{\mathbfsf{q}}
-\newcommand{\rvvr}{\mathbfsf{r}}
-\newcommand{\rvvs}{\mathbfsf{s}}
-\newcommand{\rvvt}{\mathbfsf{t}}
-\newcommand{\rvvu}{\mathbfsf{u}}
-\newcommand{\rvvv}{\mathbfsf{v}}
-\newcommand{\rvvw}{\mathbfsf{w}}
-\newcommand{\rvvx}{\mathbfsf{x}}
-\newcommand{\rvvy}{\mathbfsf{y}}
-\newcommand{\rvvz}{\mathbfsf{z}}
-\newcommand{\rvvlambda}{\mathbfsf{\lambda}}
-\newcommand{\rvveta}{\mathbfsf{\eta}}
-
-\newcommand{\mA}{\symbfup{A}}
-\newcommand{\mB}{\symbfup{B}}
-\newcommand{\mC}{\symbfup{C}}
-\newcommand{\mD}{\symbfup{D}}
-\newcommand{\mE}{\symbfup{E}}
-\newcommand{\mF}{\symbfup{F}}
-\newcommand{\mG}{\symbfup{G}}
-\newcommand{\mH}{\symbfup{H}}
-\newcommand{\mI}{\symbfup{I}}
-\newcommand{\mJ}{\symbfup{J}}
-\newcommand{\mK}{\symbfup{K}}
-\newcommand{\mL}{\symbfup{L}}
-\newcommand{\mM}{\symbfup{M}}
-\newcommand{\mN}{\symbfup{N}}
-\newcommand{\mO}{\symbfup{O}}
-\newcommand{\mP}{\symbfup{P}}
-\newcommand{\mQ}{\symbfup{Q}}
-\newcommand{\mR}{\symbfup{R}}
-\newcommand{\mS}{\symbfup{S}}
-\newcommand{\mT}{\symbfup{T}}
-\newcommand{\mU}{\symbfup{U}}
-\newcommand{\mV}{\symbfup{V}}
-\newcommand{\mW}{\symbfup{W}}
-\newcommand{\mX}{\symbfup{X}}
-\newcommand{\mY}{\symbfup{Y}}
-\newcommand{\mZ}{\symbfup{Z}}
-\newcommand{\mSigma}{\symbfup{\Sigma}}
+\newcommand{\mA}{\mathmat{A}}
+\newcommand{\mB}{\mathmat{B}}
+\newcommand{\mC}{\mathmat{C}}
+\newcommand{\mD}{\mathmat{D}}
+\newcommand{\mE}{\mathmat{E}}
+\newcommand{\mF}{\mathmat{F}}
+\newcommand{\mG}{\mathmat{G}}
+\newcommand{\mH}{\mathmat{H}}
+\newcommand{\mI}{\mathmat{I}}
+\newcommand{\mJ}{\mathmat{J}}
+\newcommand{\mK}{\mathmat{K}}
+\newcommand{\mL}{\mathmat{L}}
+\newcommand{\mM}{\mathmat{M}}
+\newcommand{\mN}{\mathmat{N}}
+\newcommand{\mO}{\mathmat{O}}
+\newcommand{\mP}{\mathmat{P}}
+\newcommand{\mQ}{\mathmat{Q}}
+\newcommand{\mR}{\mathmat{R}}
+\newcommand{\mS}{\mathmat{S}}
+\newcommand{\mT}{\mathmat{T}}
+\newcommand{\mU}{\mathmat{U}}
+\newcommand{\mV}{\mathmat{V}}
+\newcommand{\mW}{\mathmat{W}}
+\newcommand{\mX}{\mathmat{X}}
+\newcommand{\mY}{\mathmat{Y}}
+\newcommand{\mZ}{\mathmat{Z}}
+\newcommand{\mSigma}{\mathmatgreek{\Sigma}}
 
 \newcommand{\iprod}[2]{\left\langle #1, #2 \right\rangle}
 \newcommand{\ind}[1]{\mathds{1}_{#1}}
