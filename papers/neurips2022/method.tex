@@ -184,19 +184,15 @@ Overall, \textit{the performance of MSC cannot be improved by increasing the com
 
 \vspace{-0.1in}
 \paragraph{Rao-Blackwellization}
-\textcolor{blue}{
 Meanwhile, \citeauthor{NEURIPS2020_b2070693} also provide a Rao-Blackwellized version of MSC we denote as MSC-RB.
 Instead of selecting a single \(\vz_t\) by resampling over the \(N\) internal proposals, they suggest forming an importance-weighted estimate~\citep{robert_monte_2004}.
 The theoretical properties of this estimator have been concurrently analyzed by~\citet{cardoso_brsnis_2022}.
-}
 
 \input{thm_previous_mscrb}
 
-\textcolor{blue}{
 The variance of MSC-RB decreases as \(\mathcal{O}\left(\nicefrac{1}{N-1}\right)\), which is more encouraging than vanilla MSC.
 However, the first term depends on the \(\chi^2\) divergence, which is bounded below exponentially by the KL divergence~\citep{10.1214/17-STS611}.
 Therefore, \textit{the variance of MSC-RB will be large on challenging problems where the \(\chi^2\) divergence is large}, although linear variance reduction is possible.
-}
 
 \vspace{-0.1in}
 \subsection{Joint Stochastic Approximation}
@@ -211,10 +207,8 @@ At each MCGD step, JSA performs multiple Markov chain transitions and estimates 
 %A key element of JSA~\citep{pmlr-v124-ou20a} is that it uses the IMH kernel.
 Similarly to MSC, the IMH kernel in JSA generates proposals from \(q\left(\cdot; \vlambda_t\right)\).
 To show the geometric ergodicity of the implicit kernel \(P\), we utilize the geometric convergence rate of IMH kernels provided by~\citet[Theorem 2.1]{10.2307/2242610} and~\citet{wang_exact_2022}.
-\textcolor{blue}{
 The gradient variance, on the other hand, is difficult to analyze, especially the covariance between the samples.
 However, we show that, even if we ignore the covariance terms, the variance reduction with respect to \(N\) is severly limited in the large \(w^*\) regime.
-}
 To do this, we use the exact \(n\)-step marginal IMH kernel derived by~\citet{Smith96exacttransition} as
 {
   \begin{align}
@@ -246,13 +240,11 @@ where {\(w\left(\vz\right) = \pi\left(\vz\right)/q_{\text{def.}}\left(\vz; \vlam
 \vspace{-1.5ex}
 \paragraph{Discussion}
 As shown in~\cref{thm:jsa}, JSA benefits from increasing \(N\) in terms of a faster mixing rate.
-\textcolor{blue}{
 However,  under lack of convergence and model misspecification (large \(w^*\)), the variance improvement becomes marginal.
 Specifically, in the large \(w^*\) regime, the variance reduction is limited by the constant \(1/2\) term.
 This is true even when, ideally, the covariance between the samples is ignorable such that \(C_{\text{cov}} \approx 0\).
 In practice, however, the covariance term \(C_{\text{cov}}\) will be positive, only increasing variance.
 Therefore, \textit{in the large \(w^*\) regime, JSA will perform poorly, and the variance reduction by increasing \(N\) is fundamentally limited}.
-}
 %Furthermore, the inefficiency persists even under stationarity unless \(\pi\left(\cdot\right) \in \mathcal{Q}\) such that the rejection rate becomes exactly 0.
 
 %Intuitively, the inefficiency comes from the rejections persisting even under stationarity.

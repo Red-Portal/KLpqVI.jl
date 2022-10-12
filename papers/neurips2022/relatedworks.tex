@@ -1,4 +1,4 @@
-%\vspace{-0.05in}
+\vspace{-1.5ex}
 \section{Related Works}\label{section:related}
 \vspace{-1.5ex}
 \paragraph{Inclusive KL minimization}
@@ -23,7 +23,7 @@ Therefore, their property is likely to be similar to the exclusive KL.
 As pointed out by~\citet{pmlr-v124-ou20a}, using \(q\left(\cdot; \vlambda\right)\) within the MCMC kernel makes MCSA structurally equivalent to adaptive MCMC.
 In particular,~\citet{10.1007/s11222-008-9110-y, garthwaite_adaptive_2016, pmlr-v151-brofos22a, gabrie_adaptive_2022} discuss the use of stochastic approximation in adaptive MCMC.
 Also,~\citet{andrieu_ergodicity_2006, keith_adaptive_2008, holden_adaptive_2009, giordani_adaptive_2010, pmlr-v151-brofos22a, habib2018auxiliary, neklyudov_metropolishastings_2019} specifically discuss adapting the propsosal of IMH kernels, and some of them use KL divergence minimization.
-These methods focus on showing ergodicity the samples (\(\vz^{(n)}\) in our notation) not the convergence of the variational approximation \(q\left(\cdot; \vlambda\right)\).
+These methods focus on showing ergodicity the samples (\(\veta_t\) in our context) not the convergence of the variational approximation \(q\left(\cdot; \vlambda\right)\).
 In this work, we focused on the convergence of \(q\left(\cdot; \vlambda\right)\), which could advance the adaptive MCMC side of the story.
 
 %And for HMC,~\citet{zhang_variational_2018, pmlr-v139-campbell21a} have proposed to use score matching, ELBO maximization, and Stein discrepancy minimization.

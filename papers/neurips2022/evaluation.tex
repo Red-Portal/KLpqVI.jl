@@ -72,11 +72,8 @@ We make the following observations:
 \begin{enumerate*}[label=\textbf{(\roman*)}]
   \item pMCSA has the lowest variance overall, and it consistently benefits from increasing \(N\).
   \item MSC does not benefit from increasing \(N\) whatsoever.
-    
-  \item \textcolor{blue}{
-    MSC-RB does not benefit much from increasing \(N\) until the 
+  \item MSC-RB does not benefit much from increasing \(N\) until the 
 \(\chi^2\) divergence between \(\pi\) and \(q\left(\cdot; \vlambda\right)\) has become small.
-    }
   \item JSA does not benefit from increasing \(N\) until \(q\left(\cdot; \vlambda\right)\) has sufficiently converged (when \(w^*\) has become small).
 \end{enumerate*}
 These results confirm our theoretical analyses in~\cref{section:comparison,section:pmcsa}.
@@ -137,18 +134,16 @@ pMCSA achieves the best performance compared to all other MCSA methods.
 Also, its overall performance is comparable to exclusive KL minimization methods (ELBO) unlike other MCSA methods.
 Furthermore, on \textsf{airfoil} and \textsf{energy}, pMCSA improves over ELBO by 0.29 \texttt{nat} and 0.48 \texttt{nat}.
 Even on \textsf{gas} where pMCSA did not beat ELBO, its performance is comparable, and it dominates all other MCSA methods by roughly 0.4 \texttt{nat}.
-Additional experimental results, \textcolor{blue}{including root mean-square error (RMSE) results and plots with respect to the wall clock time}, can be found in~\cref{section:bnn_additional}
+Additional experimental results, including root mean-square error (RMSE) results and plots with respect to the wall clock time, can be found in~\cref{section:bnn_additional}
 
 \vspace{-1.5ex}
 \paragraph{Weight Pruning}
-\textcolor{blue}{
 When using VI, BNNs have been known to underfit data, which~\citet{mackay_local_2001,pmlr-v70-hoffman17a,trippe_overpruning_2017} associated with ``weight pruning.'' 
 That is, the variational posterior converges to the zero-mean prior.
 Furthermore,~\citet{coker_wide_2022,huix_variational_2022} have shown that this is guaranteed to happen under certain conditions.
 However, these results are strictly based on exclusive KL minimization.
 On the other hand,~\cref{fig:pruning} shows that pMCSA does not suffer from weight pruning, which suggests that pruning is an artifact of using the exclusive KL.
 Additional plots are shown in \cref{fig:pruning_additional} (\cref{section:bnn_additional}).
-}%
 %
 
 \input{pgp_table.tex}
@@ -167,14 +162,12 @@ We consider ELBO with only \(N=1\) since differentiating through the likelihood 
 \vspace{-1.8ex}
 \paragraph{Results}
 The results are shown in~\cref{table:gp}.
-Except for \textsf{gas}, pMCSA achieves better \textcolor{blue}{predictive densities} than all other methods.
-This suggests that, overall, the exclusive KL may be less effective \textcolor{blue}{in terms of uncertainty quantification} for GP posteriors.
+Except for \textsf{gas}, pMCSA achieves better predictive densities than all other methods.
+This suggests that, overall, the exclusive KL may be less effective in terms of uncertainty quantification for GP posteriors.
 While ELBO achieves the best performance on \textsf{gas}, among MCSA methods, pMCSA dominates.
 Our encouraging regression results suggest that incorporating methods such as inducing points~\citep{NIPS2005_4491777b} into MCSA may lead to an important new class of GP models.
-Additional experimental results, \textcolor{blue}{including RMSE results and plots with respect to the wall clock time}, can be found in~\cref{section:gp_additional}.
-\textcolor{blue}{
+Additional experimental results, including RMSE results and plots with respect to the wall clock time, can be found in~\cref{section:gp_additional}.
 Note that in~\cref{section:gp_additional}, MCSA methods appear worse in terms of RMSE compared to the exclusive KL since the inclusive KL puts less probability volume around the posterior mode.
-}
 
 %%% Local Variables:
 %%% TeX-master: "master"
