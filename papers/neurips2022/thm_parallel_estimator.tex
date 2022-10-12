@@ -166,26 +166,27 @@
     \nonumber
     \\
     &\quad\leq
-    \frac{1}{N^2}\sum^{N}_{n=1}
+    \frac{1}{N^2}\sum^{N}_{n=1} \left[\,
       \Esub{\rvvz \sim q_{\text{def.}}\left(\cdot;\rvvlambda_{t-1}\right)}{ \norm{\vs\left(\vlambda; \rvvz \right)}^2_2 }
       +
       {r} \, \norm{\vs\left(\vlambda; \rvvz_{t-1}^{(n)} \right)}^2_2
+      \,\right]
     &&\quad\text{\textit{\cref{thm:imh_expecation}}}
     \nonumber
     \\
     &\quad\leq
-    \frac{1}{N^2}\sum^{N}_{n=1}
-        L^2 + {r} \, L^2
+    \frac{1}{N^2}\sum^{N}_{n=1} \left[\,
+        L^2 + {r} \, L^2 \,\right]
     &&\quad\text{\textit{\cref{thm:bounded_score}}}
     \nonumber
     \\
     &\quad=
-    \frac{L^2}{N^2} \sum^{N}_{n=1}
-      1 + {r}
+    \frac{L^2}{N^2} \sum^{N}_{n=1} \left[\,
+      1 + {r} \,\right]
     \nonumber
     \\
     &\quad=
-    L^2 \left[ \frac{1}{N} + \frac{1}{N}\,{\left(1 - \frac{1}{w^*}\right)} \right].
+    L^2 \left[\, \frac{1}{N} + \frac{1}{N}\,{\left(1 - \frac{1}{w^*}\right)} \,\right].
     \nonumber
   \end{alignat}
 \end{proofEnd}

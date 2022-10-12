@@ -35,7 +35,7 @@ The following proposition provides sufficient conditions on \(\vg\) and \(P_{\vl
     \\\cdashlinelr{1-5}
     \multirow{2}{*}{\small SGD-Nesterov\tnote{2}}
     & {\small\(\gamma_t = 2/(t + 1)\)}
-    & \multirow{2}{*}{\footnotesize\( {\|\vg\left(\rvvlambda, \rvveta\right)\|}_2 < G \)}
+    & \multirow{2}{*}{\footnotesize\( {\|\,\vg\left(\rvvlambda, \rvveta\right)\|}_2 < G \)}
     & \multirow{2}{*}{\small\(\mathcal{O}\left(\frac{G^2 \log T}{ \sqrt{T}}\right)\)}
     & {\footnotesize\citet{doan_convergence_2020}}
     \\
@@ -186,7 +186,7 @@ Overall, \textit{the performance of MSC cannot be improved by increasing the com
 \paragraph{Rao-Blackwellization}
 \textcolor{blue}{
 Meanwhile, \citeauthor{NEURIPS2020_b2070693} also provide a Rao-Blackwellized version of MSC we denote as MSC-RB.
-Instead of selecting a single \(\vz_t\) by resampling over the \(N\) internal proposals, they suggest to form an importance-weighted estimate~\citep{robert_monte_2004}.
+Instead of selecting a single \(\vz_t\) by resampling over the \(N\) internal proposals, they suggest forming an importance-weighted estimate~\citep{robert_monte_2004}.
 The theoretical properties of this estimator have been concurrently analyzed by~\citet{cardoso_brsnis_2022}.
 }
 
@@ -220,7 +220,7 @@ To do this, we use the exact \(n\)-step marginal IMH kernel derived by~\citet{Sm
   \begin{align}
   K^n_{\vlambda}\left(\vz, d\vz^{\prime}\right) 
   = T_n\left(\, w\left(\vz\right) \vee w\left(\vz^{\prime}\right)\,\right) \, \pi\left(\vz^{\prime}\right) \, d\vz^{\prime}
-  + \lambda^n\left(w\left(\vz\right)\right) \, \delta_{\vz}\left(d\vz^{\prime}\right)
+  + \lambda^n\left(w\left(\vz\right)\right) \, \delta_{\vz}\left(d\vz^{\prime}\right),
   \label{eq:imh_exact_kernel}
   \end{align}
 }%
@@ -231,7 +231,7 @@ where {\(w\left(\vz\right) = \pi\left(\vz\right)/q_{\text{def.}}\left(\vz; \vlam
     T_n\left(w\right)      = \int_w^{\infty}
     \frac{n}{v^2}
     %\left(n / v^2\right)
-    \, \lambda^{n-1}\left(v\right)\,dv,
+    \, \lambda^{n-1}\left(v\right)\,dv
     \quad\text{and}\quad
     \lambda\left(w\right) =
     \int_{R\left(w\right)}

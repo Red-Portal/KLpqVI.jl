@@ -69,9 +69,12 @@
 \newmdtheoremenv{framedproposition}{\textbf{Proposition}}
 \newmdtheoremenv{framedlemma}{\textbf{Lemma}}
 
+
 \usepackage{url}
 \usepackage{hyperref}
 \usepackage[noabbrev, capitalise, nameinlink]{cleveref}
+
+
 \crefname{assumption}{Assumption}{Assumption}
 \crefname{condition}{Condition}{Condition}
 
@@ -113,7 +116,6 @@
     %text link={\textit{Proof.} The proof is in the \textit{supplementary material}.
     text link={\textit{Proof.} See the \hyperref[proof:prAtEnd\pratendcountercurrent]{\textit{full proof}} in~\cref{section:proofs}.}
   }
-% Fix link later for camera ready version.
 }
 
 \def\code#1{\texttt{#1}}
@@ -148,7 +150,6 @@
 \newcommand{\DKL}[2]{d_{\mathrm{KL}}(#1\parallel#2)}
 \newcommand{\DChi}[2]{d_{\chi^2}(#1\parallel#2)}
 \newcommand{\norm}[1]{{\left\lVert\,#1\,\right\rVert}}
-\newcommand{\normsub}[2]{{\left\lVert\,#2\,\right\rVert}_{#1}}
 \newcommand{\abs}[1]{{\left|\,#1\,\right|}}
 \newcommand{\DTV}[2]{{d_{\mathrm{TV}}\left(#1, #2\right)}}
 

@@ -33,7 +33,7 @@
     =
     \int {\left( \frac{\pi\left(\vz\right)}{q\left(\vz\right)}  - 1 \right)}^2 q\left(d\vz\right)
     =
-    \DChi{\pi}{q}
+    \DChi{\pi}{q}.
     \nonumber
   \end{alignat}
   }
@@ -52,11 +52,13 @@
     \mathcal{O}\left(N^{-3/2} + \nicefrac{\gamma^{t-1}}{N-1}\right)
     \right]
     +
-    {\lVert\vmu\rVert}^2_2
+    {\lVert\vmu\rVert}^2_2,
   }
   \end{align*}
   }%
-  where \(\vmu = \mathbb{E}_{\pi}\vs\left(\vlambda;\rvvz\right)\) and \(\gamma = 2 w^* / \left(2 w^* + N - 2\right)\) is the mixing rate of the Rao-Blackwellized CIS kernel.
+  where \(\vmu = \mathbb{E}_{\pi}\vs\left(\vlambda;\rvvz\right)\), \(\gamma = 2 w^* / \left(2 w^* + N - 2\right)\) is the mixing rate of the Rao-Blackwellized CIS kernel, and {\small\(
+  \DChi{\pi}{q} = \int {\left(\nicefrac{\pi}{q} - 1\right)}^2 q\left(d\vz\right)
+  \)} is the \(\chi^2\) divergence.
 \end{theoremEnd}
 \begin{proofEnd}
   Rao-Blackwellization of the CIS kernel is to reuse the importance weights \(w\left(\vz\right) = \pi\left(\vz\right) / q_{\text{def.}}\left(\vz\right)\) internally used by the kernel when forming the estimator.

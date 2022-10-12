@@ -34,7 +34,7 @@
     +
     C_{\text{cov}}
     +
-    {\lVert\vmu\rVert}^2_2
+    {\lVert\vmu\rVert}^2_2,
     \nonumber
   \end{align*}
   }%
@@ -235,12 +235,12 @@
     \\
     &\;\leq
     \frac{1}{N^2}\sum^{N}_{n=1}
-    \left\{\,
+    \left[\,
       n \, {r}^{n-1}
       \Esub{\rvvz \sim q_{\text{def.}}\left(\cdot; \rvvlambda_{t-1}\right)}{ \norm{\vs\left(\vlambda; \rvvz \right)}^2_2 }
       + 
       {r}^{n} \, \norm{\vs\left(\vlambda; \rvvz_{t-1}^{(N)} \right)}^2_2
-      \,\right\}
+      \,\right]
       +
     C_{\text{cov}}
     &&\quad\text{\textit{\cref{thm:imh_expecation}}}
@@ -248,11 +248,11 @@
     \\
     &\;\leq
     \frac{1}{N^2}\sum^{N}_{n=1}
-    \left\{\,
+    \left[\,
       n \, {r}^{n-1}  \, L^2
       +
       {r}^{n} \, L^2
-      \,\right\}
+      \,\right]
       +
     C_{\text{cov}}
     &&\quad\text{\textit{\cref{thm:bounded_score}}}
@@ -260,11 +260,11 @@
     \\
     &\;=
     \frac{L^2}{N^2}\sum^{N}_{n=1}
-    \left\{\,
+    \left[\,
       n \, {\left(1 - \frac{1}{w^*}\right)}^{n-1}
       +
       {\left(1 - \frac{1}{w^*}\right)}^{n} 
-      \,\right\}
+      \,\right]
       +
     C_{\text{cov}}
     \nonumber

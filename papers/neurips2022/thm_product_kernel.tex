@@ -10,15 +10,15 @@
   {%\small
   \begin{align*}
     \textstyle
-    f\left(\vlambda, \veta\right) =  -\frac{1}{N} \sum^{N}_{n=1} \log q\left(\vz^{(n)}; \vlambda\right) - \mathbb{H}\left[\,\pi\,\right], 
+    f\left(\vlambda, \veta\right) =  -\frac{1}{N} \sum^{N}_{n=1} \log q\left(\vz^{(n)}; \vlambda\right) - \mathbb{H}\left[\,\pi\,\right] 
     \quad\text{and}\quad
-    \vg\left(\vlambda, \veta\right) =  -\frac{1}{N} \sum^{N}_{n=1} \vs\left(\vz^{(n)}; \vlambda\right)
+    \vg\left(\vlambda, \veta\right) =  -\frac{1}{N} \sum^{N}_{n=1} \vs\left(\vz^{(n)}; \vlambda\right),
   \end{align*}
   }
   where \(\mathbb{H}\left[\,\pi\,\right]\) is the entropy of \(\pi\), MCGD results in inclusive KL minimization as
   {%\small
   \begin{align*}
-    \Esub{\Pi}{ f\left(\vlambda, \rvveta\right) } = \DKL{\pi}{q\left(\cdot; \vlambda\right)},
+    \Esub{\Pi}{ f\left(\vlambda, \rvveta\right) } = \DKL{\pi}{q\left(\cdot; \vlambda\right)}
     \quad\text{and}\quad
     \Esub{\Pi}{ \vg\left(\vlambda, \rvveta\right) } = \nabla_{\vlambda} \DKL{\pi}{q\left(\cdot; \vlambda\right)}.
   \end{align*}
@@ -66,7 +66,7 @@
     &&\quad{\text{\textit{Definition of \(d_{\text{KL}}\)}}}
     \\
     &\quad=
-    \DKL{\pi}{q\left(\cdot; \vlambda\right)}\label{eq:F_KL}
+    \DKL{\pi}{q\left(\cdot; \vlambda\right)}.\label{eq:F_KL}
   \end{alignat}
   For \(\Esub{\Pi}{ \vg\left(\vlambda, \rvveta\right) }\), note that 
   \begin{align}
